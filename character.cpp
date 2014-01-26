@@ -17,6 +17,7 @@ SceneEntity::SceneEntity()
 Pony::Pony() : SceneEntity()
 {
     modelName = "PlayerBase";
+    name = "";
 }
 
 Player::Player()
@@ -189,6 +190,8 @@ QList<Pony> Player::loadPonies(Player& player)
         }
         int ponyDataSize = strlen+lensize+43;
         pony.ponyData = data.mid(i,ponyDataSize);
+        pony.name = dataToString(pony.ponyData); // The name is the first elem
+        win.logMessage("Found pony : "+pony.name);
         i+=ponyDataSize;
 
         // Read pos

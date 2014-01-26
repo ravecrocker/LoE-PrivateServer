@@ -7,6 +7,9 @@ INPUT(
 ./debug\utils.o
 ./debug\pingTimeout.o
 ./debug\character.o
+./debug\scene.o
+./debug\dataType.o
+./debug\sync.o
 ./debug\moc_widget.o
-./debug\qrc_gameFiles.o
+./debug\moc_sync.o
 );

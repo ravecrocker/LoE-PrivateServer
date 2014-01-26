@@ -72,6 +72,7 @@ void Widget::tcpProcessPendingDatagrams()
                 // Detect and send data files if we need to
                 // TODO: Process and send all the requested data
                 QByteArray data = *tcpReceivedDatas;
+                //logMessage("DataReceived:"+data);
                 int i1=0;
                 do
                 {
@@ -80,9 +81,17 @@ void Widget::tcpProcessPendingDatagrams()
                     {
                         int i2 = data.indexOf("HTTP")-1;
                         QString path = data.mid(i1 + 4, i2-i1-4);
+                        data = removeHTTPHeader(data, "POST ");
+                        data = removeHTTPHeader(data, "GET ");
                         logMessage("Received GET:"+path);
                         QFile head(QString(NETDATAPATH)+"/test.bin");
                         QFile res("gameFiles"+path);
+                        if (!res.isOpen() || !head.isOpen())
+                        {
+                            logMessage("File not found");
+                            continue;
+                        }
+
                         head.open(QIODevice::ReadOnly);
                         res.open(QIODevice::ReadOnly);
                         socket->write(head.readAll());
@@ -91,8 +100,6 @@ void Widget::tcpProcessPendingDatagrams()
                         head.close();
                         res.close();
                         logMessage("Sent ("+QString().setNum(res.size())+" bytes)");
-                        data = removeHTTPHeader(data, "POST ");
-                        data = removeHTTPHeader(data, "GET ");
                     }
                 } while (i1 != -1);
 
@@ -101,6 +108,7 @@ void Widget::tcpProcessPendingDatagrams()
                 data = removeHTTPHeader(data, "GET ");
                 data = removeHTTPHeader(data, "User-Agent:");
                 data = removeHTTPHeader(data, "Host:");
+                data = removeHTTPHeader(data, "host:");
                 data = removeHTTPHeader(data, "Accept:");
                 data = removeHTTPHeader(data, "Content-Length:");
                 data = removeHTTPHeader(data, "Content-Type:");

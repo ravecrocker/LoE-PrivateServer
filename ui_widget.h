@@ -1,8 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'widget.ui'
 **
-** Created: Wed 10. Jul 17:33:06 2013
-**      by: Qt User Interface Compiler version 4.8.1
+** Created by: Qt User Interface Compiler version 5.1.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -36,31 +35,31 @@ public:
     void setupUi(QWidget *Widget)
     {
         if (Widget->objectName().isEmpty())
-            Widget->setObjectName(QString::fromUtf8("Widget"));
+            Widget->setObjectName(QStringLiteral("Widget"));
         Widget->resize(400, 300);
         gridLayout = new QGridLayout(Widget);
         gridLayout->setSpacing(6);
         gridLayout->setContentsMargins(11, 11, 11, 11);
-        gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
+        gridLayout->setObjectName(QStringLiteral("gridLayout"));
         status = new QLabel(Widget);
-        status->setObjectName(QString::fromUtf8("status"));
+        status->setObjectName(QStringLiteral("status"));
         status->setAlignment(Qt::AlignCenter);
 
         gridLayout->addWidget(status, 0, 0, 1, 3);
 
         log = new QPlainTextEdit(Widget);
-        log->setObjectName(QString::fromUtf8("log"));
+        log->setObjectName(QStringLiteral("log"));
         log->setReadOnly(true);
 
         gridLayout->addWidget(log, 1, 0, 1, 3);
 
         cmdLine = new QLineEdit(Widget);
-        cmdLine->setObjectName(QString::fromUtf8("cmdLine"));
+        cmdLine->setObjectName(QStringLiteral("cmdLine"));
 
         gridLayout->addWidget(cmdLine, 2, 0, 1, 2);
 
         sendButton = new QPushButton(Widget);
-        sendButton->setObjectName(QString::fromUtf8("sendButton"));
+        sendButton->setObjectName(QStringLiteral("sendButton"));
 
         gridLayout->addWidget(sendButton, 2, 2, 1, 1);
 
