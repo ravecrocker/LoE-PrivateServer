@@ -989,3 +989,14 @@ void sendChatMessage(Player& player, QString message, QString author)
 
     sendMessage(player,MsgUserReliableOrdered4,data); // Sends a 46
 }
+
+void sendMove(Player& player, float x, float y, float z)
+{
+    QByteArray data(1,0);
+    data[0] = 0xce; // Request number
+    data += floatToData(x);
+    data += floatToData(y);
+    data += floatToData(z);
+    logMessage(QString("UDP: Moving character"));
+    sendMessage(player,MsgUserReliableOrdered4, data);
+}

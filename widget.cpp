@@ -329,7 +329,7 @@ void Widget::sendCmdLine()
     }
     else if (str.startsWith("load"))
     {
-        str = str.right(str.size()-5);
+        str = str.mid(5);
         sendLoadSceneRPC(cmdPeer, str);
     }
     else if (str.startsWith("getPos"))
@@ -534,22 +534,11 @@ void Widget::sendCmdLine()
         data[0] = 0xce; // Request number
 
         // Serialization : float x, float y, float z
-
         QStringList coords = str.split(' ');
         if (coords.size() != 3)
             return;
 
-        logMessage(QString("UDP: Moving character"));
-
-        QByteArray x = floatToData(coords[0].toFloat());
-        QByteArray y = floatToData(coords[1].toFloat());
-        QByteArray z = floatToData(coords[2].toFloat());
-
-        data += x;
-        data += y;
-        data += z;
-
-        sendMessage(cmdPeer,MsgUserReliableOrdered4, data);
+        sendMove(cmdPeer, coords[0].toFloat(), coords[1].toFloat(), coords[2].toFloat());
     }
     else if (str.startsWith("error"))
     {
