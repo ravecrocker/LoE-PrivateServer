@@ -16,7 +16,6 @@ The private server is still in beta, and some important features are lacking :
 - Some places (Tartarus, Twilight's Library,..) are not accessible without using the server commands.
 - No skills (no unicorn magic) except flying for pegasi.
 - No monsters or NPCs without server commands.
-- No chat.
 - No quests.
 
 <img src="https://f.cloud.github.com/assets/5155966/1389911/6503cd02-3be3-11e3-987f-98611a94a106.jpg"/>
