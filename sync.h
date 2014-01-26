@@ -19,6 +19,8 @@
 #include <QObject>
 #include "character.h"
 
+#define DEFAULT_SYNC_INTERVAL 250
+
 class Sync : public QObject
 {
     Q_OBJECT

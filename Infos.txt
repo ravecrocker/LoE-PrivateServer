@@ -448,7 +448,7 @@ PonyData data = data2;
 INetSerializable[] args = new INetSerializable[] { new IntSerializer(this.selectedNetCharacter), data };
 Net.RPC(1, args);
 
-Character data (SunButt) :
+Character data / ponyData (SunButt) :
 46 00 00 b0 01					Header (5)
 01 ff ff ff ff 					???? (?> probably RCP stuff)
 07 								SunButt string lenght (1)
@@ -978,15 +978,32 @@ ff ff ff 7f     SkillLevelDef3
 => Turns out the 46 messages might not have been juts chat. We're still missing the skills bar and the rest of the GUI.
 
 => Reversing the first 46
-=> This one is a chat message
+=> This one is a chat message (received)
 0f2a4262ae5248d048040000000a50696e6b696520506f6509616e64206f74686572a009000000
 0f                                  RPC ID (1)
 2a 42 62 ae 52 48 d0 48             Time (8)
 04 00 00 00                         ChatType (4)
-0a 50 69 6e 6b 69 65 20 50 6f 65    Name (String)
-09 61 6e 64 20 6f 74 68 65 72       Text (String)
+0a 50 69 6e 6b 69 65 20 50 6f 65    Name (len+String)
+09 61 6e 64 20 6f 74 68 65 72       Text (len+String)
 a0 09 00 00                         CharacterId (4)
 00                                  AccessLevel (1)
+
+=> Another received chat message
+46 10 00 70 01 
+0f 
+04 
+0c 43 6f 6c 65 20 50 6f 6b 65 6d 6f 6e 
+19 4d 79 20 73 6b 79 70 65 3a 20 63 6f 6c 65 2c 6d 61 63 69 6e 74 72 79 65 31 
+e1 1a 00 00 
+00
+
+=> Other chat message (sent)
+46 04 00 50 00						Header
+0f 									RPC ID (1)
+04 									Chat type (4)
+07 									String length
+41 41 41 41 41 41 41				String
+
 
 => Reversing the second 46
 => Calls ProcessGroupRPC to add friends
@@ -1385,7 +1402,11 @@ Syncing 2 to 1
 01 2000 7800 3700 c499c34663810e49e67c7f5d7f
 ...
 
-=> The base64 ponyData of ML KJ from the online OC creator is v/9b/beD4f+f/v3jAwAAjAFwAQAATDB++HNGnPhjlj45Ag==
+=> The base64 ponyData ponycode of ML KJ is v/9b/beD4f+f/v3jAwAADAAAgAsAACDylMAfMzPFH3PxyQQ=
+=> PonyCode of Big Mac (huuge mac) (b&able offense, for lagging the game) is /Tug/IcA/Ovo2P2Df3mrJQAEgAsAAGZAZPYgwy/Dnw0xfBMQAA==
+0 earth pony : 	AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAzM7OfZmamHw==
+0 unicorn : 	AgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAzM7OfZmamHw==
+0 pegasus :		AwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAzM7OfZmamHw==
 
 => Make a NPC Flying Manual in PonyVille wich provides ingame help.
 ==> Text is "What do you want ?", options "Project page", "Server commands" and "UR A FAGET" that teleports you to Tartarus.

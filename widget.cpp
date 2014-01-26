@@ -4,7 +4,11 @@
 #include "message.h"
 #include "utils.h"
 
+#ifdef WIN32
+#include <windows.h>
+#else
 #include <sys/time.h>
+#endif
 
 Widget::Widget(QWidget *parent) :
     QWidget(parent),
@@ -66,7 +70,7 @@ void Widget::startServer()
     enableLoginServer = config.value("enableLoginServer", true).toBool();
     enableGameServer = config.value("enableGameServer", true).toBool();
     enableMultiplayer = config.value("enableMultiplayer", true).toBool();
-    syncInterval = config.value("syncInterval",250).toInt();
+    syncInterval = config.value("syncInterval",DEFAULT_SYNC_INTERVAL).toInt();
 
     /*
     if (config.value("updateGameFiles",false).toBool())
@@ -92,10 +96,13 @@ void Widget::startServer()
 
     /// Init servers
     tcpClientsList.clear();
+#ifdef WIN32
+    startTimestamp = GetTickCount();
+#else
     struct timespec tp;
     clock_gettime(CLOCK_MONOTONIC, &tp);
-    startTimestamp=tp.tv_nsec;//GetTickCount(); // GetTickCount:Nombre de millisecondes depuis le boot (up to 47+ days)
-
+    startTimestamp = tp.tv_sec*1000 + tp.tv_nsec/1000/1000;
+#endif
     // Read vortex DB
     if (enableGameServer)
     {
@@ -235,7 +242,11 @@ void Widget::sendCmdLine()
 
     QString str = ui->cmdLine->text();
 
-    if (str.startsWith("setPeer"))
+    if (str.startsWith("clear"))
+    {
+        ui->log->clear();
+    }
+    else if (str.startsWith("setPeer"))
     {
         if (udpPlayers.size() == 1)
         {

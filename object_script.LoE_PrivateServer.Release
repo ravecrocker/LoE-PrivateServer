@@ -7,6 +7,9 @@ INPUT(
 ./release\utils.o
 ./release\pingTimeout.o
 ./release\character.o
+./release\scene.o
+./release\dataType.o
+./release\sync.o
 ./release\moc_widget.o
-./release\qrc_gameFiles.o
+./release\moc_sync.o
 );

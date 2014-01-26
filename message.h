@@ -55,5 +55,6 @@ void sendInventoryRPC(Player& player, QList<InventoryItem> inv, QList<WearableIt
 void sendSkillsRPC(Player& player, QList<QPair<quint32, quint32> > skills);
 void sendLoadSceneRPC(Player& player, QString sceneName);
 void sendLoadSceneRPC(Player& player, QString sceneName, UVector pos);
+void sendChatMessage(Player& player, QString message, QString author);
 
 #endif // MESSAGE_H

@@ -29,6 +29,7 @@ public:
 
 public:
     QByteArray ponyData;
+    QString name;
 };
 
 class Player

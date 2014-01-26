@@ -3,13 +3,23 @@
 #include "utils.h"
 #include "sync.h"
 
+#ifdef WIN32
+#include <windows.h>
+#else
 #include <sys/time.h>
+#endif
 
 float timestampNow()
 {
+    time_t newtime;
+#ifdef WIN32
+    newtime = GetTickCount();
+#else
     struct timespec tp;
     clock_gettime(CLOCK_MONOTONIC, &tp);
-    return (float)(((float)(tp.tv_nsec - win.startTimestamp))/(float)1000); // Nombre de seconde depuis le lancement du serveur (startTimestamp)
+    newtime = tp.tv_sec*1000 + tp.tv_nsec/1000/1000;
+#endif
+    return (float)(((float)(newtime - win.startTimestamp))/(float)1000); // Nombre de seconde depuis le lancement du serveur (startTimestamp)
 }
 
 QByteArray doubleToData(double num)
@@ -259,8 +269,8 @@ void receiveMessage(Player& player)
 
     if ((unsigned char)msg[0] == MsgPing) // Ping
     {
-        win.logMessage("UDP: Ping received from "+player.IP+":"+QString().setNum(player.port)
-                +" ("+QString().setNum((timestampNow() - player.lastPingTime))+"s)");
+        //win.logMessage("UDP: Ping received from "+player.IP+":"+QString().setNum(player.port)
+        //        +" ("+QString().setNum((timestampNow() - player.lastPingTime))+"s)");
         player.lastPingNumber = msg[5];
         player.lastPingTime = timestampNow();
         sendMessage(player,MsgPong);
@@ -359,6 +369,21 @@ void receiveMessage(Player& player)
         else if ((unsigned char)msg[0]==MsgUserReliableOrdered6 && (unsigned char)msg[3]==0x18 && (unsigned char)msg[4]==0 && (unsigned char)msg[5]==8 ) // Player game info (inv/ponyData/...) request
         {
             sendPonySave(player, msg);
+        }
+        else if ((unsigned char)msg[0]==MsgUserReliableOrdered4 && (unsigned char)msg[5]==0xf) // Chat
+        {
+            QString txt = dataToString(msg.mid(7));
+            QString author = player.pony.name;
+            //win.logMessage("Chat:"+txt);
+
+            // Send to everyone
+            Scene* scene = findScene(player.pony.sceneName);
+            if (scene->name.isEmpty())
+                win.logMessage("UDP: Can't find the scene for chat message, aborting");
+            else
+                for (int i=0; i<scene->players.size(); i++)
+                    if (scene->players[i].inGame==2)
+                        sendChatMessage(scene->players[i], txt, author);
         }
         else if ((unsigned char)msg[0]==MsgUserReliableOrdered4 && (unsigned char)msg[5]==0x1) // Edit ponies request
         {
@@ -859,7 +884,7 @@ void sendPonyData(Player& src, Player& dst)
 
 void sendLoadSceneRPC(Player &player, QString sceneName) // Loads a scene and send to the default spawn
 {
-    win.logMessage(QString("UDP: Loading scene \"") + sceneName + "\" to "+QString().setNum(player.pony.netviewId));
+    win.logMessage(QString("UDP: Loading scene \"") + sceneName + "\" on "+QString().setNum(player.pony.netviewId));
     Vortex* vortex = findVortex(sceneName, 0);
     if (vortex->destName.isEmpty())
     {
@@ -885,7 +910,7 @@ void sendLoadSceneRPC(Player &player, QString sceneName) // Loads a scene and se
 
     // Update scene players
     Player::removePlayer(&(oldScene->players), refresh.IP, refresh.port);
-    if (scene->name != sceneName)
+    if (oldScene->name != sceneName)
     {
         // Send remove RPC to the other players of the old scene
         for (int i=0; i<oldScene->players.size(); i++)
@@ -927,7 +952,7 @@ void sendLoadSceneRPC(Player &player, QString sceneName, UVector pos) // Loads a
 
     // Update scene players
     Player::removePlayer(&(oldScene->players), refresh.IP, refresh.port);
-    if (scene->name != sceneName)
+    if (oldScene->name != sceneName)
     {
         // Send remove RPC to the other players of the old scene
         for (int i=0; i<oldScene->players.size(); i++)
@@ -935,7 +960,7 @@ void sendLoadSceneRPC(Player &player, QString sceneName, UVector pos) // Loads a
 
         // Send instantiate to the players of the new scene
         for (int i=0; i<scene->players.size(); i++)
-            if (scene->players[i].inGame==2)
+            if (scene->players[i].inGame==2 || scene->players[i].inGame==1)
                 sendNetviewInstantiate(refresh, scene->players[i]);
     }
     scene->players << refresh;
@@ -945,4 +970,22 @@ void sendLoadSceneRPC(Player &player, QString sceneName, UVector pos) // Loads a
     QByteArray data(1,5);
     data += stringToData(sceneName);
     sendMessage(refresh,MsgUserReliableOrdered6,data); // Sends a 48
+}
+
+void sendChatMessage(Player& player, QString message, QString author)
+{
+    QByteArray idAndAccess(5,0);
+    idAndAccess[0] = player.pony.netviewId;
+    idAndAccess[1] = player.pony.netviewId << 8;
+    idAndAccess[2] = player.pony.netviewId << 16;
+    idAndAccess[3] = player.pony.netviewId << 24;
+    idAndAccess[4] = 0x0; // Access level
+    QByteArray data(2,0);
+    data[0] = 0xf;
+    data[1] = 0x4;
+    data += stringToData(author);
+    data += stringToData(message);
+    data += idAndAccess;
+
+    sendMessage(player,MsgUserReliableOrdered4,data); // Sends a 46
 }
