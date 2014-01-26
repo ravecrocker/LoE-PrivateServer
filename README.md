@@ -38,7 +38,8 @@ For example if you're stuck, do setPeer with your IP and port, then do for examp
 - setStat statId value : Set the given stat (health, mana, ..) to the given value. 
 - setMaxStat statId value : Set the max of the given stat (health, mana, ..) to the given value. 
 - error message : Sends a message-box-scroll-thingy to the player with the title "Error" and the given message. Doesn't disconnect.
-The following commands are for debugging only. You really don't need them, and most of the time you don't want to use them.
+
+<br/>The following commands are for debugging only. You really don't need them, and most of the time you don't want to use them.
 - sync : Syncs the position of all the clients now. Doesn't need setPeer to work.
 - sendPonies : For debugging only.
 - sendPonyData : For debugging only.
