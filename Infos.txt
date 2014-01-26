@@ -919,8 +919,8 @@ void sendEntitiesList2(Player& player)
 
 => Reverse of the medium sized 54s
 => It sets the inventory of the player.
-==> THERE IS PROBABLY A BUFFER OVERFLOW VULNERABILITY HERE. For example if an Item's Index>MaxSize.
-8500050c0020000a000000
+==> There is probably a buffer overflow vulnerability here. For example if an Item's Index>MaxSize.
+===> There isn't. C# does bounds checking at runtime and PNet will catch everything.
 
 
 Inventory (example with an empty one
@@ -1615,8 +1615,8 @@ UDP: Last ping Dtime : 4.00999
 ====> Print a warning when we get a message in the wrong order (X+1 where the current seq is X-1), but don't change the seq.
 ====> This way when we receive X+1 we keep a lastSeq of X-1, wich still allows us to receive X-1
 
-=> Fix the vortex names in the new version of the game. They are in mainData
-=> The big maps just don't load. Record the official servers.
-=> Fix the precision clock that seems to be overflowing or something. We ping timeout with -XXXXs
-=> Fix the load command not using the default vortex position when teleporting
-==> Maybe we should send a sync message just before switching inGame to 2 (= just before accepting pos sync from the player)
+=> TODO: Switch to the "real" position system. Relative to the map's bounds. The bounds are in the disunity folder.
+==> Right now the system is innacurrate. In the gemMines we land way too far. getPos reports a position that isn't what we tried to send.
+==> Ponyville is also completely broken. We land somewhere in the air far away. getPos is completely different.
+==> Add the bounds to the vortexes files, at the top.
+===> Oddly enough, when we use move, we land to the right position. Check what we're doing differently.

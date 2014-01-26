@@ -56,5 +56,6 @@ void sendSkillsRPC(Player& player, QList<QPair<quint32, quint32> > skills);
 void sendLoadSceneRPC(Player& player, QString sceneName);
 void sendLoadSceneRPC(Player& player, QString sceneName, UVector pos);
 void sendChatMessage(Player& player, QString message, QString author);
+void sendMove(Player& player, float x, float y, float z);
 
 #endif // MESSAGE_H
