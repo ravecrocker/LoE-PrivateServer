@@ -2,10 +2,15 @@ Legends of Equestria Private Server
 ===================================
 
 This is a Private Server, to play LoE even when the official servers are closed.
+The official release is for Windows x86. The server should work on Linux and Mac too, but you'll need to compile it yourself.
 
 How to use :
-Extract in the Legends of Equestria folder, start PrivateServer.exe, then in the game use the server Loopback.
-The server should work on Linux and Mac too, but you'll need to compile it yourself.
+Extract in the Legends of Equestria folder, start PrivateServer.exe and the game. 
+In the game pick a name/password (no need to register first)
+Then use either :
+- the Local server, for singleplayer or a multiplayer LAN in your house
+- or the Online server, for multiplayer (but it's often offline, since I can't host it myself)
+- You can also add your own servers in data/serversList.cfg
 
 <b>The current release of the server DOES NOT work with the latest version of the game.</b><br/>
 It will work if you compile it from source yourself, but it might be buggy.
