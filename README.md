@@ -4,10 +4,6 @@ Legends of Equestria Private Server
 This is a Private Server, to play LoE even when the official servers are closed.
 The official release is for Windows x86. The server should work on Linux and Mac too, but you'll need to compile it yourself.
 
-<b>The current release of the server DOES NOT work with the latest version of the game.</b><br/>
-It will work if you compile it from source yourself, but it might be buggy.
-Expect a working release at the end of the open weekend.
-
 <h3>How to use</h3>
 Extract in the Legends of Equestria folder, start PrivateServer.exe and the game. 
 In the game pick a name/password (no need to register first)
@@ -17,7 +13,8 @@ Then use either :
 - You can also add your own servers in data/serversList.cfg
 
 <h3>Still in Beta</h3>
-The private server is still in beta, and some important features are lacking :
+The private server is still in beta, expect bugs.<br/>
+Some important features are still lacking at the moment :
 - Some places (Tartarus, Twilight's Library,..) are not accessible without using the server commands.
 - No skills (no unicorn magic) except flying for pegasi.
 - No monsters or NPCs without server commands.
