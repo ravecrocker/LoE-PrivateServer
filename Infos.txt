@@ -1615,8 +1615,4 @@ UDP: Last ping Dtime : 4.00999
 ====> Print a warning when we get a message in the wrong order (X+1 where the current seq is X-1), but don't change the seq.
 ====> This way when we receive X+1 we keep a lastSeq of X-1, wich still allows us to receive X-1
 
-=> TODO: Switch to the "real" position system. Relative to the map's bounds. The bounds are in the disunity folder.
-==> Right now the system is innacurrate. In the gemMines we land way too far. getPos reports a position that isn't what we tried to send.
-==> Ponyville is also completely broken. We land somewhere in the air far away. getPos is completely different.
-==> Add the bounds to the vortexes files, at the top.
-===> Oddly enough, when we use move, we land to the right position. Check what we're doing differently.
+=> TODO: Add the vortexes Everfree1 / Everfree3
