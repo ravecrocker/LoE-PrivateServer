@@ -23,7 +23,7 @@ Scene* findScene(QString sceneName)
     return new Scene("");
 }
 
-Vortex* findVortex(QString sceneName, quint8 id)
+Vortex findVortex(QString sceneName, quint8 id)
 {
     Scene scene(sceneName);
     for (int i=0; i<win.scenes.size(); i++)
@@ -32,16 +32,16 @@ Vortex* findVortex(QString sceneName, quint8 id)
 
     for (int i=0; i<scene.vortexes.size(); i++)
         if (scene.vortexes[i].id == id)
-            return &scene.vortexes[i];
+            return scene.vortexes[i];
 
-    return new Vortex();
+    return Vortex();
 }
 
-Vortex* findVortex(Scene* scene, quint8 id)
+Vortex findVortex(Scene* scene, quint8 id)
 {
     for (int i=0; i<scene->vortexes.size(); i++)
         if (scene->vortexes[i].id == id)
-            return &(scene->vortexes[i]);
+            return scene->vortexes[i];
 
-    return new Vortex();
+    return Vortex();
 }

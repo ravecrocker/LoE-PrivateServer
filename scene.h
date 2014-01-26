@@ -28,7 +28,7 @@ public:
     QList<Player> players; // Used by the 01 sync function
 };
 Scene* findScene(QString sceneName);
-Vortex* findVortex(QString sceneName, quint8 id);
-Vortex* findVortex(Scene* scene, quint8 id);
+Vortex findVortex(QString sceneName, quint8 id);
+Vortex findVortex(Scene* scene, quint8 id);
 
 #endif // SCENE_H
