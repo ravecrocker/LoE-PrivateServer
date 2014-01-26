@@ -395,7 +395,7 @@ void receiveMessage(Player& player)
                 // Create the new pony for this player
                 pony.ponyData = ponyData;
                 pony.sceneName = "PonyVille";
-                pony.pos = findVortex(pony.sceneName, 0)->destPos;
+                pony.pos = findVortex(pony.sceneName, 0).destPos;
                 ponies += pony;
             }
             else
@@ -427,14 +427,14 @@ void receiveMessage(Player& player)
             if (player.inGame==2)
             {
                 quint8 id = msg[5];
-                Vortex* vortex = findVortex(player.pony.sceneName, id);
-                if (vortex->destName.isEmpty())
+                Vortex vortex = findVortex(player.pony.sceneName, id);
+                if (vortex.destName.isEmpty())
                 {
                     win.logMessage("Can't find vortex "+QString().setNum(id)+" on map "+player.pony.sceneName);
                 }
                 else
                 {
-                    sendLoadSceneRPC(player, vortex->destName, vortex->destPos);
+                    sendLoadSceneRPC(player, vortex.destName, vortex.destPos);
                 }
             }
         }
@@ -642,6 +642,7 @@ void sendEntitiesList(Player& player)
     Scene* scene = findScene(refresh.pony.sceneName);
     for (int i=0; i<scene->players.size(); i++)
         sendNetviewInstantiate(scene->players[i], refresh);
+
     refresh.inGame = 2;
 }
 
@@ -708,6 +709,7 @@ void receiveSync(Player& player, QByteArray data) // Receives the 01 updates fro
 {
     if (player.inGame!=2) // A sync message while loading would teleport use to a wrong position
         return;
+    //win.logMessage("Got sync");
 
     // 5 and 6 are id and id>>8
     player.pony.pos.x = dataToFloat(data.right(data.size()  - 11));
@@ -741,34 +743,63 @@ void sendNetviewInstantiate(Player& player, QString key, quint16 ViewId, quint16
 
 void sendNetviewInstantiate(Player& player)
 {
-    win.logMessage("UDP: Send instantiate for/to "+QString().setNum(player.pony.netviewId));
+    Player &refresh = Player::findPlayer(win.udpPlayers, player.IP, player.port);
+    if (refresh.IP == "")
+    {
+        win.logMessage("UDP: Can't refresh player before instantiation, aborting");
+        return;
+    }
+
+    win.logMessage("UDP: Send instantiate for/to "+QString().setNum(refresh.pony.netviewId));
     QByteArray data(1,1);
     data += stringToData("PlayerBase");
     QByteArray data2(4,0);
-    data2[0]=player.pony.netviewId;
-    data2[1]=player.pony.netviewId>>8;
-    data2[2]=player.pony.id;
-    data2[3]=player.pony.id>>8;
+    data2[0]=refresh.pony.netviewId;
+    data2[1]=refresh.pony.netviewId>>8;
+    data2[2]=refresh.pony.id;
+    data2[3]=refresh.pony.id>>8;
     data += data2;
-    data += vectorToData(player.pony.pos);
-    data += quaternionToData(player.pony.rot);
-    sendMessage(player, MsgUserReliableOrdered6, data);
+    data += vectorToData(refresh.pony.pos);
+    data += quaternionToData(refresh.pony.rot);
+    sendMessage(refresh, MsgUserReliableOrdered6, data);
+
+    win.logMessage(QString("Instantiate at ")+QString().setNum(refresh.pony.pos.x)+" "
+                   +QString().setNum(refresh.pony.pos.y)+" "
+                   +QString().setNum(refresh.pony.pos.z));
 }
 
 void sendNetviewInstantiate(Player& src, Player& dst)
 {
-    win.logMessage("UDP: Send instantiate for "+QString().setNum(src.pony.netviewId)+" to "+QString().setNum(dst.pony.netviewId));
+    Player &rSrc = Player::findPlayer(win.udpPlayers, src.IP, src.port);
+    if (rSrc.IP == "")
+    {
+        win.logMessage("UDP: Can't refresh src player before instantiation, aborting");
+        return;
+    }
+    Player &rDst= Player::findPlayer(win.udpPlayers, dst.IP, dst.port);
+    if (rDst.IP == "")
+    {
+        win.logMessage("UDP: Can't refresh dst player before instantiation, aborting");
+        return;
+    }
+
+    win.logMessage("UDP: Send instantiate for "+QString().setNum(rSrc.pony.netviewId)
+                   +" to "+QString().setNum(rDst.pony.netviewId));
     QByteArray data(1,1);
     data += stringToData("PlayerBase");
     QByteArray data2(4,0);
-    data2[0]=src.pony.netviewId;
-    data2[1]=src.pony.netviewId>>8;
-    data2[2]=src.pony.id;
-    data2[3]=src.pony.id>>8;
+    data2[0]=rSrc.pony.netviewId;
+    data2[1]=rSrc.pony.netviewId>>8;
+    data2[2]=rSrc.pony.id;
+    data2[3]=rSrc.pony.id>>8;
     data += data2;
-    data += vectorToData(src.pony.pos);
-    data += quaternionToData(src.pony.rot);
-    sendMessage(dst, MsgUserReliableOrdered6, data);
+    data += vectorToData(rSrc.pony.pos);
+    data += quaternionToData(rSrc.pony.rot);
+    sendMessage(rDst, MsgUserReliableOrdered6, data);
+
+   //win.logMessage(QString("Instantiate at ")+QString().setNum(rSrc.pony.pos.x)+" "
+   //                +QString().setNum(rSrc.pony.pos.y)+" "
+   //                +QString().setNum(rSrc.pony.pos.z));
 }
 
 void sendNetviewRemove(Player& player, quint16 netviewId)
@@ -885,8 +916,8 @@ void sendPonyData(Player& src, Player& dst)
 void sendLoadSceneRPC(Player &player, QString sceneName) // Loads a scene and send to the default spawn
 {
     win.logMessage(QString("UDP: Loading scene \"") + sceneName + "\" on "+QString().setNum(player.pony.netviewId));
-    Vortex* vortex = findVortex(sceneName, 0);
-    if (vortex->destName.isEmpty())
+    Vortex vortex = findVortex(sceneName, 0);
+    if (vortex.destName.isEmpty())
     {
         win.logMessage("UDP: Scene not in vortex DB. Aborting scene load.");
         return;
@@ -921,10 +952,10 @@ void sendLoadSceneRPC(Player &player, QString sceneName) // Loads a scene and se
             if (scene->players[i].inGame==2)
                 sendNetviewInstantiate(refresh, scene->players[i]);
     }
+    refresh.pony.pos = vortex.destPos;
+    refresh.pony.sceneName = sceneName;
     scene->players << refresh;
 
-    refresh.pony.pos = vortex->destPos;
-    refresh.pony.sceneName = sceneName;
     QByteArray data(1,5);
     data += stringToData(sceneName);
     sendMessage(refresh,MsgUserReliableOrdered6,data); // Sends a 48
@@ -932,7 +963,11 @@ void sendLoadSceneRPC(Player &player, QString sceneName) // Loads a scene and se
 
 void sendLoadSceneRPC(Player &player, QString sceneName, UVector pos) // Loads a scene and send to the given pos
 {
-    win.logMessage(QString(QString("UDP: Loading scene \"") + sceneName + "\" to "+QString().setNum(player.pony.netviewId)));
+    win.logMessage(QString(QString("UDP: Loading scene \"")+sceneName
+                           +"\" to "+QString().setNum(player.pony.netviewId)
+                           +" at "+QString().setNum(pos.x)+" "
+                           +QString().setNum(pos.y)+" "
+                           +QString().setNum(pos.z)));
     Player &refresh = Player::findPlayer(win.udpPlayers, player.IP, player.port);
     if (refresh.IP == "")
     {
@@ -963,10 +998,10 @@ void sendLoadSceneRPC(Player &player, QString sceneName, UVector pos) // Loads a
             if (scene->players[i].inGame==2 || scene->players[i].inGame==1)
                 sendNetviewInstantiate(refresh, scene->players[i]);
     }
-    scene->players << refresh;
-
     refresh.pony.pos = pos;
     refresh.pony.sceneName = sceneName;
+    scene->players << refresh;
+
     QByteArray data(1,5);
     data += stringToData(sceneName);
     sendMessage(refresh,MsgUserReliableOrdered6,data); // Sends a 48
@@ -997,6 +1032,6 @@ void sendMove(Player& player, float x, float y, float z)
     data += floatToData(x);
     data += floatToData(y);
     data += floatToData(z);
-    logMessage(QString("UDP: Moving character"));
+    win.logMessage(QString("UDP: Moving character"));
     sendMessage(player,MsgUserReliableOrdered4, data);
 }

@@ -72,28 +72,6 @@ void Widget::startServer()
     enableMultiplayer = config.value("enableMultiplayer", true).toBool();
     syncInterval = config.value("syncInterval",DEFAULT_SYNC_INTERVAL).toInt();
 
-    /*
-    if (config.value("updateGameFiles",false).toBool())
-    {
-        /// Copy server and game files
-        logStatusMessage("Updating game files ...");
-        QDir gameDataDir(QDir::homePath()+"/AppData/LocalLow/");
-        gameDataDir.mkdir("LoE"); gameDataDir.cd("LoE");
-        gameDataDir.mkdir("Legends of Equestria"); gameDataDir.cd("Legends of Equestria");
-        gameDataDir.mkdir("data");
-        gameDataDir.mkdir("cutiemarks");
-        //QString dataPath = QDir::homePath()+"/AppData/LocalLow/LoE/Legends of Equestria/";
-        saveResourceToDataFolder("ChatFilter.txt");
-        QStringList dataFiles = QDir(":/gameFiles/data").entryList();
-        for (int i=0; i<dataFiles.size(); i++)
-            saveResourceToDataFolder(QString("data/")+dataFiles[i]);
-
-        QStringList cutimarksFiles = QDir(":/gameFiles/cutiemarks").entryList();
-        for (int i=0; i<cutimarksFiles.size(); i++)
-            saveResourceToDataFolder(QString("cutiemarks/")+cutimarksFiles[i]);
-    }
-    */
-
     /// Init servers
     tcpClientsList.clear();
 #ifdef WIN32
@@ -150,6 +128,10 @@ void Widget::startServer()
                     break;
                 }
                 scene.vortexes << vortex;
+                //win.logMessage("Add vortex "+QString().setNum(vortex.id)+" to "+vortex.destName+" "
+                //               +QString().setNum(vortex.destPos.x)+" "
+                //               +QString().setNum(vortex.destPos.y)+" "
+                //               +QString().setNum(vortex.destPos.z));
             }
             scenes << scene;
         }
@@ -245,6 +227,7 @@ void Widget::sendCmdLine()
     if (str.startsWith("clear"))
     {
         ui->log->clear();
+        return;
     }
     else if (str.startsWith("setPeer"))
     {
@@ -297,6 +280,20 @@ void Widget::sendCmdLine()
                 win.logMessage(win.udpPlayers[i].IP
                                +":"+QString().setNum(win.udpPlayers[i].port)
                                +" "+QString().setNum((int)timestampNow()-win.udpPlayers[i].lastPingTime)+"s");
+        return;
+    }
+    else if (str.startsWith("listVortexes"))
+    {
+        for (int i=0; i<scenes.size(); i++)
+        {
+            win.logMessage("Scene "+scenes[i].name);
+            for (int j=0; j<scenes[i].vortexes.size(); j++)
+                win.logMessage("Vortex "+QString().setNum(scenes[i].vortexes[j].id)
+                               +" to "+scenes[i].vortexes[j].destName+" "
+                               +QString().setNum(scenes[i].vortexes[j].destPos.x)+" "
+                               +QString().setNum(scenes[i].vortexes[j].destPos.y)+" "
+                               +QString().setNum(scenes[i].vortexes[j].destPos.z));
+        }
         return;
     }
     else if (str.startsWith("sync"))
