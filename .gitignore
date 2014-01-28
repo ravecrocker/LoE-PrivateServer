@@ -14,6 +14,7 @@ PrivateServ/
 *.o
 *.exe
 libstdc++-6.dll
+Makefile*
 
 # User files
 *.user

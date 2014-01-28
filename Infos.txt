@@ -1616,3 +1616,14 @@ UDP: Last ping Dtime : 4.00999
 ====> This way when we receive X+1 we keep a lastSeq of X-1, wich still allows us to receive X-1
 
 => TODO: Add the vortexes Everfree1 / Everfree3
+=> TODO: Add a login server setting to forward the login/password checking to a remote login server.
+==> Also get the game servers list from that remote server, then.
+===> Forward to the remote login only when we detected a correct login request! You can just recreate the Content-Length header.
+===> You can't just forward everything, or you'd risk forwarding the remote login's reply back to him
+===> Instead if we get a correct login request, forward to the remote.
+===> if we get a forwarded reply, send back to the client. (replies have the Server: header)
+====> We need a way to find wich remote reply was for wich client. Since multiple clients use the same remote we need something else
+====> The sesskey in the reply contains a private server hash + the original passhash. We just need to find who's passhash it was.
+
+=> We should a if/else in tcpProcessData. Can't return in tcpProcessData.
+==> To remember the passhash/client combination, we just need to add the client to tcpPlayers before forwarding the request !

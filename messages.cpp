@@ -588,9 +588,9 @@ void sendMessage(Player& player,quint8 messageType, QByteArray data)
         win.logMessage("UDP: Error sending last message");
         win.logStatusMessage("Restarting UDP server ...");
         win.udpSocket->close();
-        if (!win.udpSocket->bind(UDPPORT, QUdpSocket::ReuseAddressHint|QUdpSocket::ShareAddress))
+        if (!win.udpSocket->bind(win.gamePort, QUdpSocket::ReuseAddressHint|QUdpSocket::ShareAddress))
         {
-            win.logStatusMessage("UDP: Unable to start server on port 80");
+            win.logStatusMessage("UDP: Unable to start server on port "+QString().setNum(win.gamePort));
             win.stopServer();
             return;
         }

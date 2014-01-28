@@ -15,7 +15,7 @@ void Widget::tcpConnectClient()
 
 void Widget::tcpDisconnectClient()
 {
-    // On détermine quel client se déconnecte
+    // On determine quel client se déconnecte
     QTcpSocket *socket = qobject_cast<QTcpSocket *>(sender());
     if (socket == 0) // Si par hasard on n'a pas trouvé le client à l'origine du signal, on arrête la méthode
     return;
@@ -29,9 +29,11 @@ void Widget::tcpDisconnectClient()
     socket=0;
 }
 
+
+
 void Widget::tcpProcessPendingDatagrams()
 {
-    // On détermine quel client envoie le message (recherche du QTcpSocket du client)
+    // On determine quel client envoie le message (recherche du QTcpSocket du client)
     QTcpSocket *socket = qobject_cast<QTcpSocket *>(sender());
     if (socket == 0) // Si par hasard on n'a pas trouvé le client à l'origine du signal, on arrête la méthode
         return;
@@ -41,7 +43,6 @@ void Widget::tcpProcessPendingDatagrams()
     // Acquire data
     while(socket->state()==QAbstractSocket::ConnectedState && nTries<3) // Exit if disconnected, too much retries, malformed HTTP request, or after all requests are processed
     {
-        // TODO: Give up after three tries reading the same message
         tcpReceivedDatas->append(socket->readAll());
         nTries++;
 
@@ -63,14 +64,13 @@ void Widget::tcpProcessPendingDatagrams()
                 int length = lengthList[0].trimmed().toInt(&isNumeric);
                 if (!isNumeric) // We've got something but it's not a number
                 {
-                    logMessage("TCP: Content-Length must be a decimal number");
+                    logMessage("TCP: Error: Content-Length must be a (decimal) number !");
                     tcpReceivedDatas->clear();
                     socket->close();
                     return;
                 }
 
                 // Detect and send data files if we need to
-                // TODO: Process and send all the requested data
                 QByteArray data = *tcpReceivedDatas;
                 //logMessage("DataReceived:"+data);
                 int i1=0;
@@ -84,9 +84,14 @@ void Widget::tcpProcessPendingDatagrams()
                         data = removeHTTPHeader(data, "POST ");
                         data = removeHTTPHeader(data, "GET ");
                         logMessage("Received GET:"+path);
-                        QFile head(QString(NETDATAPATH)+"/test.bin");
-                        QFile res("gameFiles"+path);
-                        if (!res.isOpen() || !head.isOpen())
+                        QFile head(QString(NETDATAPATH)+"/dataHeader.bin");
+                        QFile res("data/"+path);
+                        if (!head.isOpen())
+                        {
+                            logMessage("Can't open header : "+head.errorString());
+                            continue;
+                        }
+                        if (!res.isOpen())
                         {
                             logMessage("File not found");
                             continue;
@@ -103,7 +108,7 @@ void Widget::tcpProcessPendingDatagrams()
                     }
                 } while (i1 != -1);
 
-                // Get the HTML data/payload
+                // Get the payload only (remove headers)
                 data = removeHTTPHeader(data, "POST ");
                 data = removeHTTPHeader(data, "GET ");
                 data = removeHTTPHeader(data, "User-Agent:");
@@ -138,7 +143,25 @@ void Widget::tcpProcessPendingDatagrams()
 
 void Widget::tcpProcessData(QByteArray data, QTcpSocket* socket)
 {
-    if (tcpReceivedDatas->contains("commfunction=login&") && tcpReceivedDatas->contains("&version=")) // Login request
+    /// Can't return early in this function. There's important code at the end.
+
+    // Login request (forwarded)
+    if (useRemoteLogin && tcpReceivedDatas->contains("commfunction=login&") && tcpReceivedDatas->contains("&version="))
+    {
+        logMessage("TCP: Remote login not implemented yet.");
+        // We need to add the client with his IP/port/passhash to tcpPlayers if he isn't already there
+        // Then connect to the remote and forward the client's requests
+        // We just blindly send everything that we're going to remove from tcpReceivedDatas at the end of tcpProcessData
+        // Use a socket static to this function. If it's not connected, do it. If it's connected, just send and stay connected.
+    }
+    else if (useRemoteLogin && tcpReceivedDatas->contains("Server:")) // Login reply (forwarded)
+    {
+        logMessage("TCP: Remote login not implemented yet.");
+        // First we need to find a player matching the received passhash in tcpPlayers
+        // Use the player's IP/port to find a matching socket in tcpClientsList
+        // The login headers are all the same, so we can just use loginHeader.bin and send back data
+    }
+    else if (tcpReceivedDatas->contains("commfunction=login&") && tcpReceivedDatas->contains("&version=")) // Login request
     {
         QString postData = QString(*tcpReceivedDatas);
         *tcpReceivedDatas = tcpReceivedDatas->right(postData.size()-postData.indexOf("version=")-8-4); // 4 : size of version number (ie:version=1344)
