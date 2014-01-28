@@ -24,8 +24,6 @@
 #define NETDATAPATH "data/netData/"
 #define CONFIGFILEPATH "data/server.ini"
 #define SERVERSLISTFILEPATH "data/serversList.cfg"
-#define TCPPORT 80
-#define UDPPORT 80
 
 namespace Ui {
 class Widget;
@@ -61,6 +59,8 @@ public:
     QUdpSocket *udpSocket;
     QList<Player> tcpPlayers; // Used by the TCP login server
     QList<Player> udpPlayers; // Used by the UDP game server
+    int loginPort; // Port for the login server
+    int gamePort; // Port for the game server
     QList<Scene> scenes;
     int lastNetviewId;
     int lastId;
@@ -76,6 +76,9 @@ private:
     Sync sync;
 
     // Config
+    QString remoteLoginIP;
+    int remoteLoginPort;
+    bool useRemoteLogin;
     int maxConnected; // Max numbre of players connected at the same time, can deny login
     int maxRegistered; // Max number of registered players in database, can deny registration
     int pingTimeout; // Max time between recdption of pings, can disconnect player

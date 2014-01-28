@@ -60,17 +60,22 @@ void Widget::startServer()
 
     /// Read config
     logStatusMessage("Reading config file ...");
-    QSettings config(CONFIGFILEPATH, QSettings::IniFormat);;
+    QSettings config(CONFIGFILEPATH, QSettings::IniFormat);
+    loginPort = config.value("loginPort", 80).toInt();
+    gamePort = config.value("gamePort", 80).toInt();
     maxConnected = config.value("maxConnected",64).toInt();
     maxRegistered = config.value("maxRegistered",2048).toInt();
     pingTimeout = config.value("pingTimeout", 15).toInt();
     pingCheckInterval = config.value("pingCheckInterval", 5000).toInt();
     logInfos = config.value("logInfosMessages", false).toBool();
-    saltPassword = config.value("saltPassword", "changeMe").toString();
+    saltPassword = config.value("saltPassword", "Change Me").toString();
     enableLoginServer = config.value("enableLoginServer", true).toBool();
     enableGameServer = config.value("enableGameServer", true).toBool();
     enableMultiplayer = config.value("enableMultiplayer", true).toBool();
     syncInterval = config.value("syncInterval",DEFAULT_SYNC_INTERVAL).toInt();
+    remoteLoginIP = config.value("remoteLoginIP", "0.0.0.0").toString();
+    remoteLoginPort = config.value("remoteLoginPort", 80).toInt();
+    useRemoteLogin = config.value("useRemoteLogin", false).toBool();
 
     /// Init servers
     tcpClientsList.clear();
@@ -149,9 +154,9 @@ void Widget::startServer()
     if (enableLoginServer)
     {
         logStatusMessage("Starting TCP login server ...");
-        if (!tcpServer->listen(QHostAddress::Any,TCPPORT))
+        if (!tcpServer->listen(QHostAddress::Any,loginPort))
         {
-            logStatusMessage("TCP: Unable to start server on port 80");
+            logStatusMessage("TCP: Unable to start server on port "+QString().setNum(loginPort));
             stopServer();
             return;
         }
@@ -161,9 +166,9 @@ void Widget::startServer()
     if (enableGameServer)
     {
         logStatusMessage("Starting UDP game server ...");
-        if (!udpSocket->bind(UDPPORT, QUdpSocket::ReuseAddressHint|QUdpSocket::ShareAddress))
+        if (!udpSocket->bind(gamePort, QUdpSocket::ReuseAddressHint|QUdpSocket::ShareAddress))
         {
-            logStatusMessage("UDP: Unable to start server on port 80");
+            logStatusMessage("UDP: Unable to start server on port "+QString().setNum(gamePort));
             stopServer();
             return;
         }
