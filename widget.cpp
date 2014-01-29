@@ -75,6 +75,7 @@ void Widget::startServer()
     syncInterval = config.value("syncInterval",DEFAULT_SYNC_INTERVAL).toInt();
     remoteLoginIP = config.value("remoteLoginIP", "0.0.0.0").toString();
     remoteLoginPort = config.value("remoteLoginPort", 80).toInt();
+    remoteLoginTimeout = config.value("remoteLoginTimeout", 5000).toInt();
     useRemoteLogin = config.value("useRemoteLogin", false).toBool();
 
     /// Init servers
@@ -153,19 +154,22 @@ void Widget::startServer()
     // TCP server
     if (enableLoginServer)
     {
-        logStatusMessage("Starting TCP login server ...");
+        logStatusMessage("Starting TCP login server on port "+QString().setNum(loginPort)+" ...");
         if (!tcpServer->listen(QHostAddress::Any,loginPort))
         {
             logStatusMessage("TCP: Unable to start server on port "+QString().setNum(loginPort));
             stopServer();
             return;
         }
+
+        // If we use a remote login server, try to open a connection preventively.
+        remoteLoginSock.connectToHost(remoteLoginIP, remoteLoginPort);
     }
 
     // UDP server
     if (enableGameServer)
     {
-        logStatusMessage("Starting UDP game server ...");
+        logStatusMessage("Starting UDP game server on port "+QString().setNum(gamePort)+" ...");
         if (!udpSocket->bind(gamePort, QUdpSocket::ReuseAddressHint|QUdpSocket::ShareAddress))
         {
             logStatusMessage("UDP: Unable to start server on port "+QString().setNum(gamePort));

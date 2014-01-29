@@ -15,9 +15,9 @@ void Widget::tcpConnectClient()
 
 void Widget::tcpDisconnectClient()
 {
-    // On determine quel client se déconnecte
+    // Find who's disconnecting, if we can't, just give up
     QTcpSocket *socket = qobject_cast<QTcpSocket *>(sender());
-    if (socket == 0) // Si par hasard on n'a pas trouvé le client à l'origine du signal, on arrête la méthode
+    if (socket == 0)
     return;
 
     logMessage("TCP: Client disconnected");
@@ -33,9 +33,9 @@ void Widget::tcpDisconnectClient()
 
 void Widget::tcpProcessPendingDatagrams()
 {
-    // On determine quel client envoie le message (recherche du QTcpSocket du client)
+    // Find who's sending
     QTcpSocket *socket = qobject_cast<QTcpSocket *>(sender());
-    if (socket == 0) // Si par hasard on n'a pas trouvé le client à l'origine du signal, on arrête la méthode
+    if (socket == 0)
         return;
 
     unsigned nTries = 0;
@@ -73,40 +73,6 @@ void Widget::tcpProcessPendingDatagrams()
                 // Detect and send data files if we need to
                 QByteArray data = *tcpReceivedDatas;
                 //logMessage("DataReceived:"+data);
-                int i1=0;
-                do
-                {
-                    i1 = data.indexOf("GET");
-                    if (i1 != -1)
-                    {
-                        int i2 = data.indexOf("HTTP")-1;
-                        QString path = data.mid(i1 + 4, i2-i1-4);
-                        data = removeHTTPHeader(data, "POST ");
-                        data = removeHTTPHeader(data, "GET ");
-                        logMessage("Received GET:"+path);
-                        QFile head(QString(NETDATAPATH)+"/dataHeader.bin");
-                        QFile res("data/"+path);
-                        if (!head.isOpen())
-                        {
-                            logMessage("Can't open header : "+head.errorString());
-                            continue;
-                        }
-                        if (!res.isOpen())
-                        {
-                            logMessage("File not found");
-                            continue;
-                        }
-
-                        head.open(QIODevice::ReadOnly);
-                        res.open(QIODevice::ReadOnly);
-                        socket->write(head.readAll());
-                        socket->write(QString("Content-Length: "+QString().setNum(res.size())+"\n\n").toLatin1());
-                        socket->write(res.readAll());
-                        head.close();
-                        res.close();
-                        logMessage("Sent ("+QString().setNum(res.size())+" bytes)");
-                    }
-                } while (i1 != -1);
 
                 // Get the payload only (remove headers)
                 data = removeHTTPHeader(data, "POST ");
@@ -132,27 +98,90 @@ void Widget::tcpProcessPendingDatagrams()
 
                     // Process data, if the buffer is not empty, keep reading
                     tcpProcessData(data, socket);
+                    // Delete the processed message from the buffer
+                    *tcpReceivedDatas = tcpReceivedDatas->right(tcpReceivedDatas->size() - tcpReceivedDatas->indexOf(data) - data.size());
                     if (tcpReceivedDatas->isEmpty())
                         return;
                     nTries=0;
                 }
             }
         }
+        else if (tcpReceivedDatas->contains("\r\n\r\n")) // POST or GET request, without a Content-Length header
+        {
+            QByteArray data = *tcpReceivedDatas;
+            data = data.left(data.indexOf("\r\n\r\n")+4);
+
+            int i1=0;
+            do
+            {
+                i1 = data.indexOf("GET");
+                if (i1 != -1)
+                {
+                    int i2 = data.indexOf("HTTP")-1;
+                    QString path = data.mid(i1 + 4, i2-i1-4);
+                    data = removeHTTPHeader(data, "POST ");
+                    data = removeHTTPHeader(data, "GET ");
+                    logMessage("Received GET:"+path);
+                    QFile head(QString(NETDATAPATH)+"/dataHeader.bin");
+                    QFile res("data/"+path);
+                    head.open(QIODevice::ReadOnly);
+                    if (!head.isOpen())
+                    {
+                        logMessage("Can't open header : "+head.errorString());
+                        continue;
+                    }
+                    res.open(QIODevice::ReadOnly);
+                    if (!res.isOpen())
+                    {
+                        logMessage("File not found");
+                        head.close();
+                        continue;
+                    }
+                    socket->write(head.readAll());
+                    socket->write(QString("Content-Length: "+QString().setNum(res.size())+"\r\n\r\n").toLocal8Bit());
+                    socket->write(res.readAll());
+                    head.close();
+                    res.close();
+                    logMessage("Sent "+QString().setNum(res.size()+head.size())+" bytes");
+                }
+            } while (i1 != -1);
+
+            *tcpReceivedDatas = tcpReceivedDatas->mid(data.size());
+        }
     }
 }
 
 void Widget::tcpProcessData(QByteArray data, QTcpSocket* socket)
 {
-    /// Can't return early in this function. There's important code at the end.
-
     // Login request (forwarded)
     if (useRemoteLogin && tcpReceivedDatas->contains("commfunction=login&") && tcpReceivedDatas->contains("&version="))
     {
         logMessage("TCP: Remote login not implemented yet.");
         // We need to add the client with his IP/port/passhash to tcpPlayers if he isn't already there
+        Player newPlayer;
+        newPlayer.IP = socket->peerAddress().toIPv4Address();
+        newPlayer.port = socket->peerPort();
+        QString passhash = QString(*tcpReceivedDatas);
+        passhash = passhash.mid(passhash.indexOf("passhash=")+9);
+        passhash.truncate(passhash.indexOf('&'));
+        newPlayer.passhash = passhash;
+        logMessage("IP:"+newPlayer.IP+", passhash:"+newPlayer.passhash);
+
         // Then connect to the remote and forward the client's requests
+        if (!remoteLoginSock.isOpen())
+        {
+            remoteLoginSock.connectToHost(remoteLoginIP, remoteLoginPort);
+            remoteLoginSock.waitForConnected(remoteLoginTimeout);
+            if (!remoteLoginSock.isOpen())
+            {
+                win.logMessage("TCP: Can't connect to remote login server : timed out.");
+                return;
+            }
+        }
         // We just blindly send everything that we're going to remove from tcpReceivedDatas at the end of tcpProcessData
-        // Use a socket static to this function. If it's not connected, do it. If it's connected, just send and stay connected.
+        QByteArray toSend = *tcpReceivedDatas;
+        toSend.left(toSend.indexOf(data) + data.size());
+        remoteLoginSock.write(toSend);
     }
     else if (useRemoteLogin && tcpReceivedDatas->contains("Server:")) // Login reply (forwarded)
     {
@@ -287,6 +316,7 @@ void Widget::tcpProcessData(QByteArray data, QTcpSocket* socket)
 
                 logMessage("TCP: Login successful, sending servers list");
                 socket->write(customData);
+                socket->close();
             }
         }
     }
@@ -300,7 +330,4 @@ void Widget::tcpProcessData(QByteArray data, QTcpSocket* socket)
         logMessage("TCP: Unknow request received : ");
         logMessage(QString(data.data()));
     }
-
-    // Delete the processed message from the buffer
-    *tcpReceivedDatas = tcpReceivedDatas->right(tcpReceivedDatas->size() - tcpReceivedDatas->indexOf(data) - data.size());
 }
