@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-16"?>
+<?xml version="1.0"?>
 <ArrayOfCutieMark xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <CutieMark>
     <ID>0</ID>
@@ -1668,6 +1668,46 @@
     <Name>Watch 1</Name>
     <Description />
     <Filepath>cutie_watch1</Filepath>
+    <Bonuses />
+    <MarkType>None</MarkType>
+  </CutieMark>
+  <CutieMark>
+    <ID>214</ID>
+    <Name>Knight 1</Name>
+    <Description>Undefined</Description>
+    <Filepath>cutie_knight1</Filepath>
+    <Bonuses />
+    <MarkType>None</MarkType>
+  </CutieMark>
+  <CutieMark>
+    <ID>215</ID>
+    <Name>Rook 1</Name>
+    <Description>Undefined</Description>
+    <Filepath>cutie_rook1</Filepath>
+    <Bonuses />
+    <MarkType>None</MarkType>
+  </CutieMark>
+  <CutieMark>
+    <ID>216</ID>
+    <Name>Mask 2</Name>
+    <Description>Undefined</Description>
+    <Filepath>cutie_mask2</Filepath>
+    <Bonuses />
+    <MarkType>None</MarkType>
+  </CutieMark>
+  <CutieMark>
+    <ID>217</ID>
+    <Name>Mask 3</Name>
+    <Description>Undefined</Description>
+    <Filepath>cutie_mask3</Filepath>
+    <Bonuses />
+    <MarkType>None</MarkType>
+  </CutieMark>
+  <CutieMark>
+    <ID>218</ID>
+    <Name>Gear Wing</Name>
+    <Description>Undefined</Description>
+    <Filepath>cutie_gear_wing</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
   </CutieMark>

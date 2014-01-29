@@ -70,15 +70,17 @@ private:
     Ui::Widget *ui;
     QTcpServer *tcpServer;
     QList<QTcpSocket *> tcpClientsList;
+    QTcpSocket remoteLoginSock; // Socket to the remote login server, if we use one
     QByteArray *tcpReceivedDatas;
-    Player& cmdPeer;
+    Player& cmdPeer; // Player selected for the server commands
     QTimer *pingTimer;
     Sync sync;
 
     // Config
-    QString remoteLoginIP;
-    int remoteLoginPort;
-    bool useRemoteLogin;
+    QString remoteLoginIP; // IP of the remote login server
+    int remoteLoginPort; // Port of the remote login server
+    int remoteLoginTimeout; // Time before we give up connecting to the remote login server
+    bool useRemoteLogin; // Whever or not to use the remote login server
     int maxConnected; // Max numbre of players connected at the same time, can deny login
     int maxRegistered; // Max number of registered players in database, can deny registration
     int pingTimeout; // Max time between recdption of pings, can disconnect player
@@ -87,7 +89,7 @@ private:
     QString saltPassword; // Used to check passwords between login and game servers, must be the same on all the servers involved
     bool enableLoginServer; // Starts a login server
     bool enableGameServer; // Starts a game server
-    bool enableMultiplayer; // Sync players' position
+    bool enableMultiplayer; // Sync players' positions
 };
 
 // Global import from main
