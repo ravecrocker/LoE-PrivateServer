@@ -1624,6 +1624,16 @@ UDP: Last ping Dtime : 4.00999
 ===> if we get a forwarded reply, send back to the client. (replies have the Server: header)
 ====> We need a way to find wich remote reply was for wich client. Since multiple clients use the same remote we need something else
 ====> The sesskey in the reply contains a private server hash + the original passhash. We just need to find who's passhash it was.
+====> Add the clients to tcpPlayers before sending. Then at reception find their IP/port with the passhash
+====> Then find the socket matching this IP/port and send back the reply
 
-=> We should a if/else in tcpProcessData. Can't return in tcpProcessData.
-==> To remember the passhash/client combination, we just need to add the client to tcpPlayers before forwarding the request !
+=> In the settings.ini you can use for example LoginServer=1.2.3.4:56 and SkipLogin=True
+
+=> The vortex Cloudsdale -> Canterlot lands a little too low, you land under the ground.
+=> Fix the vortexes in Everfree.
+
+=> Definitely fix the instantiation code. Tons of bugs.
+==> Mutexes. If you don't do this atomically, it's hell.
+
+=> We probably want to ensure reliable UDP messages like the chat actually are ACK'd
+
