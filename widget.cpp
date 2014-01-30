@@ -163,7 +163,8 @@ void Widget::startServer()
         }
 
         // If we use a remote login server, try to open a connection preventively.
-        remoteLoginSock.connectToHost(remoteLoginIP, remoteLoginPort);
+        if (useRemoteLogin)
+            remoteLoginSock.connectToHost(remoteLoginIP, remoteLoginPort);
     }
 
     // UDP server
