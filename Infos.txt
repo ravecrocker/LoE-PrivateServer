@@ -1637,3 +1637,4 @@ UDP: Last ping Dtime : 4.00999
 
 => We probably want to ensure reliable UDP messages like the chat actually are ACK'd
 
+=> Hey ! We could add the official LoE server as the default remote login in server.ini ! Disabled of course.
