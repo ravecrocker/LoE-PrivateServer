@@ -14,6 +14,8 @@ For example the packet 5600001800030001 will be noted 56 03 00 01
 
 46 Reliable messages, often RPC calls to network views
 46 01 Send a player's ponies list (at the character screen) (GetPonies)
+46 02 Remove pony
+46 03 Check name
 46 0B BeginDialog
 46 0C SetDialogOptions
 46 0D EndDialog
@@ -34,18 +36,35 @@ For example the packet 5600001800030001 will be noted 56 03 00 01
 46 CE Teleport
 46 D2 ProcessUtils
 
-48 Reliable messages, often RPC calls to network views
-48 01 Instantiate prefab model (often PlayerBase)
+48 Reliable messages, often RPC calls to network views (STATIC_UTILS)
+48 01 Instantiate (often PlayerBase)
 48 02 Remove netview (?)
-48 03 Do nothing. Function returns immediatly.
+48 03 Time update
 48 04 Set player ID
-48 05 Load a scene
-48 0A ???
+48 05 Change room (load a scene)
+48 06 Finished room change
+48 08 Finished instantiate
+48 0A Add view
+
+4D (BEGIN_RPCMODES)
 
 54 XXXX Reliable messages, often RPC calls to network views. XXXX = NetviewId.
 54 XXXX 32 AA BBBBBBBBB Set status AA's value to BBBBBBBBB.
 54 XXXX 33 AA BBBBBBBBB Set status AA's max value to BBBBBBBBB.
-54 XXXX 04 ... Set inventory worn items
-54 XXXX 05 ... Set inventory
-54 XXXX C3 ... Set skills
-54 XXXX C8 ... Sends ponyData to instantiate player
+54 XXXX 04 Set inventory worn items
+54 XXXX 05 Set inventory
+54 XXXX 06 Add item
+54 XXXX 07 Delete item
+54 XXXX 08 Wear item
+54 XXXX 09 Unwear item
+54 XXXX 0A Buy item
+54 XXXX 0B Sell item
+54 XXXX 10 Set bits
+54 XXXX C3 Set skills
+54 XXXX C8 Sends ponyData to instantiate player
+54 XXXX C9 Summon
+54 XXXX CA Animation
+54 XXXX CB HeadLook
+54 XXXX CD Lock
+54 XXXX CE Hide
+54 XXXX CF Rename

@@ -21,7 +21,6 @@ int main(int, char**)
 /**
   TODO :
   - Reuse a disconnected player's Id
-  - If you create another character with the same name as an existing one, overwrite the existing one
-  - Option for Login/Game server ports
+  - If you create another pony with the same name as an existing one, overwrite the existing one
   - Read the items in Infos.txt
 **/
