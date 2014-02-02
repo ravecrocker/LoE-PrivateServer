@@ -3,6 +3,7 @@
 
 #include "character.h"
 #include <QPair>
+#include <QMutex>
 
 enum MessageTypes {
     MsgUnconnected = 0,
@@ -51,6 +52,7 @@ void sendNetviewInstantiate(Player& src, Player& dst);
 void sendNetviewRemove(Player& player, quint16 netviewId);
 void sendSetStatRPC(Player& player, quint8 statId, float value);
 void sendSetMaxStatRPC(Player& player, quint8 statId, float value);
+void sendWornRPC(Player& player, QList<WearableItem> worn);
 void sendInventoryRPC(Player& player, QList<InventoryItem> inv, QList<WearableItem> worn, quint32 nBits);
 void sendSkillsRPC(Player& player, QList<QPair<quint32, quint32> > skills);
 void sendLoadSceneRPC(Player& player, QString sceneName);
