@@ -606,7 +606,7 @@ void sendMessage(Player& player,quint8 messageType, QByteArray data)
     }
     else
     {
-        win.logStatusMessage("SendMessage : Unknow message type");
+        win.logStatusMessage("SendMessage : Unknown message type");
         return;
     }
     if (win.udpSocket->writeDatagram(msg,QHostAddress(player.IP),player.port) != msg.size())

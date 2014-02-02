@@ -327,7 +327,7 @@ void Widget::tcpProcessData(QByteArray data, QTcpSocket* socket)
     else // Unknown request, erase tcp buffer
     {
         // Display data
-        logMessage("TCP: Unknow request received : ");
+        logMessage("TCP: Unknown request received : ");
         logMessage(QString(data.data()));
     }
 }
