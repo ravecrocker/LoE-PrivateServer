@@ -257,10 +257,11 @@ void receiveMessage(Player& player)
         if (seq <= player.udpRecvSequenceNumbers[channel] && player.udpRecvSequenceNumbers[channel]!=0)
         {
             win.logMessage("UDP: Discarding double message (-"+QString().setNum(player.udpRecvSequenceNumbers[channel]-seq)
-                           +") from "+player.IP+":"+QString().setNum(player.port));
+                           +") from "+QString().setNum(player.pony.netviewId));
             win.logMessage("UDP: Message was : "+QString(player.receivedDatas->left(msgSize).toHex().data()));
             *player.receivedDatas = player.receivedDatas->right(player.receivedDatas->size() - msgSize);
 
+            // Ack if needed, so that the client knows to move on already.
             if ((unsigned char)msg[0] >= MsgUserReliableOrdered1 && (unsigned char)msg[0] <= MsgUserReliableOrdered32) // UserReliableOrdered
             {
                 win.logMessage("UDP: ACKing discarded message");
@@ -270,19 +271,20 @@ void receiveMessage(Player& player)
                 data[2] = msg[2]/2; // seq
                 sendMessage(player, MsgAcknowledge, data);
             }
-
-            //if (player.receivedDatas->size())
-            //    receiveMessage(player);
             return; // We already have this packet.
         }
-        else if (seq > player.udpRecvSequenceNumbers[channel]+1)
+        else if (seq > player.udpRecvSequenceNumbers[channel]+2) // If a message was skipped, keep going.
         {
             win.logMessage("UDP: Unordered message (+"+QString().setNum(seq-player.udpRecvSequenceNumbers[channel])
                            +") received from "+QString().setNum(player.pony.netviewId));
-            player.udpRecvSequenceNumbers[channel] = seq;
+            //player.udpRecvSequenceNumbers[channel] = seq;
         }
         else
+        {
+            //win.logMessage("UDP: Received message (="+QString().setNum(seq)
+            //               +") from "+QString().setNum(player.pony.netviewId));
             player.udpRecvSequenceNumbers[channel] = seq;
+        }
     }
 
     if ((unsigned char)msg[0] == MsgPing) // Ping
