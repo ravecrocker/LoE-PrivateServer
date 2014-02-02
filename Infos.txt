@@ -1779,4 +1779,4 @@ Server replies with worn items, stats, ponyData (and a 01 to sync pos)
 Client sends finished instantiate for our player
 Server replies with stats, ponyData, inventory, skills, stats again (?) (and a 01 to sync pos)
 
-=> Holly hot dicks from hell. It works.
+=> If the client resends a message before our ACK can reach him, he's a faggot and we'll end up processing the message twice.
