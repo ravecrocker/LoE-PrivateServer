@@ -277,7 +277,10 @@ void receiveMessage(Player& player)
         {
             win.logMessage("UDP: Unordered message (+"+QString().setNum(seq-player.udpRecvSequenceNumbers[channel])
                            +") received from "+QString().setNum(player.pony.netviewId));
-            //player.udpRecvSequenceNumbers[channel] = seq;
+            player.udpRecvSequenceNumbers[channel] = seq;
+
+            // Mark the packets we skipped as missing
+
         }
         else
         {
@@ -402,7 +405,7 @@ void receiveMessage(Player& player)
                 win.logMessage("UDP: Can't find the scene for chat message, aborting");
             else
                 for (int i=0; i<scene->players.size(); i++)
-                    if (scene->players[i].inGame==2)
+                    if (scene->players[i].inGame==2 || scene->players[i].inGame==1)
                         sendChatMessage(scene->players[i], txt, author);
         }
         else if ((unsigned char)msg[0]==MsgUserReliableOrdered4 && (unsigned char)msg[5]==0x1) // Edit ponies request
