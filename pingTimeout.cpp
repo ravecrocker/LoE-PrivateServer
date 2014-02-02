@@ -8,13 +8,13 @@ void Widget::checkPingTimeouts()
     {
         //if (!udpPlayers[i].connected || !udpPlayers[i].port)
         //    continue;
-        int time = (timestampNow()-udpPlayers[i].lastPingTime);
+        int time = (timestampNow()-udpPlayers[i]->lastPingTime);
         //win.logMessage(QString().setNum(time)+"s");
         if (time > pingTimeout)
         {
-            logMessage("UDP: Ping timeout ("+QString().setNum(((int)timestampNow()-udpPlayers[i].lastPingTime))+"s) for "
-                       +QString().setNum(udpPlayers[i].pony.netviewId)+" (player "+udpPlayers[i].name+")");
-            udpPlayers[i].connected = false;
+            logMessage("UDP: Ping timeout ("+QString().setNum(((int)timestampNow()-udpPlayers[i]->lastPingTime))+"s) for "
+                       +QString().setNum(udpPlayers[i]->pony.netviewId)+" (player "+udpPlayers[i]->name+")");
+            udpPlayers[i]->connected = false;
             sendMessage(udpPlayers[i], MsgDisconnect, "Ping timeout");
             Player::disconnectPlayerCleanup(udpPlayers[i]);
         }

@@ -57,8 +57,8 @@ public:
 public:
     float startTimestamp;
     QUdpSocket *udpSocket;
-    QList<Player> tcpPlayers; // Used by the TCP login server
-    QList<Player> udpPlayers; // Used by the UDP game server
+    QList<Player*> tcpPlayers; // Used by the TCP login server
+    QList<Player*> udpPlayers; // Used by the UDP game server
     int loginPort; // Port for the login server
     int gamePort; // Port for the game server
     QList<Scene> scenes;
@@ -72,7 +72,7 @@ private:
     QList<QTcpSocket *> tcpClientsList;
     QTcpSocket remoteLoginSock; // Socket to the remote login server, if we use one
     QByteArray *tcpReceivedDatas;
-    Player& cmdPeer; // Player selected for the server commands
+    Player* cmdPeer; // Player selected for the server commands
     QTimer *pingTimer;
     Sync sync;
 

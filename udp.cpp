@@ -44,19 +44,19 @@ void Widget::udpProcessPendingDatagrams()
                 //logMessage("Sesskey token accepted");
 
                 // Create new player if needed, else just update player
-                Player& newPlayer = Player::findPlayer(udpPlayers, rAddr.toString(),rPort);
-                if (newPlayer.IP != rAddr.toString()) // IP:Port not found in player list
+                Player* newPlayer = Player::findPlayer(udpPlayers, rAddr.toString(),rPort);
+                if (newPlayer->IP != rAddr.toString()) // IP:Port not found in player list
                 {
-                    newPlayer.reset();
-                    newPlayer.connected = true;
-                    newPlayer.name = name;
-                    newPlayer.IP = rAddr.toString();
-                    newPlayer.port = rPort;
+                    newPlayer->reset();
+                    newPlayer->connected = true;
+                    newPlayer->name = name;
+                    newPlayer->IP = rAddr.toString();
+                    newPlayer->port = rPort;
 
                     // Check if we have too many players connected
                     int n=0;
                     for (int i=0;i<udpPlayers.size();i++)
-                        if (udpPlayers[i].connected)
+                        if (udpPlayers[i]->connected)
                             n++;
                     if (n>=maxConnected)
                     {
@@ -68,7 +68,7 @@ void Widget::udpProcessPendingDatagrams()
                 }
                 else  // IP:Port found in player list
                 {
-                    if (newPlayer.connected) // TODO: Error, player already connected
+                    if (newPlayer->connected) // TODO: Error, player already connected
                     {
                         sendMessage(newPlayer, MsgDisconnect, "Error : Player already connected.");
                         return;
@@ -77,43 +77,43 @@ void Widget::udpProcessPendingDatagrams()
                     // Check if we have too many players connected
                     int n=0;
                     for (int i=0;i<udpPlayers.size();i++)
-                        if (udpPlayers[i].connected)
+                        if (udpPlayers[i]->connected)
                             n++;
                     if (n>=maxConnected)
                     {
                         sendMessage(newPlayer, MsgDisconnect, "Error : Too much players connected. Try again later.");
                     }
 
-                    newPlayer.reset();
-                    newPlayer.name = name;
-                    newPlayer.IP = rAddr.toString();
-                    newPlayer.port = rPort;
-                    newPlayer.connected = true;
+                    newPlayer->reset();
+                    newPlayer->name = name;
+                    newPlayer->IP = rAddr.toString();
+                    newPlayer->port = rPort;
+                    newPlayer->connected = true;
                 }
             }
             else
             {
                 logMessage("UDP: Sesskey rejected");
-                Player newPlayer;
-                newPlayer.IP = rAddr.toString();
-                newPlayer.port = rPort;
+                Player* newPlayer = new Player;
+                newPlayer->IP = rAddr.toString();
+                newPlayer->port = rPort;
                 sendMessage(newPlayer, MsgDisconnect, "Error : Wrong sesskey hash.");
                 return;
             }
         }
 
-        Player& player = Player::findPlayer(udpPlayers, rAddr.toString(), rPort);
-        if (player.IP == rAddr.toString() && player.port == rPort)
+        Player* player = Player::findPlayer(udpPlayers, rAddr.toString(), rPort);
+        if (player->IP == rAddr.toString() && player->port == rPort)
         {
             // Acquire datas
-            player.receivedDatas->append(datagram);
+            player->receivedDatas->append(datagram);
 
             // Process data
             receiveMessage(player);
         }
         else // You need to connect with TCP first
         {
-            logMessage("UDP: Request from unknow peer rejected : "+player.IP+":"+QString().setNum(rPort));
+            logMessage("UDP: Request from unknow peer rejected : "+player->IP+":"+QString().setNum(rPort));
             sendMessage(player,MsgDisconnect);
         }
     }

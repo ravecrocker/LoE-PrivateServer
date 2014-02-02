@@ -13,7 +13,7 @@
 Widget::Widget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Widget),
-    cmdPeer((Player&)*(new Player()))
+    cmdPeer(new Player())
 {
     tcpServer = new QTcpServer(this);
     udpSocket = new QUdpSocket(this);
@@ -244,7 +244,7 @@ void Widget::sendCmdLine()
         if (udpPlayers.size() == 1)
         {
             cmdPeer = udpPlayers[0];
-            QString peerName = cmdPeer.IP + " " + QString().setNum(cmdPeer.port);
+            QString peerName = cmdPeer->IP + " " + QString().setNum(cmdPeer->port);
             logMessage(QString("UDP: Peer set to ").append(peerName));
             return;
         }
@@ -265,7 +265,7 @@ void Widget::sendCmdLine()
         }
 
         cmdPeer = Player::findPlayer(udpPlayers,args[0], port);
-        if (cmdPeer.IP!="")
+        if (cmdPeer->IP!="")
             logMessage(QString("UDP: Peer set to ").append(str));
         else
             logMessage(QString("UDP: Peer not found (").append(str).append(")"));
@@ -276,9 +276,9 @@ void Widget::sendCmdLine()
         if (str.size()<=10)
         {
             for (int i=0; i<win.udpPlayers.size();i++)
-                win.logMessage(win.udpPlayers[i].IP
-                               +":"+QString().setNum(win.udpPlayers[i].port)
-                               +" "+QString().setNum((int)timestampNow()-win.udpPlayers[i].lastPingTime)+"s");
+                win.logMessage(win.udpPlayers[i]->IP
+                               +":"+QString().setNum(win.udpPlayers[i]->port)
+                               +" "+QString().setNum((int)timestampNow()-win.udpPlayers[i]->lastPingTime)+"s");
             return;
         }
         str = str.right(str.size()-10);
@@ -287,9 +287,9 @@ void Widget::sendCmdLine()
             win.logMessage("Can't find scene");
         else
             for (int i=0; i<scene->players.size();i++)
-                win.logMessage(win.udpPlayers[i].IP
-                               +":"+QString().setNum(win.udpPlayers[i].port)
-                               +" "+QString().setNum((int)timestampNow()-win.udpPlayers[i].lastPingTime)+"s");
+                win.logMessage(win.udpPlayers[i]->IP
+                               +":"+QString().setNum(win.udpPlayers[i]->port)
+                               +" "+QString().setNum((int)timestampNow()-win.udpPlayers[i]->lastPingTime)+"s");
         return;
     }
     else if (str.startsWith("listVortexes"))
@@ -313,15 +313,15 @@ void Widget::sendCmdLine()
         return;
     }
 
-    if (cmdPeer.IP=="")
+    if (cmdPeer->IP=="")
     {
         logMessage("Select a peer first with setPeer/listPeers");
         return;
     }
     else // Refresh peer info
     {
-        cmdPeer = (Player&)Player::findPlayer(udpPlayers,cmdPeer.IP, cmdPeer.port);
-        if (cmdPeer.IP=="")
+        cmdPeer = Player::findPlayer(udpPlayers,cmdPeer->IP, cmdPeer->port);
+        if (cmdPeer->IP=="")
         {
             logMessage(QString("UDP: Peer not found"));
             return;
@@ -341,9 +341,9 @@ void Widget::sendCmdLine()
     }
     else if (str.startsWith("getPos"))
     {
-        logMessage(QString("Pos : x=") + QString().setNum(cmdPeer.pony.pos.x)
-                   + ", y=" + QString().setNum(cmdPeer.pony.pos.y)
-                   + ", z=" + QString().setNum(cmdPeer.pony.pos.z));
+        logMessage(QString("Pos : x=") + QString().setNum(cmdPeer->pony.pos.x)
+                   + ", y=" + QString().setNum(cmdPeer->pony.pos.y)
+                   + ", z=" + QString().setNum(cmdPeer->pony.pos.z));
     }
     else if (str.startsWith("sendPonies"))
     {
@@ -390,9 +390,9 @@ void Widget::sendCmdLine()
     else if (str.startsWith("sendPonyData"))
     {
         QByteArray data(3,0xC8);
-        data[0] = cmdPeer.pony.netviewId;
-        data[1] = cmdPeer.pony.netviewId>>8;
-        data += cmdPeer.pony.ponyData;
+        data[0] = cmdPeer->pony.netviewId;
+        data[1] = cmdPeer->pony.netviewId>>8;
+        data += cmdPeer->pony.ponyData;
         sendMessage(cmdPeer, MsgUserReliableOrdered18, data);
         return;
     }

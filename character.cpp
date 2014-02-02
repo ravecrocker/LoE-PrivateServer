@@ -34,6 +34,17 @@ Player::Player()
         udpSequenceNumbers[i]=0;
     for (int i=0;i<33;i++)
         udpRecvSequenceNumbers[i]=0;
+    udpRecvMissing.clear();
+
+    // Prepare timers
+    udpSendReliableTimer =  new QTimer;
+    udpSendReliableTimer->setInterval(UDP_RESEND_TIMEOUT);
+    udpSendReliableTimer->setSingleShot(true);
+    QObject::connect(udpSendReliableTimer, SIGNAL(timeout()), this, SLOT(udpResendLast()));
+    udpSendReliableGroupTimer =  new QTimer;
+    udpSendReliableGroupTimer->setInterval(UDP_GROUPING_TIMEOUT);
+    udpSendReliableGroupTimer->setSingleShot(true);
+    connect(udpSendReliableGroupTimer, SIGNAL(timeout()), this, SLOT(udpDelayedSend()));
 }
 
 void Player::reset()
@@ -51,9 +62,10 @@ void Player::reset()
         udpSequenceNumbers[i]=0;
     for (int i=0;i<33;i++)
         udpRecvSequenceNumbers[i]=0;
+    udpRecvMissing.clear();
 }
 
-bool Player::savePlayers(QList<Player> playersData)
+bool Player::savePlayers(QList<Player*>& playersData)
 {
     QFile playersFile("data/players/players.dat");
     if (!playersFile.open(QIODevice::ReadWrite | QIODevice::Truncate))
@@ -65,18 +77,18 @@ bool Player::savePlayers(QList<Player> playersData)
 
     for (int i=0;i<playersData.size();i++)
     {
-        playersFile.write(playersData[i].name.toLatin1());
+        playersFile.write(playersData[i]->name.toLatin1());
         playersFile.write("\31");
-        playersFile.write(playersData[i].passhash.toLatin1());
+        playersFile.write(playersData[i]->passhash.toLatin1());
         if (i+1!=playersData.size())
             playersFile.write("\n");
     }
     return true;
 }
 
-QList<Player> Player::loadPlayers()
+QList<Player*>& Player::loadPlayers()
 {
-    QList<Player> players;
+    QList<Player*>& players = *(new QList<Player*>);
     QFile playersFile("data/players/players.dat");
     if (!playersFile.open(QIODevice::ReadOnly))
     {
@@ -99,61 +111,61 @@ QList<Player> Player::loadPlayers()
             win.stopServer();
             return players;
         }
-        Player newPlayer;
-        newPlayer.name = line[0];
-        newPlayer.passhash = line[1];
+        Player* newPlayer = new Player;
+        newPlayer->name = line[0];
+        newPlayer->passhash = line[1];
         players << newPlayer;
     }
     win.logMessage(QString("Got ")+QString().setNum(players.size())+" players in database");
     return players;
 }
 
-Player& Player::findPlayer(QList<Player>& players, QString uname)
+Player* Player::findPlayer(QList<Player*>& players, QString uname)
 {
     for (int i=0; i<players.size(); i++)
     {
-        if (players[i].name == uname)
+        if (players[i]->name == uname)
             return players[i];
     }
 
     Player* emptyPlayer = new Player();
-    return *emptyPlayer;
+    return emptyPlayer;
 }
 
-Player& Player::findPlayer(QList<Player>& players, QString uIP, quint16 uport)
+Player* Player::findPlayer(QList<Player*>& players, QString uIP, quint16 uport)
 {
     for (int i=0; i<players.size(); i++)
     {
-        if (players[i].IP == uIP && players[i].port == uport)
+        if (players[i]->IP == uIP && players[i]->port == uport)
             return players[i];
     }
 
     Player* emptyPlayer = new Player();
-    return *emptyPlayer;
+    return emptyPlayer;
 }
 
-Player& Player::findPlayer(QList<Player>& players, quint16 netviewId)
+Player* Player::findPlayer(QList<Player*>& players, quint16 netviewId)
 {
     for (int i=0; i<players.size(); i++)
     {
-        if (players[i].pony.netviewId == netviewId)
+        if (players[i]->pony.netviewId == netviewId)
             return players[i];
     }
 
     Player* emptyPlayer = new Player();
-    return *emptyPlayer;
+    return emptyPlayer;
 }
 
-void Player::savePonies(Player& player, QList<Pony> ponies)
+void Player::savePonies(Player *player, QList<Pony> ponies)
 {
-    win.logMessage("UDP: Saving ponies for "+QString().setNum(player.pony.netviewId)+" ("+player.name+")");
+    win.logMessage("UDP: Saving ponies for "+QString().setNum(player->pony.netviewId)+" ("+player->name+")");
 
     QDir playerPath(QDir::currentPath());
     playerPath.cd("data");
     playerPath.cd("players");
-    playerPath.mkdir(player.name.toLatin1());
+    playerPath.mkdir(player->name.toLatin1());
 
-    QFile file(QDir::currentPath()+"/data/players/"+player.name.toLatin1()+"/ponies.dat");
+    QFile file(QDir::currentPath()+"/data/players/"+player->name.toLatin1()+"/ponies.dat");
     file.open(QIODevice::ReadWrite | QIODevice::Truncate);
     for (int i=0; i<ponies.size(); i++)
     {
@@ -163,10 +175,10 @@ void Player::savePonies(Player& player, QList<Pony> ponies)
     }
 }
 
-QList<Pony> Player::loadPonies(Player& player)
+QList<Pony> Player::loadPonies(Player* player)
 {
     QList<Pony> ponies;
-    QFile file(QDir::currentPath()+"/data/players/"+player.name.toLatin1()+"/ponies.dat");
+    QFile file(QDir::currentPath()+"/data/players/"+player->name.toLatin1()+"/ponies.dat");
     if (!file.open(QIODevice::ReadOnly))
         return ponies;
 
@@ -220,44 +232,89 @@ QList<Pony> Player::loadPonies(Player& player)
     return ponies;
 }
 
-void Player::removePlayer(QList<Player>* players, QString uIP, quint16 uport)
+void Player::removePlayer(QList<Player*>& players, QString uIP, quint16 uport)
 {
-    for (int i=0; i<players->size(); i++)
+    for (int i=0; i<players.size(); i++)
     {
-        if ((*players)[i].IP == uIP && (*players)[i].port == uport)
-            players->removeAt(i);
+        if (players[i]->IP == uIP && players[i]->port == uport)
+            players.removeAt(i);
     }
 }
 
-void Player::disconnectPlayerCleanup(Player& player)
+void Player::disconnectPlayerCleanup(Player* player)
 {
     // Save the pony
     QList<Pony> ponies = loadPonies(player);
     for (int i=0; i<ponies.size(); i++)
-        if (ponies[i].ponyData == player.pony.ponyData)
-            ponies[i] = player.pony;
+        if (ponies[i].ponyData == player->pony.ponyData)
+            ponies[i] = player->pony;
     savePonies(player, ponies);
 
-    QString uIP = player.IP;
-    quint16 uPort = player.port;
+    QString uIP = player->IP;
+    quint16 uPort = player->port;
 
-    Scene* scene = findScene(player.pony.sceneName);
+    Scene* scene = findScene(player->pony.sceneName);
     if (scene->name.isEmpty())
         win.logMessage("UDP: Can't find scene for player cleanup");
 
-    removePlayer(&(scene->players), uIP, uPort);
+    removePlayer(scene->players, uIP, uPort);
     for (int i=0; i<scene->players.size(); i++)
-        sendNetviewRemove(scene->players[i], player.pony.netviewId);
-    removePlayer(&(win.udpPlayers), uIP, uPort);
+        sendNetviewRemove(scene->players[i], player->pony.netviewId);
+    removePlayer(win.udpPlayers, uIP, uPort);
 }
 
-WearableItem::WearableItem()
+void Player::udpResendLast()
 {
-    id=0;
-    index=0;
+    udpSendReliableMutex.lock();
+    QByteArray msg = udpSendReliableQueue.first().toHex();
+    win.logMessage("Resending message : "+QString(msg.data()));
+
+    if (win.udpSocket->writeDatagram(msg,QHostAddress(IP),port) != msg.size())
+    {
+        win.logMessage("UDP: Error sending last message");
+        win.logStatusMessage("Restarting UDP server ...");
+        win.udpSocket->close();
+        if (!win.udpSocket->bind(win.gamePort, QUdpSocket::ReuseAddressHint|QUdpSocket::ShareAddress))
+        {
+            win.logStatusMessage("UDP: Unable to start server on port "+QString().setNum(win.gamePort));
+            win.stopServer();
+            return;
+        }
+    }
+
+    udpSendReliableMutex.unlock();
+    udpSendReliableTimer->start();
 }
 
-InventoryItem::InventoryItem() : WearableItem()
+void Player::udpDelayedSend()
 {
-    amount=0;
+    udpSendReliableMutex.lock();
+    //win.logMessage("Sending delayed grouped message : "+QString(udpSendReliableGroupBuffer.toHex()));
+
+    // Move the grouped message to the reliable queue
+    udpSendReliableQueue.append(udpSendReliableGroupBuffer);
+
+    // If this is the only message queued, send it now
+    // If it isn't, we need to wait until the previous one was ACK'd
+    if (udpSendReliableQueue.size() >= 1)
+    {
+        if (win.udpSocket->writeDatagram(udpSendReliableGroupBuffer,QHostAddress(IP),port) != udpSendReliableGroupBuffer.size())
+        {
+            win.logMessage("UDP: Error sending last message");
+            win.logStatusMessage("Restarting UDP server ...");
+            win.udpSocket->close();
+            if (!win.udpSocket->bind(win.gamePort, QUdpSocket::ReuseAddressHint|QUdpSocket::ShareAddress))
+            {
+                win.logStatusMessage("UDP: Unable to start server on port "+QString().setNum(win.gamePort));
+                win.stopServer();
+                return;
+            }
+        }
+    }
+
+    udpSendReliableGroupBuffer.clear();
+
+    udpSendReliableMutex.unlock();
+    if (!udpSendReliableTimer->isActive())
+        udpSendReliableTimer->start();
 }

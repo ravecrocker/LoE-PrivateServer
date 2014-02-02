@@ -29,3 +29,14 @@ UQuaternion::UQuaternion(float ux, float uy, float uz, float uw)
     z=uz;
     w=uw;
 }
+
+WearableItem::WearableItem()
+{
+    id=0;
+    index=0;
+}
+
+InventoryItem::InventoryItem() : WearableItem()
+{
+    amount=0;
+}

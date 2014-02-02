@@ -1,9 +1,14 @@
 #ifndef MESSAGE_H
 #define MESSAGE_H
 
-#include "character.h"
 #include <QPair>
 #include <QMutex>
+#include "dataType.h"
+
+// Resend the udp message if we didn't get an ACK before this timeouts
+#define UDP_RESEND_TIMEOUT 3000
+// If we send multiple reliable messages before this timeouts, group them before sending.
+#define UDP_GROUPING_TIMEOUT 100
 
 enum MessageTypes {
     MsgUnconnected = 0,
@@ -26,7 +31,19 @@ enum MessageTypes {
     MsgUserReliableOrdered32 = 0x62
 };
 
+struct MessageHead
+{
+    quint16 channel;
+    quint16 seq;
+
+    bool operator==(const MessageHead& other)
+    {
+        return (channel==other.channel && seq==other.seq);
+    }
+};
+
 // Public functions
+class Player;
 float timestampNow();
 QByteArray doubleToData(double num);
 QByteArray floatToData(float num);
@@ -38,26 +55,26 @@ UVector dataToVector(QByteArray data);
 float dataToRangedSingle(float min, float max, int numberOfBits, QByteArray data);
 QByteArray rangedSingleToData(float value, float min, float max, int numberOfBits);
 QByteArray quaternionToData(UQuaternion quat);
-void receiveSync(Player& player, QByteArray data);
-void receiveMessage(Player& player);
-void sendMessage(Player& player, quint8 messageType, QByteArray data=QByteArray());
-void sendEntitiesList(Player& player);
-void sendPonySave(Player& player, QByteArray msg);
-void sendPonies(Player& player);
-void sendPonyData(Player& player);
-void sendPonyData(Player& src, Player& dst);
-void sendNetviewInstantiate(Player& player, QString key, quint16 ViewId, quint16 OwnerId, UVector pos, UQuaternion rot);
-void sendNetviewInstantiate(Player& player);
-void sendNetviewInstantiate(Player& src, Player& dst);
-void sendNetviewRemove(Player& player, quint16 netviewId);
-void sendSetStatRPC(Player& player, quint8 statId, float value);
-void sendSetMaxStatRPC(Player& player, quint8 statId, float value);
-void sendWornRPC(Player& player, QList<WearableItem> worn);
-void sendInventoryRPC(Player& player, QList<InventoryItem> inv, QList<WearableItem> worn, quint32 nBits);
-void sendSkillsRPC(Player& player, QList<QPair<quint32, quint32> > skills);
-void sendLoadSceneRPC(Player& player, QString sceneName);
-void sendLoadSceneRPC(Player& player, QString sceneName, UVector pos);
-void sendChatMessage(Player& player, QString message, QString author);
-void sendMove(Player& player, float x, float y, float z);
+void receiveSync(Player* player, QByteArray data);
+void receiveMessage(Player* player);
+void sendMessage(Player* player, quint8 messageType, QByteArray data=QByteArray());
+void sendEntitiesList(Player* player);
+void sendPonySave(Player* player, QByteArray msg);
+void sendPonies(Player* player);
+void sendPonyData(Player* player);
+void sendPonyData(Player* src, Player* dst);
+void sendNetviewInstantiate(Player* player, QString key, quint16 ViewId, quint16 OwnerId, UVector pos, UQuaternion rot);
+void sendNetviewInstantiate(Player* player);
+void sendNetviewInstantiate(Player* src, Player* dst);
+void sendNetviewRemove(Player* player, quint16 netviewId);
+void sendSetStatRPC(Player* player, quint8 statId, float value);
+void sendSetMaxStatRPC(Player* player, quint8 statId, float value);
+void sendWornRPC(Player* player, QList<WearableItem>& worn);
+void sendInventoryRPC(Player* player, QList<InventoryItem>& inv, QList<WearableItem>& worn, quint32 nBits);
+void sendSkillsRPC(Player* player, QList<QPair<quint32, quint32> >& skills);
+void sendLoadSceneRPC(Player* player, QString sceneName);
+void sendLoadSceneRPC(Player* player, QString sceneName, UVector pos);
+void sendChatMessage(Player* player, QString message, QString author);
+void sendMove(Player* player, float x, float y, float z);
 
 #endif // MESSAGE_H
