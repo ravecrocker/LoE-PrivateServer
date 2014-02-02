@@ -1281,16 +1281,16 @@ Syncing 2 to 1
 => Compare with the sync messages in LoE12 to see the difference. This is really weird.
 ==> Replay of LoE12
 ==> Player id is 5C00, netview id is 7000
+===> I removed the 01s, since they are just pos sync messages
 8 : Set player id to 5C00
 22 : load level
-39 : Client sends 48 06
-41 : Server instantiates the 3 PlayerBase and sends a 01
+39 : Client sends 48 06 // Client finished loading room (= asks for entity list?)
+41 : Server instantiates the 3 PlayerBase // Instantiate the PlayerBases
 48 0600 6001 010a506c6179657242617365 7300 7500 2777d741b286dd3f1ae981c20000000065d849bc0000000007fb7f3f
 48 0800 6001 010a506c6179657242617365 3700 2700 c425d94122b195bfaf1872c20000000049277cbd00000000b3837f3f
-48 0a00 6001 010a506c6179657242617365 7000 5c00 7f45fd41be2195bf3e0e6ac200000000fd987ebf000000000f13d63d
-01 0000 7800 3700 8e98c34663810e49e67c7f7d7f
+48 0a00 6001 010a506c6179657242617365 7000 5c00 7f45fd41be2195bf3e0e6ac200000000fd987ebf000000000f13d63d // Our client
 43 : Server sends a 54 32 to 7300
-45 : Server sends more 54s and 01s
+45 : Server sends more 54s // Set stats immediatly (of 7000 (us) and 7300
 54 0200 4000 7300 32018de0fc41
 54 0400 4000 7000 33000000c842
 54 0600 4000 7000 32000000c842
@@ -1300,29 +1300,23 @@ Syncing 2 to 1
 54 0e00 4000 7000 32000000c842
 54 1000 4000 7000 33010000fa42
 54 1200 4000 7000 32010000fa42
-01 0200 6800 7300 ad98c34660814449ac7c7e
-01 0400 7800 3700 aa98c34663810e49e67c7f7a7f
-47 : Server sends more 54s and 01s
+47 : Server sends more 54s // Set stats of 7300
 54 1400 4000 7300 3201848efe41
-01 0600 7800 3700 c498c34663810e49e67c7f787f
-49 : Server sends another 54
 54 1600 4000 7300 32014e290042
-51 : Client sends a 4D and a 48 08
+51 : Client sends a 4D and a 48 08 (ACK'd in 58 !) // Send 48 and 4D about id 7300 (request ponyData?)
 4d 0000 1800 7300 04
 48 0400 1800 08 7300
-52 : Server sends more
+52 : Server sends another 54 // Set stats of 7300
 54 1800 4000 7300 3201e2320142
-01 0800 6800 7300 c998c34660814449ac7c7d
-01 0a00 7800 3700 c498c34663810e49e67c7f787f
-54 : Client sends another 4d and 48 08
+54 : Client sends another 4d and 48 08 // Send 48 and 4D about id 3700 (request ponyData?)
 4d 0200 1800 3700 04
 48 0600 1800 08 3700
-55 : Server sends more
+55 : Server sends another 54 // Set stat of 7300
 54 1a00 4000 7300 3201c5320242
-57 : Client sends another 48
+57 : Client sends another 48 // Send 48 about id 7000
 48 0800 1800 08 7000
-58 : Server acks the 4d and the 48 from 51:
-59 : Server
+58 : Server acks the 4d and the 48 from 51 (that were about it 7300):
+59 : Server // Set stat and inventory of 7300, send ponyCode, 
 54 1c00 4000 7300 320117200342
 54 1e00 a000 7300 04200307150000000a3a0000001e3b000000
 54 2000 4000 7300 33000000c842
@@ -1332,7 +1326,7 @@ Syncing 2 to 1
 54 2800 0002 7300 c8 115a6f726f61726b20426c61636b686f6c6502034200000000000000000000002800ffff9fb6000000ff140092958e03000500010000003322823fe477
 01 0c00 6800 7300 eb98c34660814449ac7c7c
 61 : Server
-86 0000 3000 4d0100480300
+86 0000 3000 4d0100480300 // Ack the 4D and the 48 from packet 54
 54 2a00 4000 7300 32016e280442
 54 2c00 2800 3700 04 2000
 54 2e00 4000 3700 33000000c842
@@ -1638,3 +1632,148 @@ UDP: Last ping Dtime : 4.00999
 => We probably want to ensure reliable UDP messages like the chat actually are ACK'd
 
 => Hey ! We could add the official LoE server as the default remote login in server.ini ! Disabled of course.
+
+=> Between stages 1 and 2, only send his own info to a client
+=> Just after entering stage 2, spawn everyone else on the client
+=> Anything that happens between stage entering stage 2, and the spawning of everyone else on the client should be atomic.
+==> The problem is with the ponySave/ponyData, not the instantiates. 
+==> Looks like we're supposed to only send the ponySave/ponyData of the last instantiate we did. Check the exact received massage (shark)
+===> Looks like we're only saved from the infinite loop by the 4D messages being rejected, while they also contain a 48 !
+
+=> Filter to keep only interesting udp messages (WARNING: Will skip sync/ack messages that also contain another message)
+=> Removes position sync, 
+=> ip.proto==UDP && !data.data matches "^\x01" && !data.data matches "^\x86" && !data.data matches "^\x81" && !data.data matches "^\x82" 
+
+=> Instantiate a pegasus and a unicorn with the same colors in the same place. Take a picture. Free Alicorn OC. Autism included.
+
+=> 48 08 is just the message that means "Finished instantiating" ! 48 06 is "finished room change"
+
+=> Read what the difference is between Sequenced, Ordered, Reliable ands the combinations
+
+=> Most of the interesting enums are in Shared or Data
+public class AccessLevel
+{
+	public const byte Default = 0;
+	public const byte Player = 1;
+	public const byte TeamMember = 2;
+	public const byte Moderator = 3;
+	public const byte Admin = 4;
+}
+
+public enum CharacterType : byte
+{
+	None,
+	EarthPony,
+	Unicorn,
+	Pegasus,
+	Moose
+}
+
+public enum ChatType
+{
+	None = 0,
+	Untyped = 1,
+	System = 2,
+	General = 4,
+	Local = 8,
+	Party = 16,
+	Guild = 32,
+	Whisper = 64
+}
+
+public enum DamageType : ushort
+{
+	Physical = 0,
+	Magical = 1,
+	Poison = 2,
+	Grass = 4,
+	Psychic = 8,
+	Ice = 16,
+	Fire = 32,
+	Ground = 64,
+	Steel = 128,
+	Dragon = 512
+}
+
+public enum Stats : byte
+{
+	None,
+	Health,
+	HealthRegen,
+	Energy,
+	EnergyRegen,
+	Attack,
+	Dodge,
+	Armor,
+	MagicResist,
+	Resiliance,
+	Fortitude,
+	Evade,
+	Tension,
+	Speed,
+	MagicCasting,
+	PhysicalCasting,
+	Taunt,
+	Unspecified = 255
+}
+
+public enum Status : byte
+{
+	None = 0,
+	Paralyzed = 1,
+	Afraid = 2,
+	Poisoned = 4,
+	Burning = 8,
+	Frozen = 16,
+	Bleeding = 32
+}
+
+public enum Target : byte
+{
+	None = 0,
+	Enemy = 1,
+	Friendly = 2,
+	Self = 4,
+	Cloud = 8,
+	MyPet = 16,
+	FriendPet = 32
+}
+
+public enum WearablePosition : uint
+{
+	None = 0u,
+	Tail = 1u,
+	Pants = 2u,
+	FrontSocks = 4u,
+	BackSocks = 8u,
+	Saddle = 64u,
+	Necklace = 256u,
+	Mouth = 512u,
+	Eyes = 2048u,
+	Ears = 4096u,
+	FrontKnees = 8192u,
+	BackKnees = 16384u,
+	FrontShoes = 16u,
+	BackShoes = 32u,
+	Shirt = 128u,
+	Mask = 1024u,
+	SaddleBags = 1073741824u,
+	Hat = 2147483648u
+}
+
+public class SharedIDs
+{
+	public const byte InvokeScript = 49;
+	public const byte BeginMagic = 60;
+	public const byte PerformMagic = 61;
+	public const byte CancelMagic = 62;
+	public const byte StatCurrent = 50;
+	public const byte StatMax = 51;
+	public const byte PickupItem = 52;
+}
+
+=> Disable the chat filter (before sunday if possible)
+=> Implement /stuck (teleport to spawn point).
+
+=> When we load a room, we switch inGame to 1. When we get 48 06, we send the instantiates.
+=> When we get 48 08, if inGame==1, we send the savegame and immediatly switch inGame to 2. If we get another 48 08, something's probably wrong.
