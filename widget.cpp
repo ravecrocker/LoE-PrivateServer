@@ -61,20 +61,20 @@ void Widget::startServer()
     /// Read config
     logStatusMessage("Reading config file ...");
     QSettings config(CONFIGFILEPATH, QSettings::IniFormat);
-    loginPort = config.value("loginPort", 80).toInt();
-    gamePort = config.value("gamePort", 80).toInt();
+    loginPort = config.value("loginPort", 1031).toInt();
+    gamePort = config.value("gamePort", 1039).toInt();
     maxConnected = config.value("maxConnected",64).toInt();
     maxRegistered = config.value("maxRegistered",2048).toInt();
     pingTimeout = config.value("pingTimeout", 15).toInt();
     pingCheckInterval = config.value("pingCheckInterval", 5000).toInt();
-    logInfos = config.value("logInfosMessages", false).toBool();
+    logInfos = config.value("logInfosMessages", true).toBool();
     saltPassword = config.value("saltPassword", "Change Me").toString();
     enableLoginServer = config.value("enableLoginServer", true).toBool();
     enableGameServer = config.value("enableGameServer", true).toBool();
     enableMultiplayer = config.value("enableMultiplayer", true).toBool();
     syncInterval = config.value("syncInterval",DEFAULT_SYNC_INTERVAL).toInt();
-    remoteLoginIP = config.value("remoteLoginIP", "0.0.0.0").toString();
-    remoteLoginPort = config.value("remoteLoginPort", 80).toInt();
+    remoteLoginIP = config.value("remoteLoginIP", "127.0.0.1").toString();
+    remoteLoginPort = config.value("remoteLoginPort", 1031).toInt();
     remoteLoginTimeout = config.value("remoteLoginTimeout", 5000).toInt();
     useRemoteLogin = config.value("useRemoteLogin", false).toBool();
 
