@@ -9,8 +9,10 @@ LoE - Ohayocon 2014 - w_x86/
 # Build files
 release/
 debug/
+LoE_PrivateServer
 LoE_PrivateServer.exe
 PrivateServ/
+PrivateServ-upx/
 *.o
 *.exe
 libstdc++-6.dll
@@ -22,3 +24,4 @@ Makefile*
 
 # Archives
 *.zip
+*.7z

@@ -31,7 +31,8 @@ void Widget::udpProcessPendingDatagrams()
         }
 
         // Add player on connection
-        if ((unsigned char)datagram[0]==MsgConnect && (unsigned char)datagram[1]==0 && (unsigned char)datagram[2]==0 && datagram.size()>=22)
+        if ((unsigned char)datagram[0]==MsgConnect && (unsigned char)datagram[1]==0
+                && (unsigned char)datagram[2]==0 && datagram.size()>=22)
         {
             QString name = dataToString(datagram.right(datagram.size()-22));
             QString sesskey = dataToString(datagram.right(datagram.size()-datagram.lastIndexOf(name)-name.size()));
