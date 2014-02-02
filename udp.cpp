@@ -113,7 +113,7 @@ void Widget::udpProcessPendingDatagrams()
         }
         else // You need to connect with TCP first
         {
-            logMessage("UDP: Request from unknow peer rejected : "+player->IP+":"+QString().setNum(rPort));
+            logMessage("UDP: Request from unknown peer rejected : "+player->IP+":"+QString().setNum(rPort));
             sendMessage(player,MsgDisconnect);
         }
     }
