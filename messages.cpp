@@ -700,7 +700,7 @@ void sendMessage(Player* player,quint8 messageType, QByteArray data)
     }
     else
     {
-        win.logStatusMessage("SendMessage : Unknow message type");
+        win.logStatusMessage("SendMessage : Unknown message type");
         return;
     }
 
