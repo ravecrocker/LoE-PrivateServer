@@ -157,7 +157,7 @@ void Widget::startServer()
         logStatusMessage("Starting TCP login server on port "+QString().setNum(loginPort)+" ...");
         if (!tcpServer->listen(QHostAddress::Any,loginPort))
         {
-            logStatusMessage("TCP: Unable to start server on port "+QString().setNum(loginPort));
+            logStatusMessage("TCP: Unable to start server on port "+QString().setNum(loginPort)+": "+tcpServer->errorString());
             stopServer();
             return;
         }
