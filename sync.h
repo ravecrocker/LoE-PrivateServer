@@ -28,7 +28,7 @@ public:
     explicit Sync(QObject* parent = 0);
     void startSync();
     void stopSync();
-    void sendSyncMessage(Player& source, Player& dest);
+    void sendSyncMessage(Player *source, Player *dest);
 
 public slots:
     void doSync();

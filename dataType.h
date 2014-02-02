@@ -1,6 +1,8 @@
 #ifndef DATATYPE_H
 #define DATATYPE_H
 
+#include <qglobal.h>
+
 class UVector
 {
 public:
@@ -27,5 +29,24 @@ public:
     float w;
 };
 typedef struct UQuaternion UQuaternion;
+
+class WearableItem
+{
+public:
+    WearableItem();
+
+public:
+    quint8 index;
+    quint32 id;
+};
+
+class InventoryItem : public WearableItem
+{
+public:
+    InventoryItem();
+
+public:
+    quint32 amount;
+};
 
 #endif // DATATYPE_H

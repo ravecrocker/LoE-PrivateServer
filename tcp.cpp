@@ -222,8 +222,8 @@ void Widget::tcpProcessData(QByteArray data, QTcpSocket* socket)
             logMessage(QString("Passhash : ")+passhash);
 
             // Add player to the players list
-            Player player = Player::findPlayer(tcpPlayers, username);
-            if (player.name != username) // Not found, create a new player
+            Player* player = Player::findPlayer(tcpPlayers, username);
+            if (player->name != username) // Not found, create a new player
             {
                 // Check max registered number
                 if (tcpPlayers.size() >= maxRegistered)
@@ -235,11 +235,11 @@ void Widget::tcpProcessData(QByteArray data, QTcpSocket* socket)
                 else
                 {
                     logMessage("TCP: Creating user in database");
-                    Player newPlayer;
-                    newPlayer.name = username;
-                    newPlayer.passhash = passhash;
-                    newPlayer.IP = socket->peerAddress().toString();
-                    newPlayer.connected = false; // The connection checks are done by the game servers
+                    Player* newPlayer = new Player;
+                    newPlayer->name = username;
+                    newPlayer->passhash = passhash;
+                    newPlayer->IP = socket->peerAddress().toString();
+                    newPlayer->connected = false; // The connection checks are done by the game servers
 
                     tcpPlayers << newPlayer;
                     if (!Player::savePlayers(tcpPlayers))
@@ -248,7 +248,7 @@ void Widget::tcpProcessData(QByteArray data, QTcpSocket* socket)
             }
             else // Found, compare passhashes, check if already connected
             {
-                if (player.passhash != passhash) // Bad password
+                if (player->passhash != passhash) // Bad password
                 {
                     logMessage("TCP: Login failed, wrong password");
                     socket->write(fileBadPassword.readAll());
@@ -279,10 +279,10 @@ void Widget::tcpProcessData(QByteArray data, QTcpSocket* socket)
                     else
                     */
                     {
-                        player.reset();
-                        player.IP = socket->peerAddress().toString();
-                        player.lastPingTime = timestampNow();
-                        player.connected = true;
+                        player->reset();
+                        player->IP = socket->peerAddress().toString();
+                        player->lastPingTime = timestampNow();
+                        player->connected = true;
                     }
                 }
             }

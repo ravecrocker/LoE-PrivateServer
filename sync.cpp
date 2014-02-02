@@ -34,20 +34,20 @@ void Sync::doSync()
     }
 }
 
-void Sync::sendSyncMessage(Player& source, Player& dest)
+void Sync::sendSyncMessage(Player* source, Player* dest)
 {
     QByteArray data(2,0);
-    data[0] = source.pony.netviewId;
-    data[1] = source.pony.netviewId>>8;
+    data[0] = source->pony.netviewId;
+    data[1] = source->pony.netviewId>>8;
     data += floatToData(timestampNow());
     //data += rangedSingleToData(source.pony.pos.x, XMIN, XMAX, PosRSSize);
     //data += rangedSingleToData(source.pony.pos.y, YMIN, YMAX, PosRSSize);
     //data += rangedSingleToData(source.pony.pos.z, ZMIN, ZMAX, PosRSSize);
-    data += floatToData(source.pony.pos.x);
-    data += floatToData(source.pony.pos.y);
-    data += floatToData(source.pony.pos.z);
+    data += floatToData(source->pony.pos.x);
+    data += floatToData(source->pony.pos.y);
+    data += floatToData(source->pony.pos.z);
     //data += rangedSingleToData(source.pony.rot.x, ROTMIN, ROTMAX, RotRSSize);
-    data += rangedSingleToData(source.pony.rot.y, ROTMIN, ROTMAX, RotRSSize);
+    data += rangedSingleToData(source->pony.rot.y, ROTMIN, ROTMAX, RotRSSize);
     //data += rangedSingleToData(source.pony.rot.z, ROTMIN, ROTMAX, RotRSSize);
     sendMessage(dest, MsgUserUnreliable, data);
 

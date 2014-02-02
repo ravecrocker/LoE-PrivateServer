@@ -113,7 +113,7 @@ UserReliableOrdered3 = 0x45,
 UserReliableOrdered30 = 0x60,
 UserReliableOrdered31 = 0x61,
 UserReliableOrdered32 = 0x62,
-UserReliableOrdered4 = 70,
+UserReliableOrdered4 = 0x46,
 UserReliableOrdered5 = 0x47,
 UserReliableOrdered6 = 0x48,
 UserReliableOrdered7 = 0x49,
@@ -1779,4 +1779,37 @@ Server replies with worn items, stats, ponyData (and a 01 to sync pos)
 Client sends finished instantiate for our player
 Server replies with stats, ponyData, inventory, skills, stats again (?) (and a 01 to sync pos)
 
-=> If the client resends a message before our ACK can reach him, he's a faggot and we'll end up processing the message twice.
+=> We need a queue of missing packets, and if we get a retransmission, check if it's a missing one.
+==> Done (Player::udpRecvMissing). Should work.
+
+=> TODO: Add reliable udp send. If we don't get an ACK in the next 3s, resend.
+==> Have a queue of reliable messages sent.
+==> Have a timer with the message as argument. If the message is still in the queue after X milliseconds (X=3000 ?), resend the message.
+==> When we get an ACK for a message in the queue, remove the message and send the next one.
+===> If there are multiple messages waiting in the queue, group them and send them all at once.
+
+=> TODO: UDP message grouping
+==> When enabled, have a 100ms udpGroupingTimer timer.
+==> When adding a message, stop udpGroupingTimer, add the message to the channel's buffer, and restart udpGroupingTimer
+==> When udpGroupingTimer times out, enqueue and clear the buffer, then start the reliability timer (3000ms)
+==> When adding, if the buffer would be > 1024, call udpGroupingTimer's callback manually, add to the buffer, and restart udpGroupingTimer.
+
+=> TODO: Use the current /mlp/ server by default for "Online" instead of tux3.bounceme.net
+
+=> Right now we're adding the timer in sendMessage. Check message.h for the timeout define.
+
+=> The ACK is 1/2 of the real seq value.
+=> When we get an ACK, for each ACK'd message in the ack message
+==> Parse the messages in the first grouped message
+===> For each message that matches the ACK, remove it from the grouped message (with left and mid)
+
+=> If after removing the ACK'd messages, the first message isn't empty, restart the timer
+=> If the first is empty, remove it.
+=> Now if there's another message in the queue, send it and restart the timer
+
+=> If you get weird casting error, remember that to reinterpret a signed X bit as an unsigned X bit, you must cast to (unsignedX_t)
+=> If you cast to a larger value like (unsigned2X_t) you'll get an unexpected result. 
+
+=> TODO: Fix typos and default option values
+=> TODO: Fix segmentation faults in receiveMessage
+=> TODO: Fix the cloudsdale->canterlot vortex again. Make it way higher.
