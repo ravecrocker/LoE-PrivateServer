@@ -9,6 +9,9 @@
 #include <sys/time.h>
 #endif
 
+// File-global game-entering mutex (to prevent multiple instantiates)
+static QMutex levelLoadMutex;
+
 float timestampNow()
 {
     time_t newtime;
@@ -251,17 +254,32 @@ void receiveMessage(Player& player)
     {
         quint16 seq = msg[1] + (msg[2]<<8);
         quint8 channel = ((unsigned char)msg[0])-MsgUserReliableOrdered1;
-        if (seq < player.udpRecvSequenceNumbers[channel])
+        if (seq <= player.udpRecvSequenceNumbers[channel] && player.udpRecvSequenceNumbers[channel]!=0)
         {
-            win.logMessage("UDP: Discarding double message from "+player.IP+":"+QString().setNum(player.port));
+            win.logMessage("UDP: Discarding double message (-"+QString().setNum(player.udpRecvSequenceNumbers[channel]-seq)
+                           +") from "+player.IP+":"+QString().setNum(player.port));
+            win.logMessage("UDP: Message was : "+QString(player.receivedDatas->left(msgSize).toHex().data()));
             *player.receivedDatas = player.receivedDatas->right(player.receivedDatas->size() - msgSize);
+
+            if ((unsigned char)msg[0] >= MsgUserReliableOrdered1 && (unsigned char)msg[0] <= MsgUserReliableOrdered32) // UserReliableOrdered
+            {
+                win.logMessage("UDP: ACKing discarded message");
+                QByteArray data(3,0);
+                data[0] = msg[0]; // ack type
+                data[1] = msg[1]/2; // seq
+                data[2] = msg[2]/2; // seq
+                sendMessage(player, MsgAcknowledge, data);
+            }
+
             //if (player.receivedDatas->size())
             //    receiveMessage(player);
             return; // We already have this packet.
         }
         else if (seq > player.udpRecvSequenceNumbers[channel]+1)
         {
-            win.logMessage("UDP: Unordered message received from "+QString().setNum(player.pony.netviewId));
+            win.logMessage("UDP: Unordered message (+"+QString().setNum(seq-player.udpRecvSequenceNumbers[channel])
+                           +") received from "+QString().setNum(player.pony.netviewId));
+            player.udpRecvSequenceNumbers[channel] = seq;
         }
         else
             player.udpRecvSequenceNumbers[channel] = seq;
@@ -364,11 +382,11 @@ void receiveMessage(Player& player)
 
         if ((unsigned char)msg[0]==MsgUserReliableOrdered6 && (unsigned char)msg[3]==8 && (unsigned char)msg[4]==0 && (unsigned char)msg[5]==6 ) // Prefab (player/mobs) list instantiate request
         {
-            sendEntitiesList(player);
+            sendEntitiesList(player); // Called when the level was loaded on the client side
         }
         else if ((unsigned char)msg[0]==MsgUserReliableOrdered6 && (unsigned char)msg[3]==0x18 && (unsigned char)msg[4]==0 && (unsigned char)msg[5]==8 ) // Player game info (inv/ponyData/...) request
         {
-            sendPonySave(player, msg);
+            sendPonySave(player, msg); // Called when instantiate finished on the client side
         }
         else if ((unsigned char)msg[0]==MsgUserReliableOrdered4 && (unsigned char)msg[5]==0xf) // Chat
         {
@@ -451,8 +469,10 @@ void receiveMessage(Player& player)
         else
         {
             // Display data
-            win.logMessage("UDP: Unknow data received : "+QString(player.receivedDatas->toHex().data()));
-            player.receivedDatas->clear();
+            win.logMessage("UDP: Unknown data received : "+QString(player.receivedDatas->toHex().data()));
+            quint32 unknownMsgSize =  (msg[3] +(msg[4]<<8)) / 8;
+            *player.receivedDatas = player.receivedDatas->mid(unknownMsgSize+5);
+            win.logMessage("UDP: Next message will be : "+QString(player.receivedDatas->toHex().data()));
             msgSize=0;
         }
     }
@@ -466,7 +486,8 @@ void receiveMessage(Player& player)
         // Display data
         win.logMessage("Data received (UDP) (hex) : ");
         win.logMessage(QString(player.receivedDatas->toHex().data()));
-        player.receivedDatas->clear();
+        quint32 unknownMsgSize =  (msg[3] +(msg[4]<<8)) / 8;
+        *player.receivedDatas = player.receivedDatas->mid(unknownMsgSize+5);
         msgSize=0;
     }
 
@@ -630,20 +651,27 @@ void sendEntitiesList(Player& player)
 
     // Loading finished, sending entities list
     Player &refresh = Player::findPlayer(win.udpPlayers, player.IP, player.port);
-    win.logMessage(QString("UDP: Sending entities list to ")+QString().setNum(refresh.pony.netviewId));
     if (refresh.IP == "")
     {
-        win.logMessage("Can't refresh player to remove loading status, aborting");
+        win.logMessage("Can't refresh player to send entities list, aborting");
         return;
     }
-    if (refresh.inGame!=1) // Only instantiate once
-        return;
 
-    Scene* scene = findScene(refresh.pony.sceneName);
+    if (refresh.inGame!=1) // Only instantiate once
+    {
+        win.logMessage(QString("UDP: Entities list already sent to ")+QString().setNum(refresh.pony.netviewId));
+        return;
+    }
+    win.logMessage(QString("UDP: Sending entities list to ")+QString().setNum(refresh.pony.netviewId));
+    Scene* scene = findScene(refresh.pony.sceneName); // Spawn all the players on the client
     for (int i=0; i<scene->players.size(); i++)
         sendNetviewInstantiate(scene->players[i], refresh);
 
-    refresh.inGame = 2;
+    // Send stats of the client's pony
+    sendSetMaxStatRPC(player, 0, 100);
+    sendSetStatRPC(player, 0, 100);
+    sendSetMaxStatRPC(player, 1, 100);
+    sendSetStatRPC(player, 1, 100);
 }
 
 void sendPonySave(Player& player, QByteArray msg)
@@ -653,6 +681,11 @@ void sendPonySave(Player& player, QByteArray msg)
 
     if (netviewId == player.pony.netviewId)
     {
+        /*if (refresh.inGame!=1) // Only instantiate once
+        {
+            win.logMessage(QString("UDP: Pony save of ")+QString().setNum(netviewId)+" already sent");
+            return;
+        }*/
         // Send the entities list if the game is starting (sends RPC calls to the view with id 0085 (the PlayerBase))
         win.logMessage(QString("UDP: Sending pony save to ")+QString().setNum(netviewId));
 
@@ -693,10 +726,21 @@ void sendPonySave(Player& player, QByteArray msg)
         sendSetMaxStatRPC(player, 0, 100);
         sendSetStatRPC(player, 1, 100);
         sendSetMaxStatRPC(player, 1, 100);
+
+        refresh.inGame = 2;
     }
     else if (!refresh.IP.isEmpty())
     {
         win.logMessage(QString("UDP: Sending pony save for ")+QString().setNum(refresh.pony.netviewId)+" to "+QString().setNum(player.pony.netviewId));
+
+        QList<WearableItem> worn;
+        sendWornRPC(player, worn); // Wear nothing, until we implement it
+
+        sendSetMaxStatRPC(player, 0, 100);
+        sendSetStatRPC(player, 0, 100);
+        sendSetMaxStatRPC(player, 1, 100);
+        sendSetStatRPC(player, 1, 100);
+
         sendPonyData(refresh, player);
     }
     else
@@ -832,6 +876,24 @@ void sendSetMaxStatRPC(Player& player, quint8 statId, float value)
     sendMessage(player, MsgUserReliableOrdered18, data);
 }
 
+void sendWornRPC(Player& player, QList<WearableItem> worn)
+{
+    QByteArray data(3, 4);
+    data[0] = player.pony.netviewId;
+    data[1] = player.pony.netviewId>>8;
+    data += 32; // Max Worn Items
+    data += worn.size();
+    for (int i=0;i<worn.size();i++)
+    {
+        data += worn[i].index;
+        data += worn[i].id;
+        data += worn[i].id>>8;
+        data += worn[i].id>>16;
+        data += worn[i].id>>24;
+    }
+    sendMessage(player, MsgUserReliableOrdered18, data);
+}
+
 void sendInventoryRPC(Player& player, QList<InventoryItem> inv, QList<WearableItem> worn, quint32 nBits)
 {
     QByteArray data(5, 5);
@@ -940,6 +1002,10 @@ void sendLoadSceneRPC(Player &player, QString sceneName) // Loads a scene and se
     }
 
     // Update scene players
+    win.logMessage("sendLoadSceneRPC: locking");
+    levelLoadMutex.lock();
+    refresh.pony.pos = vortex.destPos;
+    refresh.pony.sceneName = sceneName;
     Player::removePlayer(&(oldScene->players), refresh.IP, refresh.port);
     if (oldScene->name != sceneName)
     {
@@ -952,13 +1018,13 @@ void sendLoadSceneRPC(Player &player, QString sceneName) // Loads a scene and se
             if (scene->players[i].inGame==2)
                 sendNetviewInstantiate(refresh, scene->players[i]);
     }
-    refresh.pony.pos = vortex.destPos;
-    refresh.pony.sceneName = sceneName;
     scene->players << refresh;
 
     QByteArray data(1,5);
     data += stringToData(sceneName);
     sendMessage(refresh,MsgUserReliableOrdered6,data); // Sends a 48
+    win.logMessage("sendLoadSceneRPC: unlocking");
+    levelLoadMutex.unlock();
 }
 
 void sendLoadSceneRPC(Player &player, QString sceneName, UVector pos) // Loads a scene and send to the given pos
@@ -986,6 +1052,10 @@ void sendLoadSceneRPC(Player &player, QString sceneName, UVector pos) // Loads a
     }
 
     // Update scene players
+    win.logMessage("sendLoadSceneRPC pos: locking");
+    levelLoadMutex.lock();
+    refresh.pony.pos = pos;
+    refresh.pony.sceneName = sceneName;
     Player::removePlayer(&(oldScene->players), refresh.IP, refresh.port);
     if (oldScene->name != sceneName)
     {
@@ -995,16 +1065,16 @@ void sendLoadSceneRPC(Player &player, QString sceneName, UVector pos) // Loads a
 
         // Send instantiate to the players of the new scene
         for (int i=0; i<scene->players.size(); i++)
-            if (scene->players[i].inGame==2 || scene->players[i].inGame==1)
+            if (scene->players[i].inGame==2)
                 sendNetviewInstantiate(refresh, scene->players[i]);
     }
-    refresh.pony.pos = pos;
-    refresh.pony.sceneName = sceneName;
     scene->players << refresh;
 
     QByteArray data(1,5);
     data += stringToData(sceneName);
     sendMessage(refresh,MsgUserReliableOrdered6,data); // Sends a 48
+    win.logMessage("sendLoadSceneRPC pos: unlocking");
+    levelLoadMutex.unlock();
 }
 
 void sendChatMessage(Player& player, QString message, QString author)

@@ -34,6 +34,7 @@ versionresponse:
 1344
 0
 
+=> Accept: */*
 => Pour login reussi il faut response_5 comme ça (les ###TRUC###, c'est a remplacer par une valeur correcte)
 [0]:string		authresponse:
 [1]:string		true
@@ -1290,8 +1291,8 @@ Syncing 2 to 1
 48 0800 6001 010a506c6179657242617365 3700 2700 c425d94122b195bfaf1872c20000000049277cbd00000000b3837f3f
 48 0a00 6001 010a506c6179657242617365 7000 5c00 7f45fd41be2195bf3e0e6ac200000000fd987ebf000000000f13d63d // Our client
 43 : Server sends a 54 32 to 7300
-45 : Server sends more 54s // Set stats immediatly (of 7000 (us) and 7300
-54 0200 4000 7300 32018de0fc41
+45 : Server sends more 54s // Set stats immediatly of 7000 (us). Also update stat n°01 of 7300
+54 0200 4000 7300 32018de0fc41 // 7300 was probably slowly healing, that'd be why we get a stat update every couple packets
 54 0400 4000 7000 33000000c842
 54 0600 4000 7000 32000000c842
 54 0800 4000 7000 33010000c842
@@ -1300,23 +1301,23 @@ Syncing 2 to 1
 54 0e00 4000 7000 32000000c842
 54 1000 4000 7000 33010000fa42
 54 1200 4000 7000 32010000fa42
-47 : Server sends more 54s // Set stats of 7300
+47 : Server sends more 54s // Update stat n°01 of 7300
 54 1400 4000 7300 3201848efe41
 54 1600 4000 7300 32014e290042
-51 : Client sends a 4D and a 48 08 (ACK'd in 58 !) // Send 48 and 4D about id 7300 (request ponyData?)
+51 : Client sends a 4D and a 48 08 (ACK'd in 58 !) // Send 48 and 4D about id 7300 (request savegame?)
 4d 0000 1800 7300 04
 48 0400 1800 08 7300
-52 : Server sends another 54 // Set stats of 7300
+52 : Server sends another 54 // Update stat n°01 of 7300
 54 1800 4000 7300 3201e2320142
-54 : Client sends another 4d and 48 08 // Send 48 and 4D about id 3700 (request ponyData?)
+54 : Client sends another 4d and 48 08 // Send 48 and 4D about id 3700 (request savegame)
 4d 0200 1800 3700 04
 48 0600 1800 08 3700
-55 : Server sends another 54 // Set stat of 7300
+55 : Server sends another 54 //  Update stat n°01 of 7300
 54 1a00 4000 7300 3201c5320242
-57 : Client sends another 48 // Send 48 about id 7000
+57 : Client sends another 48 // Send 48 08 (finished instantiate) about id 7000 (us)
 48 0800 1800 08 7000
 58 : Server acks the 4d and the 48 from 51 (that were about it 7300):
-59 : Server // Set stat and inventory of 7300, send ponyCode, 
+59 : Server // Send savegame of 7300
 54 1c00 4000 7300 320117200342
 54 1e00 a000 7300 04200307150000000a3a0000001e3b000000
 54 2000 4000 7300 33000000c842
@@ -1324,20 +1325,18 @@ Syncing 2 to 1
 54 2400 4000 7300 33010000c842
 54 2600 4000 7300 320117200342
 54 2800 0002 7300 c8 115a6f726f61726b20426c61636b686f6c6502034200000000000000000000002800ffff9fb6000000ff140092958e03000500010000003322823fe477
-01 0c00 6800 7300 eb98c34660814449ac7c7c
 61 : Server
-86 0000 3000 4d0100480300 // Ack the 4D and the 48 from packet 54
-54 2a00 4000 7300 32016e280442
+86 0000 3000 4d0100480300 // Ack the 4D and the 48 from packet 54 (that was about 3700), send savegame of 3700
+54 2a00 4000 7300 32016e280442 //  Update stat n°01 of 7300
 54 2c00 2800 3700 04 2000
 54 2e00 4000 3700 33000000c842
 54 3000 4000 3700 32000000c842
-54 3200 4000 370033010000c842
+54 3200 4000 3700 33010000c842
 54 3400 4000 3700 32010000c842
 54 3600 c801 3700 c8 0a53696c76657220437574 0300 6400 000001000000000000000015ff2300ff6f6b69ff0000bb8f0064000100000000004356873fdf9f
-01 0e00 6800 7300 0799c34660814449ac7c7a
 63 : Client
-48 0800 1800 08 7000
-64 : Server
+48 0800 1800 08 7000 // Send 48 08 (finished instantiate) about id 7000 (us)
+64 : Server // RETRANSMISSION of packets 59 and 61 (same sequence numbers)
 54 1c00 4000 7300 320117200342
 54 1e00 a000 7300 04200307150000000a3a0000001e3b000000
 54 2000 4000 7300 33000000c842
@@ -1360,9 +1359,7 @@ Syncing 2 to 1
 54 4000 4000 7000 33010000fa42
 54 4200 4000 7000 32010000fa42
 54 4400 c801 7000 c8 0a4d7564204f72616e676501034b000000000000000000000080c6ff9fd4fff2ff80df80ff85bf3401000900010000002e55693fcf69
-68 : Server
-01 1000 7800 3700 3b99c34663810e49e67c7f6b7f
-01 1200 6800 7300 4099c34660814449ac7c78
+68 : Server sends sync messages
 70 : Server
 54 4600 4000 7300 320193320d42
 54 4800 5800 7000 050c0020000a000000
@@ -1371,29 +1368,22 @@ Syncing 2 to 1
 54 4e00 4000 7000 33000000c842
 54 5000 4000 7000 32010000c842
 54 5200 4000 7000 33010000c842
-72 : Server
+72 : Server	// From now on, just update stat n°01 of 7300
 54 5400 4000 7300 32013f340e42
 74 : Server
 54 5600 4000 7300 32019c320f42
-01 1400 7800 3700 7399c34663810e49e67c7f657f
-01 1600 6800 7300 9299c34660814449ac7c76
 76 : Server
 54 5800 4000 7300 32019e091042
 78 : Server
 54 5a00 4000 7300 3201af091142
-01 1800 7800 37008e99c34663810e49e67c7f637f
 80 : Server
 54 5c00 4000 7300 320192091242
-01 1a00 7800 3700 a999c34663810e49e67c7f607f
-01 1c00 6800 7300 ae99c34660814449ac7c76
 83 : Server
 54 5e00 4000 7300 3201fbea1242
 85 : Server
 54 6000 4000 7300 3201cbea1342
-01 1e00 7800 3700 c499c34663810e49e67c7f5d7f
 87 : Server
 54 6200 4000 7300 3201cbea1442
-01 2000 7800 3700 c499c34663810e49e67c7f5d7f
 ...
 
 => The base64 ponyData ponycode of ML KJ is v/9b/beD4f+f/v3jAwAADAAAgAsAACDylMAfMzPFH3PxyQQ=
@@ -1777,3 +1767,16 @@ public class SharedIDs
 
 => When we load a room, we switch inGame to 1. When we get 48 06, we send the instantiates.
 => When we get 48 08, if inGame==1, we send the savegame and immediatly switch inGame to 2. If we get another 48 08, something's probably wrong.
+
+=> Load room sequence :
+Server sends load room
+Client sends load room finished
+Server sends instantiates and stats of current player
+
+Client sends finished instantiate for another player
+Server replies with worn items, stats, ponyData (and a 01 to sync pos)
+
+Client sends finished instantiate for our player
+Server replies with stats, ponyData, inventory, skills, stats again (?) (and a 01 to sync pos)
+
+=> Holly hot dicks from hell. It works.
