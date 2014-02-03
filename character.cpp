@@ -276,7 +276,12 @@ void Player::disconnectPlayerCleanup(Player* player)
 void Player::udpResendLast()
 {
     win.logMessage("udpResendLast locking");
-    udpSendReliableMutex.lock();
+    if (!udpSendReliableMutex.tryLock())
+    {
+        win.logMessage("udpResendLast failed to lock.");
+        return; // Avoid deadlock if sendMessage just locked but didn't have the time to stop the timers
+    }
+    //udpSendReliableMutex.lock();
     QByteArray msg = udpSendReliableQueue.first();
     //win.logMessage("Resending message : "+QString(msg.toHex().data()));
 
@@ -302,7 +307,12 @@ void Player::udpResendLast()
 void Player::udpDelayedSend()
 {
     win.logMessage("udpDelayedSend locking");
-    udpSendReliableMutex.lock();
+    if (!udpSendReliableMutex.tryLock())
+    {
+        win.logMessage("udpDelayedSend failed to lock.");
+        return; // Avoid deadlock if sendMessage just locked but didn't have the time to stop the timers
+    }
+    //udpSendReliableMutex.lock();
     //win.logMessage("Sending delayed grouped message : "+QString(udpSendReliableGroupBuffer.toHex()));
 
     // Move the grouped message to the reliable queue
