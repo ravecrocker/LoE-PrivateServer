@@ -10,6 +10,11 @@ INPUT(
 ./release\scene.o
 ./release\dataType.o
 ./release\sync.o
+./release\receiveMessage.o
+./release\sendMessage.o
+./release\messageUtils.o
+./release\serverCommands.o
 ./release\moc_widget.o
+./release\moc_character.o
 ./release\moc_sync.o
 );

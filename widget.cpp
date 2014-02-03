@@ -41,6 +41,7 @@ void Widget::logMessage(QString msg)
 
 void Widget::startServer()
 {
+    logStatusMessage("Private server v0.4.0");
     lastNetviewId=0;
     lastId=0;
 
@@ -235,5 +236,9 @@ Widget::~Widget()
     delete ui;
 
     // We freed everything that was important, so don't waste time in atexits
+#ifdef WIN32
+    _exit(EXIT_SUCCESS);
+#else
     quick_exit(EXIT_SUCCESS);
+#endif
 }
