@@ -17,6 +17,7 @@ PrivateServ-upx/
 *.exe
 libstdc++-6.dll
 Makefile*
+.fuse_hidden*
 
 # User files
 *.user

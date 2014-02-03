@@ -3,11 +3,12 @@
 
 #include <QPair>
 #include <QMutex>
+#include <QByteArray>
 #include "dataType.h"
 
-// Resend the udp message if we didn't get an ACK before this timeouts
+// Resend the udp message if we didn't get an ACK before this timeouts (3000 is reasonable)
 #define UDP_RESEND_TIMEOUT 3000
-// If we send multiple reliable messages before this timeouts, group them before sending.
+// If we send multiple reliable messages before this timeouts, group them before sending. (100 is reasonable)
 #define UDP_GROUPING_TIMEOUT 100
 
 enum MessageTypes {

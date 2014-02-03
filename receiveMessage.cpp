@@ -1,0 +1,359 @@
+#include "message.h"
+#include "character.h"
+#include "widget.h"
+
+void receiveMessage(Player* player)
+{
+    QByteArray msg = *(player->receivedDatas);
+    int msgSize=5 + (((unsigned char)msg[3]) + (((unsigned char)msg[4]) << 8))/8;
+
+    // Check the sequence (seq) of the received message
+    if ((unsigned char)msg[0] >= MsgUserReliableOrdered1 && (unsigned char)msg[0] <= MsgUserReliableOrdered32)
+    {
+        quint16 seq = msg[1] + (msg[2]<<8);
+        quint8 channel = ((unsigned char)msg[0])-MsgUserReliableOrdered1;
+        if (seq <= player->udpRecvSequenceNumbers[channel] && player->udpRecvSequenceNumbers[channel]!=0)
+        {
+            // If this is a missing packet, accept it
+            MessageHead missingMsg;
+            missingMsg.channel = channel;
+            missingMsg.seq = seq;
+            if (player->udpRecvMissing.contains(missingMsg))
+            {
+                win.logMessage("UDP: Processing retransmission (-"+QString().setNum(player->udpRecvSequenceNumbers[channel]-seq)
+                               +") from "+QString().setNum(player->pony.netviewId));
+                for (int i=0; i<player->udpRecvMissing.size(); i++)
+                    if (player->udpRecvMissing[i] == missingMsg)
+                        player->udpRecvMissing.remove(i);
+            }
+            else
+            {
+                // We already processed this packet, we should discard it
+                win.logMessage("UDP: Discarding double message (-"+QString().setNum(player->udpRecvSequenceNumbers[channel]-seq)
+                               +") from "+QString().setNum(player->pony.netviewId));
+                //win.logMessage("UDP: Message was : "+QString(player->receivedDatas->left(msgSize).toHex().data()));
+                *player->receivedDatas = player->receivedDatas->right(player->receivedDatas->size() - msgSize);
+
+                // Ack if needed, so that the client knows to move on already.
+                if ((unsigned char)msg[0] >= MsgUserReliableOrdered1 && (unsigned char)msg[0] <= MsgUserReliableOrdered32) // UserReliableOrdered
+                {
+                    //win.logMessage("UDP: ACKing discarded message");
+                    QByteArray data(3,0);
+                    data[0] = msg[0]; // ack type
+                    data[1] = msg[1]/2; // seq
+                    data[2] = msg[2]/2; // seq
+                    sendMessage(player, MsgAcknowledge, data);
+                }
+                return; // We already have this packet.
+            }
+        }
+        else if (seq > player->udpRecvSequenceNumbers[channel]+2) // If a message was skipped, keep going.
+        {
+            win.logMessage("UDP: Unordered message (+"+QString().setNum(seq-player->udpRecvSequenceNumbers[channel])
+                           +") received from "+QString().setNum(player->pony.netviewId));
+            player->udpRecvSequenceNumbers[channel] = seq;
+
+            // Mark the packets we skipped as missing
+            for (int i=player->udpRecvSequenceNumbers[channel]+2; i<seq; i+=2)
+            {
+                MessageHead missing;
+                missing.channel = channel;
+                missing.seq = i;
+                player->udpRecvMissing.append(missing);
+            }
+        }
+        else
+        {
+            //win.logMessage("UDP: Received message (="+QString().setNum(seq)
+            //               +") from "+QString().setNum(player->pony.netviewId));
+            player->udpRecvSequenceNumbers[channel] = seq;
+        }
+    }
+
+    // Process the received message
+    if ((unsigned char)msg[0] == MsgPing) // Ping
+    {
+        //win.logMessage("UDP: Ping received from "+player->IP+":"+QString().setNum(player->port)
+        //        +" ("+QString().setNum((timestampNow() - player->lastPingTime))+"s)");
+        player->lastPingNumber = msg[5];
+        player->lastPingTime = timestampNow();
+        sendMessage(player,MsgPong);
+    }
+    else if ((unsigned char)msg[0] == MsgPong) // Pong
+    {
+        win.logMessage("UDP: Pong received");
+    }
+    else if ((unsigned char)msg[0] == MsgConnect) // Connect SYN
+    {
+        msg.resize(18); // Supprime le message LocalHail et le Timestamp
+        msg = msg.right(13); // Supprime le Header
+
+        win.logMessage(QString("UDP: Connecting ..."));
+
+        for (int i=0; i<32; i++) // Reset sequence counters
+            player->udpSequenceNumbers[i]=0;
+
+        sendMessage(player, MsgConnectResponse, msg);
+    }
+    else if ((unsigned char)msg[0] == MsgConnectionEstablished) // Connect ACK
+    {
+        win.logMessage("UDP: Connected to client");
+        player->connected=true;
+        for (int i=0; i<32; i++) // Reset sequence counters
+            player->udpSequenceNumbers[i]=0;
+
+        // Start game
+        win.logMessage(QString("UDP: Starting game"));
+
+        // Set local player id
+        win.lastId++;
+        win.lastNetviewId++;
+        player->pony.id = win.lastId;
+        player->pony.netviewId = win.lastNetviewId;
+
+        win.logMessage("UDP: Set id request : " + QString().setNum(player->pony.id) + "/" + QString().setNum(player->pony.netviewId));
+
+        // Set player Id request
+        QByteArray id(3,0);
+        id[0]=4;
+        id[1]=player->pony.id;
+        id[2]=player->pony.id>>8;
+        sendMessage(player,MsgUserReliableOrdered6,id); // Sends a 48
+
+        // Load Characters screen requets
+        QByteArray data(1,5);
+        data += stringToData("Characters");
+        sendMessage(player,MsgUserReliableOrdered6,data); // Sends a 48
+    }
+    else if ((unsigned char)msg[0] == MsgAcknowledge) // Acknowledge
+    {
+        //win.logMessage("ACK message : "+QString(msg.toHex()));
+        int nAcks = ((quint8)msg[3] + ((quint8)msg[4]<<8)) / 24; // Number of messages ACK'd by this message
+        if (nAcks)
+        {
+            // Extract the heads (channel and seq) of the ack'd messages
+            QVector<MessageHead> acks;
+            for (int i=0; i<nAcks; i++)
+            {
+                MessageHead head;
+                head.channel = msg[3*i+5];
+                head.seq = (msg[3*i+6] + (msg[3*i+7]<<8))*2;
+                // If that's not a supported reliable message, there's no point in checking
+                if (head.channel >= MsgUserReliableOrdered1 && head.channel <= MsgUserReliableOrdered32)
+                    acks << head;
+            }
+
+            // Print list of ACK'd messages
+            //if (acks.size())
+            //{
+                //QString ackMsg = "UDP: Messages acknoledged (";
+                //for (int i=0; i<acks.size(); i++)
+                //{
+                //    if (i)
+                //        ackMsg += "/";
+                //    ackMsg+=QString(QByteArray().append(acks[i].channel).toHex())+":"+QString().setNum(acks[i].seq);
+                //}
+                //ackMsg += ")";
+                //win.logMessage(ackMsg);
+            //}
+
+            if (player->udpSendReliableQueue.size() && acks.size()) // If there's nothing to check, do nothing
+            {
+                win.logMessage("receiveMessage ACK locking");
+                player->udpSendReliableMutex.lock();
+                player->udpSendReliableTimer->stop();
+                // Remove the ACK'd messages from the reliable send queue
+                QByteArray qMsg = player->udpSendReliableQueue[0];
+                //win.logMessage("About to remove ACKs from : "+QString(qMsg.toHex()));
+                for (int i=0; i<acks.size(); i++)
+                {
+                    int pos=0;
+                    while (pos < qMsg.size()) // Try to find a msg matching this ACK
+                    {
+                        quint16 seq = (quint8)qMsg[pos+1] + ((quint8)qMsg[pos+2]<<8);
+                        quint16 qMsgSize = (((quint8)qMsg[pos+3]) + (((quint8)qMsg[pos+4])<<8))/8 + 5;
+                          if ((quint16)qMsg[pos] == acks[i].channel && seq == acks[i].seq) // Remove the msg, now that it was ACK'd
+                        {
+                            //win.logMessage("Removed message : "+QString().setNum(seq)+" size is "+QString().setNum(qMsgSize));
+                            qMsg = qMsg.left(pos) + qMsg.mid(pos+qMsgSize);
+                            //win.logMessage("New message is "+QString(qMsg.toHex()));
+                        }
+                        else
+                            pos += qMsgSize;
+                    }
+                }
+
+                // Now update the reliable message queue
+                if (qMsg.isEmpty())
+                {
+                    player->udpSendReliableQueue.removeFirst(); // The whole grouped msg was ACK'd, remove it
+                    if (player->udpSendReliableQueue.size()) // If there's a next message in the queue, send it
+                    {
+                        win.logMessage("Sending next message in queue");
+                        qMsg = player->udpSendReliableQueue[0];
+                        if (win.udpSocket->writeDatagram(qMsg,QHostAddress(player->IP),player->port) != qMsg.size())
+                        {
+                            win.logMessage("UDP: Error sending last message");
+                            win.logStatusMessage("Restarting UDP server ...");
+                            win.udpSocket->close();
+                            if (!win.udpSocket->bind(win.gamePort, QUdpSocket::ReuseAddressHint|QUdpSocket::ShareAddress))
+                            {
+                                win.logStatusMessage("UDP: Unable to start server on port "+QString().setNum(win.gamePort));
+                                win.stopServer();
+                                return;
+                            }
+                        }
+                        player->udpSendReliableTimer->start();
+                        win.logMessage("receiveMessage ACK unlocking");
+                        player->udpSendReliableMutex.unlock();
+                    }
+                    else
+                    {
+                        win.logMessage("receiveMessage ACK unlocking");
+                        player->udpSendReliableMutex.unlock();
+                    }
+                }
+                else
+                {
+                    player->udpSendReliableQueue[0] = qMsg;
+                    player->udpSendReliableTimer->start(); // We're still waiting for some msgs to get ACK'd
+                    win.logMessage("receiveMessage ACK unlocking");
+                    player->udpSendReliableMutex.unlock();
+                }
+
+            }
+        }
+    }
+    else if ((unsigned char)msg[0] == MsgDisconnect) // Disconnect
+    {
+        win.logMessage("UDP: Client disconnected");
+        Player::disconnectPlayerCleanup(player); // Save game and remove the player
+
+        return; // We can't use Player& player anymore, it referes to free'd memory.
+    }
+    else if ((unsigned char)msg[0] >= MsgUserReliableOrdered1 && (unsigned char)msg[0] <= MsgUserReliableOrdered32) // UserReliableOrdered
+    {
+        //win.logMessage("UDP: Data received (hex) : ");
+        //win.logMessage(player->receivedDatas->toHex().constData());
+
+        QByteArray data(3,0);
+        data[0] = msg[0]; // ack type
+        data[1] = msg[1]/2; // seq
+        data[2] = msg[2]/2; // seq
+        sendMessage(player, MsgAcknowledge, data);
+
+        if ((unsigned char)msg[0]==MsgUserReliableOrdered6 && (unsigned char)msg[3]==8 && (unsigned char)msg[4]==0 && (unsigned char)msg[5]==6 ) // Prefab (player/mobs) list instantiate request
+        {
+            sendEntitiesList(player); // Called when the level was loaded on the client side
+        }
+        else if ((unsigned char)msg[0]==MsgUserReliableOrdered6 && (unsigned char)msg[3]==0x18 && (unsigned char)msg[4]==0 && (unsigned char)msg[5]==8 ) // Player game info (inv/ponyData/...) request
+        {
+            sendPonySave(player, msg); // Called when instantiate finished on the client side
+        }
+        else if ((unsigned char)msg[0]==MsgUserReliableOrdered4 && (unsigned char)msg[5]==0xf) // Chat
+        {
+            QString txt = dataToString(msg.mid(7));
+            QString author = player->pony.name;
+            //win.logMessage("Chat:"+txt);
+
+            // Send to everyone
+            Scene* scene = findScene(player->pony.sceneName);
+            if (scene->name.isEmpty())
+                win.logMessage("UDP: Can't find the scene for chat message, aborting");
+            else
+                for (int i=0; i<scene->players.size(); i++)
+                    if (scene->players[i]->inGame==2 || scene->players[i]->inGame==1)
+                        sendChatMessage(scene->players[i], txt, author);
+        }
+        else if ((unsigned char)msg[0]==MsgUserReliableOrdered4 && (unsigned char)msg[5]==0x1) // Edit ponies request
+        {
+            QList<Pony> ponies = Player::loadPonies(player);
+            QByteArray ponyData = msg.right(msg.size()-10);
+            Pony pony;
+            if ((unsigned char)msg[6]==0xff && (unsigned char)msg[7]==0xff && (unsigned char)msg[8]==0xff && (unsigned char)msg[9]==0xff)
+            {
+                // Create the new pony for this player
+                pony.ponyData = ponyData;
+                pony.sceneName = "PonyVille";
+                pony.pos = findVortex(pony.sceneName, 0).destPos;
+                ponies += pony;
+            }
+            else
+            {
+                quint32 id = msg[6] +(msg[7]<<8) + (msg[8]<<16) + (msg[9]<<24);
+                ponies[id].ponyData = ponyData;
+                pony = ponies[id];
+            }
+            pony.id = player->pony.id;
+            pony.netviewId = player->pony.netviewId;
+            player->pony = pony;
+
+            Player::savePonies(player, ponies);
+
+            sendLoadSceneRPC(player, player->pony.sceneName, player->pony.pos);
+            // Send instantiate to the players of the new scene
+            Scene* scene = findScene(player->pony.sceneName);
+            for (int i=0; i<scene->players.size(); i++)
+                if (scene->players[i]->pony.netviewId!=player->pony.netviewId && scene->players[i]->inGame==2)
+                    sendNetviewInstantiate(player, scene->players[i]);
+
+            //Send the 46s init messages
+            win.logMessage(QString("UDP: Sending the 46 init messages"));
+            sendMessage(player,MsgUserReliableOrdered4,QByteArray::fromHex("141500000000")); // Sends a 46, init friends
+            sendMessage(player,MsgUserReliableOrdered4,QByteArray::fromHex("0e00000000")); // Sends a 46, init journal
+        }
+        else if ((unsigned char)msg[0]==MsgUserReliableOrdered20 && (unsigned char)msg[3]==0x18 && (unsigned char)msg[4]==0) // Vortex messages
+        {
+            if (player->inGame==2)
+            {
+                quint8 id = msg[5];
+                Vortex vortex = findVortex(player->pony.sceneName, id);
+                if (vortex.destName.isEmpty())
+                {
+                    win.logMessage("Can't find vortex "+QString().setNum(id)+" on map "+player->pony.sceneName);
+                }
+                else
+                {
+                    sendLoadSceneRPC(player, vortex.destName, vortex.destPos);
+                }
+            }
+        }
+        else if ((unsigned char)msg[0]==MsgUserReliableOrdered4 && (unsigned char)msg[5]==0x2) // Delete pony request
+        {
+            win.logMessage(QString("UDP: Deleting a character"));
+            QList<Pony> ponies = Player::loadPonies(player);
+            quint32 id = msg[6] +(msg[7]<<8) + (msg[8]<<16) + (msg[9]<<24);
+            ponies.removeAt(id);
+
+            Player::savePonies(player,ponies);
+            sendPonies(player);
+        }
+        else
+        {
+            // Display data
+            //win.logMessage("UDP: Unknown data received : "+QString(player->receivedDatas->toHex().data()));
+            quint32 unknownMsgSize =  (msg[3] +(msg[4]<<8)) / 8;
+            *player->receivedDatas = player->receivedDatas->mid(unknownMsgSize+5);
+            //win.logMessage("UDP: Next message will be : "+QString(player->receivedDatas->toHex().data()));
+            msgSize=0;
+        }
+    }
+    else if ((unsigned char)msg[0]==MsgUserUnreliable) // Sync (position) update
+    {
+        if ((unsigned char)msg[5]==(unsigned char)player->pony.netviewId && (unsigned char)msg[6]==(unsigned char)player->pony.netviewId>>8)
+            receiveSync(player, msg);
+    }
+    else
+    {
+        // Display data
+        //win.logMessage("Data received (UDP) (hex) : ");
+        //win.logMessage(QString(player->receivedDatas->toHex().data()));
+        quint32 unknownMsgSize =  (msg[3] +(msg[4]<<8)) / 8;
+        *player->receivedDatas = player->receivedDatas->mid(unknownMsgSize+5);
+        msgSize=0;
+    }
+
+    *player->receivedDatas = player->receivedDatas->right(player->receivedDatas->size() - msgSize);
+    if (player->receivedDatas->size())
+        receiveMessage(player);
+}

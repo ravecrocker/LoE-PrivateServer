@@ -15,12 +15,5 @@ int main(int, char**)
     win.show();
     win.startServer();
 
-    return a.exec();
+    return a.exec(); // win's dtor will quick_exit (we won't run the atexits)
 }
-
-/**
-  TODO :
-  - Reuse a disconnected player's Id
-  - If you create another pony with the same name as an existing one, overwrite the existing one
-  - Read the items in Infos.txt
-**/

@@ -20,7 +20,11 @@ SOURCES += main.cpp\
 	character.cpp \
 	scene.cpp \
 	dataType.cpp \
-	sync.cpp
+	sync.cpp \
+    receiveMessage.cpp \
+    sendMessage.cpp \
+    messageUtils.cpp \
+    serverCommands.cpp
 
 HEADERS  += widget.h \
 	character.h \
