@@ -80,7 +80,7 @@ void Widget::startServer()
         QDir vortexDir("data/vortex/");
         QStringList files = vortexDir.entryList(QDir::Files);
         int nVortex=0;
-        for (int i=0; i<files.size(); i++)
+        for (int i=0; i<files.size(); i++) // For each vortex file
         {
             Scene scene(files[i].split('.')[0]);
 
@@ -95,13 +95,13 @@ void Widget::startServer()
             QList<QByteArray> lines = data.split('\n');
             for (int j=0; j<lines.size(); j++)
             {
-                if (lines[j].size() == 0)
+                if (lines[j].size() == 0) // Skip empty lines
                     continue;
                 nVortex++;
                 Vortex vortex;
                 bool ok1, ok2, ok3, ok4;
                 QList<QByteArray> elems = lines[j].split(' ');
-                if (elems.size() != 5)
+                if (elems.size() < 5)
                 {
                     logStatusMessage("Vortex DB is corrupted. Incorrect line ("
                                     +QString().setNum(elems.size())+" elems), file " + files[i]);
@@ -110,9 +110,11 @@ void Widget::startServer()
                 }
                 vortex.id = elems[0].toInt(&ok1, 16);
                 vortex.destName = elems[1];
-                vortex.destPos.x = elems[2].toFloat(&ok2);
-                vortex.destPos.y = elems[3].toFloat(&ok3);
-                vortex.destPos.z = elems[4].toFloat(&ok4);
+                for (int j=2; j<elems.size() - 3;j++) // Concatenate the string between id and poss
+                    vortex.destName += " "+elems[j];
+                vortex.destPos.x = elems[elems.size()-3].toFloat(&ok2);
+                vortex.destPos.y = elems[elems.size()-2].toFloat(&ok3);
+                vortex.destPos.z = elems[elems.size()-1].toFloat(&ok4);
                 if (!(ok1&&ok2&&ok3&&ok4))
                 {
                     logStatusMessage("Vortex DB is corrupted. Conversion failed, file " + files[i]);

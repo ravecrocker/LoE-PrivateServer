@@ -277,8 +277,8 @@ void Player::udpResendLast()
 {
     win.logMessage("udpResendLast locking");
     udpSendReliableMutex.lock();
-    QByteArray msg = udpSendReliableQueue.first().toHex();
-    win.logMessage("Resending message : "+QString(msg.data()));
+    QByteArray msg = udpSendReliableQueue.first();
+    //win.logMessage("Resending message : "+QString(msg.toHex().data()));
 
     if (win.udpSocket->writeDatagram(msg,QHostAddress(IP),port) != msg.size())
     {
