@@ -17,6 +17,11 @@ void Widget::sendCmdLine()
         ui->log->clear();
         return;
     }
+    else if (str == "stop")
+    {
+        delete this;
+        return;
+    }
     else if (str.startsWith("setPeer"))
     {
         if (udpPlayers.size() == 1)
