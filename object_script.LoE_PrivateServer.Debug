@@ -10,6 +10,11 @@ INPUT(
 ./debug\scene.o
 ./debug\dataType.o
 ./debug\sync.o
+./debug\receiveMessage.o
+./debug\sendMessage.o
+./debug\messageUtils.o
+./debug\serverCommands.o
 ./debug\moc_widget.o
+./debug\moc_character.o
 ./debug\moc_sync.o
 );
