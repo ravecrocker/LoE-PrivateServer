@@ -256,14 +256,21 @@ void receiveMessage(Player* player)
             QString author = player->pony.name;
             //win.logMessage("Chat:"+txt);
 
-            // Send to everyone
-            Scene* scene = findScene(player->pony.sceneName);
-            if (scene->name.isEmpty())
-                win.logMessage("UDP: Can't find the scene for chat message, aborting");
+            if (txt.startsWith("/stuck") || txt.startsWith("unstuck me"))
+            {
+                sendLoadSceneRPC(player, player->pony.sceneName);
+            }
             else
-                for (int i=0; i<scene->players.size(); i++)
-                    if (scene->players[i]->inGame==2 || scene->players[i]->inGame==1)
-                        sendChatMessage(scene->players[i], txt, author);
+            {
+                // Send to everyone
+                Scene* scene = findScene(player->pony.sceneName);
+                if (scene->name.isEmpty())
+                    win.logMessage("UDP: Can't find the scene for chat message, aborting");
+                else
+                    for (int i=0; i<scene->players.size(); i++)
+                        if (scene->players[i]->inGame==2 || scene->players[i]->inGame==1)
+                            sendChatMessage(scene->players[i], txt, author);
+            }
         }
         else if ((unsigned char)msg[0]==MsgUserReliableOrdered4 && (unsigned char)msg[5]==0x1) // Edit ponies request
         {
