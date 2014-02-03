@@ -243,6 +243,8 @@ void Player::removePlayer(QList<Player*>& players, QString uIP, quint16 uport)
 
 void Player::disconnectPlayerCleanup(Player* player)
 {
+    static QMutex playerCleanupMutex;
+
     // Save the pony
     QList<Pony> ponies = loadPonies(player);
     for (int i=0; i<ponies.size(); i++)
@@ -257,14 +259,23 @@ void Player::disconnectPlayerCleanup(Player* player)
     if (scene->name.isEmpty())
         win.logMessage("UDP: Can't find scene for player cleanup");
 
+    win.logMessage("playerCleanup locking");
+    playerCleanupMutex.lock();
     removePlayer(scene->players, uIP, uPort);
     for (int i=0; i<scene->players.size(); i++)
         sendNetviewRemove(scene->players[i], player->pony.netviewId);
+    player->udpDelayedSend(); // We're about to remove the player, we can't delay the send
+    player->udpSendReliableTimer->stop();
+    player->udpSendReliableGroupTimer->stop();
     removePlayer(win.udpPlayers, uIP, uPort);
+    delete player;
+    win.logMessage("playerCleanup unlocking");
+    playerCleanupMutex.unlock();
 }
 
 void Player::udpResendLast()
 {
+    win.logMessage("udpResendLast locking");
     udpSendReliableMutex.lock();
     QByteArray msg = udpSendReliableQueue.first().toHex();
     win.logMessage("Resending message : "+QString(msg.data()));
@@ -282,12 +293,15 @@ void Player::udpResendLast()
         }
     }
 
-    udpSendReliableMutex.unlock();
     udpSendReliableTimer->start();
+
+    win.logMessage("udpResendLast unlocking");
+    udpSendReliableMutex.unlock();
 }
 
 void Player::udpDelayedSend()
 {
+    win.logMessage("udpDelayedSend locking");
     udpSendReliableMutex.lock();
     //win.logMessage("Sending delayed grouped message : "+QString(udpSendReliableGroupBuffer.toHex()));
 
@@ -314,7 +328,9 @@ void Player::udpDelayedSend()
 
     udpSendReliableGroupBuffer.clear();
 
-    udpSendReliableMutex.unlock();
     if (!udpSendReliableTimer->isActive())
         udpSendReliableTimer->start();
+
+    win.logMessage("udpDelayedSend unlocking");
+    udpSendReliableMutex.unlock();
 }

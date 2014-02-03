@@ -73,7 +73,7 @@ private:
     QTcpSocket remoteLoginSock; // Socket to the remote login server, if we use one
     QByteArray *tcpReceivedDatas;
     Player* cmdPeer; // Player selected for the server commands
-    QTimer *pingTimer;
+    QTimer* pingTimer;
     Sync sync;
 
     // Config
