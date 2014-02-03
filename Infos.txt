@@ -1812,3 +1812,5 @@ Server replies with stats, ponyData, inventory, skills, stats again (?) (and a 0
 
 => The "Local Login" option is just a direct connection to the game server (UDP) on localhost:14000
 => The connect message (with sesskey) is "830000980004504e65740f3d7a656128b18044a884450000"
+
+=> Got a deadlock : sendMessage locking, udpDelayedSend locking.

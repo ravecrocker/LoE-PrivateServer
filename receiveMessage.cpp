@@ -10,7 +10,7 @@ void receiveMessage(Player* player)
     // Check the sequence (seq) of the received message
     if ((unsigned char)msg[0] >= MsgUserReliableOrdered1 && (unsigned char)msg[0] <= MsgUserReliableOrdered32)
     {
-        quint16 seq = msg[1] + (msg[2]<<8);
+        quint16 seq = (quint8)msg[1] + ((quint8)msg[2]<<8);
         quint8 channel = ((unsigned char)msg[0])-MsgUserReliableOrdered1;
         if (seq <= player->udpRecvSequenceNumbers[channel] && player->udpRecvSequenceNumbers[channel]!=0)
         {
@@ -32,7 +32,7 @@ void receiveMessage(Player* player)
                 win.logMessage("UDP: Discarding double message (-"+QString().setNum(player->udpRecvSequenceNumbers[channel]-seq)
                                +") from "+QString().setNum(player->pony.netviewId));
                 //win.logMessage("UDP: Message was : "+QString(player->receivedDatas->left(msgSize).toHex().data()));
-                *player->receivedDatas = player->receivedDatas->right(player->receivedDatas->size() - msgSize);
+                *player->receivedDatas = player->receivedDatas->mid(msgSize);
 
                 // Ack if needed, so that the client knows to move on already.
                 if ((unsigned char)msg[0] >= MsgUserReliableOrdered1 && (unsigned char)msg[0] <= MsgUserReliableOrdered32) // UserReliableOrdered
@@ -40,11 +40,13 @@ void receiveMessage(Player* player)
                     //win.logMessage("UDP: ACKing discarded message");
                     QByteArray data(3,0);
                     data[0] = msg[0]; // ack type
-                    data[1] = msg[1]/2; // seq
-                    data[2] = msg[2]/2; // seq
+                    data[1] = ((quint8)msg[1])/2; // seq
+                    data[2] = ((quint8)msg[2])/2; // seq
                     sendMessage(player, MsgAcknowledge, data);
                 }
-                return; // We already have this packet.
+                //return; // We already have this packet.
+                if (player->receivedDatas->size())
+                    receiveMessage(player);
             }
         }
         else if (seq > player->udpRecvSequenceNumbers[channel]+2) // If a message was skipped, keep going.
@@ -238,8 +240,8 @@ void receiveMessage(Player* player)
 
         QByteArray data(3,0);
         data[0] = msg[0]; // ack type
-        data[1] = msg[1]/2; // seq
-        data[2] = msg[2]/2; // seq
+        data[1] = ((quint8)msg[1])/2; // seq
+        data[2] = ((quint8)msg[2])/2; // seq
         sendMessage(player, MsgAcknowledge, data);
 
         if ((unsigned char)msg[0]==MsgUserReliableOrdered6 && (unsigned char)msg[3]==8 && (unsigned char)msg[4]==0 && (unsigned char)msg[5]==6 ) // Prefab (player/mobs) list instantiate request
