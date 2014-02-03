@@ -24,6 +24,7 @@ Some important features are still lacking at the moment :
 You don't need any of those commands to play, but they might be usefull.
 setPeer is used to select a client. Most commands will only act on the selected client.
 For example if you're stuck, do setPeer with your IP and port, then do for example "load PonyVille".
+- stop : Stops the server and exit.
 - clear : Clears the server's log.
 - listPeers : Give the list of all the clients (= other players) connected
 - setPeer : If there's only 1 client, select him for the other commands. If there's more than 1, use "setPeer IP port".
@@ -50,6 +51,7 @@ For example if you're stuck, do setPeer with your IP and port, then do for examp
 - beginDialog : For debugging only.
 - endDialog : For debugging only.
 - setDialogMsg message : For debugging only.
+- dbgStressLoad : For debugging only. Load GemMine on all clients now.
 
 <h3>List of scenes</h3>
 To use with the command "load scene".
