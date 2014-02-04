@@ -1960,3 +1960,6 @@ private void RpcPerformMagic (NetIncomingMessage msg)
 	}
 	this.PerformSkill (spell, num, vector);
 }
+
+=> Donut Steel pos : 24.2031 -1.16802 -55.8526 in RaritysBoutique
+==> When we try to talk to Donut Steel, we get 4d 0400 1800 0000 31 ! (0000 is Donut's netview id)

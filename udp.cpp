@@ -61,10 +61,11 @@ void Widget::udpProcessPendingDatagrams()
                     if (n>=maxConnected)
                     {
                         sendMessage(newPlayer, MsgDisconnect, "Error : Too much players connected. Try again later.");
-                    }
 
-                    // If not add the player
-                    udpPlayers << newPlayer;
+                    }
+                    else
+                        // If not add the player
+                        udpPlayers << newPlayer;
                 }
                 else  // IP:Port found in player list
                 {
@@ -114,7 +115,8 @@ void Widget::udpProcessPendingDatagrams()
         else // You need to connect with TCP first
         {
             logMessage("UDP: Request from unknown peer rejected : "+player->IP+":"+QString().setNum(rPort));
-            sendMessage(player,MsgDisconnect);
+            if (!player->IP.isEmpty())
+                sendMessage(player,MsgDisconnect);
         }
     }
 }
