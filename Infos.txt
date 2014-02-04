@@ -1794,7 +1794,7 @@ Server replies with stats, ponyData, inventory, skills, stats again (?) (and a 0
 ==> When udpGroupingTimer times out, enqueue and clear the buffer, then start the reliability timer (3000ms)
 ==> When adding, if the buffer would be > 1024, call udpGroupingTimer's callback manually, add to the buffer, and restart udpGroupingTimer.
 
-=> TODO: Use the current /mlp/ server by default for "Online" instead of tux3.bounceme.net
+=> Use the current /mlp/ server by default for "Online" instead of tux3.bounceme.net
 
 => The ACK is 1/2 of the real seq value.
 => When we get an ACK, for each ACK'd message in the ack message
@@ -1808,9 +1808,96 @@ Server replies with stats, ponyData, inventory, skills, stats again (?) (and a 0
 => If you get weird casting error, remember that to reinterpret a signed X bit as an unsigned X bit, you must cast to (unsignedX_t)
 => If you cast to a larger value like (unsigned2X_t) you'll get an unexpected result. 
 
-=> TODO: Add the /mlp/ server as the default online server
+=> Add the /mlp/ server as the default online server
 
 => The "Local Login" option is just a direct connection to the game server (UDP) on localhost:14000
 => The connect message (with sesskey) is "830000980004504e65740f3d7a656128b18044a884450000"
 
-=> Got a deadlock : sendMessage locking, udpDelayedSend locking.
+=> Sometimes you still get the ponySave/ponyData twice.
+==> See Chips log filtered for ID 31, line 630 and onward.
+==> See: 
+UDP: Sending entities list to 31
+UDP: Send instantiate for 31 to 31
+UDP: Discarding double message (-0) from 31
+UDP: Sending entities list to 31
+UDP: Send instantiate for 31 to 31
+udpResendLast locking
+udpResendLast unlocking
+UDP: Sending pony save to 31
+UDP: Sending the ponyData for/to 31
+UDP: Sending pony save to 31
+UDP: Sending the ponyData for/to 31
+UDP: Discarding double message (-0) from 31
+UDP: Sending pony save to 31
+UDP: Sending the ponyData for/to 31
+UDP: Discarding double message (-0) from 31
+UDP: Sending pony save to 31
+UDP: Sending the ponyData for/to 31
+==> Add a check so we can only send the entity list once or something.
+
+=> BUG: Restarting UDP server.
+=> Later : Error sending pony save, netview id not found
+==> We should just give up instead of restarting if it fails. And disconnect the offending player.
+
+=> TODO: BUG: Fix all of chip's errors. See all the logs.
+=> We should ignore disconnected players, never ever reply to them
+Reading config file ...
+Loaded 39 vortex in 17 scenes
+Starting TCP login server on port 1031 ...
+Starting UDP game server on port 1039 ...
+Loading players database ...
+Got 21 players in database
+Server started
+UDP: Request from unknown peer rejected : :56400
+UDP: Error sending last message
+Restarting UDP server ...
+UDP: Connecting ...
+UDP: Connected to client
+UDP: Starting game
+UDP: Set id request : 1/1
+...
+
+=> TODO: Do Chip's idea of multiple tabs.
+One with everything, one with server commands, one with player info.
+
+=> TODO: Save the logs to a text file
+==> Filename should be the system time
+
+=> TODO: When disconnecting players on server exit, save the ponies first !
+
+=> TODO: Update the DLL to download static data from the private server instead of the officials
+
+=> TODO: BUG: Fix chat bug when you're alone or just entered, either no name or not working at all
+
+=> Fling then landing : 
+4e 0000 3800 0100 ca 01000000
+4e 0200 3800 0100 ca 00000000
+
+=> Log of the discarded message / crab pony bug :
+UDP: Loading scene "GemMines" on 1
+UDP: Loading scene "GemMines" on 2
+UDP: Sending entities list to 1
+UDP: Send instantiate for 1 to 1
+UDP: Send instantiate for 2 to 1
+UDP: Sending pony save to 1
+UDP: Sending the ponyData for/to 1
+UDP: Unknown message received : 4d00001800020004
+UDP: Sending pony save for 2 to 1
+UDP: Sending the ponyData for 2 to 1
+UDP: Sending entities list to 2
+UDP: Send instantiate for 1 to 2
+UDP: Send instantiate for 2 to 2
+UDP: Unknown message received : 4d00001800010004
+UDP: Sending pony save for 1 to 2
+UDP: Sending the ponyData for 1 to 2
+UDP: Sending pony save to 2
+UDP: Sending the ponyData for/to 2
+UDP: Discarding double message (-0) from 2
+UDP: Message was : 480a001800080200
+UDP: Sending pony save to 2
+UDP: Sending the ponyData for/to 2
+==> 48 0a00 1800 08 0200
+===> Wireshark says the server received the message twice 
+===> (the game sent it twice at a very short interval, before the game was even able to reply to the first one)
+===> But the server ACK'd the message 3 times, not two. Looks like the "discarded" message was still processed.
+====> Fixed. We weren't returning after discarding a double message, so it was still processed.

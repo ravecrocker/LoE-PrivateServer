@@ -51,7 +51,7 @@ void sendMessage(Player* player,quint8 messageType, QByteArray data)
     }
     else if (messageType >= MsgUserReliableOrdered1 && messageType <= MsgUserReliableOrdered32)
     {
-        win.logMessage("sendMessage locking");
+        //win.logMessage("sendMessage locking");
         player->udpSendReliableMutex.lock();
         player->udpSendReliableGroupTimer->stop();
         msg.resize(5);
@@ -71,7 +71,7 @@ void sendMessage(Player* player,quint8 messageType, QByteArray data)
 
         player->udpSendReliableGroupTimer->start(); // When this timeouts, the content of the buffer will be sent reliably
 
-        win.logMessage("sendMessage unlocking");
+        //win.logMessage("sendMessage unlocking");
         player->udpSendReliableMutex.unlock();
         return; // This isn't a normal send, but a delayed one with the timer callbacks
     }

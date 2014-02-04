@@ -140,6 +140,12 @@ void Widget::startServer()
         logMessage("Loaded " + QString().setNum(nVortex) + " vortex in " + QString().setNum(scenes.size()) + " scenes");
     }
 
+    if (enableLoginServer)
+    {
+//        logStatusMessage("Loading players database ...");
+        tcpPlayers = Player::loadPlayers();
+    }
+
     // TCP server
     if (enableLoginServer)
     {
@@ -166,12 +172,6 @@ void Widget::startServer()
             stopServer();
             return;
         }
-    }
-
-    if (enableLoginServer)
-    {
-        logStatusMessage("Loading players database ...");
-        tcpPlayers = Player::loadPlayers();
     }
 
     if (enableGameServer)

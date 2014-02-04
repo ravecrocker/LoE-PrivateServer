@@ -61,7 +61,7 @@ void sendPonySave(Player *player, QByteArray msg)
     if (netviewId == player->pony.netviewId)
     {
         // Send the entities list if the game is starting (sends RPC calls to the view with id 0085 (the PlayerBase))
-        win.logMessage(QString("UDP: Sending pony save to ")+QString().setNum(netviewId));
+        win.logMessage(QString("UDP: Sending pony save for/to ")+QString().setNum(netviewId));
 
         // Set current/max stats
         sendSetMaxStatRPC(player, 0, 100);
@@ -310,8 +310,8 @@ void sendPonyData(Player *player)
 void sendPonyData(Player *src, Player *dst)
 {
     // Sends the ponyData
-    win.logMessage(QString("UDP: Sending the ponyData for "+QString().setNum(src->pony.netviewId)
-                           +" to "+QString().setNum(dst->pony.netviewId)));
+    //win.logMessage(QString("UDP: Sending the ponyData for "+QString().setNum(src->pony.netviewId)
+    //                       +" to "+QString().setNum(dst->pony.netviewId)));
     QByteArray data(3,0xC8);
     data[0] = src->pony.netviewId;
     data[1] = src->pony.netviewId>>8;
@@ -340,7 +340,7 @@ void sendLoadSceneRPC(Player* player, QString sceneName) // Loads a scene and se
     }
 
     // Update scene players
-    win.logMessage("sendLoadSceneRPC: locking");
+    //win.logMessage("sendLoadSceneRPC: locking");
     levelLoadMutex.lock();
     player->pony.pos = vortex.destPos;
     player->pony.sceneName = sceneName;
@@ -361,7 +361,7 @@ void sendLoadSceneRPC(Player* player, QString sceneName) // Loads a scene and se
     QByteArray data(1,5);
     data += stringToData(sceneName);
     sendMessage(player,MsgUserReliableOrdered6,data); // Sends a 48
-    win.logMessage("sendLoadSceneRPC: unlocking");
+    //win.logMessage("sendLoadSceneRPC: unlocking");
     levelLoadMutex.unlock();
 }
 
@@ -384,7 +384,7 @@ void sendLoadSceneRPC(Player* player, QString sceneName, UVector pos) // Loads a
     }
 
     // Update scene players
-    win.logMessage("sendLoadSceneRPC pos: locking");
+    //win.logMessage("sendLoadSceneRPC pos: locking");
     levelLoadMutex.lock();
     player->pony.pos = pos;
     player->pony.sceneName = sceneName;
@@ -405,7 +405,7 @@ void sendLoadSceneRPC(Player* player, QString sceneName, UVector pos) // Loads a
     QByteArray data(1,5);
     data += stringToData(sceneName);
     sendMessage(player,MsgUserReliableOrdered6,data); // Sends a 48
-    win.logMessage("sendLoadSceneRPC pos: unlocking");
+    //win.logMessage("sendLoadSceneRPC pos: unlocking");
     levelLoadMutex.unlock();
 }
 

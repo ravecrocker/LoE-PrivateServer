@@ -259,7 +259,7 @@ void Player::disconnectPlayerCleanup(Player* player)
     if (scene->name.isEmpty())
         win.logMessage("UDP: Can't find scene for player cleanup");
 
-    win.logMessage("playerCleanup locking");
+    //win.logMessage("playerCleanup locking");
     playerCleanupMutex.lock();
     removePlayer(scene->players, uIP, uPort);
     for (int i=0; i<scene->players.size(); i++)
@@ -269,13 +269,13 @@ void Player::disconnectPlayerCleanup(Player* player)
     player->udpSendReliableGroupTimer->stop();
     removePlayer(win.udpPlayers, uIP, uPort);
     delete player;
-    win.logMessage("playerCleanup unlocking");
+    //win.logMessage("playerCleanup unlocking");
     playerCleanupMutex.unlock();
 }
 
 void Player::udpResendLast()
 {
-    win.logMessage("udpResendLast locking");
+    //win.logMessage("udpResendLast locking");
     if (!udpSendReliableMutex.tryLock())
     {
         win.logMessage("udpResendLast failed to lock.");
@@ -300,13 +300,13 @@ void Player::udpResendLast()
 
     udpSendReliableTimer->start();
 
-    win.logMessage("udpResendLast unlocking");
+    //win.logMessage("udpResendLast unlocking");
     udpSendReliableMutex.unlock();
 }
 
 void Player::udpDelayedSend()
 {
-    win.logMessage("udpDelayedSend locking");
+    //win.logMessage("udpDelayedSend locking");
     if (!udpSendReliableMutex.tryLock())
     {
         win.logMessage("udpDelayedSend failed to lock.");
@@ -341,6 +341,6 @@ void Player::udpDelayedSend()
     if (!udpSendReliableTimer->isActive())
         udpSendReliableTimer->start();
 
-    win.logMessage("udpDelayedSend unlocking");
+    //win.logMessage("udpDelayedSend unlocking");
     udpSendReliableMutex.unlock();
 }
