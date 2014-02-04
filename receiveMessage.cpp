@@ -349,6 +349,18 @@ void receiveMessage(Player* player)
                     if (scene->players[i]->inGame==2 || scene->players[i]->inGame==1)
                         sendMessage(scene->players[i], MsgUserReliableOrdered12, msg.mid(5)); // Broadcast
         }
+        else if ((unsigned char)msg[0]==MsgUserReliableOrdered11 && (unsigned char)msg[7]==0x3D) // Skill
+        {
+            win.logMessage("UDP: Broadcasting skill");
+            // Send to everyone
+            Scene* scene = findScene(player->pony.sceneName);
+            if (scene->name.isEmpty())
+                win.logMessage("UDP: Can't find the scene for skill message, aborting");
+            else
+                for (int i=0; i<scene->players.size(); i++)
+                    if (scene->players[i]->inGame==2 || scene->players[i]->inGame==1)
+                        sendMessage(scene->players[i], MsgUserReliableOrdered12, msg.mid(5)); // Broadcast
+        }
         else
         {
             // Display data

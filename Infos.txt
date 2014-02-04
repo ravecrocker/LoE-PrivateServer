@@ -1914,12 +1914,49 @@ UDP: Sending the ponyData for/to 2
 
 => What's with the login server adding tons of shit to players.dat ? Fixed.
 
+=> TODO: BUG: Search all the casts (search <<8 or msg[ or something) and cast correctly to quint8 first
+
 => New example of spells (54 C3) : c3 00020000000a000000000000000b00000000000000
 
 => Message received when using ground pound with a pegasus targeting himself : 4d 0000 6800 0100 3d0a000000d5652e460100
 ==> Not sure if this is related. The tornado gives nothing, maybe we need to target a monster first.
 ===> Check teleport.
 ====> Teleport crashed the server ! Fixed.
-====> Teleport gives 4d0000b80002003d02000000e0903346464533421dd61241100f5fc2
+====> Teleport gives 4d 0000 b800 0200 3d 02000000e0903346464533421dd61241100f5fc2
 
-=> TODO: BUG: Search all the casts (search <<8 or msg[ or something) and cast correctly to quint8 first
+=> Skill with target position
+4d 0000 b800 	Header
+0200 			Netview ID
+3d 				RPC Id
+02000000 		Skill ID (Teleport)
+e0903346		Timestamp
+46453342		Target X
+1dd61241		Target Y
+100f5fc2		Target Z
+
+=> Skill with target netview id
+4d 0000 6800 	Header
+0100 			Netview ID
+3d				RPC Id
+0a000000		Skill ID (Ground smash)
+d5652e46		Timestamp
+0100			Target netview id
+
+=> Expected reply :
+[Rpc (61)] (0x3D)
+private void RpcPerformMagic (NetIncomingMessage msg)
+{
+	int spell = msg.ReadInt32 ();
+	this._vecSerializer.OnDeserialize (msg);
+	Vector3 vector = this._vecSerializer.vector3;
+	int num = msg.ReadInt32 ();
+	double num2 = msg.ReadTime (false);
+	NetworkView networkView;
+	if (msg.RemainingBits == 16L && NetworkView.Find (ref msg, out networkView))
+	{
+		GameObject gameObject = networkView.gameObject;
+		this.PerformSkill (spell, num, gameObject);
+		return;
+	}
+	this.PerformSkill (spell, num, vector);
+}
