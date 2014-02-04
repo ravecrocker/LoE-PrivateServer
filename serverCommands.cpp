@@ -145,6 +145,13 @@ void Widget::sendCmdLine()
                    + ", y=" + QString().setNum(cmdPeer->pony.pos.y)
                    + ", z=" + QString().setNum(cmdPeer->pony.pos.z));
     }
+    else if (str.startsWith("getRot"))
+    {
+        logMessage(QString("Rot : x=") + QString().setNum(cmdPeer->pony.rot.x)
+                   + ", y=" + QString().setNum(cmdPeer->pony.rot.y)
+                   + ", z=" + QString().setNum(cmdPeer->pony.rot.z)
+                   + ", w=" + QString().setNum(cmdPeer->pony.rot.w));
+    }
     else if (str.startsWith("sendPonies"))
     {
         sendPonies(cmdPeer);

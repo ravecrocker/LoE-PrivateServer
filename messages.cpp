@@ -46,6 +46,13 @@ void sendEntitiesList(Player *player)
     for (int i=0; i<scene->players.size(); i++)
         sendNetviewInstantiate(scene->players[i], player);
 
+    /// SEND DONUT STEEL (in front of the mirror)
+    if (scene->name == "RaritysBoutique")
+    {
+        win.logMessage(QString("UDP: Sending Donut Steel to ")+QString().setNum(player->pony.netviewId));
+        sendNetviewInstantiate(player,"PlayerBase",0,0,UVector(24.7333,-1.16802,-51.7106), UQuaternion(0,-0.25,0,1));
+    }
+
     // Send stats of the client's pony
     sendSetMaxStatRPC(player, 0, 100);
     sendSetStatRPC(player, 0, 100);
@@ -92,6 +99,16 @@ void sendPonySave(Player *player, QByteArray msg)
         sendSetMaxStatRPC(player, 0, 100);
         sendSetStatRPC(player, 1, 100);
         sendSetMaxStatRPC(player, 1, 100);
+
+        /// SEND DONUT STEEL (he's a moose dark-as-my-soul OC)
+        if (player->pony.sceneName == "RaritysBoutique")
+        {
+            win.logMessage("UDP: Sending pony save for Donut Steel to "+QString().setNum(player->pony.netviewId));
+            Player donutSteel;
+            donutSteel.pony.id = donutSteel.pony.netviewId = 0;
+            donutSteel.pony.ponyData = QByteArray::fromHex("0b446f6e757420537465656c0402b70000000000000000000000ca1a0017ff00032e03ff050072ff000c000b0000000000cdcc8c3fff9f");
+            sendPonyData(&donutSteel, player);
+        }
 
         refresh->inGame = 2;
     }
