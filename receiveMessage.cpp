@@ -31,8 +31,8 @@ void receiveMessage(Player* player)
                 // We already processed this packet, we should discard it
                 win.logMessage("UDP: Discarding double message (-"+QString().setNum(player->udpRecvSequenceNumbers[channel]-seq)
                                +") from "+QString().setNum(player->pony.netviewId));
-                //win.logMessage("UDP: Message was : "+QString(player->receivedDatas->left(msgSize).toHex().data()));
-                *player->receivedDatas = player->receivedDatas->mid(msgSize);
+                win.logMessage("UDP: Message was : "+QString(player->receivedDatas->left(msgSize).toHex().data()));
+                *(player->receivedDatas) = player->receivedDatas->mid(msgSize);
 
                 // Ack if needed, so that the client knows to move on already.
                 if ((unsigned char)msg[0] >= MsgUserReliableOrdered1 && (unsigned char)msg[0] <= MsgUserReliableOrdered32) // UserReliableOrdered
@@ -44,9 +44,9 @@ void receiveMessage(Player* player)
                     data[2] = ((quint8)msg[2])/2; // seq
                     sendMessage(player, MsgAcknowledge, data);
                 }
-                //return; // We already have this packet.
                 if (player->receivedDatas->size())
                     receiveMessage(player);
+                return; // When we're done with the recursion, we still need to skip this message.
             }
         }
         else if (seq > player->udpRecvSequenceNumbers[channel]+2) // If a message was skipped, keep going.
@@ -161,7 +161,7 @@ void receiveMessage(Player* player)
 
             if (player->udpSendReliableQueue.size() && acks.size()) // If there's nothing to check, do nothing
             {
-                win.logMessage("receiveMessage ACK locking");
+                //win.logMessage("receiveMessage ACK locking");
                 player->udpSendReliableMutex.lock();
                 player->udpSendReliableTimer->stop();
                 // Remove the ACK'd messages from the reliable send queue
@@ -206,12 +206,12 @@ void receiveMessage(Player* player)
                             }
                         }
                         player->udpSendReliableTimer->start();
-                        win.logMessage("receiveMessage ACK unlocking");
+                        //win.logMessage("receiveMessage ACK unlocking");
                         player->udpSendReliableMutex.unlock();
                     }
                     else
                     {
-                        win.logMessage("receiveMessage ACK unlocking");
+                        //win.logMessage("receiveMessage ACK unlocking");
                         player->udpSendReliableMutex.unlock();
                     }
                 }
@@ -219,7 +219,7 @@ void receiveMessage(Player* player)
                 {
                     player->udpSendReliableQueue[0] = qMsg;
                     player->udpSendReliableTimer->start(); // We're still waiting for some msgs to get ACK'd
-                    win.logMessage("receiveMessage ACK unlocking");
+                    //win.logMessage("receiveMessage ACK unlocking");
                     player->udpSendReliableMutex.unlock();
                 }
 
@@ -337,13 +337,25 @@ void receiveMessage(Player* player)
             Player::savePonies(player,ponies);
             sendPonies(player);
         }
+        else if ((unsigned char)msg[0]==MsgUserReliableOrdered12 && (unsigned char)msg[7]==0xCA) // Animation
+        {
+            win.logMessage("UDP: Broadcasting animation");
+            // Send to everyone
+            Scene* scene = findScene(player->pony.sceneName);
+            if (scene->name.isEmpty())
+                win.logMessage("UDP: Can't find the scene for animation message, aborting");
+            else
+                for (int i=0; i<scene->players.size(); i++)
+                    if (scene->players[i]->inGame==2 || scene->players[i]->inGame==1)
+                        sendMessage(scene->players[i], MsgUserReliableOrdered12, msg.mid(5)); // Broadcast
+        }
         else
         {
             // Display data
-            //win.logMessage("UDP: Unknown data received : "+QString(player->receivedDatas->toHex().data()));
             quint32 unknownMsgSize =  (msg[3] +(msg[4]<<8)) / 8;
+            win.logMessage("UDP: Unknown message received : "
+                           +QString(player->receivedDatas->left(unknownMsgSize+5).toHex().data()));
             *player->receivedDatas = player->receivedDatas->mid(unknownMsgSize+5);
-            //win.logMessage("UDP: Next message will be : "+QString(player->receivedDatas->toHex().data()));
             msgSize=0;
         }
     }

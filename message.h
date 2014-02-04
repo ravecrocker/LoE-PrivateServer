@@ -27,6 +27,7 @@ enum MessageTypes {
     MsgUserReliableOrdered4 = 0x46,
     MsgUserReliableOrdered5 = 0x47,
     MsgUserReliableOrdered6 = 0x48,
+    MsgUserReliableOrdered12 = 0x4e,
     MsgUserReliableOrdered18 = 0x54,
     MsgUserReliableOrdered20 = 0x56,
     MsgUserReliableOrdered32 = 0x62
