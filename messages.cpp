@@ -108,7 +108,7 @@ void sendPonySave(Player *player, QByteArray msg)
     }
     else
     {
-        win.logStatusMessage("UDP: Error sending pony save : netviewId not found");
+        win.logMessage("UDP: Error sending pony save : netviewId not found");
     }
 }
 

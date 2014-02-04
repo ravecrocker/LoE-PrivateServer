@@ -109,14 +109,15 @@ void sendMessage(Player* player,quint8 messageType, QByteArray data)
     }
     else
     {
-        win.logStatusMessage("SendMessage : Unknown message type");
+        win.logStatusMessage("sendMessage : Unknown message type");
         return;
     }
 
     if (win.udpSocket->writeDatagram(msg,QHostAddress(player->IP),player->port) != msg.size())
     {
-        win.logMessage("UDP: Error sending last message");
-        win.logStatusMessage("Restarting UDP server ...");
+        win.logMessage("UDP: Error sending message to "+QString().setNum(player->pony.netviewId)
+                       +" : "+win.udpSocket->errorString());
+        win.logMessage("Restarting UDP server ...");
         win.udpSocket->close();
         if (!win.udpSocket->bind(win.gamePort, QUdpSocket::ReuseAddressHint|QUdpSocket::ShareAddress))
         {
