@@ -1901,3 +1901,5 @@ UDP: Sending the ponyData for/to 2
 ===> (the game sent it twice at a very short interval, before the game was even able to reply to the first one)
 ===> But the server ACK'd the message 3 times, not two. Looks like the "discarded" message was still processed.
 ====> Fixed. We weren't returning after discarding a double message, so it was still processed.
+
+=> TODO: BUG: What's with the login server adding tons of shit to players.dat ?
