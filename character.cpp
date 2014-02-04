@@ -20,6 +20,23 @@ Pony::Pony() : SceneEntity()
     name = "";
 }
 
+Pony::type Pony::getType()
+{
+    // Variable UInt32
+    unsigned char num3;
+    int num = 0;
+    int num2 = 0;
+    int i=0;
+    do
+    {
+        num3 = ponyData[i]; i++;
+        num |= (num3 & 0x7f) << num2;
+        num2 += 7;
+    } while ((num3 & 0x80) != 0);
+    unsigned off = (uint) num  + i;
+    return (type)(quint8)ponyData[off];
+}
+
 Player::Player()
 {
     connected=false;

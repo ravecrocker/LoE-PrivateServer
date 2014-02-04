@@ -76,11 +76,15 @@ void sendPonySave(Player *player, QByteArray msg)
         QList<WearableItem> worn;
         sendInventoryRPC(player, inv, worn, 10); // Start with 10 bits and no inventory, until we implement it correctly
 
-        // Send skills (always the same at the moment)
+        // Send skills
         QList<QPair<quint32, quint32> > skills;
-        skills << QPair<quint32, quint32>(0, 0x7FFFFFFF);
-        skills << QPair<quint32, quint32>(1, 0x7FFFFFFF);
-        skills << QPair<quint32, quint32>(5, 0x7FFFFFFF);
+        skills << QPair<quint32, quint32>(10, 0); // Ground pound
+        if (player->pony.getType() == Pony::EarthPony)
+            skills << QPair<quint32, quint32>(5, 0); // Seismic buck
+        else if (player->pony.getType() == Pony::Pegasus)
+            skills << QPair<quint32, quint32>(11, 0); // Tornado
+        else if (player->pony.getType() == Pony::Unicorn)
+            skills << QPair<quint32, quint32>(2, 0); // Teleport
         sendSkillsRPC(player, skills);
 
         // Set current/max stats again (that's what the official server does, not my idea !)
@@ -275,13 +279,14 @@ void sendInventoryRPC(Player *player, QList<InventoryItem>& inv, QList<WearableI
 
 void sendSkillsRPC(Player* player, QList<QPair<quint32, quint32> > &skills)
 {
-    QByteArray data(7, 0xC3);
+    QByteArray data(8, 0xC3);
     data[0] = player->pony.netviewId;
     data[1] = player->pony.netviewId>>8;
-    data[3] = skills.size();
-    data[4] = skills.size()>>8;
-    data[5] = skills.size()>>16;
-    data[6] = skills.size()>>24;
+    data[3] = 0x00; // Use dictionnary flag
+    data[4] = skills.size();
+    data[5] = skills.size()>>8;
+    data[6] = skills.size()>>16;
+    data[7] = skills.size()>>24;
     for (int i=0;i<skills.size();i++)
     {
         data += skills[i].first;
