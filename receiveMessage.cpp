@@ -39,7 +39,7 @@ void receiveMessage(Player* player)
                 {
                     //win.logMessage("UDP: ACKing discarded message");
                     QByteArray data(3,0);
-                    data[0] = msg[0]; // ack type
+                    data[0] = (quint8)msg[0]; // ack type
                     data[1] = ((quint8)msg[1])/2; // seq
                     data[2] = ((quint8)msg[2])/2; // seq
                     sendMessage(player, MsgAcknowledge, data);
@@ -77,7 +77,7 @@ void receiveMessage(Player* player)
     {
         //win.logMessage("UDP: Ping received from "+player->IP+":"+QString().setNum(player->port)
         //        +" ("+QString().setNum((timestampNow() - player->lastPingTime))+"s)");
-        player->lastPingNumber = msg[5];
+        player->lastPingNumber = (quint8)msg[5];
         player->lastPingTime = timestampNow();
         sendMessage(player,MsgPong);
     }
@@ -138,8 +138,8 @@ void receiveMessage(Player* player)
             for (int i=0; i<nAcks; i++)
             {
                 MessageHead head;
-                head.channel = msg[3*i+5];
-                head.seq = (msg[3*i+6] + (msg[3*i+7]<<8))*2;
+                head.channel = (quint8)msg[3*i+5];
+                head.seq = ((quint8)msg[3*i+6] + ((quint8)msg[3*i+7]<<8))*2;
                 // If that's not a supported reliable message, there's no point in checking
                 if (head.channel >= MsgUserReliableOrdered1 && head.channel <= MsgUserReliableOrdered32)
                     acks << head;
@@ -174,7 +174,7 @@ void receiveMessage(Player* player)
                     {
                         quint16 seq = (quint8)qMsg[pos+1] + ((quint8)qMsg[pos+2]<<8);
                         quint16 qMsgSize = (((quint8)qMsg[pos+3]) + (((quint8)qMsg[pos+4])<<8))/8 + 5;
-                          if ((quint16)qMsg[pos] == acks[i].channel && seq == acks[i].seq) // Remove the msg, now that it was ACK'd
+                          if ((quint16)(quint8)qMsg[pos] == acks[i].channel && seq == acks[i].seq) // Remove the msg, now that it was ACK'd
                         {
                             //win.logMessage("Removed message : "+QString().setNum(seq)+" size is "+QString().setNum(qMsgSize));
                             qMsg = qMsg.left(pos) + qMsg.mid(pos+qMsgSize);
@@ -239,7 +239,7 @@ void receiveMessage(Player* player)
         //win.logMessage(player->receivedDatas->toHex().constData());
 
         QByteArray data(3,0);
-        data[0] = msg[0]; // ack type
+        data[0] = (quint8)msg[0]; // ack type
         data[1] = ((quint8)msg[1])/2; // seq
         data[2] = ((quint8)msg[2])/2; // seq
         sendMessage(player, MsgAcknowledge, data);
@@ -289,7 +289,7 @@ void receiveMessage(Player* player)
             }
             else
             {
-                quint32 id = msg[6] +(msg[7]<<8) + (msg[8]<<16) + (msg[9]<<24);
+                quint32 id = (quint8)msg[6] +((quint8)msg[7]<<8) + ((quint8)msg[8]<<16) + ((quint8)msg[9]<<24);
                 ponies[id].ponyData = ponyData;
                 pony = ponies[id];
             }
@@ -315,7 +315,7 @@ void receiveMessage(Player* player)
         {
             if (player->inGame==2)
             {
-                quint8 id = msg[5];
+                quint8 id = (quint8)msg[5];
                 Vortex vortex = findVortex(player->pony.sceneName, id);
                 if (vortex.destName.isEmpty())
                 {
@@ -331,7 +331,7 @@ void receiveMessage(Player* player)
         {
             win.logMessage(QString("UDP: Deleting a character"));
             QList<Pony> ponies = Player::loadPonies(player);
-            quint32 id = msg[6] +(msg[7]<<8) + (msg[8]<<16) + (msg[9]<<24);
+            quint32 id = (quint8)msg[6] +((quint8)msg[7]<<8) + ((quint8)msg[8]<<16) + ((quint8)msg[9]<<24);
             ponies.removeAt(id);
 
             Player::savePonies(player,ponies);
@@ -351,7 +351,7 @@ void receiveMessage(Player* player)
         }
         else if ((unsigned char)msg[0]==MsgUserReliableOrdered11 && (unsigned char)msg[7]==0x3D) // Skill
         {
-            win.logMessage("UDP: Broadcasting skill");
+            //win.logMessage("UDP: Broadcasting skill");
             // Send to everyone
             Scene* scene = findScene(player->pony.sceneName);
             if (scene->name.isEmpty())
@@ -381,7 +381,7 @@ void receiveMessage(Player* player)
         // Display data
         //win.logMessage("Data received (UDP) (hex) : ");
         //win.logMessage(QString(player->receivedDatas->toHex().data()));
-        quint32 unknownMsgSize =  (msg[3] +(msg[4]<<8)) / 8;
+        quint32 unknownMsgSize =  ((quint8)msg[3] +((quint8)msg[4]<<8)) / 8;
         *player->receivedDatas = player->receivedDatas->mid(unknownMsgSize+5);
         msgSize=0;
     }
