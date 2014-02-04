@@ -41,7 +41,7 @@ void Widget::logMessage(QString msg)
 
 void Widget::startServer()
 {
-    logStatusMessage("Private server v0.4.0");
+    logStatusMessage("Private server v0.4.1");
     lastNetviewId=0;
     lastId=0;
 
@@ -220,10 +220,19 @@ Widget::~Widget()
     logMessage(QString("UDP: Disconnecting all players"));
     for (;udpPlayers.size();)
     {
-        sendMessage(udpPlayers[0], MsgDisconnect, "Connection closed by the server admin");
-        delete udpPlayers[0];
+        Player* player = udpPlayers[0];
+        sendMessage(player, MsgDisconnect, "Connection closed by the server admin");
+
+        // Save the pony
+        QList<Pony> ponies = Player::loadPonies(player);
+        for (int i=0; i<ponies.size(); i++)
+            if (ponies[i].ponyData == player->pony.ponyData)
+                ponies[i] = player->pony;
+        Player::savePonies(player, ponies);
+
+        // Free
+        delete player;
         udpPlayers.removeFirst();
-        //Player::disconnectPlayerCleanup(udpPlayers[0]);
     }
 
     stopServer();

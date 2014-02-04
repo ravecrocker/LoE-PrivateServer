@@ -1835,11 +1835,12 @@ UDP: Sending pony save to 31
 UDP: Sending the ponyData for/to 31
 ==> Add a check so we can only send the entity list once or something.
 
-=> BUG: Restarting UDP server.
+=> Restarting UDP server.
 => Later : Error sending pony save, netview id not found
 ==> We should just give up instead of restarting if it fails. And disconnect the offending player.
+===> Not really fixed, but we can safely ignore the error.
 
-=> TODO: BUG: Fix all of chip's errors. See all the logs.
+=> Fix all of chip's errors. See all the logs.
 => We should ignore disconnected players, never ever reply to them
 Reading config file ...
 Loaded 39 vortex in 17 scenes
@@ -1856,6 +1857,7 @@ UDP: Connected to client
 UDP: Starting game
 UDP: Set id request : 1/1
 ...
+===> Not really fixed, but we can safely ignore the error.
 
 => TODO: Do Chip's idea of multiple tabs.
 One with everything, one with server commands, one with player info.
@@ -1902,4 +1904,4 @@ UDP: Sending the ponyData for/to 2
 ===> But the server ACK'd the message 3 times, not two. Looks like the "discarded" message was still processed.
 ====> Fixed. We weren't returning after discarding a double message, so it was still processed.
 
-=> TODO: BUG: What's with the login server adding tons of shit to players.dat ?
+=> What's with the login server adding tons of shit to players.dat ? Fixed.

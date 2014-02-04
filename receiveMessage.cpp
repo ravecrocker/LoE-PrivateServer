@@ -31,7 +31,7 @@ void receiveMessage(Player* player)
                 // We already processed this packet, we should discard it
                 win.logMessage("UDP: Discarding double message (-"+QString().setNum(player->udpRecvSequenceNumbers[channel]-seq)
                                +") from "+QString().setNum(player->pony.netviewId));
-                win.logMessage("UDP: Message was : "+QString(player->receivedDatas->left(msgSize).toHex().data()));
+                //win.logMessage("UDP: Message was : "+QString(player->receivedDatas->left(msgSize).toHex().data()));
                 *(player->receivedDatas) = player->receivedDatas->mid(msgSize);
 
                 // Ack if needed, so that the client knows to move on already.
@@ -353,8 +353,8 @@ void receiveMessage(Player* player)
         {
             // Display data
             quint32 unknownMsgSize =  (msg[3] +(msg[4]<<8)) / 8;
-            win.logMessage("UDP: Unknown message received : "
-                           +QString(player->receivedDatas->left(unknownMsgSize+5).toHex().data()));
+            //win.logMessage("UDP: Unknown message received : "
+            //               +QString(player->receivedDatas->left(unknownMsgSize+5).toHex().data()));
             *player->receivedDatas = player->receivedDatas->mid(unknownMsgSize+5);
             msgSize=0;
         }
