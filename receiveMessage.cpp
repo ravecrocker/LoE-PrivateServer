@@ -339,7 +339,7 @@ void receiveMessage(Player* player)
         }
         else if ((unsigned char)msg[0]==MsgUserReliableOrdered12 && (unsigned char)msg[7]==0xCA) // Animation
         {
-            win.logMessage("UDP: Broadcasting animation");
+            //win.logMessage("UDP: Broadcasting animation");
             // Send to everyone
             Scene* scene = findScene(player->pony.sceneName);
             if (scene->name.isEmpty())

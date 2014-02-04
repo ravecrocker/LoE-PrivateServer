@@ -228,13 +228,13 @@ void Widget::tcpProcessData(QByteArray data, QTcpSocket* socket)
                 // Check max registered number
                 if (tcpPlayers.size() >= maxRegistered)
                 {
-                    logMessage("TCP: Registration failed, too much players registered");
+                    logMessage("TCP: Registration failed, too many players registered");
                     socket->write(fileMaxRegistration.readAll());
                     ok = false;
                 }
                 else
                 {
-                    logMessage("TCP: Creating user in database");
+                    logMessage("TCP: Creating user "+username+" in database");
                     Player* newPlayer = new Player;
                     newPlayer->name = username;
                     newPlayer->passhash = passhash;
@@ -279,7 +279,7 @@ void Widget::tcpProcessData(QByteArray data, QTcpSocket* socket)
                     else
                     */
                     {
-                        player->reset();
+                        //player->reset();
                         player->IP = socket->peerAddress().toString();
                         player->lastPingTime = timestampNow();
                         player->connected = true;

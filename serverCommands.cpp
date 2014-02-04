@@ -12,7 +12,7 @@ void Widget::sendCmdLine()
 
     QString str = ui->cmdLine->text();
 
-    if (str.startsWith("clear"))
+    if (str == "clear")
     {
         ui->log->clear();
         return;
@@ -20,6 +20,15 @@ void Widget::sendCmdLine()
     else if (str == "stop")
     {
         delete this;
+        return;
+    }
+    else if (str == "listTcpPlayers")
+    {
+        for (int i=0; i<tcpPlayers.size(); i++)
+        {
+            Player* p = tcpPlayers[i];
+            logMessage(p->name+" "+p->IP+":"+QString().setNum(p->port));
+        }
         return;
     }
     else if (str.startsWith("setPeer"))
