@@ -1969,3 +1969,9 @@ private void RpcPerformMagic (NetIncomingMessage msg)
 => Go look at PonyQuest. Seriously. Apparently there's a whole language and parser for quests/npcs/.. and it was already in ponyquest.
 
 => TODO: BUG: The global chat isn't actually global ! Make it global, and implement the real global chat.
+
+=> TODO: If we can't find loe.exe/LoE.exe/LoE-Windows-x64.exe/LoE-Windows.exe/LoE-Windows-x86.exe/loe.x86/loe.x86_64, show a warning
+==> Because the user maybe didn't understood that he had to merge the folders.
+
+=> Item 73 is raincloud hat. Give it to everyone by default.
+==> Find a way to wear stuff. Inventory works, but not wearing.
