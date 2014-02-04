@@ -30,7 +30,18 @@ public:
 class Pony : public SceneEntity
 {
 public:
+    enum type
+    {
+        None,
+        EarthPony,
+        Unicorn,
+        Pegasus,
+        Moose
+    };
+
+public:
     Pony();
+    type getType();
 
 public:
     QByteArray ponyData;

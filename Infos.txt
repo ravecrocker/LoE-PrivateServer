@@ -964,8 +964,8 @@ public void OnDeserialize(NetIncomingMessage message)
 
 => Reversing of the last long 54
 => It's used to set the player's skills
+==> OLD MESSAGE
 8500c30300000000000000ffffff7f01000000ffffff7f05000000ffffff7f
-
 85 00           View ID (2)
 c3              RPC ID (1)
 03 00 00 00     Capacity (4)
@@ -975,6 +975,14 @@ ff ff ff 7f     SkillLevelDef 1
 ff ff ff 7f     SkillLevelDef 2
 05 00 00 00     SkillID3
 ff ff ff 7f     SkillLevelDef3
+==> NEW MESSAGE
+c3 				RPC ID (1)
+00 				Use dictionnary flag (1)
+02000000		Capacity (4)
+0a000000		SkillID 1
+00000000		SkillLevelDef 1
+0b000000		SkillID 2
+00000000		SkillLevelDef 2
 
 => Turns out the 46 messages might not have been juts chat. We're still missing the skills bar and the rest of the GUI.
 
@@ -1905,3 +1913,13 @@ UDP: Sending the ponyData for/to 2
 ====> Fixed. We weren't returning after discarding a double message, so it was still processed.
 
 => What's with the login server adding tons of shit to players.dat ? Fixed.
+
+=> New example of spells (54 C3) : c3 00020000000a000000000000000b00000000000000
+
+=> Message received when using ground pound with a pegasus targeting himself : 4d 0000 6800 0100 3d0a000000d5652e460100
+==> Not sure if this is related. The tornado gives nothing, maybe we need to target a monster first.
+===> Check teleport.
+====> Teleport crashed the server ! Fixed.
+====> Teleport gives 4d0000b80002003d02000000e0903346464533421dd61241100f5fc2
+
+=> TODO: BUG: Search all the casts (search <<8 or msg[ or something) and cast correctly to quint8 first
