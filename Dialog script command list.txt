@@ -1,0 +1,130 @@
+#This is a comment
+
+#Narration
+
+: This is from the narrator!
+NARRATOR: So is this!
+        these lines as well
+
+#Character
+Rainbow Dash: blah blah blah
+            halb floo de flah blah
+Rainbow Dash (angry): ARHHGHGHHG
+
+#variables
+#these variables persist across dialog sessions, but not across login sessions
+
+* $moon_goddess = Princess Luna
+* $ponies = Jimmy, Horse, $moon_goddess
+* $cool_pony = random($ponies)
+
+Rainbow Dash: $cool_pony is a cool pony!
+
+* if $cool_pony = Horse: goto ConditionalGoto1
+
+* $gotonext = GotoInAVariable
+* goto $gotonext
+
+[GotoInAVariable]
+
+#Dialogue options
+#If it's in brackets, it means it's just an action, not the character saying anything
+> The square root is 7 :Option1
+> How about now :Option2
+> I'll never answer your question :Option1
+> ...I could just watch you practice flying... :Option7
+> [Walk Away] :END
+
+
+#Labels
+[Option1]
+Twilight Sparkle (smug) : Incorrect!
+
+#Gotos
+* goto PinkiePieStartsSinging
+
+[ConditionalGoto1]
+Pinkie Pie : you used a conditional goto! 
+
+[PinkiePieStartsSinging]
+Pinkie Pie : La la lah lah laaa laaa hum lee laaa
+
+#hasitem
+* hasitem? <0> :WantsYourBalloon
+#goes to the label WantsYourBaloon if the player has item 0
+# you can also check if the player has all the items in a list, like so:
+* hasitem? <0, 1, 2, 3> :HasAllItems
+
+#giveitem
+* giveitem 0 10
+# gives the player 10 of item ID 0
+# use the item manager tool to see all the item id's
+# item id -1 is bits.
+
+#takeitem
+* takeitem 0 10
+#same syntax as giveitem
+
+#hascutiemark
+* hascutiemark? <5> :IsSuperGoodAtFlying
+#goes to the label IsSuperGoodAtFlying if the player has the cutie mark with ID of 5
+# use the cutiemark manager tool to see all the cutiemark ids
+
+#israce
+* israce? <Earth> :IsEarthPony
+#goes to the label IsEarthPony if the player is an earth pony
+#valid values are Earth, Unicorn, and Pegasus (not case sensitive)
+
+
+* questactive? <SomeQuest> :QuestIsActive
+# goes to the label QuestIsActive if the quest SomeQuest is active
+
+* activatequest SomeQuest
+#activates the quest SomeQuest (adds it to the player, and sets the stage to 0
+
+# queststage
+* queststage <SomeQuest> 0
+#quests are not only just active/completed, but can go through stages. 
+#this is how you save a player's progress through a quest. 
+#stage 0 is the default stage for a new quest
+
+* queststage? <SomeQuest> = 3 :QuestIsAtStage3
+# go to label QuestIsAtStage3, if the quest is at stage 3
+
+* queststage? <SomeQuest> > 3 :QuestIsAfterStage3
+# go to the label if the quest stage value is greater than 3
+* queststage? <SomeQuest> < 3 : QuestIsBeforeStage3
+# go to the label if the quest stage value is less than 3
+
+* questcomplete? <SomeQuest> :QuestCompleted
+# go to the label if the quest is completed
+# a completed quest technically is queststage of 2147483647 (signed integer max value)
+
+* completequest SomeQuest
+#complete the quest SomeQuest
+
+#journal entries
+{[Quest Identifier]Journal Entry Identifier}
+#remember to always have the quest titles identical, or else it will become a different 'quest', and not be grouped together
+#journal entries show up in the order that the player runs across them in the scripts. You cannot change the order after they have done something.
+#define the actual quest names/journal entries as shown the players in the journal files
+
+#"complete" a journal entry (the set of journal entries will be marked as 'done' to the player)
+{[Quest Title As Shown To Player]COMPLETE}
+
+#the following will run the script named Hello World.ponyscript, that exists next to this script
+* runscript Hello World.ponyscript
+#the following will run the script, as before, and then jump to the [Label] inside that script
+* runscript Hello World.pscript goto [Label name]
+
+# Using these labels will cause the script to ignore anything outside of them.
+# You can also goto them if you want to restart the script or exit it.
+# [BEGINNING]
+# [END]
+
+#You also cannot use the following names for characters:
+# PLAYER
+
+#-------------------------------------------------------------------
+#anything not on this list that exists on the ponyscript.md 
+#information is broken, and should not be used.

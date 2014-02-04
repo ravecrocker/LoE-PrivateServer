@@ -1963,3 +1963,7 @@ private void RpcPerformMagic (NetIncomingMessage msg)
 
 => Donut Steel pos : 24.2031 -1.16802 -55.8526 in RaritysBoutique
 ==> When we try to talk to Donut Steel, we get 4d 0400 1800 0000 31 ! (0000 is Donut's netview id)
+
+=> The unknown 4d message when you enter could be the client asking for the animations of the other players.
+
+=> Go look at PonyQuest. Seriously. Apparently there's a whole language and parser for quests/npcs/.. and it was already in ponyquest.
