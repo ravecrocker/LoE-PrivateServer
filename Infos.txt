@@ -51,7 +51,7 @@ versionresponse:
 ==> See in NetworkMenu->AwakeAfterAuthentifiation
 ==> The game uses PNet and PNet uses Lidgren, in the end Lidgren does all the work (including the UDP 'handshake')
 ==> When a connection request is received, you can call Approve() or Deny() to finish the handshake !
-==> TODO: Copy the handshake code, complete with the NetworkTime thing
+==> Copy the handshake code, complete with the NetworkTime thing
 
 8300000801 04504e6574 3a7a4f815c8c4ee6 9cf35b43 04 74757833 0a 53455353494f4e4b4559
 
@@ -375,7 +375,7 @@ Assets/Scenes/Cloudsdale/Cloudsdale.unity
 ====> OMIGOSH C'EST CA ! C'EST UNE SCENE !
 =========> AU DEMARRAGE CHARGER AUTOMATIQUEMENT "characters" POUR L'ECRAN DE SELECTION DE PERSONNAGE !!!
 
-=> TODO: Implement ressource extraction of XML files
+=> Implement ressource extraction of XML files
 => Le serveur envoie ce messgae des qu'on charge la scene characters :
 48 00 00 08 00 06
 => Sans le header c'est juste le byte 0x06. C'est surement un requete pour recuperer la liste de personnages !!!!
@@ -503,7 +503,7 @@ NullReferenceException: Object reference not set to an instance of an object
   at GUIManager.EnableGUI () [0x00000] in <filename unknown>:0 
   at GUIManager.OnEnable () [0x00000] in <filename unknown>:0 
   
- => TODO: Find out EXACTLY what the Play button code in CharacterCreator.DrawBorderAndDescription does, then figure out what to send
+ => Find out EXACTLY what the Play button code in CharacterCreator.DrawBorderAndDescription does, then figure out what to send
  
  ==> Dump of known button code
  
@@ -587,13 +587,13 @@ On peut aussi faire des delegate anonymes, si on les appellent ils executent jus
      souscris infoCloseAction a la command de fermeture de cette message box (will be called in CloseBusyInfo())
 	 souscris noLongerBusy au parametre <>f__am$cache3B (will be called in CloseBusyInfo())
 
-=> TODO LIST :
+=> LIST :
 ==> Find all subscriptors of <>f__am$cache3B => Toujours anon empty
 ==> Find all subscriptors of Net.OnRoomChange => just loadLevel et storey.joined (aka <>m_1F)
 ==> Just to be sure it's nothing, find all subscriptors of <>f__am$cache3A => Toujours anon empty
 ===> So basically the play button is useless by itself. It just fires a message box and send character data.
 
-=> TODO LIST :
+=> LIST :
 ==> Find WHAT IS Awake(),OnEnable(),OnDisable(), how to enable a script AND THE WHOLE monoBehavior STUFF IN UNITY !
 ===> Enable/Disable a script/object by setting object.enabled=true/false;
 ===> The order of the four methods of a script related to initialization is always:
@@ -682,8 +682,8 @@ Well, that was unexpected. RPC for GetPonyData is RPC 200. It's called directly 
 
 => Fun fact : There is a "Singleplayer Mode" thingy in GameManager::Start
 
-TODO :
-- Do the TODO list in the server's widget.cpp
+
+- Do the list in the server's widget.cpp
 - Remove the wordfilter inside the code. (Patch the function to do nothing)
 - Remove the register button, registration is automatic (do a br (jump) when it draws the button)
 
@@ -789,7 +789,7 @@ Serer sends some more 54
 Client ack them too
 Then they start exchanging some 01 before the client's disconnection, the first 01 is probably the end of the enter game sequence and start of the sync
 
-=> TODO: Copy the login sequence in LoE11 exactly into the private server then see what it does
+=> Copy the login sequence in LoE11 exactly into the private server then see what it does
 => Well maybe I did it wrong but it's not working.
 ==> Let's try to understand what the game is doing with the packets we send
 
@@ -1873,11 +1873,11 @@ One with everything, one with server commands, one with player info.
 => TODO: Save the logs to a text file
 ==> Filename should be the system time
 
-=> TODO: When disconnecting players on server exit, save the ponies first !
+=> When disconnecting players on server exit, save the ponies first !
 
 => TODO: Update the DLL to download static data from the private server instead of the officials
 
-=> TODO: BUG: Fix chat bug when you're alone or just entered, either no name or not working at all
+=> Fix chat bug when you're alone or just entered, either no name or not working at all
 
 => Fling then landing : 
 4e 0000 3800 0100 ca 01000000
@@ -1967,3 +1967,5 @@ private void RpcPerformMagic (NetIncomingMessage msg)
 => The unknown 4d message when you enter could be the client asking for the animations of the other players.
 
 => Go look at PonyQuest. Seriously. Apparently there's a whole language and parser for quests/npcs/.. and it was already in ponyquest.
+
+=> TODO: BUG: The global chat isn't actually global ! Make it global, and implement the real global chat.
