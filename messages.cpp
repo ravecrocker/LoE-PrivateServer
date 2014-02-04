@@ -55,7 +55,7 @@ void sendEntitiesList(Player *player)
 
 void sendPonySave(Player *player, QByteArray msg)
 {
-    quint16 netviewId = msg[6] + (msg[7]<<8);
+    quint16 netviewId = (quint8)msg[6] + ((quint8)msg[7]<<8);
     Player* refresh = Player::findPlayer(win.udpPlayers, netviewId);
 
     if (netviewId == player->pony.netviewId)
