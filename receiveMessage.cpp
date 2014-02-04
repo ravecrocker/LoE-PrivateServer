@@ -365,8 +365,8 @@ void receiveMessage(Player* player)
         {
             // Display data
             quint32 unknownMsgSize =  ((quint8)msg[3] +((quint8)msg[4]<<8)) / 8;
-            win.logMessage("UDP: Unknown message received : "
-                           +QString(player->receivedDatas->left(unknownMsgSize+5).toHex().data()));
+            //win.logMessage("UDP: Unknown message received : "
+            //               +QString(player->receivedDatas->left(unknownMsgSize+5).toHex().data()));
             *player->receivedDatas = player->receivedDatas->mid(unknownMsgSize+5);
             msgSize=0;
         }
