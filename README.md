@@ -2,23 +2,26 @@ Legends of Equestria Private Server
 ===================================
 
 This is a Private Server, to play LoE even when the official servers are closed.
-The official release is for Windows x86. The server should work on Linux and Mac too, but you'll need to compile it yourself.
+The official release is for Windows (x86 and x64). The server should work on Linux and Mac too, but you'll need to compile it yourself.
 
 <h3>How to use</h3>
 Extract in the Legends of Equestria folder, start PrivateServer.exe and the game. 
 In the game pick a name/password (no need to register first)
 Then use either :
 - the Local server, for singleplayer or a multiplayer LAN in your house
-- or the Online server, for multiplayer (but it's often offline, since I can't host it myself)
+- one of the Online servers, for multiplayer
 - You can also add your own servers in data/serversList.cfg
 
 <h3>Still in Beta</h3>
-The private server is still in beta, expect bugs.<br/>
+The private server is still in beta, expect bugs. Patches and pull requests are welcome.<br/>
 Some important features are still lacking at the moment :
-- Some places (Tartarus, Twilight's Library,..) are not accessible without using the server commands.
-- No skills (no unicorn magic) except flying for pegasi.
 - No monsters or NPCs without server commands.
 - No quests.
+- No items.
+
+<h3>Chat commands</h3>
+- /stuck : Reloads and sends you to the spawn. Use it if you can't move.
+- unstuck me : Same than above.
 
 <h3>Server commands</h3>
 You don't need any of those commands to play, but they might be usefull.
@@ -32,6 +35,7 @@ For example if you're stuck, do setPeer with your IP and port, then do for examp
 - disconnect : Kick the player with the message "Connection closed by the server admin". Does not ban.
 - load scene : Loads a scene (PonyVille, Cloudsdale, ...) and teleport to it's spawn. See the list of scenes below.
 - getPos : Get the position (x, y, z) of the player. Often used with "move x y z".
+- getRot : Get the rotation (x, y, z, w) of the player.
 - move x y z : Instantly teleport the player to the given position. Not a spell. You just move.
 - setStat statId value : Set the given stat (health, mana, ..) to the given value. 
 - setMaxStat statId value : Set the max of the given stat (health, mana, ..) to the given value. 
