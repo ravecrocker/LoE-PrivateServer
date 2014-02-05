@@ -90,6 +90,7 @@ public:
     QTimer* udpSendReliableTimer; // If we didn't get an ACK before this timeouts, resend the last message
     QMutex udpSendReliableMutex; // Protects the buffer/queue/timers from concurrency hell
     Pony pony;
+    QByteArray lastValidReceivedAnimation;
     quint8 inGame; // 0:Not in game, 1:Loading, 2:In game and loaded
 };
 

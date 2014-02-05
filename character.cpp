@@ -74,6 +74,7 @@ void Player::reset()
     port=0;
     IP.clear();
     receivedDatas->clear();
+    lastValidReceivedAnimation.clear();
     pony = Pony();
     for (int i=0;i<33;i++)
         udpSequenceNumbers[i]=0;
