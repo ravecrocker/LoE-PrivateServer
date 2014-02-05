@@ -262,16 +262,22 @@ void receiveMessage(Player* player)
             {
                 sendLoadSceneRPC(player, player->pony.sceneName);
             }
-            else
+            else // Broadcast the message
             {
-                // Send to everyone
-                Scene* scene = findScene(player->pony.sceneName);
-                if (scene->name.isEmpty())
-                    win.logMessage("UDP: Can't find the scene for chat message, aborting");
-                else
-                    for (int i=0; i<scene->players.size(); i++)
-                        if (scene->players[i]->inGame==2 || scene->players[i]->inGame==1)
-                            sendChatMessage(scene->players[i], txt, author);
+                if ((quint8)msg[6] == 8) // Local chat only
+                {
+                    Scene* scene = findScene(player->pony.sceneName);
+                    if (scene->name.isEmpty())
+                        win.logMessage("UDP: Can't find the scene for chat message, aborting");
+                    else
+                        for (int i=0; i<scene->players.size(); i++)
+                            if (scene->players[i]->inGame==2 || scene->players[i]->inGame==1)
+                                sendChatMessage(scene->players[i], txt, author, ChatLocal | ChatGeneral);
+                }
+                else // Send globally
+                    for (int i=0; i<win.udpPlayers.size(); i++)
+                        if (win.udpPlayers[i]->inGame==2 || win.udpPlayers[i]->inGame==1)
+                            sendChatMessage(win.udpPlayers[i], txt, author, ChatGeneral);
             }
         }
         else if ((unsigned char)msg[0]==MsgUserReliableOrdered4 && (unsigned char)msg[5]==0x1) // Edit ponies request

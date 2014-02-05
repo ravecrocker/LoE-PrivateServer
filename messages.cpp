@@ -450,7 +450,7 @@ void sendLoadSceneRPC(Player* player, QString sceneName, UVector pos) // Loads a
     levelLoadMutex.unlock();
 }
 
-void sendChatMessage(Player* player, QString message, QString author)
+void sendChatMessage(Player* player, QString message, QString author, quint8 chatType)
 {
     QByteArray idAndAccess(5,0);
     idAndAccess[0] = player->pony.netviewId;
@@ -459,8 +459,8 @@ void sendChatMessage(Player* player, QString message, QString author)
     idAndAccess[3] = player->pony.netviewId << 24;
     idAndAccess[4] = 0x0; // Access level
     QByteArray data(2,0);
-    data[0] = 0xf;
-    data[1] = 0x4;
+    data[0] = 0xf; // RPC ID
+    data[1] = chatType;
     data += stringToData(author);
     data += stringToData(message);
     data += idAndAccess;
