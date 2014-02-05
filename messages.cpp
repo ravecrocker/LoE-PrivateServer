@@ -111,7 +111,7 @@ void sendPonySave(Player *player, QByteArray msg)
         player->inv.clear();
         player->inv << raincloudHat << goggles << hat << bag;
         player->worn.clear();
-        player->worn << goggles << bag;
+        //player->worn << goggles << bag;
         player->nBits = 15;
         sendInventoryRPC(player, player->inv, player->worn, player->nBits);
 
@@ -127,10 +127,10 @@ void sendPonySave(Player *player, QByteArray msg)
         sendSkillsRPC(player, skills);
 
         // Set current/max stats again (that's what the official server does, not my idea !)
-        sendSetStatRPC(player, 0, 100);
         sendSetMaxStatRPC(player, 0, 100);
-        sendSetStatRPC(player, 1, 100);
+        sendSetStatRPC(player, 0, 100);
         sendSetMaxStatRPC(player, 1, 100);
+        sendSetStatRPC(player, 1, 100);
 
         /// SEND DONUT STEEL (he's a moose dark-as-my-soul OC)
         if (player->pony.sceneName == "RaritysBoutique")
@@ -149,12 +149,12 @@ void sendPonySave(Player *player, QByteArray msg)
         win.logMessage(QString("UDP: Sending pony save for ")+QString().setNum(refresh->pony.netviewId)
                        +" to "+QString().setNum(player->pony.netviewId));
 
-        sendWornRPC(refresh, player, refresh->worn); // Wear nothing, until we implement it
+        sendWornRPC(refresh, player, refresh->worn);
 
-        sendSetMaxStatRPC(player, 0, 100);
-        sendSetStatRPC(player, 0, 100);
-        sendSetMaxStatRPC(player, 1, 100);
-        sendSetStatRPC(player, 1, 100);
+        sendSetStatRPC(refresh, player, 0, 100);
+        sendSetMaxStatRPC(refresh, player, 0, 100);
+        sendSetStatRPC(refresh, player, 1, 100);
+        sendSetMaxStatRPC(refresh, player, 1, 100);
 
         sendPonyData(refresh, player);
 
@@ -271,6 +271,26 @@ void sendSetMaxStatRPC(Player* player, quint8 statId, float value)
     data[3] = statId;
     data += floatToData(value);
     sendMessage(player, MsgUserReliableOrdered18, data);
+}
+
+void sendSetStatRPC(Player* affected, Player* dest, quint8 statId, float value)
+{
+    QByteArray data(4,50);
+    data[0] = affected->pony.netviewId;
+    data[1] = affected->pony.netviewId>>8;
+    data[3] = statId;
+    data += floatToData(value);
+    sendMessage(dest, MsgUserReliableOrdered18, data);
+}
+
+void sendSetMaxStatRPC(Player* affected, Player* dest, quint8 statId, float value)
+{
+    QByteArray data(4,51);
+    data[0] = affected->pony.netviewId;
+    data[1] = affected->pony.netviewId>>8;
+    data[3] = statId;
+    data += floatToData(value);
+    sendMessage(dest, MsgUserReliableOrdered18, data);
 }
 
 void sendWornRPC(Player *player, QList<WearableItem> &worn)
