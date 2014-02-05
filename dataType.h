@@ -34,6 +34,7 @@ class WearableItem
 {
 public:
     WearableItem();
+    bool operator==(const WearableItem& other);
 
 public:
     quint8 index;

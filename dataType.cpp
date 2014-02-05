@@ -36,6 +36,11 @@ WearableItem::WearableItem()
     index=0;
 }
 
+bool WearableItem::operator==(const WearableItem& other)
+{
+    return id == other.id;
+}
+
 InventoryItem::InventoryItem() : WearableItem()
 {
     amount=1;

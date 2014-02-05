@@ -2067,3 +2067,10 @@ public void OnDeserialize (NetIncomingMessage message)
 }
 
 => TODO: BUG: Fix setMaxStat/.. etc not actully sending data about the refresh, but always about the player to the player. Add an overload.
+
+=> Asking to wear the goggles, at pos 1 in the inventory
+4d 0600 2800 
+0100 08 0b 01
+=> Asking to wear the bag at pos 3 in the inventory
+4d 1800 2800 
+0100 08 1f 03
