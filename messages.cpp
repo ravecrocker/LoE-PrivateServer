@@ -140,6 +140,9 @@ void sendPonySave(Player *player, QByteArray msg)
         sendSetStatRPC(player, 1, 100);
 
         sendPonyData(refresh, player);
+
+        if (!refresh->lastValidReceivedAnimation.isEmpty())
+            sendMessage(player, MsgUserReliableOrdered12, refresh->lastValidReceivedAnimation);
     }
     else
     {
@@ -380,6 +383,7 @@ void sendLoadSceneRPC(Player* player, QString sceneName) // Loads a scene and se
     levelLoadMutex.lock();
     player->pony.pos = vortex.destPos;
     player->pony.sceneName = sceneName;
+    player->lastValidReceivedAnimation.clear(); // Changing scenes resets animations
     Player::removePlayer(oldScene->players, player->IP, player->port);
     if (oldScene->name != sceneName)
     {
@@ -424,6 +428,7 @@ void sendLoadSceneRPC(Player* player, QString sceneName, UVector pos) // Loads a
     levelLoadMutex.lock();
     player->pony.pos = pos;
     player->pony.sceneName = sceneName;
+    player->lastValidReceivedAnimation.clear(); // Changing scenes resets animations
     Player::removePlayer(oldScene->players, player->IP, player->port);
     if (oldScene->name != sceneName)
     {

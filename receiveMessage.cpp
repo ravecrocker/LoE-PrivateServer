@@ -345,9 +345,20 @@ void receiveMessage(Player* player)
             if (scene->name.isEmpty())
                 win.logMessage("UDP: Can't find the scene for animation message, aborting");
             else
-                for (int i=0; i<scene->players.size(); i++)
-                    if (scene->players[i]->inGame==2 || scene->players[i]->inGame==1)
-                        sendMessage(scene->players[i], MsgUserReliableOrdered12, msg.mid(5)); // Broadcast
+            {
+                if (player->lastValidReceivedAnimation.isEmpty() ||
+                    (quint8)player->lastValidReceivedAnimation[3] != (quint8)0x01 || (quint8)msg[5 + 3] == 0x00) {
+                    // Don't accept invalid animation (0x01 Flying 0x00 Landing)
+                    // XXX The game lets players send nonsense (dancing while sitting down), those should be filtered
+                    player->lastValidReceivedAnimation = msg.mid(5, msgSize - 5);
+                    for (int i=0; i<scene->players.size(); i++) {
+                        if (scene->players[i] == player)
+                            continue; // Don't send the animation to ourselves, it'll be played regardless
+                        if (scene->players[i]->inGame==2 || scene->players[i]->inGame==1)
+                            sendMessage(scene->players[i], MsgUserReliableOrdered12, player->lastValidReceivedAnimation); // Broadcast
+                    }
+                }
+            }
         }
         else if ((unsigned char)msg[0]==MsgUserReliableOrdered11 && (unsigned char)msg[7]==0x3D) // Skill
         {
@@ -359,7 +370,7 @@ void receiveMessage(Player* player)
             else
                 for (int i=0; i<scene->players.size(); i++)
                     if (scene->players[i]->inGame==2 || scene->players[i]->inGame==1)
-                        sendMessage(scene->players[i], MsgUserReliableOrdered12, msg.mid(5)); // Broadcast
+                        sendMessage(scene->players[i], MsgUserReliableOrdered11, msg.mid(5, msgSize - 5)); // Broadcast
         }
         else
         {
