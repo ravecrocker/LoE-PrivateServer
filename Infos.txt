@@ -1400,9 +1400,6 @@ Syncing 2 to 1
 0 unicorn : 	AgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAzM7OfZmamHw==
 0 pegasus :		AwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAzM7OfZmamHw==
 
-=> Make a NPC Flying Manual in PonyVille wich provides ingame help.
-==> Text is "What do you want ?", options "Project page", "Server commands" and "UR A FAGET" that teleports you to Tartarus.
-
 => Chat messages sent by a client
 Data received (UDP) (hex) : 
 46020058000f04000000054141414141
@@ -1509,7 +1506,7 @@ UDP: Removing netview 5 to 4
 ====> Change player.inGame to be an uint. 0 means not in game, 1 means loading a map, 2 means loaded.
 ====> When joining a map, only instantiate to players who are fully loaded
 
-=> Bug : Using the load server command doesn't teleport to the correct position.
+=> Using the load server command doesn't teleport to the correct position. Fixed.
 
 => ping timeout bug log :
 Reading config file ...
@@ -2074,3 +2071,13 @@ public void OnDeserialize (NetIncomingMessage message)
 => Asking to wear the bag at pos 3 in the inventory
 4d 1800 2800 
 0100 08 1f 03
+
+=> Should I spam Cerebrate to see if he has PonyQuest / PonyScript ?
+==> Yeah why not just ask LoE's source code while I'm at it.
+==> Still worth a try if adam doesn't respond.
+===> Talking to myself in a text file probably isn't healty.
+
+=> We could use ranged singles instead of full absolute coordinates now that we have disunity to get the bounds
+==> Upload some desunity'd assets on github.
+
+=> Sort those damn folders. It doesn't make any sense.
