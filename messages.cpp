@@ -80,13 +80,21 @@ void sendPonySave(Player *player, QByteArray msg)
 
         // Set inventory
         InventoryItem raincloudHat;
-        raincloudHat.amount=1;
         raincloudHat.id=73;
         raincloudHat.index=0;
+        InventoryItem goggles;
+        goggles.id=17;
+        goggles.index=1;
+        InventoryItem hat;
+        hat.id=62;
+        hat.index=2;
+        InventoryItem bag;
+        bag.id=60;
+        bag.index=3;
         QList<InventoryItem> inv;
-        inv << raincloudHat;
+        inv << raincloudHat << goggles << hat << bag;
         QList<WearableItem> worn;
-        worn << raincloudHat;
+        worn << goggles << bag;
         sendInventoryRPC(player, inv, worn, 10); // Start with 10 bits and no inventory, until we implement it correctly
 
         // Send skills

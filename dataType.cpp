@@ -38,5 +38,5 @@ WearableItem::WearableItem()
 
 InventoryItem::InventoryItem() : WearableItem()
 {
-    amount=0;
+    amount=1;
 }
