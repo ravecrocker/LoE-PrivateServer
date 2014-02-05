@@ -29,18 +29,21 @@ void sendPonies(Player* player)
 
 void sendEntitiesList(Player *player)
 {
-    if (!player->inGame) // Not yet in game, send player's ponies list
+    levelLoadMutex.lock(); // Protect player->inGame
+    if (player->inGame == 0) // Not yet in game, send player's ponies list (Characters scene)
     {
+        levelLoadMutex.unlock();
         sendPonies(player);
         return;
     }
-
-    // Loading finished, sending entities list
-    if (player->inGame!=1) // Only instantiate once
+    else if (player->inGame > 1) // Not supposed to happen, let's do it anyway
     {
-        win.logMessage(QString("UDP: Entities list already sent to ")+QString().setNum(player->pony.netviewId));
-        return;
+        //levelLoadMutex.unlock();
+        win.logMessage(QString("UDP: Entities list already sent to ")+QString().setNum(player->pony.netviewId)
+                       +", resending anyway");
+        //return;
     }
+    else // Loading finished, sending entities list
     win.logMessage(QString("UDP: Sending entities list to ")+QString().setNum(player->pony.netviewId));
     Scene* scene = findScene(player->pony.sceneName); // Spawn all the players on the client
     for (int i=0; i<scene->players.size(); i++)
@@ -53,6 +56,9 @@ void sendEntitiesList(Player *player)
         sendNetviewInstantiate(player,"PlayerBase",0,0,UVector(24.7333,-1.16802,-51.7106), UQuaternion(0,-0.25,0,1));
     }
 
+    player->inGame = 2;
+    levelLoadMutex.unlock();
+
     // Send stats of the client's pony
     sendSetMaxStatRPC(player, 0, 100);
     sendSetStatRPC(player, 0, 100);
@@ -62,13 +68,24 @@ void sendEntitiesList(Player *player)
 
 void sendPonySave(Player *player, QByteArray msg)
 {
+    if (player->inGame < 2) // Not supposed to happen, ignoring the request
+    {
+        win.logMessage("UDP: Savegame requested too soon by "+QString().setNum(player->pony.netviewId));
+        return;
+    }
+
     quint16 netviewId = (quint8)msg[6] + ((quint8)msg[7]<<8);
     Player* refresh = Player::findPlayer(win.udpPlayers, netviewId);
 
     if (netviewId == player->pony.netviewId)
     {
-        // Send the entities list if the game is starting (sends RPC calls to the view with id 0085 (the PlayerBase))
-        win.logMessage(QString("UDP: Sending pony save for/to ")+QString().setNum(netviewId));
+        if (player->inGame == 3) // Hopefully that'll fix people stuck on the default cam without creating clones
+        {
+            win.logMessage("UDP: Savegame already sent to "+QString().setNum(player->pony.netviewId)
+                           +", resending anyway");
+        }
+        else
+            win.logMessage(QString("UDP: Sending pony save for/to ")+QString().setNum(netviewId));
 
         // Set current/max stats
         sendSetMaxStatRPC(player, 0, 100);
@@ -92,9 +109,9 @@ void sendPonySave(Player *player, QByteArray msg)
         bag.id=60;
         bag.index=3;
         QList<InventoryItem> inv;
-        inv << raincloudHat << goggles << hat << bag;
+        //inv << raincloudHat << goggles << hat << bag;
         QList<WearableItem> worn;
-        worn << goggles << bag;
+        //worn << goggles << bag;
         sendInventoryRPC(player, inv, worn, 10); // Start with 10 bits and no inventory, until we implement it correctly
 
         // Send skills
@@ -124,7 +141,7 @@ void sendPonySave(Player *player, QByteArray msg)
             sendPonyData(&donutSteel, player);
         }
 
-        refresh->inGame = 2;
+        refresh->inGame = 3;
     }
     else if (!refresh->IP.isEmpty())
     {
@@ -152,16 +169,15 @@ void sendPonySave(Player *player, QByteArray msg)
 
 void receiveSync(Player* player, QByteArray data) // Receives the 01 updates from each players
 {
-    if (player->inGame!=2) // A sync message while loading would teleport use to a wrong position
+    if (player->inGame < 2) // A sync message while loading would teleport use to a wrong position
         return;
-    //win.logMessage("Got sync");
+    //win.logMessage("Got sync from "+QString().setNum(player->pony.netviewId));
 
     // 5 and 6 are id and id>>8
     player->pony.pos.x = dataToFloat(data.right(data.size()  - 11));
     player->pony.pos.y = dataToFloat(data.right(data.size()  - 15));
     player->pony.pos.z = dataToFloat(data.right(data.size()  - 19));
 
-    // TODO : Get the rotation and save it
     if (data.size() >= 23)
         player->pony.rot.y = dataToRangedSingle(ROTMIN, ROTMAX, RotRSSize, data.mid(23,1));
     if (data.size() >= 25)
@@ -338,7 +354,7 @@ void sendSkillsRPC(Player* player, QList<QPair<quint32, quint32> > &skills)
 void sendPonyData(Player *player)
 {
     // Sends the ponyData
-    win.logMessage(QString("UDP: Sending the ponyData for/to "+QString().setNum(player->pony.netviewId)));
+    //win.logMessage(QString("UDP: Sending the ponyData for/to "+QString().setNum(player->pony.netviewId)));
     QByteArray data(3,0xC8);
     data[0] = player->pony.netviewId;
     data[1] = player->pony.netviewId>>8;
@@ -368,8 +384,6 @@ void sendLoadSceneRPC(Player* player, QString sceneName) // Loads a scene and se
         return;
     }
 
-    player->inGame=1;
-
     Scene* scene = findScene(sceneName);
     Scene* oldScene = findScene(player->pony.sceneName);
     if (scene->name.isEmpty() || oldScene->name.isEmpty())
@@ -381,6 +395,7 @@ void sendLoadSceneRPC(Player* player, QString sceneName) // Loads a scene and se
     // Update scene players
     //win.logMessage("sendLoadSceneRPC: locking");
     levelLoadMutex.lock();
+    player->inGame=1;
     player->pony.pos = vortex.destPos;
     player->pony.sceneName = sceneName;
     player->lastValidReceivedAnimation.clear(); // Changing scenes resets animations
@@ -393,7 +408,7 @@ void sendLoadSceneRPC(Player* player, QString sceneName) // Loads a scene and se
 
         // Send instantiate to the players of the new scene
         for (int i=0; i<scene->players.size(); i++)
-            if (scene->players[i]->inGame==2)
+            if (scene->players[i]->inGame>=2)
                 sendNetviewInstantiate(player, scene->players[i]);
     }
     scene->players << player;
@@ -413,8 +428,6 @@ void sendLoadSceneRPC(Player* player, QString sceneName, UVector pos) // Loads a
                            +QString().setNum(pos.y)+" "
                            +QString().setNum(pos.z)));
 
-    player->inGame=1;
-
     Scene* scene = findScene(sceneName);
     Scene* oldScene = findScene(player->pony.sceneName);
     if (scene->name.isEmpty() || oldScene->name.isEmpty())
@@ -426,6 +439,7 @@ void sendLoadSceneRPC(Player* player, QString sceneName, UVector pos) // Loads a
     // Update scene players
     //win.logMessage("sendLoadSceneRPC pos: locking");
     levelLoadMutex.lock();
+    player->inGame=1;
     player->pony.pos = pos;
     player->pony.sceneName = sceneName;
     player->lastValidReceivedAnimation.clear(); // Changing scenes resets animations
@@ -438,7 +452,7 @@ void sendLoadSceneRPC(Player* player, QString sceneName, UVector pos) // Loads a
 
         // Send instantiate to the players of the new scene
         for (int i=0; i<scene->players.size(); i++)
-            if (scene->players[i]->inGame==2)
+            if (scene->players[i]->inGame>=2)
                 sendNetviewInstantiate(player, scene->players[i]);
     }
     scene->players << player;
