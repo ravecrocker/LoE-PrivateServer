@@ -32,6 +32,14 @@ void receiveMessage(Player* player)
                 win.logMessage("UDP: Discarding double message (-"+QString().setNum(player->udpRecvSequenceNumbers[channel]-seq)
                                +") from "+QString().setNum(player->pony.netviewId));
                 //win.logMessage("UDP: Message was : "+QString(player->receivedDatas->left(msgSize).toHex().data()));
+                player->nReceivedDups++;
+                if (player->nReceivedDups >= 100) // Kick the player if he's infinite-looping on us
+                {
+                    win.logMessage(QString("UDP: Kicking "+QString().setNum(player->pony.netviewId)+" : Too many packet dups."));
+                    sendMessage(player,MsgDisconnect, "You were kicked for lagging the server, sorry. You can login again.");
+                    Player::disconnectPlayerCleanup(player); // Save game and remove the player
+                    return;
+                }
                 *(player->receivedDatas) = player->receivedDatas->mid(msgSize);
 
                 // Ack if needed, so that the client knows to move on already.
@@ -66,6 +74,8 @@ void receiveMessage(Player* player)
         }
         else
         {
+            if (player->nReceivedDups > 0) // If he stopped sending dups, forgive him slowly.
+                player->nReceivedDups--;
             //win.logMessage("UDP: Received message (="+QString().setNum(seq)
             //               +") from "+QString().setNum(player->pony.netviewId));
             player->udpRecvSequenceNumbers[channel] = seq;
