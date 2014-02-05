@@ -51,5 +51,5 @@ void Sync::sendSyncMessage(Player* source, Player* dest)
     //data += rangedSingleToData(source.pony.rot.z, ROTMIN, ROTMAX, RotRSSize);
     sendMessage(dest, MsgUserUnreliable, data);
 
-    //win.logMessage("UDP: Syncing "+QString().setNum(source.pony.netviewId)+" to "+QString().setNum(dest.pony.netviewId));
+    //win.logMessage("UDP: Syncing "+QString().setNum(source->pony.netviewId)+" to "+QString().setNum(dest->pony.netviewId));
 }

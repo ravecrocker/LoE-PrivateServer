@@ -91,7 +91,7 @@ public:
     QMutex udpSendReliableMutex; // Protects the buffer/queue/timers from concurrency hell
     Pony pony;
     QByteArray lastValidReceivedAnimation;
-    quint8 inGame; // 0:Not in game, 1:Loading, 2:In game and loaded
+    quint8 inGame; // 0:Not in game, 1:Loading, 2:Instantiated & waiting savegame, 3:In game and loaded
 };
 
 #endif // CHARACTER_H

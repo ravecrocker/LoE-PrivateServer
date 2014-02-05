@@ -271,16 +271,28 @@ void receiveMessage(Player* player)
                         win.logMessage("UDP: Can't find the scene for chat message, aborting");
                     else
                         for (int i=0; i<scene->players.size(); i++)
-                            if (scene->players[i]->inGame==2 || scene->players[i]->inGame==1)
+                            if (scene->players[i]->inGame>=2)
                                 sendChatMessage(scene->players[i], txt, author, ChatLocal | ChatGeneral);
                 }
                 else // Send globally
                     for (int i=0; i<win.udpPlayers.size(); i++)
-                        if (win.udpPlayers[i]->inGame==2 || win.udpPlayers[i]->inGame==1)
+                        if (win.udpPlayers[i]->inGame>=2)
                             sendChatMessage(win.udpPlayers[i], txt, author, ChatGeneral);
             }
         }
-        else if ((unsigned char)msg[0]==MsgUserReliableOrdered4 && (unsigned char)msg[5]==0x1) // Edit ponies request
+        else if ((quint8)msg[0]==MsgUserReliableOrdered4 && (quint8)msg[5]==0x1 && player->inGame!=0) // Edit ponies request error (happens if you click play twice quicly, for example)
+        {
+            win.logMessage("Rejecting game start request from "+QString().setNum(player->pony.netviewId)
+                           +" : player already in game");
+            // Fix the buggy state we're now in
+            // Reload to hide the "saving ponies" message box
+            QByteArray data(1,5);
+            data += stringToData(player->pony.sceneName);
+            sendMessage(player,MsgUserReliableOrdered6,data);
+            // Try to cancel the loading callbacks with inGame=1
+            player->inGame = 1;
+        }
+        else if ((quint8)msg[0]==MsgUserReliableOrdered4 && (quint8)msg[5]==0x1 && player->inGame==0) // Edit ponies request
         {
             QList<Pony> ponies = Player::loadPonies(player);
             QByteArray ponyData = msg.right(msg.size()-10);
@@ -309,7 +321,7 @@ void receiveMessage(Player* player)
             // Send instantiate to the players of the new scene
             Scene* scene = findScene(player->pony.sceneName);
             for (int i=0; i<scene->players.size(); i++)
-                if (scene->players[i]->pony.netviewId!=player->pony.netviewId && scene->players[i]->inGame==2)
+                if (scene->players[i]->pony.netviewId!=player->pony.netviewId && scene->players[i]->inGame>=2)
                     sendNetviewInstantiate(player, scene->players[i]);
 
             //Send the 46s init messages
@@ -319,7 +331,7 @@ void receiveMessage(Player* player)
         }
         else if ((unsigned char)msg[0]==MsgUserReliableOrdered20 && (unsigned char)msg[3]==0x18 && (unsigned char)msg[4]==0) // Vortex messages
         {
-            if (player->inGame==2)
+            if (player->inGame>=2)
             {
                 quint8 id = (quint8)msg[5];
                 Vortex vortex = findVortex(player->pony.sceneName, id);
@@ -360,7 +372,7 @@ void receiveMessage(Player* player)
                     for (int i=0; i<scene->players.size(); i++) {
                         if (scene->players[i] == player)
                             continue; // Don't send the animation to ourselves, it'll be played regardless
-                        if (scene->players[i]->inGame==2 || scene->players[i]->inGame==1)
+                        if (scene->players[i]->inGame>=2)
                             sendMessage(scene->players[i], MsgUserReliableOrdered12, player->lastValidReceivedAnimation); // Broadcast
                     }
                 }
@@ -375,7 +387,7 @@ void receiveMessage(Player* player)
                 win.logMessage("UDP: Can't find the scene for skill message, aborting");
             else
                 for (int i=0; i<scene->players.size(); i++)
-                    if (scene->players[i]->inGame==2 || scene->players[i]->inGame==1)
+                    if (scene->players[i]->inGame>=2)
                         sendMessage(scene->players[i], MsgUserReliableOrdered11, msg.mid(5, msgSize - 5)); // Broadcast
         }
         else
@@ -396,14 +408,14 @@ void receiveMessage(Player* player)
     else
     {
         // Display data
-        //win.logMessage("Data received (UDP) (hex) : ");
-        //win.logMessage(QString(player->receivedDatas->toHex().data()));
+        win.logMessage("Unknown data received (UDP) (hex) : ");
+        win.logMessage(QString(player->receivedDatas->toHex().data()));
         quint32 unknownMsgSize =  ((quint8)msg[3] +((quint8)msg[4]<<8)) / 8;
         *player->receivedDatas = player->receivedDatas->mid(unknownMsgSize+5);
         msgSize=0;
     }
 
-    *player->receivedDatas = player->receivedDatas->right(player->receivedDatas->size() - msgSize);
+    *player->receivedDatas = player->receivedDatas->mid(msgSize);
     if (player->receivedDatas->size())
         receiveMessage(player);
 }
