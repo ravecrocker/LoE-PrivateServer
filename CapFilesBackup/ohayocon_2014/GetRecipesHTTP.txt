@@ -1,0 +1,28 @@
+GET /data/Recipes.xml HTTP/1.1
+if-modified-since:Fri, 24 Jan 2014 11:32:01 Z
+accept-encoding:gzip
+host:loedata.legendsofequestria.com
+
+HTTP/1.1 200 OK
+Content-Type: application/xml
+Accept-Ranges: bytes
+ETag: "2871579846"
+Last-Modified: Wed, 22 Jan 2014 06:43:32 GMT
+Content-Length: 409
+Date: Fri, 24 Jan 2014 11:34:21 GMT
+Server: lighttpd/1.4.31
+
+<?xml version="1.0" encoding="utf-16"?>
+<ArrayOfRecipe xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Recipe>
+	<ID>42</ID>
+    <Name>Fruit Salad</Name>
+    <Reagents>
+		<Reagent ID="0" QTY="1" />
+		<Reagent ID="1" QTY="1" />
+		<Reagent ID="2" QTY="1" />
+		<Reagent ID="3" QTY="2" />
+		<Reagent ID="8" QTY="4" />
+	</Reagents>
+  </Recipe>
+</ArrayOfRecipe>
