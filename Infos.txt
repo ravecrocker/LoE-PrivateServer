@@ -1916,7 +1916,7 @@ UDP: Sending the ponyData for/to 2
 
 => TODO: BUG: Search all the casts (search <<8 or msg[ or something) and cast correctly to quint8 first
 
-=> New example of spells (54 C3) : c3 00020000000a000000000000000b00000000000000
+=> New example of spells (54 C3) : c300020000000a000000000000000b00000000000000
 
 => Message received when using ground pound with a pegasus targeting himself : 4d 0000 6800 0100 3d0a000000d5652e460100
 ==> Not sure if this is related. The tornado gives nothing, maybe we need to target a monster first.
@@ -1975,3 +1975,81 @@ private void RpcPerformMagic (NetIncomingMessage msg)
 
 => Item 73 is raincloud hat. Give it to everyone by default.
 ==> Find a way to wear stuff. Inventory works, but not wearing.
+
+
+[Rpc (5)]
+private void Inventory (NetIncomingMessage msg)
+{
+	if (this.inventory == null)
+	{
+		this.inventory = new Inventory ();
+	}
+	this.inventory.OnDeserialize (msg);
+	if (base.netView.IsMine)
+	{
+		InventoryBehaviour.myInventory = this.inventory;
+		InventoryBehaviour.myInventoryBehaviour = this;
+	}
+	for (int i = 0; i < this.inventory.WornItems.Length; i++)
+	{
+		if (this.inventory.WornItems [i] != null)
+		{
+			byte arg = Item.ConvertWearablePositionToSlot (this.inventory.WornItems [i].WearableSlots);
+			this.ItemWorn (this.inventory.WornItems [i].ID, arg);
+		}
+	}
+}
+
+// Inventory
+public void OnDeserialize (NetIncomingMessage message)
+{
+	this.MaxSize = message.ReadByte ();
+	byte b = message.ReadByte ();
+	this.Items = new InventoryItem[(int)this.MaxSize];
+	for (int i = 0; i < (int)b; i++)
+	{
+		InventoryItem inventoryItem = new InventoryItem ();
+		byte b2 = message.ReadByte ();
+		inventoryItem.OnDeserialize (message);
+		this.Items [(int)b2] = inventoryItem;
+	}
+	ItemArraySerializer itemArraySerializer = new ItemArraySerializer ();
+	itemArraySerializer.OnDeserialize (message);
+	this.WornItems = itemArraySerializer.Items;
+	this.Bits = message.ReadInt32 ();
+}
+
+// Item array serializer
+public void OnDeserialize (NetIncomingMessage message)
+{
+	byte b = message.ReadByte ();
+	this.Items = new Item[(int)b];
+	byte b2 = message.ReadByte ();
+	for (int i = 0; i < (int)b2; i++)
+	{
+		byte b3 = message.ReadByte ();
+		int key = message.ReadInt32 ();
+		Item item;
+		if (StaticData.Items.TryGetValue (key, out item))
+		{
+			this.Items [(int)b3] = item;
+		}
+	}
+}
+
+=> We sent for the raincloud : 	54 1200 c800 0100 050c01004900000001000000200100490000000a000000
+05
+0c
+01
+00
+49000000
+01000000
+20
+01
+00
+49000000
+0a000000
+==> It should work .. What's wrong ?
+===> The items sometime works, sometime don't. Depending on the order, the indexes, what we sent, etc...
+===> The goggles tends to not be worn if we change anything. 
+===> Sometimes the first item becomes an apple even if we never asked for this. Sometime items aren't in the inventory.
