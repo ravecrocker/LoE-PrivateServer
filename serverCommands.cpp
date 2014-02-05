@@ -42,13 +42,34 @@ void Widget::sendCmdLine()
         }
 
         str = str.right(str.size()-8);
-        QStringList args = str.split(' ');
+        QStringList args = str.split(':');
+        bool ok;
         if (args.size() != 2)
         {
-            logMessage("UDP: setPeer takes two arguments");
+            if (args.size() != 1)
+            {
+                logMessage("UDP: setPeer takes a pony id or ip:port combination");
+                return;
+            }
+            quint16 id = args[0].toUInt(&ok);
+            if (!ok)
+            {
+                logMessage("UDP: setPeer takes a pony id as argument");
+                return;
+            }
+            for (int i=0; i<udpPlayers.size();i++)
+            {
+                if (udpPlayers[i]->pony.id == id)
+                {
+                    cmdPeer = Player::findPlayer(udpPlayers,udpPlayers[i]->IP, udpPlayers[i]->port);
+                    logMessage(QString("UDP: Peer set to "+udpPlayers[i]->pony.name));
+                    return;
+                }
+            }
+            logMessage(QString("UDP: Peer not found (id ").append(args[0]).append(")"));
             return;
         }
-        bool ok;
+
         quint16 port = args[1].toUInt(&ok);
         if (!ok)
         {
@@ -68,9 +89,11 @@ void Widget::sendCmdLine()
         if (str.size()<=10)
         {
             for (int i=0; i<win.udpPlayers.size();i++)
-                win.logMessage(win.udpPlayers[i]->IP
+                win.logMessage(QString().setNum(win.udpPlayers[i]->pony.id)
+                               +"   "+win.udpPlayers[i]->pony.name
+                               +"   "+win.udpPlayers[i]->IP
                                +":"+QString().setNum(win.udpPlayers[i]->port)
-                               +" "+QString().setNum((int)timestampNow()-win.udpPlayers[i]->lastPingTime)+"s");
+                               +"   "+QString().setNum((int)timestampNow()-win.udpPlayers[i]->lastPingTime)+"s");
             return;
         }
         str = str.right(str.size()-10);
