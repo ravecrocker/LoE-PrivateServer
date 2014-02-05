@@ -93,6 +93,9 @@ public:
     QByteArray lastValidReceivedAnimation;
     quint8 inGame; // 0:Not in game, 1:Loading, 2:Instantiated & waiting savegame, 3:In game and loaded
     quint16 nReceivedDups; // Number of duplicate packets that we didn't miss and had to discard.
+    QList<InventoryItem> inv; // Inventory
+    QList<WearableItem> worn; // Worn items
+    quint32 nBits; // Number of bits (money)
 };
 
 #endif // CHARACTER_H

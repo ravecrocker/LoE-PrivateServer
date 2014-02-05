@@ -68,6 +68,8 @@ Player::Player()
 void Player::reset()
 {
     name.clear();
+    inv.clear();
+    worn.clear();
     connected=false;
     inGame=0;
     nReceivedDups=0;

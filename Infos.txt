@@ -2066,4 +2066,4 @@ public void OnDeserialize (NetIncomingMessage message)
 	this.accessLevel = message.ReadByte ();
 }
 
-=> TODO: If someone is sending an infinite loop of retransmission, kick him or something. Maybe just reload the scene.
+=> TODO: BUG: Fix setMaxStat/.. etc not actully sending data about the refresh, but always about the player to the player. Add an overload.
