@@ -45,6 +45,18 @@ struct MessageHead
     }
 };
 
+enum ChatType
+{
+    ChatNone = 0,
+    ChatUntyped = 1,
+    ChatSystem = 2,
+    ChatGeneral = 4,
+    ChatLocal = 8,
+    ChatParty = 16,
+    ChatGuild = 32,
+    ChatWhisper = 64
+};
+
 // Public functions
 class Player;
 float timestampNow();
@@ -77,7 +89,7 @@ void sendInventoryRPC(Player* player, QList<InventoryItem>& inv, QList<WearableI
 void sendSkillsRPC(Player* player, QList<QPair<quint32, quint32> >& skills);
 void sendLoadSceneRPC(Player* player, QString sceneName);
 void sendLoadSceneRPC(Player* player, QString sceneName, UVector pos);
-void sendChatMessage(Player* player, QString message, QString author);
+void sendChatMessage(Player* player, QString message, QString author, quint8 chatType);
 void sendMove(Player* player, float x, float y, float z);
 
 #endif // MESSAGE_H

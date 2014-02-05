@@ -2053,3 +2053,17 @@ public void OnDeserialize (NetIncomingMessage message)
 ===> The items sometime works, sometime don't. Depending on the order, the indexes, what we sent, etc...
 ===> The goggles tends to not be worn if we change anything. 
 ===> Sometimes the first item becomes an apple even if we never asked for this. Sometime items aren't in the inventory.
+
+=> BUG: When we speak in the local chat, we don't have a name !
+==> Maybe just print the player name when we're about to send a message
+==> CharacterId is a ReadInt32, is ReadInt32 always 32 bit ?
+public void OnDeserialize (NetIncomingMessage message)
+{
+	this.chatType = (ChatType)message.ReadByte ();
+	this.name = message.ReadString ();
+	this.text = message.ReadString ();
+	this.CharacterId = message.ReadInt32 ();
+	this.accessLevel = message.ReadByte ();
+}
+
+=> TODO: If someone is sending an infinite loop of retransmission, kick him or something. Maybe just reload the scene.
