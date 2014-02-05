@@ -1,0 +1,3 @@
+name:Boutique;
+bounds-min: -0, -10, -100;
+bounds-max: 100, 50, 0;
