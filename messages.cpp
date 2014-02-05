@@ -95,7 +95,7 @@ void sendPonySave(Player *player, QByteArray msg)
 
         sendPonyData(player);
 
-        // Set inventory
+        // Set inventory (start with always the same, until we implement it properly)
         InventoryItem raincloudHat;
         raincloudHat.id=73;
         raincloudHat.index=0;
@@ -108,11 +108,12 @@ void sendPonySave(Player *player, QByteArray msg)
         InventoryItem bag;
         bag.id=60;
         bag.index=3;
-        QList<InventoryItem> inv;
-        //inv << raincloudHat << goggles << hat << bag;
-        QList<WearableItem> worn;
-        //worn << goggles << bag;
-        sendInventoryRPC(player, inv, worn, 10); // Start with 10 bits and no inventory, until we implement it correctly
+        player->inv.clear();
+        player->inv << raincloudHat << goggles << hat << bag;
+        player->worn.clear();
+        player->worn << goggles << bag;
+        player->nBits = 15;
+        sendInventoryRPC(player, player->inv, player->worn, player->nBits);
 
         // Send skills
         QList<QPair<quint32, quint32> > skills;
@@ -148,8 +149,7 @@ void sendPonySave(Player *player, QByteArray msg)
         win.logMessage(QString("UDP: Sending pony save for ")+QString().setNum(refresh->pony.netviewId)
                        +" to "+QString().setNum(player->pony.netviewId));
 
-        QList<WearableItem> worn;
-        sendWornRPC(player, worn); // Wear nothing, until we implement it
+        sendWornRPC(refresh, player, refresh->worn); // Wear nothing, until we implement it
 
         sendSetMaxStatRPC(player, 0, 100);
         sendSetStatRPC(player, 0, 100);
@@ -289,6 +289,24 @@ void sendWornRPC(Player *player, QList<WearableItem> &worn)
         data += worn[i].id>>24;
     }
     sendMessage(player, MsgUserReliableOrdered18, data);
+}
+
+void sendWornRPC(Player *wearing, Player *dest, QList<WearableItem> &worn)
+{
+    QByteArray data(3, 4);
+    data[0] = wearing->pony.netviewId;
+    data[1] = wearing->pony.netviewId>>8;
+    data += 32; // Max Worn Items
+    data += worn.size();
+    for (int i=0;i<worn.size();i++)
+    {
+        data += worn[i].index;
+        data += worn[i].id;
+        data += worn[i].id>>8;
+        data += worn[i].id>>16;
+        data += worn[i].id>>24;
+    }
+    sendMessage(dest, MsgUserReliableOrdered18, data);
 }
 
 void sendInventoryRPC(Player *player, QList<InventoryItem>& inv, QList<WearableItem>& worn, quint32 nBits)
