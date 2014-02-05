@@ -41,6 +41,7 @@ Player::Player()
 {
     connected=false;
     inGame=0;
+    nReceivedDups=0;
     lastPingNumber=0;
     lastPingTime=timestampNow();
     port=0;
@@ -69,6 +70,7 @@ void Player::reset()
     name.clear();
     connected=false;
     inGame=0;
+    nReceivedDups=0;
     lastPingNumber=0;
     lastPingTime=timestampNow();
     port=0;
