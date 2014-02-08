@@ -2063,7 +2063,7 @@ public void OnDeserialize (NetIncomingMessage message)
 	this.accessLevel = message.ReadByte ();
 }
 
-=> TODO: BUG: Fix setMaxStat/.. etc not actully sending data about the refresh, but always about the player to the player. Add an overload.
+=> Fix setMaxStat/.. etc not actully sending data about the refresh, but always about the player to the player. Add an overload.
 
 => Asking to wear the goggles, at pos 1 in the inventory
 4d 0600 2800 
@@ -2072,12 +2072,12 @@ public void OnDeserialize (NetIncomingMessage message)
 4d 1800 2800 
 0100 08 1f 03
 
-=> Should I spam Cerebrate to see if he has PonyQuest / PonyScript ?
-==> Yeah why not just ask LoE's source code while I'm at it.
-==> Still worth a try if adam doesn't respond.
-===> Talking to myself in a text file probably isn't healty.
-
 => We could use ranged singles instead of full absolute coordinates now that we have disunity to get the bounds
 ==> Upload some desunity'd assets on github.
 
 => Sort those damn folders. It doesn't make any sense.
+
+=> Maybe we could just close the msgbox when the player doubleclicks play instead of reloading.
+
+=> BUG: Syncing the player with himself in doSync (comment the i==j->continue) fixes #16 !
+==> I don't even, but it seems to work now.

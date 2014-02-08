@@ -167,26 +167,6 @@ void sendPonySave(Player *player, QByteArray msg)
     }
 }
 
-void receiveSync(Player* player, QByteArray data) // Receives the 01 updates from each players
-{
-    if (player->inGame < 2) // A sync message while loading would teleport use to a wrong position
-        return;
-    //win.logMessage("Got sync from "+QString().setNum(player->pony.netviewId));
-
-    // 5 and 6 are id and id>>8
-    player->pony.pos.x = dataToFloat(data.right(data.size()  - 11));
-    player->pony.pos.y = dataToFloat(data.right(data.size()  - 15));
-    player->pony.pos.z = dataToFloat(data.right(data.size()  - 19));
-
-    if (data.size() >= 23)
-        player->pony.rot.y = dataToRangedSingle(ROTMIN, ROTMAX, RotRSSize, data.mid(23,1));
-    if (data.size() >= 25)
-    {
-        player->pony.rot.x = dataToRangedSingle(ROTMIN, ROTMAX, RotRSSize, data.mid(24,1));
-        player->pony.rot.z = dataToRangedSingle(ROTMIN, ROTMAX, RotRSSize, data.mid(25,1));
-    }
-}
-
 void sendNetviewInstantiate(Player *player, QString key, quint16 ViewId, quint16 OwnerId, UVector pos, UQuaternion rot)
 {
     QByteArray data(1,1);

@@ -9,9 +9,8 @@ QT       += core gui network widgets
 TARGET = LoE_PrivateServer
 TEMPLATE = app
 
-
-SOURCES += main.cpp\
-		widget.cpp \
+SOURCES += main.cpp \
+        widget.cpp \
 	tcp.cpp \
 	udp.cpp \
 	messages.cpp \
@@ -38,6 +37,6 @@ FORMS    += widget.ui
 
 #RESOURCES += gameFiles.qrc
 
-QMAKE_CXXFLAGS -= -O2
-QMAKE_CXXFLAGS_RELEASE -= -O2
+#QMAKE_CXXFLAGS -= -O2
+#QMAKE_CXXFLAGS_RELEASE -= -O2
 #QMAKE_LFLAGS_RELEASE += -static-libgcc -static-libstdc++ -lpthread
