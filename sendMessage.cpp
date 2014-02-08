@@ -40,10 +40,10 @@ void sendMessage(Player* player,quint8 messageType, QByteArray data)
         // Sequence
         msg[1] = player->udpSequenceNumbers[32];
         msg[2] = player->udpSequenceNumbers[32]>>8;
-        // Payload size
+        // Data size
         msg[3] = 8*(data.size());
         msg[4] = (8*(data.size())) >> 8;
-        // Timestamp
+        // Data
         msg += data;
         player->udpSequenceNumbers[32]++;
 
