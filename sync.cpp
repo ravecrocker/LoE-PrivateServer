@@ -27,8 +27,8 @@ void Sync::doSync()
         for (int j=0; j<win.scenes[i].players.size(); j++)
             for (int k=0; k<win.scenes[i].players.size(); k++)
             {
-                if (j==k)
-                    continue;
+                //if (j==k)
+                //    continue;
                 sendSyncMessage(win.scenes[i].players[j], win.scenes[i].players[k]);
             }
     }
@@ -52,4 +52,25 @@ void Sync::sendSyncMessage(Player* source, Player* dest)
     sendMessage(dest, MsgUserUnreliable, data);
 
     //win.logMessage("UDP: Syncing "+QString().setNum(source->pony.netviewId)+" to "+QString().setNum(dest->pony.netviewId));
+}
+
+
+void Sync::receiveSync(Player* player, QByteArray data) // Receives the 01 updates from each players
+{
+    if (player->inGame < 2) // A sync message while loading would teleport use to a wrong position
+        return;
+    //win.logMessage("Got sync from "+QString().setNum(player->pony.netviewId));
+
+    // 5 and 6 are id and id>>8
+    player->pony.pos.x = dataToFloat(data.mid(11));
+    player->pony.pos.y = dataToFloat(data.mid(15));
+    player->pony.pos.z = dataToFloat(data.mid(19));
+
+    if (data.size() >= 23)
+        player->pony.rot.y = dataToRangedSingle(ROTMIN, ROTMAX, RotRSSize, data.mid(23,1));
+    if (data.size() >= 25)
+    {
+        player->pony.rot.x = dataToRangedSingle(ROTMIN, ROTMAX, RotRSSize, data.mid(24,1));
+        player->pony.rot.z = dataToRangedSingle(ROTMIN, ROTMAX, RotRSSize, data.mid(25,1));
+    }
 }

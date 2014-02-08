@@ -17,7 +17,7 @@ float timestampNow()
     clock_gettime(CLOCK_MONOTONIC, &tp);
     newtime = tp.tv_sec*1000 + tp.tv_nsec/1000/1000;
 #endif
-    return (float)(((float)(newtime - win.startTimestamp))/(float)1000); // Nombre de seconde depuis le lancement du serveur (startTimestamp)
+    return (float)(((float)(newtime - win.startTimestamp))/(float)1000); // Seconds since server start (startTimestamp)
 }
 
 QByteArray doubleToData(double num)

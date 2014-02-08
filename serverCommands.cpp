@@ -128,11 +128,19 @@ void Widget::sendCmdLine()
         return;
     }
     // DEBUG global commands from now on
-    else if (str.startsWith("dbgStressLoad"))
+    else if (str==("dbgStressLoad"))
     {
         // Send all the players to the GemMines at the same time
         for (int i=0; i<udpPlayers.size(); i++)
             sendLoadSceneRPC(udpPlayers[i], "GemMines");
+        return;
+    }
+    else if (str.startsWith("dbgStressLoad"))
+    {
+        str = str.mid(14);
+        // Send all the players to the given scene at the same time
+        for (int i=0; i<udpPlayers.size(); i++)
+            sendLoadSceneRPC(udpPlayers[i], str);
         return;
     }
     if (cmdPeer->IP=="")
