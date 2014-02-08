@@ -29,6 +29,7 @@ public:
     void startSync();
     void stopSync();
     void sendSyncMessage(Player *source, Player *dest);
+    static void receiveSync(Player* player, QByteArray data);
 
 public slots:
     void doSync();

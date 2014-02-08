@@ -70,7 +70,6 @@ UVector dataToVector(QByteArray data);
 float dataToRangedSingle(float min, float max, int numberOfBits, QByteArray data);
 QByteArray rangedSingleToData(float value, float min, float max, int numberOfBits);
 QByteArray quaternionToData(UQuaternion quat);
-void receiveSync(Player* player, QByteArray data);
 void receiveMessage(Player* player);
 void sendMessage(Player* player, quint8 messageType, QByteArray data=QByteArray());
 void sendEntitiesList(Player* player);

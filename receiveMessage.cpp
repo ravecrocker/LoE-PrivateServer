@@ -1,6 +1,7 @@
 #include "message.h"
 #include "character.h"
 #include "widget.h"
+#include "sync.h"
 
 void receiveMessage(Player* player)
 {
@@ -427,8 +428,8 @@ void receiveMessage(Player* player)
     }
     else if ((unsigned char)msg[0]==MsgUserUnreliable) // Sync (position) update
     {
-        if ((unsigned char)msg[5]==(unsigned char)player->pony.netviewId && (unsigned char)msg[6]==(unsigned char)player->pony.netviewId>>8)
-            receiveSync(player, msg);
+        if ((quint8)msg[5]==(quint8)player->pony.netviewId && (quint8)msg[6]==(quint8)player->pony.netviewId>>8)
+            Sync::receiveSync(player, msg);
     }
     else
     {
