@@ -2081,3 +2081,6 @@ public void OnDeserialize (NetIncomingMessage message)
 
 => BUG: Syncing the player with himself in doSync (comment the i==j->continue) fixes #16 !
 ==> I don't even, but it seems to work now.
+
+=> The new DLL that limits the chat to 50 messages doesn't fix the problem
+=> If you send enough chat messages quickly, there's still a infinite send loop.
