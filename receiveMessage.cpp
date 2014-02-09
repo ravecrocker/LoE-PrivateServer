@@ -267,7 +267,7 @@ void receiveMessage(Player* player)
         {
             QString txt = dataToString(msg.mid(7));
             QString author = player->pony.name;
-            //win.logMessage("Chat:"+txt);
+            win.logMessage("Chat "+author+":"+txt);
 
             if (txt.startsWith("/stuck") || txt.startsWith("unstuck me"))
             {
@@ -283,7 +283,7 @@ void receiveMessage(Player* player)
                     else
                         for (int i=0; i<scene->players.size(); i++)
                             if (scene->players[i]->inGame>=2)
-                                sendChatMessage(scene->players[i], txt, author, ChatLocal | ChatGeneral);
+                                sendChatMessage(scene->players[i], txt, author, ChatLocal);
                 }
                 else // Send globally
                     for (int i=0; i<win.udpPlayers.size(); i++)
