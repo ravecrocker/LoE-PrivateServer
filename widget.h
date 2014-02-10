@@ -19,6 +19,7 @@
 #include "character.h"
 #include "scene.h"
 #include "sync.h"
+#include "quest.h"
 
 #define PLAYERSPATH "data/players/"
 #define NETDATAPATH "data/netData/"
@@ -59,9 +60,11 @@ public:
     QUdpSocket *udpSocket;
     QList<Player*> tcpPlayers; // Used by the TCP login server
     QList<Player*> udpPlayers; // Used by the UDP game server
+    QList<Pony*> npcs; // List of npcs from the npcs DB
+    QList<Quest> quests; // List of quests from the npcs DB
     int loginPort; // Port for the login server
     int gamePort; // Port for the game server
-    QList<Scene> scenes;
+    QList<Scene> scenes; // List of scenes from the vortex DB
     int lastNetviewId;
     int lastId;
     int syncInterval;

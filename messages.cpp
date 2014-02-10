@@ -47,14 +47,15 @@ void sendEntitiesList(Player *player)
     win.logMessage(QString("UDP: Sending entities list to ")+QString().setNum(player->pony.netviewId));
     Scene* scene = findScene(player->pony.sceneName); // Spawn all the players on the client
     for (int i=0; i<scene->players.size(); i++)
-        sendNetviewInstantiate(scene->players[i], player);
+        sendNetviewInstantiate(&scene->players[i]->pony, player);
 
-    /// SEND DONUT STEEL (in front of the mirror)
-    if (scene->name == "RaritysBoutique")
-    {
-        win.logMessage(QString("UDP: Sending Donut Steel to ")+QString().setNum(player->pony.netviewId));
-        sendNetviewInstantiate(player,"PlayerBase",0,0,UVector(24.7333,-1.16802,-51.7106), UQuaternion(0,-0.25,0,1));
-    }
+    // Send npcs
+    for (int i=0; i<win.npcs.size(); i++)
+        if (win.npcs[i]->sceneName == player->pony.sceneName)
+        {
+            win.logMessage("Sending NPC "+win.npcs[i]->name);
+            sendNetviewInstantiate(win.npcs[i], player);
+        }
 
     player->inGame = 2;
     levelLoadMutex.unlock();
@@ -75,9 +76,22 @@ void sendPonySave(Player *player, QByteArray msg)
     }
 
     quint16 netviewId = (quint8)msg[6] + ((quint8)msg[7]<<8);
-    Player* refresh = Player::findPlayer(win.udpPlayers, netviewId);
+    Player* refresh = Player::findPlayer(win.udpPlayers, netviewId); // Find players
 
-    if (netviewId == player->pony.netviewId)
+    // Find NPC
+    Pony* npc = NULL;
+    for (int i=0; i<win.npcs.size(); i++)
+        if (win.npcs[i]->netviewId == netviewId)
+            npc = win.npcs[i];
+
+    // If we found a matching NPC, send him and exits
+    if (npc != NULL)
+    {
+        sendPonyData(npc, player);
+        return;
+    }
+
+    if (netviewId == player->pony.netviewId) // Current player
     {
         if (player->inGame == 3) // Hopefully that'll fix people stuck on the default cam without creating clones
         {
@@ -132,16 +146,6 @@ void sendPonySave(Player *player, QByteArray msg)
         sendSetMaxStatRPC(player, 1, 100);
         sendSetStatRPC(player, 1, 100);
 
-        /// SEND DONUT STEEL (he's a moose dark-as-my-soul OC)
-        if (player->pony.sceneName == "RaritysBoutique")
-        {
-            win.logMessage("UDP: Sending pony save for Donut Steel to "+QString().setNum(player->pony.netviewId));
-            Player donutSteel;
-            donutSteel.pony.id = donutSteel.pony.netviewId = 0;
-            donutSteel.pony.ponyData = QByteArray::fromHex("0b446f6e757420537465656c0402b70000000000000000000000ca1a0017ff00032e03ff050072ff000c000b0000000000cdcc8c3fff9f");
-            sendPonyData(&donutSteel, player);
-        }
-
         refresh->inGame = 3;
     }
     else if (!refresh->IP.isEmpty())
@@ -156,7 +160,7 @@ void sendPonySave(Player *player, QByteArray msg)
         sendSetStatRPC(refresh, player, 1, 100);
         sendSetMaxStatRPC(refresh, player, 1, 100);
 
-        sendPonyData(refresh, player);
+        sendPonyData(&refresh->pony, player);
 
         if (!refresh->lastValidReceivedAnimation.isEmpty())
             sendMessage(player, MsgUserReliableOrdered12, refresh->lastValidReceivedAnimation);
@@ -202,20 +206,20 @@ void sendNetviewInstantiate(Player *player)
                    +QString().setNum(player->pony.pos.z));
 }
 
-void sendNetviewInstantiate(Player *src, Player *dst)
+void sendNetviewInstantiate(Pony *src, Player *dst)
 {
-    win.logMessage("UDP: Send instantiate for "+QString().setNum(src->pony.netviewId)
+    win.logMessage("UDP: Send instantiate for "+QString().setNum(src->netviewId)
                    +" to "+QString().setNum(dst->pony.netviewId));
     QByteArray data(1,1);
     data += stringToData("PlayerBase");
     QByteArray data2(4,0);
-    data2[0]=src->pony.netviewId;
-    data2[1]=src->pony.netviewId>>8;
-    data2[2]=src->pony.id;
-    data2[3]=src->pony.id>>8;
+    data2[0]=src->netviewId;
+    data2[1]=src->netviewId>>8;
+    data2[2]=src->id;
+    data2[3]=src->id>>8;
     data += data2;
-    data += vectorToData(src->pony.pos);
-    data += quaternionToData(src->pony.rot);
+    data += vectorToData(src->pos);
+    data += quaternionToData(src->rot);
     sendMessage(dst, MsgUserReliableOrdered6, data);
 
    //win.logMessage(QString("Instantiate at ")+QString().setNum(rSrc.pony.pos.x)+" "
@@ -380,15 +384,15 @@ void sendPonyData(Player *player)
     sendMessage(player, MsgUserReliableOrdered18, data);
 }
 
-void sendPonyData(Player *src, Player *dst)
+void sendPonyData(Pony *src, Player *dst)
 {
     // Sends the ponyData
     //win.logMessage(QString("UDP: Sending the ponyData for "+QString().setNum(src->pony.netviewId)
     //                       +" to "+QString().setNum(dst->pony.netviewId)));
     QByteArray data(3,0xC8);
-    data[0] = src->pony.netviewId;
-    data[1] = src->pony.netviewId>>8;
-    data += src->pony.ponyData;
+    data[0] = src->netviewId;
+    data[1] = src->netviewId>>8;
+    data += src->ponyData;
     sendMessage(dst, MsgUserReliableOrdered18, data);
 }
 
@@ -427,7 +431,7 @@ void sendLoadSceneRPC(Player* player, QString sceneName) // Loads a scene and se
         // Send instantiate to the players of the new scene
         for (int i=0; i<scene->players.size(); i++)
             if (scene->players[i]->inGame>=2)
-                sendNetviewInstantiate(player, scene->players[i]);
+                sendNetviewInstantiate(&player->pony, scene->players[i]);
     }
     scene->players << player;
 
@@ -471,7 +475,7 @@ void sendLoadSceneRPC(Player* player, QString sceneName, UVector pos) // Loads a
         // Send instantiate to the players of the new scene
         for (int i=0; i<scene->players.size(); i++)
             if (scene->players[i]->inGame>=2)
-                sendNetviewInstantiate(player, scene->players[i]);
+                sendNetviewInstantiate(&player->pony, scene->players[i]);
     }
     scene->players << player;
 
