@@ -2084,3 +2084,33 @@ public void OnDeserialize (NetIncomingMessage message)
 
 => The new DLL that limits the chat to 50 messages doesn't fix the problem
 => If you send enough chat messages quickly, there's still a infinite send loop.
+
+=> Since I'm a faggot, I'll make my own NPC script and interpreter :
+==> Filenames should be XXName where XX is id of the quest. Not mandatory.
+==> Have a quest struct wich remembers qstringlist of commands, quest id/name/descr/state and EIP
+==> EIP should be reset everytime you start a new conversation with a NPC. Don't resume from the last time.
+One command per line, arguments separated by spaces
+Commands :
+say msg : NPC says message msg
+answer dest msg : Answer for previous message, goto label dest if selected
+goto label : Jumps to the label
+label name : Creates a label you can jump to
+give item qty : Give qty items. Can be <0.
+giveBits qty : Give qty bits. Can be <0.
+hasItem item qty yes no : Jump to yes or no if player has qty of item
+setQuestState state : set the quest state, will be saved on the savegame
+setQuestState state id : set the state of quest id, will be saved on the savegame
+jumpIfState state dest : Jumps to dest if quest state is state
+hasBits qty yes no : Jumps to yes or no if player has qty bits
+questName name : Name of the quest.
+questId id : Should be unique. Used in the savegame and by other quests/npcs.
+questDescr txt : Description of the quest.
+teleport x y z : Teleport at given pos
+teleport x y z rx ry rz rw : Teleport at given pos/rot
+teleport x y z scene : Teleport on scene at given pos
+name txt : Name of the NPC
+ponyCode code : PonyCode of the NPC in base64
+scene txt : Scene where the NPC is
+pos x y z : Pos of the NPC
+rot rx ry rz rw : Rot of the NPC
+teleport x y z rx ry rz rw scene : Teleport on scene at given pos/rot
