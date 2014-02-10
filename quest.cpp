@@ -32,7 +32,7 @@ Quest::Quest(QString path)
                 continue;
             if (line[0] == "name")
                 if (line.size()>=2)
-                    npc->name = line[1];
+                    npc->name = lines[i].mid(line[0].size()+1);
                 else throw QString("Quest::Quest: Error reading name");
             else if (line[0] >= "scene")
                 if (line.size()==2)
