@@ -2089,6 +2089,7 @@ public void OnDeserialize (NetIncomingMessage message)
 ==> Filenames should be XXName where XX is id of the quest. Not mandatory.
 ==> Have a quest struct wich remembers qstringlist of commands, quest id/name/descr/state and EIP
 ==> EIP should be reset everytime you start a new conversation with a NPC. Don't resume from the last time.
+=> Lines starting with # are comments. No midline comments tho.
 One command per line, arguments separated by spaces
 Commands :
 say msg : NPC says message msg
@@ -2114,3 +2115,4 @@ scene txt : Scene where the NPC is
 pos x y z : Pos of the NPC
 rot rx ry rz rw : Rot of the NPC
 teleport x y z rx ry rz rw scene : Teleport on scene at given pos/rot
+end : end of conversation
