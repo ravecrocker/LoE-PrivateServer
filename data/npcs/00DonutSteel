@@ -1,0 +1,19 @@
+# NPC data
+name Donut Steel
+scene RaritysBoutique
+pos 24.7333 -1.16802 -51.7106
+rot 0 -0.25 0 1
+ponyCode K2sAXPwDDLgM/BcAyP0DMCwAgFsAAMBmZsYf0P/Pn85pqMlnJ4JYAA==
+
+# Quest metadata
+questId 0
+questName Donut Steel the edgy moose of death
+questDescr Staring hard at a mirror
+
+# Quest commands (just saying '...' at the moment)
+say ...
+answer end ...
+
+# End of conversation with Donut Steel
+label end
+end
