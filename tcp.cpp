@@ -1,4 +1,5 @@
 #include "widget.h"
+#include "ui_widget.h"
 #include "message.h"
 #include "utils.h"
 
@@ -119,6 +120,25 @@ void Widget::tcpProcessPendingDatagrams()
                 {
                     int i2 = data.indexOf("HTTP")-1;
                     QString path = data.mid(i1 + 4, i2-i1-4);
+                    if (path == "/log")
+                    {
+                        data = removeHTTPHeader(data, "POST ");
+                        data = removeHTTPHeader(data, "GET ");
+                        QFile head(QString(NETDATAPATH)+"/dataHeader.bin");
+                        head.open(QIODevice::ReadOnly);
+                        if (!head.isOpen())
+                        {
+                            logMessage("Can't open header : "+head.errorString());
+                            continue;
+                        }
+                        QByteArray logData = ui->log->toPlainText().toLatin1();
+                        socket->write(head.readAll());
+                        socket->write(QString("Content-Length: "+QString().setNum(logData.size())+"\r\n\r\n").toLocal8Bit());
+                        socket->write(logData);
+                        head.close();
+                        logMessage("Sent log to "+socket->peerAddress().toString());
+                        continue;
+                    }
                     data = removeHTTPHeader(data, "POST ");
                     data = removeHTTPHeader(data, "GET ");
                     logMessage("Received GET:"+path);
