@@ -140,9 +140,31 @@ void Widget::startServer()
         logMessage("Loaded " + QString().setNum(nVortex) + " vortex in " + QString().setNum(scenes.size()) + " scenes");
     }
 
+    // Read NPC/Quests DB
+    if (enableGameServer)
+    {
+        try
+        {
+            unsigned nQuests = 0;
+            QDir npcsDir("data/npcs/");
+            QStringList files = npcsDir.entryList(QDir::Files);
+            for (int i=0; i<files.size(); i++, nQuests++) // For each vortex file
+            {
+                Quest *quest = new Quest("data/npcs/"+files[i]);
+                quests << *quest;
+                npcs << quest->npc;
+            }
+            logMessage("Loaded "+QString().setNum(nQuests)+" quests/npcs.");
+        }
+        catch (QString e)
+        {
+            enableGameServer = false;
+        }
+    }
+
     if (enableLoginServer)
     {
-//        logStatusMessage("Loading players database ...");
+//      logStatusMessage("Loading players database ...");
         tcpPlayers = Player::loadPlayers();
     }
 
@@ -183,7 +205,8 @@ void Widget::startServer()
     if (enableMultiplayer)
         sync.startSync();
 
-    logStatusMessage("Server started");
+    if (enableLoginServer || enableGameServer)
+        logStatusMessage("Server started");
 
     connect(ui->sendButton, SIGNAL(clicked()), this, SLOT(sendCmdLine()));
     if (enableLoginServer)

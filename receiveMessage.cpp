@@ -333,7 +333,7 @@ void receiveMessage(Player* player)
             Scene* scene = findScene(player->pony.sceneName);
             for (int i=0; i<scene->players.size(); i++)
                 if (scene->players[i]->pony.netviewId!=player->pony.netviewId && scene->players[i]->inGame>=2)
-                    sendNetviewInstantiate(player, scene->players[i]);
+                    sendNetviewInstantiate(&player->pony, scene->players[i]);
 
             //Send the 46s init messages
             win.logMessage(QString("UDP: Sending the 46 init messages"));

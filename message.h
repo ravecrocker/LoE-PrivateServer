@@ -59,6 +59,7 @@ enum ChatType
 
 // Public functions
 class Player;
+class Pony;
 float timestampNow();
 QByteArray doubleToData(double num);
 QByteArray floatToData(float num);
@@ -76,10 +77,10 @@ void sendEntitiesList(Player* player);
 void sendPonySave(Player* player, QByteArray msg);
 void sendPonies(Player* player);
 void sendPonyData(Player* player);
-void sendPonyData(Player* src, Player* dst);
+void sendPonyData(Pony *src, Player* dst);
 void sendNetviewInstantiate(Player* player, QString key, quint16 ViewId, quint16 OwnerId, UVector pos, UQuaternion rot);
 void sendNetviewInstantiate(Player* player);
-void sendNetviewInstantiate(Player* src, Player* dst);
+void sendNetviewInstantiate(Pony *src, Player* dst);
 void sendNetviewRemove(Player* player, quint16 netviewId);
 void sendSetStatRPC(Player* player, quint8 statId, float value);
 void sendSetMaxStatRPC(Player* player, quint8 statId, float value);
