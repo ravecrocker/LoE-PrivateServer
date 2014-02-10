@@ -2085,6 +2085,8 @@ public void OnDeserialize (NetIncomingMessage message)
 => The new DLL that limits the chat to 50 messages doesn't fix the problem
 => If you send enough chat messages quickly, there's still a infinite send loop.
 
+=> Donut Steel's old ponyData is 0b446f6e757420537465656c0402b70000000000000000000000ca1a0017ff00032e03ff050072ff000c000b0000000000cdcc8c3fff9f
+
 => Since I'm a faggot, I'll make my own NPC script and interpreter :
 ==> Filenames should be XXName where XX is id of the quest. Not mandatory.
 ==> Have a quest struct wich remembers qstringlist of commands, quest id/name/descr/state and EIP

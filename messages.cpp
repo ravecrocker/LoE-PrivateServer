@@ -87,6 +87,7 @@ void sendPonySave(Player *player, QByteArray msg)
     // If we found a matching NPC, send him and exits
     if (npc != NULL)
     {
+        win.logMessage("Sending ponyData for NPC "+npc->name);
         sendPonyData(npc, player);
         return;
     }
