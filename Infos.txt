@@ -2246,3 +2246,11 @@ private char ConvertChar (char c, bool direction = true)
 
 => Trying to talk to Flan : 4d 0400 1800 0100 31
 => She's NetviewId 01
+=> This is a RPC call 0x31 to netview Id 0100
+=> Sent from NetworkCharacterController::ApplyNetworkCharacter
+=> We probably need to send a reply that triggers DialogBox methods
+=> See in NetworkMenu, the 4 dialog commands
+=> Probably setDialogMessage then setDialogOptions then beginDialog
+
+=> The 4D message at startup is just asking for the worn items !
+=> TODO: BUG: Only send worn items when we receive the 4D 04, not after a 48 08!
