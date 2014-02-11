@@ -1,5 +1,6 @@
 #include "widget.h"
 #include "ui_widget.h"
+#include "message.h"
 
 // Processes the commands entered directly in the server, not the chat messages
 void Widget::sendCmdLine()
@@ -212,6 +213,42 @@ void Widget::sendCmdLine()
         }
         else
             logStatusMessage("Error : Player ID is a number");
+    }
+    else if (str.startsWith("reloadNpc"))
+    {
+        str = str.mid(10);
+        Pony* npc = NULL;
+        for (int i=0; i<npcs.size(); i++)
+            if (npcs[i]->name == str)
+            {
+                npc = npcs[i];
+                break;
+            }
+        if (npc != NULL)
+        {
+            // Reload the NPCs from the DB
+            npcs.clear();
+            quests.clear();
+            unsigned nQuests = 0;
+            QDir npcsDir("data/npcs/");
+            QStringList files = npcsDir.entryList(QDir::Files);
+            for (int i=0; i<files.size(); i++, nQuests++) // For each vortex file
+            {
+                Quest *quest = new Quest("data/npcs/"+files[i]);
+                quests << *quest;
+                npcs << quest->npc;
+            }
+            logMessage("Loaded "+QString().setNum(nQuests)+" quests/npcs.");
+
+            // Resend the NPC if needed
+            if (npc->sceneName == cmdPeer->pony.sceneName)
+            {
+                sendNetviewRemove(cmdPeer, npc->netviewId);
+                sendNetviewInstantiate(npc, cmdPeer);
+            }
+        }
+        else
+            logMessage("NPC not found");
     }
     else if (str.startsWith("remove"))
     {
