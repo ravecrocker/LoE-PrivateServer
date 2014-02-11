@@ -3,7 +3,6 @@
 #include "widget.h"
 #include "character.h"
 #include "message.h"
-#include "utils.h"
 
 SceneEntity::SceneEntity()
 {
@@ -36,89 +35,6 @@ Pony::type Pony::getType()
     } while ((num3 & 0x80) != 0);
     unsigned off = (uint) num  + i;
     return (type)(quint8)ponyData[off];
-}
-
-// The single ugliest function I've ever written. OCCC is going to be jealous.
-QByteArray Pony::ponyCodeToPonyData(QByteArray ponyCode)
-{
-    // The ponycode has 247 bits before the string, the remaining size is the string
-    // You don't have the string length, but each char is 6 bit
-    // Are we even sure that & has bigger priority than << and >> ?
-    QByteArray data;
-    data+= ponyCode[0] &0b11000000; // Race
-    data+= ponyCode[22]&0b00000110; // Gender
-    // CMs 3*4, start at 151=18*8+7, 10 bits each
-    data+= (char)0;
-    data+= (char)0;
-    data+= (ponyCode[18]&0b00000001<<1) + (ponyCode[19]&0b10000000>>7);
-    data+= (ponyCode[19]&0b01111111<<1) + (ponyCode[20]&0b10000000>>7);
-    data+= (char)0;
-    data+= (char)0;
-    data+= (ponyCode[20]&0b01100000>>5);
-    data+= (ponyCode[20]&0b00011111<<3) + (ponyCode[21]&0b11100000>>5);
-    data+= (char)0;
-    data+= (char)0;
-    data+= (ponyCode[21]&0b00011000>>3);
-    data+= (ponyCode[21]&0b00000111<<5) + (ponyCode[22]&0b11111000>>3);
-    // hair0 3
-    data+= (ponyCode[0] &0b00111111<<2) + (ponyCode[1] &0b11000000>>6);
-    data+= (ponyCode[1] &0b00111111<<2) + (ponyCode[2] &0b11000000>>6);
-    data+= (ponyCode[2] &0b00111111<<2) + (ponyCode[3] &0b11000000>>6);
-    // hair1 3
-    data+= (ponyCode[3] &0b00111111<<2) + (ponyCode[4] &0b11000000>>6);
-    data+= (ponyCode[4] &0b00111111<<2) + (ponyCode[5] &0b11000000>>6);
-    data+= (ponyCode[5] &0b00111111<<2) + (ponyCode[6] &0b11000000>>6);
-    // body 3
-    data+= (ponyCode[6] &0b00111111<<2) + (ponyCode[7] &0b11000000>>6);
-    data+= (ponyCode[7] &0b00111111<<2) + (ponyCode[8] &0b11000000>>6);
-    data+= (ponyCode[8] &0b00111111<<2) + (ponyCode[9] &0b11000000>>6);
-    // eye 3
-    data+= (ponyCode[9] &0b00111111<<2) + (ponyCode[10]&0b11000000>>6);
-    data+= (ponyCode[10]&0b00111111<<2) + (ponyCode[11]&0b11000000>>6);
-    data+= (ponyCode[11]&0b00111111<<2) + (ponyCode[12]&0b11000000>>6);
-    // hoof 3
-    data+= (ponyCode[12]&0b00111111<<2) + (ponyCode[13]&0b11000000>>6);
-    data+= (ponyCode[13]&0b00111111<<2) + (ponyCode[14]&0b11000000>>6);
-    data+= (ponyCode[14]&0b00111111<<2) + (ponyCode[15]&0b11000000>>6);
-    // mane 2
-    data+= (char)0;
-    data+= (ponyCode[15]&0b00111111<<2) + (ponyCode[16]&0b11000000>>6);
-    // tail 2
-    data+= (char)0;
-    data+= (ponyCode[16]&0b00111111<<2) + (ponyCode[17]&0b11000000>>6);
-    // eye 2
-    data+= (char)0;
-    data+= (ponyCode[17]&0b00111111<<2) + (ponyCode[18]&0b11000000>>6);
-    // hoof 2
-    data+= (char)0;
-    data+= (ponyCode[18]&0b00111110>>1);
-    // bodySize float (4 bytes)
-    data+= (ponyCode[22]&0b00000001)    + (ponyCode[23]&0b11111110);
-    data+= (ponyCode[23]&0b00000001)    + (ponyCode[24]&0b11111110);
-    data+= (ponyCode[24]&0b00000001)    + (ponyCode[25]&0b11111110);
-    data+= (ponyCode[25]&0b00000001)    + (ponyCode[26]&0b11111110);
-    // hordSize 2 (ranged single) (4 bytes)
-    data+= (ponyCode[26]&0b00000001)    + (ponyCode[27]&0b11111110);
-    data+= (ponyCode[27]&0b00000001)    + (ponyCode[28]&0b11111110);
-    data+= (ponyCode[28]&0b00000001)    + (ponyCode[29]&0b11111110);
-    data+= (ponyCode[29]&0b00000001)    + (ponyCode[30]&0b11111110);
-    // Don't forget to add the name at the start of the ponyData
-    unsigned remainingBits = ponyCode.size()*8 - 247;
-    unsigned off1=7, off2;
-    QByteArray name;
-    for (unsigned i=0; i<=remainingBits-6; i+=6) // Read the string at the end
-    {
-        char byte=0;
-        for(off2=2; off2 < 8; off2++) // Read 6 bits, cast into byte
-        {
-            byte |= (ponyCode[30+off1/8]&(1<<(7-(off1%8))))>>(7-(off1%8))<<(7-off2); // I'm so sorry
-            off1++;
-        }
-        byte = convertChar(byte, false);
-        name += byte;
-    }
-    win.logMessage("Name from ponyCode : "+QString(name));
-    return stringToData(name) + data;
 }
 
 Player::Player()
