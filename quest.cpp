@@ -66,7 +66,7 @@ Quest::Quest(QString path)
                 if (line.size()==2)
                 {
                     id = line[1].toInt();
-                    npc->id = id;
+                    npc->id = 0;
                     npc->netviewId = id;
                     if (win.lastId < id)
                         win.lastId = id;
