@@ -2243,3 +2243,6 @@ private char ConvertChar (char c, bool direction = true)
 => 1000011010000000000000000110000001101111110000010001000000000100000000000
 
 => Well, fuck. Let's just make a getPonyData command and ditch the ponyCode entirely
+
+=> Trying to talk to Flan : 4d 0400 1800 0100 31
+=> She's NetviewId 01
