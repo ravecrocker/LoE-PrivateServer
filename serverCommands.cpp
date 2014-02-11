@@ -183,6 +183,10 @@ void Widget::sendCmdLine()
                    + ", z=" + QString().setNum(cmdPeer->pony.rot.z)
                    + ", w=" + QString().setNum(cmdPeer->pony.rot.w));
     }
+    else if (str.startsWith("getPonyData"))
+    {
+        logMessage("ponyData : "+cmdPeer->pony.ponyData.toBase64());
+    }
     else if (str.startsWith("sendPonies"))
     {
         sendPonies(cmdPeer);

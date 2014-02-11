@@ -42,7 +42,6 @@ public:
 public:
     Pony();
     type getType();
-    static QByteArray ponyCodeToPonyData(QByteArray ponyCode);
 
 public:
     QByteArray ponyData;

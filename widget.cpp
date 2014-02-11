@@ -240,7 +240,8 @@ void Widget::stopServer()
 // Does NOT run the atexits
 Widget::~Widget()
 {
-    logMessage(QString("UDP: Disconnecting all players"));
+    logInfos=false; // logMessage while we're trying to destroy would crash.
+    //logMessage(QString("UDP: Disconnecting all players"));
     for (;udpPlayers.size();)
     {
         Player* player = udpPlayers[0];
@@ -258,7 +259,7 @@ Widget::~Widget()
         udpPlayers.removeFirst();
     }
 
-    stopServer();
+    //stopServer(); What's the point, we're exiting a couple of ms
     delete tcpServer;
     delete tcpReceivedDatas;
     delete udpSocket;
