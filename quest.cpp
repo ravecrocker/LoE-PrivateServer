@@ -36,12 +36,12 @@ Quest::Quest(QString path)
                 else throw QString("Quest::Quest: Error reading name");
             else if (line[0] >= "scene")
                 if (line.size()==2)
-                    npc->sceneName = line[1];
+                    npc->sceneName = lines[i].mid(line[0].size()+1);
                 else throw QString("Quest::Quest: Error reading scene");
-            else if (line[0] == "ponyCode")
+            else if (line[0] == "ponyData")
                 if (line.size()==2)
                     npc->ponyData = QByteArray::fromBase64(line[1].toLatin1());
-                else throw QString("Quest::Quest: Error reading ponyCode");
+                else throw QString("Quest::Quest: Error reading ponyData");
             else if (line[0] == "pos")
                 if (line.size()==4)
                 {
@@ -76,11 +76,11 @@ Quest::Quest(QString path)
                 else throw QString("Quest::Quest: Error reading questId");
             else if (line[0] == "questName")
                 if (line.size()>=2)
-                    name = line[1];
+                    name = lines[i].mid(line[0].size()+1);
                 else throw QString("Quest::Quest: Error reading questName");
             else if (line[0] == "questDescr")
                 if (line.size()>=2)
-                    descr = line[1];
+                    descr = lines[i].mid(line[0].size()+1);
                 else throw QString("Quest::Quest: Error reading questDescr");
             else
                 commands.append(line);

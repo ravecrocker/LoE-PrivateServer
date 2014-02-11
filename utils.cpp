@@ -19,3 +19,39 @@ QByteArray removeHTTPHeader(QByteArray data,QString header)
     data.remove(i1, i2-i1+1);
     return data;
 }
+
+char convertChar (char c, bool direction = true)
+{
+    if (direction)
+    {
+        if (c >= 'a' && c <= 'z')
+        {
+            return c - 'a';
+        }
+        if (c >= 'A' && c <= 'Z')
+        {
+            return c - 'A' + '\u001a';
+        }
+        if (c >= '0' && c <= '9')
+        {
+            return c - '0' + '4';
+        }
+        return '>';
+    }
+    else
+    {
+        if (c >= '\0' && c <= '\u0019')
+        {
+            return c + 'a';
+        }
+        if (c >= '\u001a' && c <= '3')
+        {
+            return c + 'A' - '\u001a';
+        }
+        if (c >= '4' && c <= '=')
+        {
+            return c + '0' - '4';
+        }
+        return ' ';
+    }
+}

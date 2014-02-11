@@ -2085,7 +2085,11 @@ public void OnDeserialize (NetIncomingMessage message)
 => The new DLL that limits the chat to 50 messages doesn't fix the problem
 => If you send enough chat messages quickly, there's still a infinite send loop.
 
-=> Donut Steel's old ponyData is 0b446f6e757420537465656c0402b70000000000000000000000ca1a0017ff00032e03ff050072ff000c000b0000000000cdcc8c3fff9f
+=> Donut Steel's old ponyData is in hex :
+0b446f6e757420537465656c0402b70000000000000000000000ca1a0017ff00032e03ff050072ff000c000b0000000000cdcc8c3fff9f
+=> In base64 C0RvbnV0IFN0ZWVsBAK3AAAAAAAAAAAAAADKGgAX/wADLgP/BQBy/wAMAAsAAAAAAM3MjD//nw==
+=> Donut Steel as a pony's ponydata is in base64 : K2sAXPwDDLgM/BcAyP0DMCwAgFsAAMBmZsYf0P/Pn85pqMlnJ4JYAA==
+=> In hex : 2B6B005CFC030CB80CFC1700C8FD03302C00805B0000C06666C61FD0FFCF9FCE69A8C96727825800
 
 => Since I'm a faggot, I'll make my own NPC script and interpreter :
 ==> Filenames should be XXName where XX is id of the quest. Not mandatory.
@@ -2112,9 +2116,130 @@ teleport x y z : Teleport at given pos
 teleport x y z rx ry rz rw : Teleport at given pos/rot
 teleport x y z scene : Teleport on scene at given pos
 name txt : Name of the NPC
-ponyCode code : PonyCode of the NPC in base64
+ponyData data : PonyData of the NPC in base64. Use getPonyData to get it.
 scene txt : Scene where the NPC is
 pos x y z : Pos of the NPC
 rot rx ry rz rw : Rot of the NPC
 teleport x y z rx ry rz rw scene : Teleport on scene at given pos/rot
 end : end of conversation
+
+
+=> Import ponycode : 
+private void ImportPonycode (string ponycode)
+{
+	try
+	{
+		this.index = 0;
+		this.bits = new BitArray (Convert.FromBase64String (ponycode));
+		PonyData ponyData = new PonyData ();
+		ponyData.race = (CharacterType)this.GetBits (2);
+		ponyData.hairColor0 = this.IntToColor (this.GetBits (24));
+		ponyData.hairColor1 = this.IntToColor (this.GetBits (24));
+		ponyData.bodyColor = this.IntToColor (this.GetBits (24));
+		ponyData.eyeColor = this.IntToColor (this.GetBits (24));
+		ponyData.hoofColor = this.IntToColor (this.GetBits (24));
+		ponyData.Mane = (short)this.GetBits (8);
+		ponyData.Tail = (short)this.GetBits (8);
+		ponyData.Eye = (short)this.GetBits (8);
+		ponyData.Hoof = (short)this.GetBits (5);
+		int id1 = this.GetBits (10);
+		int id2 = this.GetBits (10);
+		int id3 = this.GetBits (10);
+		ponyData.CutieMarks = new CutieMark[]
+		{
+			this.cutieMarkArray.FirstOrDefault ((CutieMark cm) => cm.ID == id1),
+			this.cutieMarkArray.FirstOrDefault ((CutieMark cm) => cm.ID == id2),
+			this.cutieMarkArray.FirstOrDefault ((CutieMark cm) => cm.ID == id3)
+		};
+		ponyData.gender = (Gender)this.GetBits (2);
+		ponyData.BodySize = BitConverter.ToSingle (BitConverter.GetBytes (this.GetBits (32)), 0);
+		ponyData.HornSize = BitConverter.ToSingle (BitConverter.GetBytes (this.GetBits (32)), 0);
+		StringBuilder stringBuilder = new StringBuilder ();
+		for (int i = this.index; i <= this.bits.Length - 6; i += 6)
+		{
+			stringBuilder.Append (this.ConvertChar ((char)this.GetBits (6), false));
+		}
+		this.characterName = stringBuilder.ToString ();
+		ponyData.name = this.characterName;
+		this.AssignSelectorsToPonyData (ponyData);
+	}
+	catch
+	{
+		MessageBox.CloseTopBox ();
+		MessageBox.OK ("Error", "Invalid PonyCode!\nMake sure you copied the PonyCode correctly and try again.");
+		MessageBox.OK (string.Empty, string.Empty);
+	}
+}
+
+=> PonyData
+public void OnDeserialize(NetIncomingMessage msg)
+{
+    this.name = msg.ReadString();
+    this.race = (CharacterType) msg.ReadByte();
+    this.gender = (Gender) msg.ReadByte();
+    this.CutieMarks = (from id in new int[] { msg.ReadInt32(), msg.ReadInt32(), msg.ReadInt32() } select StaticData.CutieMarks[id]).ToArray<CutieMark>();
+    this.hairColor0 = new Color32(msg.ReadByte(), msg.ReadByte(), msg.ReadByte(), 1);
+    this.hairColor1 = new Color32(msg.ReadByte(), msg.ReadByte(), msg.ReadByte(), 1);
+    this.bodyColor = new Color32(msg.ReadByte(), msg.ReadByte(), msg.ReadByte(), 1);
+    this.eyeColor = new Color32(msg.ReadByte(), msg.ReadByte(), msg.ReadByte(), 1);
+    this.hoofColor = new Color32(msg.ReadByte(), msg.ReadByte(), msg.ReadByte(), 1);
+    this.Mane = msg.ReadInt16();
+    this.Tail = msg.ReadInt16();
+    this.Eye = msg.ReadInt16();
+    this.Hoof = msg.ReadInt16();
+    this.BodySize = msg.ReadFloat();
+    this.HornSize = msg.ReadRangedSingle(0f, 2f, 0x10);
+}
+
+=> TODO: BUG: Fix bug at shutdown. Again.
+=> TODO: Finish ponyCode in quests
+=> TODO: Add Flan in canterlot
+=> PonyCode: 0mObdm8W3adDm0e2/P//MwAEAGMAAECVIL+fkKe8n28BGg==
+
+=> ConvertChar
+private char ConvertChar (char c, bool direction = true)
+{
+	if (direction)
+	{
+		if (c >= 'a' && c <= 'z')
+		{
+			return c - 'a';
+		}
+		if (c >= 'A' && c <= 'Z')
+		{
+			return c - 'A' + '\u001a';
+		}
+		if (c >= '0' && c <= '9')
+		{
+			return c - '0' + '4';
+		}
+		return '>';
+	}
+	else
+	{
+		if (c >= '\0' && c <= '\u0019')
+		{
+			return c + 'a';
+		}
+		if (c >= '\u001a' && c <= '3')
+		{
+			return c + 'A' - '\u001a';
+		}
+		if (c >= '4' && c <= '=')
+		{
+			return c + '0' - '4';
+		}
+		return ' ';
+	}
+}
+
+=> Player called "Aaa Bbb", ponyCode is /fsD/v9/6gP+A/7bT4T1HgwEgA0AAGCKR7afg+LCHw0A/C0IAA==
+=> Remaining bits : 1 00001101 00000000 11111100 00101101 00001000 00000000
+=> 100001 101000 000001 111110 000101 101000 010000 000000 0
+
+=> Player called "Aaaaa Bbbbb", /gO2/3/KA/53/gNaK7duNCQEAAsAAMBch8Ef2lfDHw0AAMDfgiAIAA==
+=> 1 0000 1101 0000 0000 0000 0000 1100 0000 1101 1111 1000 0010 0010 0000 0000 1000 0000 0000
+=> 100001 101000 000000 000000 011000 000110 111111 000001 000100 000000 010000 000000 0
+=> 1000011010000000000000000110000001101111110000010001000000000100000000000
+
+=> Well, fuck. Let's just make a getPonyData command and ditch the ponyCode entirely
