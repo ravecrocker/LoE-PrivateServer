@@ -69,7 +69,7 @@ Quest::Quest(QString path)
                     win.lastIdMutex.lock();
                     npc->id = 0;
                     npc->netviewId = id;
-                    if (win.lastNetviewId < id)
+                    if (win.lastNetviewId <= id)
                         win.lastNetviewId = id+1;
                     win.lastIdMutex.unlock();
                 }
