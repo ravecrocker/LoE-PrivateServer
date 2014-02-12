@@ -2254,3 +2254,7 @@ private char ConvertChar (char c, bool direction = true)
 
 => The 4D message at startup is just asking for the worn items !
 => TODO: BUG: Only send worn items when we receive the 4D 04, not after a 48 08!
+
+=> TODO: Lidgren. "Trace" what happens when we send/receive a message
+=> Roughly what functions are called, what happens.
+=> See NetConnection.cs, NetPeer.Send.cs
