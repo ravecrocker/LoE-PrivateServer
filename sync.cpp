@@ -27,8 +27,8 @@ void Sync::doSync()
         for (int j=0; j<win.scenes[i].players.size(); j++)
             for (int k=0; k<win.scenes[i].players.size(); k++)
             {
-                //if (j==k)
-                //    continue;
+                if (j==k)
+                    continue;
                 sendSyncMessage(win.scenes[i].players[j], win.scenes[i].players[k]);
             }
     }

@@ -66,12 +66,12 @@ Quest::Quest(QString path)
                 if (line.size()==2)
                 {
                     id = line[1].toInt();
+                    win.lastIdMutex.lock();
                     npc->id = 0;
                     npc->netviewId = id;
-                    if (win.lastId < id)
-                        win.lastId = id;
                     if (win.lastNetviewId < id)
-                        win.lastNetviewId = id;
+                        win.lastNetviewId = id+1;
+                    win.lastIdMutex.unlock();
                 }
                 else throw QString("Quest::Quest: Error reading questId");
             else if (line[0] == "questName")
