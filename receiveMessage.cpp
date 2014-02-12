@@ -32,7 +32,7 @@ void receiveMessage(Player* player)
                 // We already processed this packet, we should discard it
                 win.logMessage("UDP: Discarding double message (-"+QString().setNum(player->udpRecvSequenceNumbers[channel]-seq)
                                +") from "+QString().setNum(player->pony.netviewId));
-                //win.logMessage("UDP: Message was : "+QString(player->receivedDatas->left(msgSize).toHex().data()));
+                win.logMessage("UDP: Message was : "+QString(player->receivedDatas->left(msgSize).toHex().data()));
                 player->nReceivedDups++;
                 if (player->nReceivedDups >= 100) // Kick the player if he's infinite-looping on us
                 {
@@ -119,10 +119,12 @@ void receiveMessage(Player* player)
         win.logMessage(QString("UDP: Starting game"));
 
         // Set local player id
-        win.lastId++;
-        win.lastNetviewId++;
+        win.lastIdMutex.lock();
         player->pony.id = win.lastId;
         player->pony.netviewId = win.lastNetviewId;
+        win.lastId++;
+        win.lastNetviewId++;
+        win.lastIdMutex.unlock();
 
         win.logMessage("UDP: Set id request : " + QString().setNum(player->pony.id) + "/" + QString().setNum(player->pony.netviewId));
 
