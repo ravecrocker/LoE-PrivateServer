@@ -37,8 +37,8 @@ void Sync::doSync()
 void Sync::sendSyncMessage(Player* source, Player* dest)
 {
     QByteArray data(2,0);
-    data[0] = source->pony.netviewId;
-    data[1] = source->pony.netviewId>>8;
+    data[0] = (quint8)source->pony.netviewId;
+    data[1] = (quint8)(source->pony.netviewId>>8);
     data += floatToData(timestampNow());
     //data += rangedSingleToData(source.pony.pos.x, XMIN, XMAX, PosRSSize);
     //data += rangedSingleToData(source.pony.pos.y, YMIN, YMAX, PosRSSize);
