@@ -120,11 +120,11 @@ void Widget::tcpProcessPendingDatagrams()
                 {
                     int i2 = data.indexOf("HTTP")-1;
                     QString path = data.mid(i1 + 4, i2-i1-4);
-                    if (path == "/log")
+                    if (path == "/log") // GET /log
                     {
                         data = removeHTTPHeader(data, "POST ");
                         data = removeHTTPHeader(data, "GET ");
-                        QFile head(QString(NETDATAPATH)+"/dataHeader.bin");
+                        QFile head(QString(NETDATAPATH)+"/dataTextHeader.bin");
                         head.open(QIODevice::ReadOnly);
                         if (!head.isOpen())
                         {
@@ -139,6 +139,7 @@ void Widget::tcpProcessPendingDatagrams()
                         logMessage("Sent log to "+socket->peerAddress().toString());
                         continue;
                     }
+                    // Other GETs (not getlog)
                     data = removeHTTPHeader(data, "POST ");
                     data = removeHTTPHeader(data, "GET ");
                     logMessage("Received GET:"+path);
