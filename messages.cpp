@@ -193,10 +193,10 @@ void sendNetviewInstantiate(Player *player)
     QByteArray data(1,1);
     data += stringToData("PlayerBase");
     QByteArray data2(4,0);
-    data2[0]=player->pony.netviewId;
-    data2[1]=player->pony.netviewId>>8;
-    data2[2]=player->pony.id;
-    data2[3]=player->pony.id>>8;
+    data2[0]=(quint8)player->pony.netviewId;
+    data2[1]=(quint8)(player->pony.netviewId>>8);
+    data2[2]=(quint8)player->pony.id;
+    data2[3]=(quint8)(player->pony.id>>8);
     data += data2;
     data += vectorToData(player->pony.pos);
     data += quaternionToData(player->pony.rot);
@@ -214,10 +214,10 @@ void sendNetviewInstantiate(Pony *src, Player *dst)
     QByteArray data(1,1);
     data += stringToData("PlayerBase");
     QByteArray data2(4,0);
-    data2[0]=src->netviewId;
-    data2[1]=src->netviewId>>8;
-    data2[2]=src->id;
-    data2[3]=src->id>>8;
+    data2[0]=(quint8)src->netviewId;
+    data2[1]=(quint8)(src->netviewId>>8);
+    data2[2]=(quint8)src->id;
+    data2[3]=(quint8)(src->id>>8);
     data += data2;
     data += vectorToData(src->pos);
     data += quaternionToData(src->rot);
@@ -233,16 +233,16 @@ void sendNetviewRemove(Player *player, quint16 netviewId)
     win.logMessage("UDP: Removing netview "+QString().setNum(netviewId)+" to "+QString().setNum(player->pony.netviewId));
 
     QByteArray data(3,2);
-    data[1] = netviewId;
-    data[2] = netviewId>>8;
+    data[1] = (quint8)netviewId;
+    data[2] = (quint8)(netviewId>>8);
     sendMessage(player, MsgUserReliableOrdered6, data);
 }
 
 void sendSetStatRPC(Player *player, quint8 statId, float value)
 {
     QByteArray data(4,50);
-    data[0] = player->pony.netviewId;
-    data[1] = player->pony.netviewId>>8;
+    data[0] = (quint8)(player->pony.netviewId);
+    data[1] = (quint8)(player->pony.netviewId>>8);
     data[3] = statId;
     data += floatToData(value);
     sendMessage(player, MsgUserReliableOrdered18, data);
@@ -251,8 +251,8 @@ void sendSetStatRPC(Player *player, quint8 statId, float value)
 void sendSetMaxStatRPC(Player* player, quint8 statId, float value)
 {
     QByteArray data(4,51);
-    data[0] = player->pony.netviewId;
-    data[1] = player->pony.netviewId>>8;
+    data[0] = (quint8)(player->pony.netviewId);
+    data[1] = (quint8)(player->pony.netviewId>>8);
     data[3] = statId;
     data += floatToData(value);
     sendMessage(player, MsgUserReliableOrdered18, data);
@@ -261,8 +261,8 @@ void sendSetMaxStatRPC(Player* player, quint8 statId, float value)
 void sendSetStatRPC(Player* affected, Player* dest, quint8 statId, float value)
 {
     QByteArray data(4,50);
-    data[0] = affected->pony.netviewId;
-    data[1] = affected->pony.netviewId>>8;
+    data[0] = (quint8)affected->pony.netviewId;
+    data[1] = (quint8)(affected->pony.netviewId>>8);
     data[3] = statId;
     data += floatToData(value);
     sendMessage(dest, MsgUserReliableOrdered18, data);
@@ -271,8 +271,8 @@ void sendSetStatRPC(Player* affected, Player* dest, quint8 statId, float value)
 void sendSetMaxStatRPC(Player* affected, Player* dest, quint8 statId, float value)
 {
     QByteArray data(4,51);
-    data[0] = affected->pony.netviewId;
-    data[1] = affected->pony.netviewId>>8;
+    data[0] = (quint8)affected->pony.netviewId;
+    data[1] = (quint8)(affected->pony.netviewId>>8);
     data[3] = statId;
     data += floatToData(value);
     sendMessage(dest, MsgUserReliableOrdered18, data);
@@ -281,8 +281,8 @@ void sendSetMaxStatRPC(Player* affected, Player* dest, quint8 statId, float valu
 void sendWornRPC(Player *player, QList<WearableItem> &worn)
 {
     QByteArray data(3, 4);
-    data[0] = player->pony.netviewId;
-    data[1] = player->pony.netviewId>>8;
+    data[0] = (quint8)player->pony.netviewId;
+    data[1] = (quint8)(player->pony.netviewId>>8);
     data += 32; // Max Worn Items
     data += worn.size();
     for (int i=0;i<worn.size();i++)
@@ -299,17 +299,17 @@ void sendWornRPC(Player *player, QList<WearableItem> &worn)
 void sendWornRPC(Player *wearing, Player *dest, QList<WearableItem> &worn)
 {
     QByteArray data(3, 4);
-    data[0] = wearing->pony.netviewId;
-    data[1] = wearing->pony.netviewId>>8;
+    data[0] = (quint8)wearing->pony.netviewId;
+    data[1] = (quint8)(wearing->pony.netviewId>>8);
     data += 32; // Max Worn Items
     data += worn.size();
     for (int i=0;i<worn.size();i++)
     {
-        data += worn[i].index;
-        data += worn[i].id;
-        data += worn[i].id>>8;
-        data += worn[i].id>>16;
-        data += worn[i].id>>24;
+        data += (quint8)worn[i].index;
+        data += (quint8)worn[i].id;
+        data += (quint8)(worn[i].id>>8);
+        data += (quint8)(worn[i].id>>16);
+        data += (quint8)(worn[i].id>>24);
     }
     sendMessage(dest, MsgUserReliableOrdered18, data);
 }
@@ -317,59 +317,59 @@ void sendWornRPC(Player *wearing, Player *dest, QList<WearableItem> &worn)
 void sendInventoryRPC(Player *player, QList<InventoryItem>& inv, QList<WearableItem>& worn, quint32 nBits)
 {
     QByteArray data(5, 5);
-    data[0] = player->pony.netviewId;
-    data[1] = player->pony.netviewId>>8;
+    data[0] = (quint8)player->pony.netviewId;
+    data[1] = (quint8)(player->pony.netviewId>>8);
     data[3] = 12; // Max Inventory Size
-    data[4] = inv.size();
+    data[4] = (quint8)inv.size();
     for (int i=0;i<inv.size();i++)
     {
-        data += inv[i].index;
-        data += inv[i].id;
-        data += inv[i].id>>8;
-        data += inv[i].id>>16;
-        data += inv[i].id>>24;
-        data += inv[i].amount;
-        data += inv[i].amount>>8;
-        data += inv[i].amount>>16;
-        data += inv[i].amount>>24;
+        data += (quint8)inv[i].index;
+        data += (quint8)inv[i].id;
+        data += (quint8)(inv[i].id>>8);
+        data += (quint8)(inv[i].id>>16);
+        data += (quint8)(inv[i].id>>24);
+        data += (quint8)inv[i].amount;
+        data += (quint8)(inv[i].amount>>8);
+        data += (quint8)(inv[i].amount>>16);
+        data += (quint8)(inv[i].amount>>24);
     }
     data += 32; // Max Worn Items
     data += worn.size();
     for (int i=0;i<worn.size();i++)
     {
-        data += worn[i].index;
-        data += worn[i].id;
-        data += worn[i].id>>8;
-        data += worn[i].id>>16;
-        data += worn[i].id>>24;
+        data += (quint8)worn[i].index;
+        data += (quint8)worn[i].id;
+        data += (quint8)(worn[i].id>>8);
+        data += (quint8)(worn[i].id>>16);
+        data += (quint8)(worn[i].id>>24);
     }
-    data += nBits;
-    data += nBits>>8;
-    data += nBits>>16;
-    data += nBits>>24;
+    data += (quint8)nBits;
+    data += (quint8)(nBits>>8);
+    data += (quint8)(nBits>>16);
+    data += (quint8)(nBits>>24);
     sendMessage(player, MsgUserReliableOrdered18, data);
 }
 
 void sendSkillsRPC(Player* player, QList<QPair<quint32, quint32> > &skills)
 {
     QByteArray data(8, 0xC3);
-    data[0] = player->pony.netviewId;
-    data[1] = player->pony.netviewId>>8;
+    data[0] = (quint8)player->pony.netviewId;
+    data[1] = (quint8)(player->pony.netviewId>>8);
     data[3] = 0x00; // Use dictionnary flag
-    data[4] = skills.size();
-    data[5] = skills.size()>>8;
-    data[6] = skills.size()>>16;
-    data[7] = skills.size()>>24;
+    data[4] = (quint8)skills.size();
+    data[5] = (quint8)(skills.size()>>8);
+    data[6] = (quint8)(skills.size()>>16);
+    data[7] = (quint8)(skills.size()>>24);
     for (int i=0;i<skills.size();i++)
     {
-        data += skills[i].first;
-        data += skills[i].first>>8;
-        data += skills[i].first>>16;
-        data += skills[i].first>>24;
-        data += skills[i].second;
-        data += skills[i].second>>8;
-        data += skills[i].second>>16;
-        data += skills[i].second>>24;
+        data += (quint8)skills[i].first;
+        data += (quint8)(skills[i].first>>8);
+        data += (quint8)(skills[i].first>>16);
+        data += (quint8)(skills[i].first>>24);
+        data += (quint8)skills[i].second;
+        data += (quint8)(skills[i].second>>8);
+        data += (quint8)(skills[i].second>>16);
+        data += (quint8)(skills[i].second>>24);
     }
     sendMessage(player, MsgUserReliableOrdered18, data);
 }
@@ -379,8 +379,8 @@ void sendPonyData(Player *player)
     // Sends the ponyData
     //win.logMessage(QString("UDP: Sending the ponyData for/to "+QString().setNum(player->pony.netviewId)));
     QByteArray data(3,0xC8);
-    data[0] = player->pony.netviewId;
-    data[1] = player->pony.netviewId>>8;
+    data[0] = (quint8)(player->pony.netviewId);
+    data[1] = (quint8)(player->pony.netviewId>>8);
     data += player->pony.ponyData;
     sendMessage(player, MsgUserReliableOrdered18, data);
 }
@@ -391,8 +391,8 @@ void sendPonyData(Pony *src, Player *dst)
     //win.logMessage(QString("UDP: Sending the ponyData for "+QString().setNum(src->pony.netviewId)
     //                       +" to "+QString().setNum(dst->pony.netviewId)));
     QByteArray data(3,0xC8);
-    data[0] = src->netviewId;
-    data[1] = src->netviewId>>8;
+    data[0] = (quint8)src->netviewId;
+    data[1] = (quint8)(src->netviewId>>8);
     data += src->ponyData;
     sendMessage(dst, MsgUserReliableOrdered18, data);
 }
@@ -490,10 +490,10 @@ void sendLoadSceneRPC(Player* player, QString sceneName, UVector pos) // Loads a
 void sendChatMessage(Player* player, QString message, QString author, quint8 chatType)
 {
     QByteArray idAndAccess(5,0);
-    idAndAccess[0] = player->pony.netviewId;
-    idAndAccess[1] = player->pony.netviewId << 8;
-    idAndAccess[2] = player->pony.netviewId << 16;
-    idAndAccess[3] = player->pony.netviewId << 24;
+    idAndAccess[0] = (quint8)player->pony.netviewId;
+    idAndAccess[1] = (quint8)(player->pony.netviewId << 8);
+    idAndAccess[2] = (quint8)(player->pony.netviewId << 16);
+    idAndAccess[3] = (quint8)(player->pony.netviewId << 24);
     idAndAccess[4] = 0x0; // Access level
     QByteArray data(2,0);
     data[0] = 0xf; // RPC ID

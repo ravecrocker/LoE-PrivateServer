@@ -269,8 +269,8 @@ void Widget::sendCmdLine()
     else if (str.startsWith("sendPonyData"))
     {
         QByteArray data(3,0xC8);
-        data[0] = cmdPeer->pony.netviewId;
-        data[1] = cmdPeer->pony.netviewId>>8;
+        data[0] = (quint8)cmdPeer->pony.netviewId;
+        data[1] = (quint8)(cmdPeer->pony.netviewId>>8);
         data += cmdPeer->pony.ponyData;
         sendMessage(cmdPeer, MsgUserReliableOrdered18, data);
         return;
