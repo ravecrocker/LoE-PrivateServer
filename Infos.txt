@@ -2275,3 +2275,5 @@ private char ConvertChar (char c, bool direction = true)
 ==> Maybe the game is waiting for just one sync message, and that's why syncing with ourselves fixed #16
 
 => TODO: BUG: In sendChatMessage we send a netviewId on 4 bytes ! Shouldn't we send id then netviewId ?
+
+=> TODO: BUG: When people get stuck on login, it looks like we're not sending the data correctly...
