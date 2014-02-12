@@ -154,7 +154,7 @@ void sendPonySave(Player *player, QByteArray msg)
         win.logMessage(QString("UDP: Sending pony save for ")+QString().setNum(refresh->pony.netviewId)
                        +" to "+QString().setNum(player->pony.netviewId));
 
-        sendWornRPC(refresh, player, refresh->worn);
+        //sendWornRPC(refresh, player, refresh->worn);
 
         sendSetStatRPC(refresh, player, 0, 100);
         sendSetMaxStatRPC(refresh, player, 0, 100);
