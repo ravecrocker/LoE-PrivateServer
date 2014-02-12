@@ -41,7 +41,7 @@ void Widget::logMessage(QString msg)
 
 void Widget::startServer()
 {
-    logStatusMessage("Private server v0.4.2");
+    logStatusMessage("Private server v0.4.3");
     lastNetviewId=0;
     lastId=0;
 
