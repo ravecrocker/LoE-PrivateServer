@@ -93,6 +93,7 @@ private:
     bool enableLoginServer; // Starts a login server
     bool enableGameServer; // Starts a game server
     bool enableMultiplayer; // Sync players' positions
+    bool enableGetlog; // Enable GET /log requests
 };
 
 // Global import from main

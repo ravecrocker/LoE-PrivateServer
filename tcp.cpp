@@ -124,6 +124,8 @@ void Widget::tcpProcessPendingDatagrams()
                     {
                         data = removeHTTPHeader(data, "POST ");
                         data = removeHTTPHeader(data, "GET ");
+                        if (!enableGetlog)
+                            continue;
                         QFile head(QString(NETDATAPATH)+"/dataTextHeader.bin");
                         head.open(QIODevice::ReadOnly);
                         if (!head.isOpen())
