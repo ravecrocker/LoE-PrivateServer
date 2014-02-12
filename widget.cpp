@@ -64,6 +64,7 @@ void Widget::startServer()
     remoteLoginPort = config.value("remoteLoginPort", 1031).toInt();
     remoteLoginTimeout = config.value("remoteLoginTimeout", 5000).toInt();
     useRemoteLogin = config.value("useRemoteLogin", false).toBool();
+    enableGetlog = config.value("enableGetlog", true).toBool();
 
     /// Init servers
     tcpClientsList.clear();
