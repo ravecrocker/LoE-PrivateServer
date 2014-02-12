@@ -2254,7 +2254,21 @@ private char ConvertChar (char c, bool direction = true)
 
 => The 4D message at startup is just asking for the worn items !
 => TODO: BUG: Only send worn items when we receive the 4D 04, not after a 48 08!
+=> Fixed for other players
+=> Maybe we should only send the player's inventory/worn when asked ?
 
 => TODO: Lidgren. "Trace" what happens when we send/receive a message
 => Roughly what functions are called, what happens.
 => See NetConnection.cs, NetPeer.Send.cs
+
+=> TODO: BUG: Sometime when there are two player, one will not see the other move
+==> When both use the chat, all the messages will appear to come from the same player (the one that isn't refreshed on the other's screen)
+===> Maybe we should make all operations on lastId and lastNetviewId atomic, now.
+====> That's not the problem, but we still needed to do it. Especially with the reloadNPC command.
+==> Maybe we shouldn't sync the player with himself (uncomment if j==k)
+==> But instead send one sync message during instantiate/savegame, like in the wireshark logs
+==> Maybe the game is waiting for just one sync message, and that's why syncing with ourselves fixed #16
+
+=> TODO: lastId should start at 1, but always be 0 for NPCs. lastNetviewId should start at 0.
+
+=> TODO: BUG: Ensure that all network uses of netviewId and id are casted to quint8 correctly
