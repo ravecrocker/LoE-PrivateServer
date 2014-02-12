@@ -13,6 +13,7 @@
 #include <QSettings>
 #include <QtConcurrent/QtConcurrentMap>
 #include <QCryptographicHash>
+#include <QMutex>
 
 //#include <windows.h>
 
@@ -67,6 +68,7 @@ public:
     QList<Scene> scenes; // List of scenes from the vortex DB
     int lastNetviewId;
     int lastId;
+    QMutex lastIdMutex; // Protects lastId and lastNetviewId
     int syncInterval;
 
 private:

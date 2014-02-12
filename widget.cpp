@@ -43,7 +43,7 @@ void Widget::startServer()
 {
     logStatusMessage("Private server v0.4.3");
     lastNetviewId=0;
-    lastId=0;
+    lastId=1;
 
     /// Read config
     logStatusMessage("Reading config file ...");

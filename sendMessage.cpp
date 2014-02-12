@@ -79,8 +79,8 @@ void sendMessage(Player* player,quint8 messageType, QByteArray data)
     {
         msg.resize(5);
         // Payload size
-        msg[3] = data.size()*8;
-        msg[4] = 0;
+        msg[3] = (quint8)(data.size()*8);
+        msg[4] = (quint8)((data.size()*8)>>8);
         msg.append(data); // Format of packet data n*(Ack type, Ack seq, Ack seq)
     }
     else if (messageType == MsgConnectResponse)
