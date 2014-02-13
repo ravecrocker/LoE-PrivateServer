@@ -94,5 +94,8 @@ void sendLoadSceneRPC(Player* player, QString sceneName);
 void sendLoadSceneRPC(Player* player, QString sceneName, UVector pos);
 void sendChatMessage(Player* player, QString message, QString author, quint8 chatType);
 void sendMove(Player* player, float x, float y, float z);
+void sendBeginDialog(Player* player);
+void sendDialogMessage(Player* player, QString& message, QString NPCName);
+void sendEndDialog(Player* player);
 
 #endif // MESSAGE_H

@@ -515,3 +515,29 @@ void sendMove(Player* player, float x, float y, float z)
     win.logMessage(QString("UDP: Moving character"));
     sendMessage(player,MsgUserReliableOrdered4, data);
 }
+
+void sendBeginDialog(Player* player)
+{
+    QByteArray data(1,0);
+    data[0] = 11; // Request number
+    sendMessage(player,MsgUserReliableOrdered4, data);
+}
+
+void sendDialogMessage(Player* player, QString& message, QString NPCName)
+{
+    QByteArray data(1,0);
+    data[0] = 0x11; // Request number
+    data += stringToData(message);
+    data += stringToData(NPCName);
+    data += (char)0; // emoticon
+    data += (char)0; // emoticon
+
+    sendMessage(player,MsgUserReliableOrdered4, data);
+}
+
+void sendEndDialog(Player* player)
+{
+    QByteArray data(1,0);
+    data[0] = 13; // Request number
+    sendMessage(player,MsgUserReliableOrdered4, data);
+}

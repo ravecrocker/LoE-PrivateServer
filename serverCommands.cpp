@@ -406,12 +406,20 @@ void Widget::sendCmdLine()
     else if (str.startsWith("setDialogMsg"))
     {
         str = str.right(str.size()-13);
-        QByteArray data(1,0);
-        data[0] = 0x11; // Request number
+        QStringList args = str.split(" ", QString::SkipEmptyParts);
+        if (args.size() != 2)
+            win.logMessage("setDialogMsg takes two args : dialog and npc name");
+        else
+        {
+            QByteArray data(1,0);
+            data[0] = 0x11; // Request number
+            data += stringToData(args[0]);
+            data += stringToData(args[1]);
+            data += (char)0; // emoticon
+            data += (char)0; // emoticon
 
-        data += stringToData(str);
-
-        sendMessage(cmdPeer,MsgUserReliableOrdered4, data);
+            sendMessage(cmdPeer,MsgUserReliableOrdered4, data);
+        }
     }
     else if (str.startsWith("move"))
     {
