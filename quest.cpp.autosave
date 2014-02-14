@@ -122,7 +122,7 @@ bool Quest::doCommand(int eip)
             win.logStatusMessage("Error running quest script : unknown label in argument to goto");
             return false;
         }
-        eip == newEip;
+        eip = newEip;
         return true;
     }
     else if (command[0] == "end")
