@@ -2251,6 +2251,8 @@ private char ConvertChar (char c, bool direction = true)
 => We probably need to send a reply that triggers DialogBox methods
 => See in NetworkMenu, the 4 dialog commands
 => Probably setDialogMessage then setDialogOptions then beginDialog
+=> That's it. After we beginDialog, we can just use setDialogMsg to update the dialog.
+=> Don't use beginDialog before setDialogMsg.
 
 => The 4D message at startup is just asking for the worn items !
 => Only send worn items when we receive the 4D 04, not after a 48 08!
@@ -2277,3 +2279,12 @@ private char ConvertChar (char c, bool direction = true)
 => TODO: BUG: In sendChatMessage we send a netviewId on 4 bytes ! Shouldn't we send id then netviewId ?
 
 => TODO: BUG: When people get stuck on login, it looks like we're not sending the data correctly...
+
+=> On the quests scripts, when we get to a say line, keep EIP on the say line, read the eventual answer lines without changing EIP, send setDialogMsg, setDialogOptions, beginDialog, then return with EIP still on the say.
+=> When we get a reply to a say, if there was an answer, jump to the corresponding label, if there wasn't an answer, increment EIP and run the script from there.
+=> dialog options is just a serialized array of strings
+=> Once you set a NPC name, if you change the name in another setDialogMsg, it'll open another dialog at the side of the first one.
+==> Then you can update a dialog's message by reusing a name. Adding a new name will replace the oldest dialog with the new name/message.
+===> We're supposed to do beginDialog, then setDialogMsg once for updating, twice for focus, then setDialogOptions once eventually.
+===> Then again to update the current msg/add a new message on the side setDialogMsg once, twice if you need to shift focus to the eventual new msg, and setDialogOtions eventually
+===> Then rinse&repeat as appropriate and endDialog to exit.
