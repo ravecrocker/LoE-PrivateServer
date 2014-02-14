@@ -535,6 +535,22 @@ void sendDialogMessage(Player* player, QString& message, QString NPCName)
     sendMessage(player,MsgUserReliableOrdered4, data);
 }
 
+void sendDialogOptions(Player* player, QStringList& answers)
+{
+    QByteArray data(5,0);
+    data[0] = 0xC; // Request number
+    data[1] = (quint8)answers.size();
+    data[2] = (quint8)(answers.size()>>8);
+    data[3] = (quint8)(answers.size()>>16);
+    data[4] = (quint8)(answers.size()>>24);
+    for (int i=0; i<answers.size(); i++)
+        data += stringToData(answers[i]);
+
+    win.logMessage("Sending : "+data.toHex());
+
+    sendMessage(player,MsgUserReliableOrdered4, data);
+}
+
 void sendEndDialog(Player* player)
 {
     QByteArray data(1,0);

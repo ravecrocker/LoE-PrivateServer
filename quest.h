@@ -11,6 +11,8 @@ struct Quest
 {
 public:
     Quest(QString path);
+    void runScript(); // Runs the script until the end or the next dialog
+    void processAnswer(int answer); // Called when a client answers or clicks on a dialog
 
 public:
     QList<QList<QString> > commands; // List of commands and their arguments, parsed from the quest file.
