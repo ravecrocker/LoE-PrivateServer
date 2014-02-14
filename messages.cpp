@@ -123,12 +123,12 @@ void sendPonySave(Player *player, QByteArray msg)
         InventoryItem bag;
         bag.id=60;
         bag.index=3;
-        player->inv.clear();
-        player->inv << raincloudHat << goggles << hat << bag;
-        player->worn.clear();
+        player->pony.inv.clear();
+        player->pony.inv << raincloudHat << goggles << hat << bag;
+        player->pony.worn.clear();
         //player->worn << goggles << bag;
-        player->nBits = 15;
-        sendInventoryRPC(player, player->inv, player->worn, player->nBits);
+        player->pony.nBits = 15;
+        sendInventoryRPC(player, player->pony.inv, player->pony.worn, player->pony.nBits);
 
         // Send skills
         QList<QPair<quint32, quint32> > skills;
@@ -492,8 +492,8 @@ void sendChatMessage(Player* player, QString message, QString author, quint8 cha
     QByteArray idAndAccess(5,0);
     idAndAccess[0] = (quint8)player->pony.netviewId;
     idAndAccess[1] = (quint8)(player->pony.netviewId << 8);
-    idAndAccess[2] = (quint8)(player->pony.netviewId << 16);
-    idAndAccess[3] = (quint8)(player->pony.netviewId << 24);
+    idAndAccess[2] = (quint8)(player->pony.id);
+    idAndAccess[3] = (quint8)(player->pony.id << 8);
     idAndAccess[4] = 0x0; // Access level
     QByteArray data(2,0);
     data[0] = 0xf; // RPC ID
@@ -535,7 +535,7 @@ void sendDialogMessage(Player* player, QString& message, QString NPCName)
     sendMessage(player,MsgUserReliableOrdered4, data);
 }
 
-void sendDialogOptions(Player* player, QStringList& answers)
+void sendDialogOptions(Player* player, QList<QString>& answers)
 {
     QByteArray data(5,0);
     data[0] = 0xC; // Request number
@@ -545,8 +545,6 @@ void sendDialogOptions(Player* player, QStringList& answers)
     data[4] = (quint8)(answers.size()>>24);
     for (int i=0; i<answers.size(); i++)
         data += stringToData(answers[i]);
-
-    win.logMessage("Sending : "+data.toHex());
 
     sendMessage(player,MsgUserReliableOrdered4, data);
 }
