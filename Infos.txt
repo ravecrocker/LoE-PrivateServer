@@ -2257,3 +2257,7 @@ private char ConvertChar (char c, bool direction = true)
 ===> Then rinse&repeat as appropriate and endDialog to exit.
 
 => TODO: sayIcon iconId : sets the NPC's sprite for say
+
+=> RunScript request for Donut Steel : 4d 0200 1800 0000 31
+=> Replying to Donut Steel, no answer : 46 0800 0800 0b
+=> Replying to Donut Steel, answer 0 :  46 0200 2800 0c 00 00 00 00
