@@ -492,8 +492,8 @@ void sendChatMessage(Player* player, QString message, QString author, quint8 cha
     QByteArray idAndAccess(5,0);
     idAndAccess[0] = (quint8)player->pony.netviewId;
     idAndAccess[1] = (quint8)(player->pony.netviewId << 8);
-    idAndAccess[2] = (quint8)(player->pony.netviewId << 16);
-    idAndAccess[3] = (quint8)(player->pony.netviewId << 24);
+    idAndAccess[2] = (quint8)(player->pony.id);
+    idAndAccess[3] = (quint8)(player->pony.id << 8);
     idAndAccess[4] = 0x0; // Access level
     QByteArray data(2,0);
     data[0] = 0xf; // RPC ID
