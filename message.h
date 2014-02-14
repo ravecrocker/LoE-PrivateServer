@@ -4,6 +4,7 @@
 #include <QPair>
 #include <QMutex>
 #include <QByteArray>
+#include <QStringList>
 #include "dataType.h"
 
 // Resend the udp message if we didn't get an ACK before this timeouts (3000 is reasonable)
@@ -96,6 +97,7 @@ void sendChatMessage(Player* player, QString message, QString author, quint8 cha
 void sendMove(Player* player, float x, float y, float z);
 void sendBeginDialog(Player* player);
 void sendDialogMessage(Player* player, QString& message, QString NPCName);
+void sendDialogOptions(Player* player, QStringList& answers);
 void sendEndDialog(Player* player);
 
 #endif // MESSAGE_H
