@@ -97,7 +97,7 @@ void sendChatMessage(Player* player, QString message, QString author, quint8 cha
 void sendMove(Player* player, float x, float y, float z);
 void sendBeginDialog(Player* player);
 void sendDialogMessage(Player* player, QString& message, QString NPCName);
-void sendDialogOptions(Player* player, QStringList& answers);
+void sendDialogOptions(Player* player, QList<QString> &answers);
 void sendEndDialog(Player* player);
 
 #endif // MESSAGE_H
