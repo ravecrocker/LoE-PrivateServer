@@ -6,7 +6,8 @@
 One command per line, arguments separated by spaces
 Commands :
 say msg : NPC says message msg
-say msg name : NPC name says message msg
+sayName name : The message will be said by this NPC.
+sayIcon iconId : The message will have this icon
 answer dest msg : Answer for previous message, goto label dest if selected
 goto label : Jumps to the label
 label name : Creates a label you can jump to. No spaces allowed in the label name.

@@ -8,7 +8,7 @@ void receiveMessage(Player* player)
     QByteArray msg = *(player->receivedDatas);
     int msgSize=5 + (((unsigned char)msg[3]) + (((unsigned char)msg[4]) << 8))/8;
 
-    // Check the sequence (seq) of the received message
+    // Check the sequence (seq) of the received messag
     if ((unsigned char)msg[0] >= MsgUserReliableOrdered1 && (unsigned char)msg[0] <= MsgUserReliableOrdered32)
     {
         quint16 seq = (quint8)msg[1] + ((quint8)msg[2]<<8);
@@ -406,16 +406,16 @@ void receiveMessage(Player* player)
         else if ((unsigned char)msg[0]==MsgUserReliableOrdered11 && (unsigned char)msg[7]==0x08) // Wear request
         {
             quint8 index = msg[9];
-            if (index < player->inv.size() && !player->worn.contains(player->inv[index])) // Send the wear request to everyone in room
+            if (index < player->pony.inv.size() && !player->pony.worn.contains(player->pony.inv[index])) // Send the wear request to everyone in room
             {
-                player->worn << player->inv[index];
+                player->pony.worn << player->pony.inv[index];
                 Scene* scene = findScene(player->pony.sceneName);
                 if (scene->name.isEmpty())
                     win.logMessage("UDP: Can't find the scene for wear message, aborting");
                 else
                     for (int i=0; i<scene->players.size(); i++)
                         if (scene->players[i]->inGame>=2)
-                            sendWornRPC(player, scene->players[i], player->worn);
+                            sendWornRPC(player, scene->players[i], player->pony.worn);
             }
         }
         else if ((unsigned char)msg[0]==MsgUserReliableOrdered11 && (unsigned char)msg[7]==0x04) // Get worn items request
@@ -423,9 +423,33 @@ void receiveMessage(Player* player)
             quint16 targetId = (quint8)msg[5] + ((quint8)msg[6]<<8);
             Player* target = Player::findPlayer(win.udpPlayers, targetId);
             if (target->pony.netviewId == targetId)
-                sendWornRPC(target, player, target->worn);
+                sendWornRPC(target, player, target->pony.worn);
             else
                 win.logMessage("Can't find netviewId "+QString().setNum(targetId)+" to send worn items");
+        }
+        else if ((unsigned char)msg[0]==MsgUserReliableOrdered11 && (unsigned char)msg[7]==0x31) // Run script (NPC) request
+        {
+            quint16 targetId = (quint8)msg[5] + ((quint8)msg[6]<<8);
+            win.logMessage("Quest "+QString().setNum(targetId)+" requested");
+            for (int i=0; i<player->pony.quests.size(); i++)
+                if (player->pony.quests[i].id == targetId)
+                {
+                    player->pony.lastQuest = i;
+                    player->pony.quests[i].runScript();
+                    break;
+                }
+        }
+        else if ((unsigned char)msg[0]==MsgUserReliableOrdered4 && (unsigned char)msg[5]==0xB) // Continue dialog
+        {
+            win.logMessage("Resuming script for quest "+QString().setNum(player->pony.lastQuest));
+            player->pony.quests[player->pony.lastQuest].processAnswer();
+        }
+        else if ((unsigned char)msg[0]==MsgUserReliableOrdered4 && (unsigned char)msg[5]==0xC) // Continue dialog (with answer)
+        {
+            quint32 answer = (quint8)msg[6] + ((quint8)msg[7]<<8) + ((quint8)msg[8]<<16) + ((quint8)msg[9]<<24);
+            win.logMessage("Resuming script with answer "+QString().setNum(answer)
+                           +" for quest "+QString().setNum(player->pony.lastQuest));
+            player->pony.quests[player->pony.lastQuest].processAnswer(answer);
         }
         else
         {

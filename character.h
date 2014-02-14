@@ -9,8 +9,9 @@
 #include <QByteArray>
 #include "dataType.h"
 #include "message.h"
+#include "quest.h"
 
-class SceneEntity
+struct SceneEntity
 {
 public:
     SceneEntity();
@@ -27,7 +28,7 @@ public:
     UQuaternion rot;
 };
 
-class Pony : public SceneEntity
+struct Pony : public SceneEntity
 {
 public:
     enum type
@@ -46,6 +47,11 @@ public:
 public:
     QByteArray ponyData;
     QString name;
+    QList<InventoryItem> inv; // Inventory
+    QList<WearableItem> worn; // Worn items
+    quint32 nBits; // Number of bits (money)
+    QList<Quest> quests; // State of the player's quests
+    quint32 lastQuest; // Last quest script the player ran
 };
 
 class Player : QObject
@@ -70,7 +76,8 @@ public slots:
     void udpDelayedSend(); // Enqueue and send the content of the player's grouped message buffer
 
 public:
-    void reset();
+    void reset(); // Reconstructs an empty Player
+    void resetNetwork(); // Resets all the network-related members
 
 public:
     QString IP;
@@ -93,9 +100,6 @@ public:
     QByteArray lastValidReceivedAnimation;
     quint8 inGame; // 0:Not in game, 1:Loading, 2:Instantiated & waiting savegame, 3:In game and loaded
     quint16 nReceivedDups; // Number of duplicate packets that we didn't miss and had to discard.
-    QList<InventoryItem> inv; // Inventory
-    QList<WearableItem> worn; // Worn items
-    quint32 nBits; // Number of bits (money)
 };
 
 #endif // CHARACTER_H

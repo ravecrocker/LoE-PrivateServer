@@ -68,8 +68,6 @@ Player::Player()
 void Player::reset()
 {
     name.clear();
-    inv.clear();
-    worn.clear();
     connected=false;
     inGame=0;
     nReceivedDups=0;
@@ -80,6 +78,22 @@ void Player::reset()
     receivedDatas->clear();
     lastValidReceivedAnimation.clear();
     pony = Pony();
+    for (int i=0;i<33;i++)
+        udpSequenceNumbers[i]=0;
+    for (int i=0;i<33;i++)
+        udpRecvSequenceNumbers[i]=0;
+    udpRecvMissing.clear();
+}
+
+void Player::resetNetwork()
+{
+    connected=false;
+    nReceivedDups=0;
+    lastPingNumber=0;
+    lastPingTime=timestampNow();
+    port=0;
+    IP.clear();
+    receivedDatas->clear();
     for (int i=0;i<33;i++)
         udpSequenceNumbers[i]=0;
     for (int i=0;i<33;i++)
@@ -247,6 +261,14 @@ QList<Pony> Player::loadPonies(Player* player)
         }
         pony.sceneName = data.mid(i+lensize2, strlen2);
         i+=strlen2+lensize2;
+
+        // Create quests
+        for (int i=0; i<win.quests.size(); i++)
+        {
+            Quest quest = win.quests[i];
+            quest.setOwner(player);
+            pony.quests << quest;
+        }
 
         ponies << pony;
     }
