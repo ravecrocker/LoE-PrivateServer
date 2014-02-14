@@ -47,7 +47,7 @@ void Widget::udpProcessPendingDatagrams()
                 Player* newPlayer = Player::findPlayer(udpPlayers, rAddr.toString(),rPort);
                 if (newPlayer->IP != rAddr.toString()) // IP:Port not found in player list
                 {
-                    newPlayer->reset();
+                    newPlayer->resetNetwork();
                     newPlayer->connected = true;
                     newPlayer->name = name;
                     newPlayer->IP = rAddr.toString();
@@ -61,7 +61,6 @@ void Widget::udpProcessPendingDatagrams()
                     if (n>=maxConnected)
                     {
                         sendMessage(newPlayer, MsgDisconnect, "Error : Too much players connected. Try again later.");
-
                     }
                     else
                         // If not add the player
@@ -85,7 +84,7 @@ void Widget::udpProcessPendingDatagrams()
                         sendMessage(newPlayer, MsgDisconnect, "Error : Too much players connected. Try again later.");
                     }
 
-                    newPlayer->reset();
+                    newPlayer->resetNetwork();
                     newPlayer->name = name;
                     newPlayer->IP = rAddr.toString();
                     newPlayer->port = rPort;

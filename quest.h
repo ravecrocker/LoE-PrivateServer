@@ -3,7 +3,9 @@
 
 #include <QString>
 #include <QList>
-#include "character.h"
+
+class Player;
+class Pony;
 
 // Quests are bound to one NPC
 // They define the NPC, what he say, and the reactions.
@@ -11,10 +13,17 @@ struct Quest
 {
 public:
     Quest(QString path, Player* Owner);
-    void runScript(); // Runs the script until the end or the next dialog
+    void runScript(); // Runs the script from the start until the end or the next dialog
     bool doCommand(int eip); // Runs the command at eip. Returns false if we should stop running the script (e.g because we're waiting for an answer)
-    void processAnswer(int answer); // Called when a client answers or clicks on a dialog
+    void processAnswer(int answer); // Called when a client picks an answer in a dialog
+    void processAnswer(); // Called when a client clicks on a dialog with no proposed answer
     int findLabel(QString label); // Returns the eip of this label
+    void logError(QString message); // Logs errors while running a quest script
+    void setOwner(Player* Owner);
+
+private:
+    void runScript(int Eip); // Runs the script until the end or the next dialog
+    QString concatAfter(QList<QString> list, int id); // Concatenate the strings after id in the list
 
 public:
     QList<QList<QString> >* commands; // List of commands and their arguments, parsed from the quest file.

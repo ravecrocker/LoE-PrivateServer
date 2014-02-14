@@ -11,9 +11,7 @@ questName Flan
 questDescr Flan
 
 # Quest commands
-say FORK ME ON GITHUB!
-answer end Wat?
-answer end o-okay...
+say It really is a beautiful city.
 
 # End of conversation
 label end
