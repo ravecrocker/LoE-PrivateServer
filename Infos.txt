@@ -2091,39 +2091,6 @@ public void OnDeserialize (NetIncomingMessage message)
 => Donut Steel as a pony's ponydata is in base64 : K2sAXPwDDLgM/BcAyP0DMCwAgFsAAMBmZsYf0P/Pn85pqMlnJ4JYAA==
 => In hex : 2B6B005CFC030CB80CFC1700C8FD03302C00805B0000C06666C61FD0FFCF9FCE69A8C96727825800
 
-=> Since I'm a faggot, I'll make my own NPC script and interpreter :
-==> Filenames should be XXName where XX is id of the quest. Not mandatory.
-==> Have a quest struct wich remembers qstringlist of commands, quest id/name/descr/state and EIP
-==> EIP should be reset everytime you start a new conversation with a NPC. Don't resume from the last time.
-=> Lines starting with # are comments. No midline comments tho.
-One command per line, arguments separated by spaces
-Commands :
-say msg : NPC says message msg
-answer dest msg : Answer for previous message, goto label dest if selected
-goto label : Jumps to the label
-label name : Creates a label you can jump to
-give item qty : Give qty items. Can be <0.
-giveBits qty : Give qty bits. Can be <0.
-hasItem item qty yes no : Jump to yes or no if player has qty of item
-setQuestState state : set the quest state, will be saved on the savegame
-setQuestState state id : set the state of quest id, will be saved on the savegame
-jumpIfState state dest : Jumps to dest if quest state is state
-hasBits qty yes no : Jumps to yes or no if player has qty bits
-questName name : Name of the quest.
-questId id : Should be unique. Used in the savegame and by other quests/npcs.
-questDescr txt : Description of the quest.
-teleport x y z : Teleport at given pos
-teleport x y z rx ry rz rw : Teleport at given pos/rot
-teleport x y z scene : Teleport on scene at given pos
-name txt : Name of the NPC
-ponyData data : PonyData of the NPC in base64. Use getPonyData to get it.
-scene txt : Scene where the NPC is
-pos x y z : Pos of the NPC
-rot rx ry rz rw : Rot of the NPC
-teleport x y z rx ry rz rw scene : Teleport on scene at given pos/rot
-end : end of conversation
-
-
 => Import ponycode : 
 private void ImportPonycode (string ponycode)
 {
@@ -2288,3 +2255,5 @@ private char ConvertChar (char c, bool direction = true)
 ===> We're supposed to do beginDialog, then setDialogMsg once for updating, twice for focus, then setDialogOptions once eventually.
 ===> Then again to update the current msg/add a new message on the side setDialogMsg once, twice if you need to shift focus to the eventual new msg, and setDialogOtions eventually
 ===> Then rinse&repeat as appropriate and endDialog to exit.
+
+=> TODO: sayIcon iconId : sets the NPC's sprite for say

@@ -151,7 +151,7 @@ void Widget::startServer()
             QStringList files = npcsDir.entryList(QDir::Files);
             for (int i=0; i<files.size(); i++, nQuests++) // For each vortex file
             {
-                Quest *quest = new Quest("data/npcs/"+files[i]);
+                Quest *quest = new Quest("data/npcs/"+files[i], NULL);
                 quests << *quest;
                 npcs << quest->npc;
             }

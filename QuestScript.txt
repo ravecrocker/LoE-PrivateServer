@@ -1,0 +1,37 @@
+=> Since I'm a faggot, I'll make my own NPC script and interpreter :
+==> Filenames should be XXName where XX is id of the quest. Not mandatory.
+==> Have a quest struct wich remembers qstringlist of commands, quest id/name/descr/state and EIP
+==> EIP should be reset everytime you start a new conversation with a NPC. Don't resume from the last time.
+=> Lines starting with # are comments. No midline comments tho.
+One command per line, arguments separated by spaces
+Commands :
+say msg : NPC says message msg
+say msg name : NPC name says message msg
+answer dest msg : Answer for previous message, goto label dest if selected
+goto label : Jumps to the label
+label name : Creates a label you can jump to. No spaces allowed in the label name.
+give item qty : Give qty items. Can be <0.
+giveBits qty : Give qty bits. Can be <0.
+hasItem item qty yes no : Jump to yes or no if player has qty of item
+setQuestState state : set the quest state, will be saved on the savegame
+setQuestState state id : set the state of quest id, will be saved on the savegame
+jumpIfState state dest : Jumps to dest if quest state is state
+hasBits qty yes no : Jumps to yes or no if player has qty bits
+questName name : Name of the quest.
+questId id : Should be unique. Used in the savegame and by other quests/npcs.
+questDescr txt : Description of the quest.
+teleport x y z : Teleport at given pos
+teleport x y z rx ry rz rw : Teleport at given pos/rot
+teleport x y z scene : Teleport on scene at given pos
+name txt : Name of the NPC
+ponyData data : PonyData of the NPC in base64. Use getPonyData to get it.
+scene txt : Scene where the NPC is
+pos x y z : Pos of the NPC
+rot rx ry rz rw : Rot of the NPC
+teleport x y z rx ry rz rw scene : Teleport on scene at given pos/rot
+end : end of conversation
+
+Each player has a copy of the Quest class.
+An answer should always be following a say or another answer.
+When reaching a say, we send the say and all the answers under it, then wait until the client answers.
+If a say has no answers, we still send it and wait until the client clicks to continue.
