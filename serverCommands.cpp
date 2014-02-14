@@ -421,6 +421,12 @@ void Widget::sendCmdLine()
             sendMessage(cmdPeer,MsgUserReliableOrdered4, data);
         }
     }
+    else if (str.startsWith("setDialogOptions"))
+    {
+        str = str.right(str.size()-17);
+        QStringList args = str.split(" ", QString::SkipEmptyParts);
+        sendDialogOptions(cmdPeer, args);
+    }
     else if (str.startsWith("move"))
     {
         str = str.right(str.size()-5);
