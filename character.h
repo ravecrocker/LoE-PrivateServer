@@ -61,10 +61,11 @@ class Player : QObject
 
 public:
     Player();
+    ~Player();
     static void savePonies(Player* player,QList<Pony> ponies);
     static QList<Pony> loadPonies(Player *player);
     static bool savePlayers(QList<Player*>& playersData);
-    static QList<Player*>& loadPlayers();
+    static QList<Player*> loadPlayers();
     static Player* findPlayer(QList<Player*>& players, QString uname);
     static Player* findPlayer(QList<Player*>& players, QString uIP, quint16 uport);
     static Player* findPlayer(QList<Player*>& players, quint16 netviewId);

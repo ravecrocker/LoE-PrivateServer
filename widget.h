@@ -45,7 +45,8 @@ public:
     void logMessage(QString msg);
     void logStatusMessage(QString msg);
     void startServer();
-    void stopServer();
+    void stopServer(); // Calls stopServer(true)
+    void stopServer(bool log);
 
     /// UDP/TCP
 public slots:
