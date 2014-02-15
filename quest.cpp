@@ -96,13 +96,6 @@ Quest::Quest(QString path, Player *Owner)
     }
 }
 
-Quest::~Quest()
-{
-    // Don't delete the commands, since they are shared between copies of the quest. We could use a share pointer.
-    delete name;
-    delete descr;
-}
-
 QString Quest::concatAfter(QList<QString> list, int id)
 {
     QString result;

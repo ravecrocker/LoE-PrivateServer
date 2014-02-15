@@ -267,7 +267,11 @@ Widget::~Widget()
     }
 
     for (int i=0; i<quests.size(); i++)
+    {
         delete quests[i].commands;
+        delete quests[i].name;
+        delete quests[i].descr;
+    }
 
     stopServer(false);
     delete tcpServer;

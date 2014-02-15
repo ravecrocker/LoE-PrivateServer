@@ -13,7 +13,6 @@ struct Quest
 {
 public:
     Quest(QString path, Player* Owner);
-    ~Quest();
     void runScript(); // Runs the script from the start until the end or the next dialog
     bool doCommand(int eip); // Runs the command at eip. Returns false if we should stop running the script (e.g because we're waiting for an answer)
     void processAnswer(int answer); // Called when a client picks an answer in a dialog
