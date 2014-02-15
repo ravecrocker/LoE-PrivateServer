@@ -430,7 +430,7 @@ void receiveMessage(Player* player)
         else if ((unsigned char)msg[0]==MsgUserReliableOrdered11 && (unsigned char)msg[7]==0x31) // Run script (NPC) request
         {
             quint16 targetId = (quint8)msg[5] + ((quint8)msg[6]<<8);
-            win.logMessage("Quest "+QString().setNum(targetId)+" requested");
+            //win.logMessage("Quest "+QString().setNum(targetId)+" requested");
             for (int i=0; i<player->pony.quests.size(); i++)
                 if (player->pony.quests[i].id == targetId)
                 {
@@ -441,14 +441,14 @@ void receiveMessage(Player* player)
         }
         else if ((unsigned char)msg[0]==MsgUserReliableOrdered4 && (unsigned char)msg[5]==0xB) // Continue dialog
         {
-            win.logMessage("Resuming script for quest "+QString().setNum(player->pony.lastQuest));
+            //win.logMessage("Resuming script for quest "+QString().setNum(player->pony.lastQuest));
             player->pony.quests[player->pony.lastQuest].processAnswer();
         }
         else if ((unsigned char)msg[0]==MsgUserReliableOrdered4 && (unsigned char)msg[5]==0xC) // Continue dialog (with answer)
         {
             quint32 answer = (quint8)msg[6] + ((quint8)msg[7]<<8) + ((quint8)msg[8]<<16) + ((quint8)msg[9]<<24);
-            win.logMessage("Resuming script with answer "+QString().setNum(answer)
-                           +" for quest "+QString().setNum(player->pony.lastQuest));
+            //win.logMessage("Resuming script with answer "+QString().setNum(answer)
+            //               +" for quest "+QString().setNum(player->pony.lastQuest));
             player->pony.quests[player->pony.lastQuest].processAnswer(answer);
         }
         else

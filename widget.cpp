@@ -151,9 +151,9 @@ void Widget::startServer()
             QStringList files = npcsDir.entryList(QDir::Files);
             for (int i=0; i<files.size(); i++, nQuests++) // For each vortex file
             {
-                Quest *quest = new Quest("data/npcs/"+files[i], NULL);
-                quests << *quest;
-                npcs << quest->npc;
+                Quest quest("data/npcs/"+files[i], NULL);
+                quests << quest;
+                npcs << quest.npc;
             }
             logMessage("Loaded "+QString().setNum(nQuests)+" quests/npcs.");
         }
@@ -221,7 +221,13 @@ void Widget::startServer()
 
 void Widget::stopServer()
 {
-    logStatusMessage("Stopping all server operations");
+    stopServer(true);
+}
+
+void Widget::stopServer(bool log)
+{
+    if (log)
+        logStatusMessage("Stopping all server operations");
     pingTimer->stop();
     tcpServer->close();
     for (int i=0;i<tcpClientsList.size();i++)
@@ -260,7 +266,10 @@ Widget::~Widget()
         udpPlayers.removeFirst();
     }
 
-    //stopServer(); What's the point, we're exiting a couple of ms
+    for (int i=0; i<quests.size(); i++)
+        delete quests[i].commands;
+
+    stopServer(false);
     delete tcpServer;
     delete tcpReceivedDatas;
     delete udpSocket;

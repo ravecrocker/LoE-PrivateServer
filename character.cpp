@@ -58,11 +58,20 @@ Player::Player()
     udpSendReliableTimer =  new QTimer;
     udpSendReliableTimer->setInterval(UDP_RESEND_TIMEOUT);
     udpSendReliableTimer->setSingleShot(true);
-    QObject::connect(udpSendReliableTimer, SIGNAL(timeout()), this, SLOT(udpResendLast()));
+    connect(udpSendReliableTimer, SIGNAL(timeout()), this, SLOT(udpResendLast()));
     udpSendReliableGroupTimer =  new QTimer;
     udpSendReliableGroupTimer->setInterval(UDP_GROUPING_TIMEOUT);
     udpSendReliableGroupTimer->setSingleShot(true);
     connect(udpSendReliableGroupTimer, SIGNAL(timeout()), this, SLOT(udpDelayedSend()));
+}
+
+Player::~Player()
+{
+    disconnect(udpSendReliableGroupTimer);
+    disconnect(udpSendReliableTimer);
+    delete udpSendReliableGroupTimer;
+    delete udpSendReliableTimer;
+    delete receivedDatas;
 }
 
 void Player::reset()
@@ -122,9 +131,9 @@ bool Player::savePlayers(QList<Player*>& playersData)
     return true;
 }
 
-QList<Player*>& Player::loadPlayers()
+QList<Player*> Player::loadPlayers()
 {
-    QList<Player*>& players = *(new QList<Player*>);
+    QList<Player*> players;
     QFile playersFile("data/players/players.dat");
     if (!playersFile.open(QIODevice::ReadOnly))
     {
