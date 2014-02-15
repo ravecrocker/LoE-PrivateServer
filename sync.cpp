@@ -53,7 +53,8 @@ void Sync::sendSyncMessage(Player* source, Player* dest)
 
     //win.logMessage("UDP: Syncing "+QString().setNum(source->pony.netviewId)+" to "+QString().setNum(dest->pony.netviewId));
 }
-
+// TODO: Test ranged singles on PonyVille with the bounds from the text assets
+// Or maybe test the command that gives the bounds to the clients
 
 void Sync::receiveSync(Player* player, QByteArray data) // Receives the 01 updates from each players
 {
