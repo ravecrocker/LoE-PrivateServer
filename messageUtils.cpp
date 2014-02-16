@@ -12,6 +12,10 @@ float timestampNow()
     time_t newtime;
 #ifdef WIN32
     newtime = GetTickCount();
+#elif __APPLE__
+    timeval time;
+    gettimeofday(&time, NULL);
+    newtime = (time.tv_sec * 1000) + (time.tv_usec / 1000);
 #else
     struct timespec tp;
     clock_gettime(CLOCK_MONOTONIC, &tp);

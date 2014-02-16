@@ -39,7 +39,13 @@ void Widget::udpProcessPendingDatagrams()
             //logMessage(QString("UDP: Connect detected with name : ")+name);
             //logMessage(QString("UDP: Connect detected with sesskey : ")+sesskey);
 
-            if (QCryptographicHash::hash(QString(sesskey.right(40) + saltPassword).toLatin1(), QCryptographicHash::Md5).toHex() == sesskey.left(32))
+            bool is_sesskey_valid = true;
+
+            if (enableSessKeyValidation) {
+                is_sesskey_valid = QCryptographicHash::hash(QString(sesskey.right(40) + saltPassword).toLatin1(), QCryptographicHash::Md5).toHex() == sesskey.left(32);
+            }
+
+            if (is_sesskey_valid)
             {
                 //logMessage("Sesskey token accepted");
 
