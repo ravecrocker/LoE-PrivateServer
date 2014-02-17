@@ -415,7 +415,7 @@ void receiveMessage(Player* player)
                 else
                     for (int i=0; i<scene->players.size(); i++)
                         if (scene->players[i]->inGame>=2)
-                            sendWornRPC(player, scene->players[i], player->pony.worn);
+                            sendWornRPC(&player->pony, scene->players[i], player->pony.worn);
             }
         }
         else if ((unsigned char)msg[0]==MsgUserReliableOrdered11 && (unsigned char)msg[7]==0x04) // Get worn items request
@@ -423,7 +423,7 @@ void receiveMessage(Player* player)
             quint16 targetId = (quint8)msg[5] + ((quint8)msg[6]<<8);
             Player* target = Player::findPlayer(win.udpPlayers, targetId);
             if (target->pony.netviewId == targetId)
-                sendWornRPC(target, player, target->pony.worn);
+                sendWornRPC(&target->pony, player, target->pony.worn);
             else
                 win.logMessage("Can't find netviewId "+QString().setNum(targetId)+" to send worn items");
         }

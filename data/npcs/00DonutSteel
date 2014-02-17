@@ -12,13 +12,5 @@ questName Donut Steel the edgy moose of (lethal) death that kills
 questDescr Staring hard at a mirror
 
 # Main quest commands
-say I'm Donut Steel
-say And I stare at mirrors
-say I'm a mirror
-sayName The Edgy Mirror of Death
-say I love you, mirror
-answer end okay...
-
-# End of dialog with Donut Steel
-label end
+say ...
 end

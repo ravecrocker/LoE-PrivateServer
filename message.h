@@ -88,7 +88,7 @@ void sendSetMaxStatRPC(Player* player, quint8 statId, float value);
 void sendSetStatRPC(Player* affected, Player* dest, quint8 statId, float value); // Set stat of affected on client dest
 void sendSetMaxStatRPC(Player* affected, Player* dest, quint8 statId, float value); // Set stat of affected on client dest
 void sendWornRPC(Player* player, QList<WearableItem>& worn); // Send items worn by player to himself
-void sendWornRPC(Player* wearing, Player* dest, QList<WearableItem>& worn); // Send items worn by wearing to dest
+void sendWornRPC(Pony *wearing, Player* dest, QList<WearableItem>& worn); // Send items worn by wearing to dest
 void sendInventoryRPC(Player* player, QList<InventoryItem>& inv, QList<WearableItem>& worn, quint32 nBits);
 void sendSkillsRPC(Player* player, QList<QPair<quint32, quint32> >& skills);
 void sendLoadSceneRPC(Player* player, QString sceneName);

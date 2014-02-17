@@ -29,6 +29,7 @@ ponyData data : PonyData of the NPC in base64. Use getPonyData to get it.
 scene txt : Scene where the NPC is
 pos x y z : Pos of the NPC
 rot rx ry rz rw : Rot of the NPC
+wear itemId : Add an item to be worn by the NPC
 teleport x y z rx ry rz rw scene : Teleport on scene at given pos/rot
 end : end of conversation
 
