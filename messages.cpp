@@ -87,8 +87,9 @@ void sendPonySave(Player *player, QByteArray msg)
     // If we found a matching NPC, send him and exits
     if (npc != NULL)
     {
-        win.logMessage("Sending ponyData for NPC "+npc->name);
+        win.logMessage("Sending ponyData and worn items for NPC "+npc->name);
         sendPonyData(npc, player);
+        //sendWornRPC(npc, player, npc->worn);
         return;
     }
 
@@ -296,11 +297,11 @@ void sendWornRPC(Player *player, QList<WearableItem> &worn)
     sendMessage(player, MsgUserReliableOrdered18, data);
 }
 
-void sendWornRPC(Player *wearing, Player *dest, QList<WearableItem> &worn)
+void sendWornRPC(Pony *wearing, Player *dest, QList<WearableItem> &worn)
 {
     QByteArray data(3, 4);
-    data[0] = (quint8)wearing->pony.netviewId;
-    data[1] = (quint8)(wearing->pony.netviewId>>8);
+    data[0] = (quint8)wearing->netviewId;
+    data[1] = (quint8)(wearing->netviewId>>8);
     data += 32; // Max Worn Items
     data += worn.size();
     for (int i=0;i<worn.size();i++)

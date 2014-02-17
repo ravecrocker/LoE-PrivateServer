@@ -12,7 +12,4 @@ questDescr Flan
 
 # Quest commands
 say It really is a beautiful city.
-
-# End of conversation
-label end
 end

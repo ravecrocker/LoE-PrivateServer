@@ -65,6 +65,20 @@ Quest::Quest(QString path, Player *Owner)
                         throw QString("Quest::Quest: Error reading rot");
                 }
                 else throw QString("Quest::Quest: Error reading rot");
+            else if (line[0] == "wear")
+            {
+                for (int i=1; i<line.size(); i++)
+                {
+                    bool ok;
+                    id = line[i].toInt(&ok);
+                    if (!ok)
+                        throw QString("Quest::Quest: Error reading wear");
+                    WearableItem item;
+                    item.id = id;
+                    item.index = i-1;
+                    npc->worn << item;
+                }
+            }
             else if (line[0] == "questId")
                 if (line.size()==2)
                 {
@@ -110,7 +124,7 @@ QString Quest::concatAfter(QList<QString> list, int id)
 int Quest::findLabel(QString label)
 {
     for (int i=0; i<commands->size(); i++)
-        if ((*commands)[i].size()==2 && (*commands)[i][0] == "label" && (*commands)[i][1]==label)
+        if ((*commands)[i].size()==2 && (*commands)[i][0] == "label" && (*commands)[i][1].trimmed()==label.trimmed())
             return i;
     return -1;
 }
@@ -172,6 +186,7 @@ bool Quest::doCommand(int eip)
     else if (command[0] == "end")
     {
         sendEndDialog(owner);
+        return false;
     }
     else if (command[0] == "say")
     {

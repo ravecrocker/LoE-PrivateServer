@@ -2261,3 +2261,15 @@ private char ConvertChar (char c, bool direction = true)
 => RunScript request for Donut Steel : 4d 0200 1800 0000 31
 => Replying to Donut Steel, no answer : 46 0800 0800 0b
 => Replying to Donut Steel, answer 0 :  46 0200 2800 0c 00 00 00 00
+
+=> Klondike Hicks ponyData message : 54 0200 e801 0700 c8 0e4b6c6f6e64696b65204869636b7301030000000000000000000000009db3ab9db3abd1982e24dbb1d1982e0300030002000000cdcc8c3fff7f
+=> 0e 4b6c6f6e64696b65204869636b73
+=> 01 03 
+=> 00000000 00000000 00000000 (blank flank)
+=> 9d b3 ab 9d 
+=> b3 ab d1 98 
+=> 2e 24 db b1 
+=> d1 98 2e 03 
+=> 00 03 00 02 
+=> 00 00 00 cd 
+=> cc 8c 3f ff 7f
