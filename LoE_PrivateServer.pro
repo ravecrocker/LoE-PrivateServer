@@ -36,3 +36,9 @@ HEADERS  += widget.h \
     quest.h
 
 FORMS    += widget.ui
+
+# include coreservices (required for timestamps) only on mac
+macx {
+    QMAKE_LFLAGS += -F /System/Library/Frameworks/CoreServices.framework/
+    LIBS += -framework CoreServices
+}

@@ -42,6 +42,20 @@ void Widget::logMessage(QString msg)
 void Widget::startServer()
 {
     logStatusMessage("Private server v0.4.3");
+#ifdef __APPLE__
+    // this fixes the directory in OSX so we can use the relative CONFIGFILEPATH and etc properly
+    CFBundleRef mainBundle = CFBundleGetMainBundle();
+    CFURLRef resourcesURL = CFBundleCopyBundleURL(mainBundle);
+    char path[PATH_MAX];
+    if (!CFURLGetFileSystemRepresentation(resourcesURL, TRUE, (UInt8 *)path, PATH_MAX))
+    {
+        // error!
+    }
+    CFRelease(resourcesURL);
+    // the path we get is to the .app folder, so we go up after we chdir
+    chdir(path);
+    chdir("..");
+#endif
     lastNetviewId=0;
     lastId=1;
 
@@ -56,6 +70,7 @@ void Widget::startServer()
     pingCheckInterval = config.value("pingCheckInterval", 5000).toInt();
     logInfos = config.value("logInfosMessages", true).toBool();
     saltPassword = config.value("saltPassword", "Change Me").toString();
+    enableSessKeyValidation = config.value("enableSessKeyValidation", true).toBool();
     enableLoginServer = config.value("enableLoginServer", true).toBool();
     enableGameServer = config.value("enableGameServer", true).toBool();
     enableMultiplayer = config.value("enableMultiplayer", true).toBool();
@@ -70,6 +85,10 @@ void Widget::startServer()
     tcpClientsList.clear();
 #ifdef WIN32
     startTimestamp = GetTickCount();
+#elif __APPLE__
+    timeval time;
+    gettimeofday(&time, NULL);
+    startTimestamp = (time.tv_sec * 1000) + (time.tv_usec / 1000);
 #else
     struct timespec tp;
     clock_gettime(CLOCK_MONOTONIC, &tp);
@@ -283,7 +302,7 @@ Widget::~Widget()
     delete ui;
 
     // We freed everything that was important, so don't waste time in atexits
-#ifdef WIN32
+#if defined WIN32 || defined __APPLE__
     _exit(EXIT_SUCCESS);
 #else
     quick_exit(EXIT_SUCCESS);

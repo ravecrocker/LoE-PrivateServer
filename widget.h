@@ -16,6 +16,9 @@
 #include <QMutex>
 
 //#include <windows.h>
+#ifdef __APPLE__
+#include "CoreFoundation/CoreFoundation.h"
+#endif
 
 #include "character.h"
 #include "scene.h"
@@ -93,6 +96,7 @@ private:
     int pingCheckInterval; // Time between ping timeout checks
     bool logInfos; // Can disable logMessage, but doesn't affect logStatusMessage
     QString saltPassword; // Used to check passwords between login and game servers, must be the same on all the servers involved
+    bool enableSessKeyValidation; // Enable Session Key Validation
     bool enableLoginServer; // Starts a login server
     bool enableGameServer; // Starts a game server
     bool enableMultiplayer; // Sync players' positions

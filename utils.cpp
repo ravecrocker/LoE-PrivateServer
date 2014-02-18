@@ -30,7 +30,7 @@ char convertChar (char c, bool direction = true)
         }
         if (c >= 'A' && c <= 'Z')
         {
-            return c - 'A' + '\u001a';
+            return c - 'A' + '\x1a';  // \u001a
         }
         if (c >= '0' && c <= '9')
         {
@@ -40,13 +40,13 @@ char convertChar (char c, bool direction = true)
     }
     else
     {
-        if (c >= '\0' && c <= '\u0019')
+        if (c >= '\0' && c <= '\x19')  // \u0019
         {
             return c + 'a';
         }
-        if (c >= '\u001a' && c <= '3')
+        if (c >= '\x1a' && c <= '3')  // \u001a
         {
-            return c + 'A' - '\u001a';
+            return c + 'A' - '\x1a';  // u001a
         }
         if (c >= '4' && c <= '=')
         {
