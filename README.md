@@ -15,9 +15,9 @@ Then use either :
 <h3>Still in Beta</h3>
 The private server is still in beta, expect bugs. Patches and pull requests are welcome.<br/>
 Some important features are still lacking at the moment :
-- No monsters or NPCs without server commands.
-- No quests.
-- No items.
+- No monsters without server commands.
+- No real quests.
+- No items, except the ones you start with.
 
 <h3>Chat commands</h3>
 - /stuck : Reloads and sends you to the spawn. Use it if you can't move.
