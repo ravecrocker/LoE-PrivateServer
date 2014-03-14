@@ -52,9 +52,9 @@ For example if you're stuck, do setPeer with your IP and port, then do for examp
 - instantiate key viewId ownerId : Will spawn key (PlayerBase for a pony). If the Ids are already taken, bad things will happen.
 - instantiate key viewId ownerId x y z : Same than above but spawn at the given position.
 - instantiate key viewId ownerId x y z rx ry rz: Same than above but spawn at the given position and rotation.
-- beginDialog : For debugging only.
-- endDialog : For debugging only.
-- setDialogMsg message : For debugging only.
+- beginDialog : For debugging only. Used when talking to NPCs.
+- endDialog : For debugging only. Used when talking to NPCs.
+- setDialogMsg message : For debugging only. Used when talking to NPCs.
 - dbgStressLoad : For debugging only. Load GemMine on all clients now.
 
 <h3>List of scenes</h3>
@@ -80,3 +80,4 @@ If you land in the void after loading a scene, try "move 0 0 0" (and either add 
 - PM-Lvl1
 
 <img src="https://f.cloud.github.com/assets/5155966/1389911/6503cd02-3be3-11e3-987f-98611a94a106.jpg"/>
+(This screenshot was taken on the privat server, but isn't from the latest version)
