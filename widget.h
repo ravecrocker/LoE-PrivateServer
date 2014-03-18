@@ -50,6 +50,8 @@ public:
     void startServer();
     void stopServer(); // Calls stopServer(true)
     void stopServer(bool log);
+    int getNewNetviewId();
+    int getNewId();
 
     /// UDP/TCP
 public slots:

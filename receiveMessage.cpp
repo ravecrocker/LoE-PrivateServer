@@ -120,10 +120,8 @@ void receiveMessage(Player* player)
 
         // Set local player id
         win.lastIdMutex.lock();
-        player->pony.id = win.lastId;
-        player->pony.netviewId = win.lastNetviewId;
-        win.lastId++;
-        win.lastNetviewId++;
+        player->pony.id = win.getNewId();
+        player->pony.netviewId = win.getNewNetviewId();
         win.lastIdMutex.unlock();
 
         win.logMessage("UDP: Set id request : " + QString().setNum(player->pony.id) + "/" + QString().setNum(player->pony.netviewId));
@@ -201,7 +199,7 @@ void receiveMessage(Player* player)
                 // Now update the reliable message queue
                 if (qMsg.isEmpty())
                 {
-                    player->udpSendReliableQueue.removeFirst(); // The whole grouped msg was ACK'd, remove it
+                    player->udpSendReliableQueue.remove(0); // The whole grouped msg was ACK'd, remove it
                     if (player->udpSendReliableQueue.size()) // If there's a next message in the queue, send it
                     {
                         win.logMessage("Sending next message in queue");

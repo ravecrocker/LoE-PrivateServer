@@ -83,11 +83,10 @@ Quest::Quest(QString path, Player *Owner)
                 if (line.size()==2)
                 {
                     id = line[1].toInt();
+
                     win.lastIdMutex.lock();
-                    npc->id = 0;
+                    npc->id = win.getNewId();
                     npc->netviewId = id;
-                    if (win.lastNetviewId <= id)
-                        win.lastNetviewId = id+1;
                     win.lastIdMutex.unlock();
                 }
                 else throw QString("Quest::Quest: Error reading questId");
