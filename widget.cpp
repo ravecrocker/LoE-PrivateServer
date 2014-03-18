@@ -238,6 +238,50 @@ void Widget::startServer()
     }
 }
 
+int Widget::getNewNetviewId()
+{
+    bool usedids[1024];
+    int i;
+
+    for (i = 0; i < 1024; i++) {
+        usedids[i] = false;
+    }
+
+    for (int c = 0; c < npcs.size(); c++) {
+        usedids[npcs[c]->netviewId] = true;
+    }
+    for (int c = 0; c < udpPlayers.size(); c++) {
+        usedids[udpPlayers[c]->pony.netviewId] = true;
+    }
+    
+    i = 0;
+    while (usedids[i]) i++;
+
+    return i;
+}
+
+int Widget::getNewId()
+{
+    bool usedids[1024];
+    int i;
+
+    for (i = 0; i < 1024; i++) {
+        usedids[i] = false;
+    }
+
+    for (int c = 0; c < npcs.size(); c++) {
+        usedids[npcs[c]->id] = true;
+    }
+    for (int c = 0; c < udpPlayers.size(); c++) {
+        usedids[udpPlayers[c]->pony.id] = true;
+    }
+    
+    i = 0;
+    while (usedids[i]) i++;
+
+    return i;
+}
+
 void Widget::stopServer()
 {
     stopServer(true);
