@@ -13,7 +13,8 @@
 Widget::Widget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Widget),
-    cmdPeer(new Player())
+    cmdPeer(new Player()),
+    usedids(new bool[65536])
 {
     tcpServer = new QTcpServer(this);
     udpSocket = new QUdpSocket(this);
@@ -240,10 +241,9 @@ void Widget::startServer()
 
 int Widget::getNewNetviewId()
 {
-    bool usedids[1024];
     int i;
 
-    for (i = 0; i < 1024; i++) {
+    for (i = 0; i < 65536; i++) {
         usedids[i] = false;
     }
 
@@ -262,10 +262,9 @@ int Widget::getNewNetviewId()
 
 int Widget::getNewId()
 {
-    bool usedids[1024];
     int i;
 
-    for (i = 0; i < 1024; i++) {
+    for (i = 0; i < 65536; i++) {
         usedids[i] = false;
     }
 
@@ -342,6 +341,7 @@ Widget::~Widget()
     delete udpSocket;
     delete pingTimer;
     delete cmdPeer;
+    delete[] usedids;
 
     delete ui;
 

@@ -86,6 +86,7 @@ private:
     Player* cmdPeer; // Player selected for the server commands
     QTimer* pingTimer;
     Sync sync;
+    bool *usedids;
 
     // Config
     QString remoteLoginIP; // IP of the remote login server
