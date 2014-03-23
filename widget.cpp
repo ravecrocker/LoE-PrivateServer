@@ -13,7 +13,8 @@
 Widget::Widget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Widget),
-    cmdPeer(new Player())
+    cmdPeer(new Player()),
+    usedids(new bool[65536])
 {
     tcpServer = new QTcpServer(this);
     udpSocket = new QUdpSocket(this);
@@ -238,6 +239,48 @@ void Widget::startServer()
     }
 }
 
+int Widget::getNewNetviewId()
+{
+    int i;
+
+    for (i = 0; i < 65536; i++) {
+        usedids[i] = false;
+    }
+
+    for (int c = 0; c < npcs.size(); c++) {
+        usedids[npcs[c]->netviewId] = true;
+    }
+    for (int c = 0; c < udpPlayers.size(); c++) {
+        usedids[udpPlayers[c]->pony.netviewId] = true;
+    }
+    
+    i = 0;
+    while (usedids[i]) i++;
+
+    return i;
+}
+
+int Widget::getNewId()
+{
+    int i;
+
+    for (i = 0; i < 65536; i++) {
+        usedids[i] = false;
+    }
+
+    for (int c = 0; c < npcs.size(); c++) {
+        usedids[npcs[c]->id] = true;
+    }
+    for (int c = 0; c < udpPlayers.size(); c++) {
+        usedids[udpPlayers[c]->pony.id] = true;
+    }
+    
+    i = 0;
+    while (usedids[i]) i++;
+
+    return i;
+}
+
 void Widget::stopServer()
 {
     stopServer(true);
@@ -298,6 +341,7 @@ Widget::~Widget()
     delete udpSocket;
     delete pingTimer;
     delete cmdPeer;
+    delete[] usedids;
 
     delete ui;
 
