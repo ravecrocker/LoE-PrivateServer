@@ -275,6 +275,13 @@ void receiveMessage(Player* player)
             }
             else // Broadcast the message
             {
+                int rollnum = -1;
+                QString rollstr;
+                if (txt == ("roll"))
+                {
+                    rollnum = qrand() % 100;
+                    rollstr.sprintf("<span color=\"yellow\">%s rolls %02d</span>", author.toLocal8Bit().data(), rollnum);
+                }
                 if ((quint8)msg[6] == 8) // Local chat only
                 {
                     Scene* scene = findScene(player->pony.sceneName);
@@ -283,12 +290,27 @@ void receiveMessage(Player* player)
                     else
                         for (int i=0; i<scene->players.size(); i++)
                             if (scene->players[i]->inGame>=2)
+                            {
                                 sendChatMessage(scene->players[i], txt, author, ChatLocal);
+                                
+                                if (rollnum > -1)
+                                {
+                                    sendChatMessage(scene->players[i], rollstr, "Server", ChatLocal);
+                                }
+                            }
                 }
                 else // Send globally
                     for (int i=0; i<win.udpPlayers.size(); i++)
                         if (win.udpPlayers[i]->inGame>=2)
+                        {
                             sendChatMessage(win.udpPlayers[i], txt, author, ChatGeneral);
+
+                            if (rollnum > -1)
+                            {
+                                sendChatMessage(win.udpPlayers[i], rollstr, "Server", ChatGeneral);
+                            }
+                        }
+
             }
         }
         else if ((quint8)msg[0]==MsgUserReliableOrdered4 && (quint8)msg[5]==0x1 && player->inGame!=0) // Edit ponies request error (happens if you click play twice quicly, for example)
