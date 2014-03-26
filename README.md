@@ -22,7 +22,7 @@ Some important features are still lacking at the moment :
 <h3>Chat commands</h3>
 - /stuck : Reloads and sends you to the spawn. Use it if you can't move.
 - unstuck me : Same than above.
-- roll : Roll a dice, result between 0 and 100
+- roll : Roll a dice, result between 0 and 99
 
 <h3>Server commands</h3>
 You don't need any of those commands to play, but they might be usefull.
