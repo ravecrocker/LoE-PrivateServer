@@ -144,6 +144,58 @@ void Widget::sendCmdLine()
             sendLoadSceneRPC(udpPlayers[i], str);
         return;
     }
+    else if (str.startsWith("tele"))
+    {
+        str = str.right(str.size()-5);
+        QStringList args = str.split(' ');
+        if (args.size() != 2)
+        {
+            logStatusMessage("Error: Usage is tele ponyIdToMove destinationPonyId");
+            return;
+        }
+        bool ok;
+        bool ok1;
+        bool ok2 = false;
+        quint16 sourceID = args[0].toUInt(&ok);
+        quint16 destID = args[1].toUInt(&ok1);
+        Player* sourcePeer;
+        if (!ok && !ok1)
+        {
+            logStatusMessage("Error: Usage is tele ponyIdToMove destinationPonyId");
+            return;
+        }
+        for (int i=0; i<udpPlayers.size();i++)
+        {
+            if (udpPlayers[i]->pony.id == sourceID)
+            {
+                sourcePeer = udpPlayers[i];
+                ok2 = true;
+                break;
+            }
+        }
+        if (!ok2)
+        {
+            logStatusMessage("Error: Source peer does not exist!");
+            return;
+        }
+        for (int i=0; i<udpPlayers.size();i++)
+        {
+            if (udpPlayers[i]->pony.id == destID)
+            {
+                logMessage(QString("UDP: Teleported "+sourcePeer->pony.name+" to "+udpPlayers[i]->pony.name));
+                if (udpPlayers[i]->pony.sceneName != sourcePeer->pony.sceneName)
+                {
+                    sendLoadSceneRPC(sourcePeer, udpPlayers[i]->pony.sceneName, udpPlayers[i]->pony.pos);
+                }
+                else
+                {
+                    sendMove(sourcePeer, udpPlayers[i]->pony.pos.x, udpPlayers[i]->pony.pos.y, udpPlayers[i]->pony.pos.z);
+                }
+                return;
+            }
+        }
+        logMessage("Error: Destination peer does not exist!");
+    }
     if (cmdPeer->IP=="")
     {
         logMessage("Select a peer first with setPeer/listPeers");
