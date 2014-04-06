@@ -36,15 +36,15 @@ Quest::Quest(QString path, Player *Owner)
             if (line[0] == "name")
                 if (line.size()>=2)
                     npc->name = lines[i].mid(line[0].size()+1);
-                else throw QString("Quest::Quest: Error reading name");
-            else if (line[0] >= "scene")
-                if (line.size()==2)
+                else throw QString("Quest::Quest: Error reading name, quest "+path);
+            else if (line[0] == "scene")
+                if (line.size()>=2)
                     npc->sceneName = lines[i].mid(line[0].size()+1);
-                else throw QString("Quest::Quest: Error reading scene");
+                else throw QString("Quest::Quest: Error reading scene, quest "+path);
             else if (line[0] == "ponyData")
                 if (line.size()==2)
                     npc->ponyData = QByteArray::fromBase64(line[1].toLatin1());
-                else throw QString("Quest::Quest: Error reading ponyData");
+                else throw QString("Quest::Quest: Error reading ponyData, quest "+path);
             else if (line[0] == "pos")
                 if (line.size()==4)
                 {
@@ -52,9 +52,9 @@ Quest::Quest(QString path, Player *Owner)
                     npc->pos = UVector(line[1].toFloat(&ok1), line[2].toFloat(&ok2),
                                         line[3].toFloat(&ok3));
                     if (!(ok1 && ok2 && ok3))
-                        throw QString("Quest::Quest: Error reading pos");
+                        throw QString("Quest::Quest: Error reading pos, quest "+path);
                 }
-                else throw QString("Quest::Quest: Error reading pos");
+                else throw QString("Quest::Quest: Error reading pos, quest "+path);
             else if (line[0] == "rot")
                 if (line.size()==5)
                 {
@@ -62,9 +62,9 @@ Quest::Quest(QString path, Player *Owner)
                     npc->rot = UQuaternion(line[1].toFloat(&ok1), line[2].toFloat(&ok2),
                                             line[3].toFloat(&ok3), line[4].toFloat(&ok4));
                     if (!(ok1 && ok2 && ok3 && ok4))
-                        throw QString("Quest::Quest: Error reading rot");
+                        throw QString("Quest::Quest: Error reading rot, quest "+path);
                 }
-                else throw QString("Quest::Quest: Error reading rot");
+                else throw QString("Quest::Quest: Error reading rot, quest "+path);
             else if (line[0] == "wear")
             {
                 for (int i=1; i<line.size(); i++)
@@ -72,7 +72,7 @@ Quest::Quest(QString path, Player *Owner)
                     bool ok;
                     id = line[i].toInt(&ok);
                     if (!ok)
-                        throw QString("Quest::Quest: Error reading wear");
+                        throw QString("Quest::Quest: Error reading wear, quest "+path);
                     WearableItem item;
                     item.id = id;
                     item.index = i-1;
@@ -89,15 +89,15 @@ Quest::Quest(QString path, Player *Owner)
                     npc->netviewId = id;
                     win.lastIdMutex.unlock();
                 }
-                else throw QString("Quest::Quest: Error reading questId");
+                else throw QString("Quest::Quest: Error reading questId, quest "+path);
             else if (line[0] == "questName")
                 if (line.size()>=2)
                     *name = lines[i].mid(line[0].size()+1);
-                else throw QString("Quest::Quest: Error reading questName");
+                else throw QString("Quest::Quest: Error reading questName, quest "+path);
             else if (line[0] == "questDescr")
                 if (line.size()>=2)
                     *descr = lines[i].mid(line[0].size()+1);
-                else throw QString("Quest::Quest: Error reading questDescr");
+                else throw QString("Quest::Quest: Error reading questDescr, quest "+path);
             else
                 commands->append(line);
         }
