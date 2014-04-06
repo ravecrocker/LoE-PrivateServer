@@ -42,3 +42,5 @@ macx {
     QMAKE_LFLAGS += -F /System/Library/Frameworks/CoreServices.framework/
     LIBS += -framework CoreServices
 }
+
+CONFIG += C++11
