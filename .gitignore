@@ -19,6 +19,8 @@ PrivateServ-upx/
 libstdc++-6.dll
 Makefile*
 .fuse_hidden*
+object_script.LoE_PrivateServer.Debug
+object_script.LoE_PrivateServer.Release
 
 # User files
 *.user
