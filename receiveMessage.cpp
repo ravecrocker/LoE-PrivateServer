@@ -419,6 +419,8 @@ void receiveMessage(Player* player)
 
             Player::savePonies(player, ponies);
 
+            player->pony.loadQuests(player);
+
             sendLoadSceneRPC(player, player->pony.sceneName, player->pony.pos);
             // Send instantiate to the players of the new scene
             Scene* scene = findScene(player->pony.sceneName);

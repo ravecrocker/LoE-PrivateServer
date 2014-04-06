@@ -2273,3 +2273,15 @@ private char ConvertChar (char c, bool direction = true)
 => 00 03 00 02 
 => 00 00 00 cd 
 => cc 8c 3f ff 7f
+
+=> Save the quests data in data/players/$NAME/quests.dat (along ponies.dat)
+=> Format :
+==> Numbers are big endian
+==> The file can have one entry per pony, each entry starts with the name of the pony (not id/offset, since we can delete/insert and it'd be a mess)
+==> The name is encoded in the form size + data. Then immediately following the name is the number of quests saved in the entry on 2 bytes
+==> Each quest consist of an ID on 2 bytes and a state on 2 bytes. The ID is the unique ID of the state.
+
+=> The inventory/money will be in data/players/$NAME/inventory.dat
+==> Numbers are big endian
+==> The file can have one entry per pony, each entry starts with the name of the pony, like the quests file
+==> The entry is immediatly followed by the money on 4 bytes, then the serialized inventory and finally the serialized worn items.
