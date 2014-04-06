@@ -377,7 +377,7 @@ void receiveMessage(Player* player)
         }
         else if ((quint8)msg[0]==MsgUserReliableOrdered4 && (quint8)msg[5]==0x1 && player->inGame!=0) // Edit ponies request error (happens if you click play twice quicly, for example)
         {
-            win.logMessage("Rejecting game start request from "+QString().setNum(player->pony.netviewId)
+            win.logMessage("UDP: Rejecting game start request from "+QString().setNum(player->pony.netviewId)
                            +" : player already in game");
             // Fix the buggy state we're now in
             // Reload to hide the "saving ponies" message box
@@ -403,6 +403,13 @@ void receiveMessage(Player* player)
             else
             {
                 quint32 id = (quint8)msg[6] +((quint8)msg[7]<<8) + ((quint8)msg[8]<<16) + ((quint8)msg[9]<<24);
+                if (ponies.size() <= id)
+                {
+                    win.logMessage("UDP: Received invalid id in 'edit ponies' request. Disconnecting user.");
+                    sendMessage(player,MsgDisconnect, "You were kicked for sending invalid data.");
+                    Player::disconnectPlayerCleanup(player); // Save game and remove the player
+                    return; // It's ok, since we just disconnected the player
+                }
                 ponies[id].ponyData = ponyData;
                 pony = ponies[id];
             }
