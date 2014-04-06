@@ -502,4 +502,12 @@ void Widget::sendCmdLine()
 
         sendMessage(cmdPeer,MsgUserReliableOrdered4, data);
     }
+    else if (str==("listQuests"))
+    {
+        for (const Quest& quest : cmdPeer->pony.quests)
+        {
+            win.logMessage("Quest "+QString().setNum(quest.id)+" ("+*(quest.name)
+                           +") : "+QString().setNum(quest.state));
+        }
+    }
 }
