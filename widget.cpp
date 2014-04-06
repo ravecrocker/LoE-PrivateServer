@@ -346,7 +346,7 @@ Widget::~Widget()
     delete ui;
 
     // We freed everything that was important, so don't waste time in atexits
-#if defined WIN32 || defined __APPLE__
+#if defined WIN32 || defined _WIN32 || defined __APPLE__
     _exit(EXIT_SUCCESS);
 #else
     quick_exit(EXIT_SUCCESS);
