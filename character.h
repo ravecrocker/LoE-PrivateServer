@@ -43,6 +43,10 @@ public:
 public:
     Pony();
     type getType();
+    void saveQuests(Player* owner); ///< Saves the state of all the quests (NOT thread safe)
+    void loadQuests(Player* owner); ///< Loads the state of all the quests
+    void saveInventory(); ///< Saves the worn/possesed items and the money (NOT thread safe)
+    void loadInventory(); ///< Loads the worn/possesed items and the money
 
 public:
     QByteArray ponyData;

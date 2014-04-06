@@ -304,6 +304,7 @@ void Player::disconnectPlayerCleanup(Player* player)
         if (ponies[i].ponyData == player->pony.ponyData)
             ponies[i] = player->pony;
     savePonies(player, ponies);
+    player->pony.saveQuests(player);
 
     QString uIP = player->IP;
     quint16 uPort = player->port;
@@ -396,4 +397,142 @@ void Player::udpDelayedSend()
 
     //win.logMessage("udpDelayedSend unlocking");
     udpSendReliableMutex.unlock();
+}
+
+void Pony::saveQuests(Player *owner)
+{
+    win.logMessage("UDP: Saving quests for "+QString().setNum(netviewId)+" ("+owner->name+")");
+
+    QDir playerPath(QDir::currentPath());
+    playerPath.cd("data");
+    playerPath.cd("players");
+    playerPath.mkdir(owner->name.toLatin1());
+
+    QFile file(QDir::currentPath()+"/data/players/"+owner->name.toLatin1()+"/quests.dat");
+    file.open(QIODevice::ReadWrite);
+    QByteArray questData = file.readAll();
+
+    // Try to find an existing entry for this pony, if found delete it. Then go at the end.
+    for (int i=0; i<questData.size();)
+    {
+        // Read the name
+        unsigned strlen, lensize=0;
+        {
+            unsigned char num3; int num=0, num2=0;
+            do {
+                num3 = questData[i+lensize]; lensize++;
+                num |= (num3 & 0x7f) << num2;
+                num2 += 7;
+            } while ((num3 & 0x80) != 0);
+            strlen = (uint) num;
+        }
+        QString entryName = dataToString(questData.mid(i));
+        int nameSize = strlen+lensize;
+        i+=nameSize;
+        win.logMessage("saveQuests : Reading entry "+entryName);
+
+        quint16 entryDataSize = 4 * ((quint16)(quint8)questData[i] + (((quint16)(quint8)questData[i+1])<<8));
+        if (entryName == this->name) // Delete the entry, we'll rewrite it at the end
+            questData.remove(i-nameSize,nameSize+entryDataSize+2);
+        else
+            i += entryDataSize+2;
+    }
+
+    // Now add our data at the end of the file
+    QByteArray newEntry = stringToData(this->name);
+    newEntry += (quint8)(quests.size() & 0xFF);
+    newEntry += (quint8)((quests.size() >> 8) & 0xFF);
+    for (const Quest& quest : quests)
+    {
+        newEntry += (quint8)(quest.id & 0xFF);
+        newEntry += (quint8)((quest.id >> 8) & 0xFF);
+        newEntry += (quint8)(quest.state & 0xFF);
+        newEntry += (quint8)((quest.state >> 8) & 0xFF);
+    }
+    questData += newEntry;
+    file.resize(0);
+    file.write(questData);
+    file.close();
+}
+
+void Pony::loadQuests(Player* owner)
+{
+    win.logMessage("UDP: Loading quests for "+QString().setNum(netviewId)+" ("+owner->name+")");
+
+    QDir playerPath(QDir::currentPath());
+    playerPath.cd("data");
+    playerPath.cd("players");
+    playerPath.mkdir(owner->name.toLatin1());
+
+    QFile file(QDir::currentPath()+"/data/players/"+owner->name.toLatin1()+"/quests.dat");
+    if (!file.open(QIODevice::ReadOnly))
+        return;
+    QByteArray questData = file.readAll();
+    file.close();
+
+    // Try to find an existing entry for this pony and load it.
+    for (int i=0; i<questData.size();)
+    {
+        // Read the name
+        unsigned strlen, lensize=0;
+        {
+            unsigned char num3; int num=0, num2=0;
+            do {
+                num3 = questData[i+lensize]; lensize++;
+                num |= (num3 & 0x7f) << num2;
+                num2 += 7;
+            } while ((num3 & 0x80) != 0);
+            strlen = (uint) num;
+        }
+        QString entryName = dataToString(questData.mid(i));
+        int nameSize = strlen+lensize;
+        i+=nameSize;
+        win.logMessage("loadQuests : Reading entry "+entryName);
+
+        quint16 nquests = ((quint16)(quint8)questData[i] + (((quint16)(quint8)questData[i+1])<<8));
+        i+=2;
+        if (entryName == this->name) // Read the entry
+        {
+            for (int j=0; j<nquests; j++)
+            {
+                quint16 questId = ((quint16)(quint8)questData[i] + (((quint16)(quint8)questData[i+1])<<8));
+                quint16 questState = ((quint16)(quint8)questData[i+2] + (((quint16)(quint8)questData[i+3])<<8));
+                i+=4;
+                for (Quest& quest : quests)
+                {
+                    if (quest.id == questId)
+                    {
+                        quest.state = questState;
+                        break;
+                    }
+                }
+            }
+            return;
+        }
+        else
+            i += nquests * 4;
+    }
+
+    // Now add our data at the end of the file
+    QByteArray newEntry = stringToData(this->name);
+    newEntry += (quint8)(quests.size() & 0xFF);
+    newEntry += (quint8)((quests.size() >> 8) & 0xFF);
+    for (const Quest& quest : quests)
+    {
+        newEntry += (quint8)(quest.id & 0xFF);
+        newEntry += (quint8)((quest.id >> 8) & 0xFF);
+        newEntry += (quint8)(quest.state & 0xFF);
+        newEntry += (quint8)((quest.state >> 8) & 0xFF);
+    }
+    questData += newEntry;
+}
+
+void Pony::saveInventory()
+{
+
+}
+
+void Pony::loadInventory()
+{
+
 }
