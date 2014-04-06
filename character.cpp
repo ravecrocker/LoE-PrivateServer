@@ -512,27 +512,14 @@ void Pony::loadQuests(Player* owner)
         else
             i += nquests * 4;
     }
-
-    // Now add our data at the end of the file
-    QByteArray newEntry = stringToData(this->name);
-    newEntry += (quint8)(quests.size() & 0xFF);
-    newEntry += (quint8)((quests.size() >> 8) & 0xFF);
-    for (const Quest& quest : quests)
-    {
-        newEntry += (quint8)(quest.id & 0xFF);
-        newEntry += (quint8)((quest.id >> 8) & 0xFF);
-        newEntry += (quint8)(quest.state & 0xFF);
-        newEntry += (quint8)((quest.state >> 8) & 0xFF);
-    }
-    questData += newEntry;
 }
 
 void Pony::saveInventory()
 {
-
+    throw "Saving inventory is not implemented !";
 }
 
 void Pony::loadInventory()
 {
-
+    throw "Loading inventory is not implemented !";
 }

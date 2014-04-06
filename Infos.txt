@@ -2274,7 +2274,7 @@ private char ConvertChar (char c, bool direction = true)
 => 00 00 00 cd 
 => cc 8c 3f ff 7f
 
-=> Save the quests data in data/players/$NAME/quests.dat (along ponies.dat)
+=> Save the quests data in data/players/$NAME/quests.dat (alongside ponies.dat)
 => Format :
 ==> Numbers are big endian
 ==> The file can have one entry per pony, each entry starts with the name of the pony (not id/offset, since we can delete/insert and it'd be a mess)
