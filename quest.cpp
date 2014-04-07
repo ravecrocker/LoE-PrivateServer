@@ -186,7 +186,6 @@ bool Quest::doCommand(int eip)
     else if (command[0] == "end")
     {
         sendEndDialog(owner);
-        sendEndDialog(owner);
         return false;
     }
     else if (command[0] == "say")
@@ -273,6 +272,7 @@ void Quest::processAnswer(int answer)
                     return;
                 }
                 eip = newEip;
+                sendEndDialog(owner);
                 runScript(eip);
                 return;
             }
@@ -305,6 +305,7 @@ void Quest::processAnswer()
         else
         {
             eip = i;
+            sendEndDialog(owner);
             runScript(eip);
             return;
         }
