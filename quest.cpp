@@ -267,6 +267,39 @@ bool Quest::doCommand(int eip)
         else
             owner->pony.removeInventoryItem(itemId, -qty);
     }
+    else if (command[0] == "setQuestState")
+    {
+        if (command.size() == 1)
+        {
+            bool ok1;
+            int newState = command[1].toInt(&ok1);
+            if (!ok1 || newState<0)
+            {
+                logError("invalid argument for command setQuestState");
+                return false;
+            }
+            this->state = newState;
+        }
+        else if (command.size() == 2)
+        {
+            bool ok1,ok2;
+            int newState = command[1].toInt(&ok1);
+            int id = command[2].toInt(&ok2);
+            if (!ok1 || !ok2 || newState<0 || id<0)
+            {
+                logError("invalid arguments for command setQuestState");
+                return false;
+            }
+            for (Quest& quest : owner->pony.quests)
+                if (quest.id == id)
+                    quest.state = newState;
+        }
+        else
+        {
+            logError("setQuestState takes 2 arguments");
+            return false;
+        }
+    }
     else
     {
         logError("unknown command");
