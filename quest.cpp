@@ -398,6 +398,64 @@ bool Quest::doCommand(int eip)
         eip = owner->pony.nBits >= (quint32)qty ? yesEip : noEip;
         return true;
     }
+    else if (command[0] == "jumpIfState")
+    {
+        if (command.size() == 3)
+        {
+            int uState, destEip;
+            bool ok1;
+            uState = command[1].toInt(&ok1);
+            destEip = findLabel(command[2]);
+            if (!ok1 || uState<0)
+            {
+                logError("invalid arguments for command jumpIfState");
+                return false;
+            }
+            else if (destEip<0)
+            {
+                logError("can't find dest label for command jumpIfState");
+                return false;
+            }
+            if (this->state == uState)
+                eip = destEip;
+            return true;
+        }
+        else if (command.size() == 4)
+        {
+            int uState, questId, destEip;
+            bool ok1,ok2;
+            uState = command[1].toInt(&ok1);
+            questId = command[2].toInt(&ok2);
+            destEip = findLabel(command[3]);
+            if (!ok1 || !ok2 || questId<0 || uState<0)
+            {
+                logError("invalid arguments for command jumpIfState");
+                return false;
+            }
+            else if (destEip<0)
+            {
+                logError("can't find dest label for command jumpIfState");
+                return false;
+            }
+            for (const Quest& quest : owner->pony.quests)
+            {
+                if (quest.id == questId && quest.state == uState)
+                {
+                    eip = destEip;
+                    return true;
+                }
+                else
+                    return true;
+            }
+            logError("invalid quest id for command jumpIfState");
+            return false;
+        }
+        else
+        {
+            logError("jumpIfState takes 2 or 3 arguments");
+            return false;
+        }
+    }
     else
     {
         logError("unknown command");

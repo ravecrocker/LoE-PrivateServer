@@ -2290,3 +2290,5 @@ private char ConvertChar (char c, bool direction = true)
 
 => Create a getVUint32Size(QByteArray) instead of calculating it ourselves everytime
 => Create a set of getIntXX(QByteArray) functions, instead of rewriting this inline ourselves everytime
+
+=> TODO: Test the new QuestScript commands.
