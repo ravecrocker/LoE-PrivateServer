@@ -304,7 +304,7 @@ void sendInventoryRPC(Player *player, QList<InventoryItem>& inv, QList<WearableI
     QByteArray data(5, 5);
     data[0] = (quint8)(player->pony.netviewId & 0xFF);
     data[1] = (quint8)((player->pony.netviewId>>8) & 0xFF);
-    data[3] = 12; // Max Inventory Size
+    data[3] = MAX_INVENTORY_SIZE; // Max Inventory Size
     data[4] = (quint8)inv.size();
     for (int i=0;i<inv.size();i++)
     {
@@ -318,7 +318,7 @@ void sendInventoryRPC(Player *player, QList<InventoryItem>& inv, QList<WearableI
         data += (quint8)((inv[i].amount>>16) & 0xFF);
         data += (quint8)((inv[i].amount>>24) & 0xFF);
     }
-    data += 32; // Max Worn Items
+    data += MAX_WORN_ITEMS; // Max Worn Items
     data += worn.size();
     for (int i=0;i<worn.size();i++)
     {
