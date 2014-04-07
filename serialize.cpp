@@ -195,10 +195,10 @@ uint16_t dataToUint16(QByteArray data)
 
 uint32_t dataToUint32(QByteArray data)
 {
-    return ((uint16_t)(uint8_t)data[0])
-            +(((uint16_t)(uint8_t)data[1])<<8)
-            +(((uint16_t)(uint8_t)data[2])<<16)
-            +(((uint16_t)(uint8_t)data[3])<<24);
+    return ((uint32_t)(uint8_t)data[0])
+            +(((uint32_t)(uint8_t)data[1])<<8)
+            +(((uint32_t)(uint8_t)data[2])<<16)
+            +(((uint32_t)(uint8_t)data[3])<<24);
 }
 
 unsigned getVUint32Size(QByteArray data)
@@ -217,24 +217,24 @@ unsigned getVUint32Size(QByteArray data)
 QByteArray uint8ToData(uint8_t num)
 {
     QByteArray data(1,0);
-    data[0] = num;
+    data[0] = (uint8_t)num;
     return data;
 }
 
 QByteArray uint16ToData(uint16_t num)
 {
     QByteArray data(2,0);
-    data[0] = num & 0xFF;
-    data[1] = (num>>8) & 0xFF;
+    data[0] = (uint8_t)(num & 0xFF);
+    data[1] = (uint8_t)((num>>8) & 0xFF);
     return data;
 }
 
 QByteArray uint32ToData(uint32_t num)
 {
     QByteArray data(4,0);
-    data[0] = num;
-    data[1] = (num>>8) & 0xFF;
-    data[2] = (num>>16) & 0xFF;
-    data[3] = (num>>24) & 0xFF;
+    data[0] = (uint8_t)(num & 0xFF);
+    data[1] = (uint8_t)((num>>8) & 0xFF);
+    data[2] = (uint8_t)((num>>16) & 0xFF);
+    data[3] = (uint8_t)((num>>24) & 0xFF);
     return data;
 }

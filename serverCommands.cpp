@@ -261,8 +261,8 @@ void Widget::sendCmdLine()
         if (ok)
         {
             logMessage("UDP: Sending setPlayerId request");
-            data[1]=id;
-            data[2]=id >> 8;
+            data[1]=(quint8)(id&0xFF);
+            data[2]=(quint8)((id >> 8)&0xFF);
             sendMessage(cmdPeer,MsgUserReliableOrdered6,data);
         }
         else
@@ -323,8 +323,8 @@ void Widget::sendCmdLine()
     else if (str.startsWith("sendPonyData"))
     {
         QByteArray data(3,0xC8);
-        data[0] = (quint8)cmdPeer->pony.netviewId;
-        data[1] = (quint8)(cmdPeer->pony.netviewId>>8);
+        data[0] = (quint8)(cmdPeer->pony.netviewId&0xFF);
+        data[1] = (quint8)((cmdPeer->pony.netviewId>>8)&0xFF);
         data += cmdPeer->pony.ponyData;
         sendMessage(cmdPeer, MsgUserReliableOrdered18, data);
         return;
@@ -397,10 +397,10 @@ void Widget::sendCmdLine()
             return;
         }
         QByteArray params1(4,0);
-        params1[0] = viewId;
-        params1[1] = viewId >> 8;
-        params1[2] = ownerId;
-        params1[3] = ownerId >> 8;
+        params1[0] = (quint8)(viewId&0xFF);
+        params1[1] = (quint8)((viewId >> 8)&0xFF);
+        params1[2] = (quint8)(ownerId&0xFF);
+        params1[3] = (quint8)((ownerId >> 8)&0xFF);
         data += params1;
         float x1=0,y1=0,z1=0;
         float x2=0,y2=0,z2=0,w2=0;

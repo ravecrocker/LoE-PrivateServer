@@ -50,9 +50,9 @@ void receiveMessage(Player* player)
                 {
                     //win.logMessage("UDP: ACKing discarded message");
                     QByteArray data(3,0);
-                    data[0] = (quint8)msg[0]; // ack type
-                    data[1] = ((quint8)msg[1])/2; // seq
-                    data[2] = ((quint8)msg[2])/2; // seq
+                    data[0] = (quint8)(msg[0]); // ack type
+                    data[1] = (quint8)(((quint8)msg[1])/2); // seq
+                    data[2] = (quint8)(((quint8)msg[2])/2); // seq
                     sendMessage(player, MsgAcknowledge, data);
                 }
                 if (player->receivedDatas->size())
@@ -131,8 +131,8 @@ void receiveMessage(Player* player)
         // Set player Id request
         QByteArray id(3,0);
         id[0]=4;
-        id[1]=player->pony.id;
-        id[2]=player->pony.id>>8;
+        id[1]=(quint8)(player->pony.id&0xFF);
+        id[2]=(quint8)((player->pony.id>>8)&0xFF);
         sendMessage(player,MsgUserReliableOrdered6,id); // Sends a 48
 
         // Load Characters screen requets
@@ -143,7 +143,8 @@ void receiveMessage(Player* player)
     else if ((unsigned char)msg[0] == MsgAcknowledge) // Acknowledge
     {
         //win.logMessage("ACK message : "+QString(msg.toHex()));
-        int nAcks = ((quint8)msg[3] + ((quint8)msg[4]<<8)) / 24; // Number of messages ACK'd by this message
+        // Number of messages ACK'd by this message
+        int nAcks = ((quint8)msg[3] + (((quint16)(quint8)msg[4])<<8)) / 24;
         if (nAcks)
         {
             // Extract the heads (channel and seq) of the ack'd messages
@@ -152,7 +153,7 @@ void receiveMessage(Player* player)
             {
                 MessageHead head;
                 head.channel = (quint8)msg[3*i+5];
-                head.seq = ((quint8)msg[3*i+6] + ((quint8)msg[3*i+7]<<8))*2;
+                head.seq = ((quint16)(quint8)msg[3*i+6] + (((quint16)(quint8)msg[3*i+7])<<8))*2;
                 // If that's not a supported reliable message, there's no point in checking
                 if (head.channel >= MsgUserReliableOrdered1 && head.channel <= MsgUserReliableOrdered32)
                     acks << head;
@@ -185,9 +186,9 @@ void receiveMessage(Player* player)
                     int pos=0;
                     while (pos < qMsg.size()) // Try to find a msg matching this ACK
                     {
-                        quint16 seq = (quint8)qMsg[pos+1] + ((quint8)qMsg[pos+2]<<8);
-                        quint16 qMsgSize = (((quint8)qMsg[pos+3]) + (((quint8)qMsg[pos+4])<<8))/8 + 5;
-                          if ((quint16)(quint8)qMsg[pos] == acks[i].channel && seq == acks[i].seq) // Remove the msg, now that it was ACK'd
+                        quint16 seq = ((quint16)(quint8)qMsg[pos+1]) + (((quint16)(quint8)qMsg[pos+2])<<8);
+                        quint16 qMsgSize = (((quint16)(quint8)qMsg[pos+3])+(((quint16)(quint8)qMsg[pos+4])<<8))/8+5;
+                        if ((quint16)(quint8)qMsg[pos] == acks[i].channel && seq == acks[i].seq) // Remove the msg, now that it was ACK'd
                         {
                             //win.logMessage("Removed message : "+QString().setNum(seq)+" size is "+QString().setNum(qMsgSize));
                             qMsg = qMsg.left(pos) + qMsg.mid(pos+qMsgSize);
@@ -253,8 +254,8 @@ void receiveMessage(Player* player)
 
         QByteArray data(3,0);
         data[0] = (quint8)msg[0]; // ack type
-        data[1] = ((quint8)msg[1])/2; // seq
-        data[2] = ((quint8)msg[2])/2; // seq
+        data[1] = (quint8)(((quint8)msg[1])/2); // seq
+        data[2] = (quint8)(((quint8)msg[2])/2); // seq
         sendMessage(player, MsgAcknowledge, data);
 
         if ((unsigned char)msg[0]==MsgUserReliableOrdered6 && (unsigned char)msg[3]==8 && (unsigned char)msg[4]==0 && (unsigned char)msg[5]==6 ) // Prefab (player/mobs) list instantiate request
@@ -523,7 +524,7 @@ void receiveMessage(Player* player)
         }
         else if ((unsigned char)msg[0]==MsgUserReliableOrdered11 && (unsigned char)msg[7]==0x04) // Get worn items request
         {
-            quint16 targetId = (quint8)msg[5] + ((quint8)msg[6]<<8);
+            quint16 targetId = ((quint16)(quint8)msg[5]) + (((quint16)(quint8)msg[6])<<8);
             Player* target = Player::findPlayer(win.udpPlayers, targetId);
             if (target->pony.netviewId == targetId)
                 sendWornRPC(&target->pony, player, target->pony.worn);
@@ -532,7 +533,7 @@ void receiveMessage(Player* player)
         }
         else if ((unsigned char)msg[0]==MsgUserReliableOrdered11 && (unsigned char)msg[7]==0x31) // Run script (NPC) request
         {
-            quint16 targetId = (quint8)msg[5] + ((quint8)msg[6]<<8);
+            quint16 targetId = ((quint16)(quint8)msg[5]) + (((quint16)(quint8)msg[6])<<8);
             //win.logMessage("Quest "+QString().setNum(targetId)+" requested");
             for (int i=0; i<player->pony.quests.size(); i++)
                 if (player->pony.quests[i].id == targetId)
@@ -549,7 +550,10 @@ void receiveMessage(Player* player)
         }
         else if ((unsigned char)msg[0]==MsgUserReliableOrdered4 && (unsigned char)msg[5]==0xC) // Continue dialog (with answer)
         {
-            quint32 answer = (quint8)msg[6] + ((quint8)msg[7]<<8) + ((quint8)msg[8]<<16) + ((quint8)msg[9]<<24);
+            quint32 answer = ((quint32)(quint8)msg[6])
+                            + (((quint32)(quint8)msg[7])<<8)
+                            + (((quint32)(quint8)msg[8])<<16)
+                            + (((quint32)(quint8)msg[9])<<24);
             //win.logMessage("Resuming script with answer "+QString().setNum(answer)
             //               +" for quest "+QString().setNum(player->pony.lastQuest));
             player->pony.quests[player->pony.lastQuest].processAnswer(answer);
@@ -557,7 +561,7 @@ void receiveMessage(Player* player)
         else
         {
             // Display data
-            quint32 unknownMsgSize =  ((quint8)msg[3] +((quint8)msg[4]<<8)) / 8;
+            quint32 unknownMsgSize =  (((quint16)(quint8)msg[3]) +(((quint16)(quint8)msg[4])<<8)) / 8;
             win.logMessage("UDP: Unknown message received : "
                            +QString(player->receivedDatas->left(unknownMsgSize+5).toHex().data()));
             *player->receivedDatas = player->receivedDatas->mid(unknownMsgSize+5);
@@ -566,7 +570,8 @@ void receiveMessage(Player* player)
     }
     else if ((unsigned char)msg[0]==MsgUserUnreliable) // Sync (position) update
     {
-        if ((quint8)msg[5]==(quint8)player->pony.netviewId && (quint8)msg[6]==(quint8)player->pony.netviewId>>8)
+        if ((quint8)msg[5]==(quint8)player->pony.netviewId
+                && (quint8)msg[6]==(quint8)((player->pony.netviewId>>8)&0xFF))
             Sync::receiveSync(player, msg);
     }
     else
@@ -574,7 +579,7 @@ void receiveMessage(Player* player)
         // Display data
         win.logMessage("Unknown data received (UDP) (hex) : ");
         win.logMessage(QString(player->receivedDatas->toHex().data()));
-        quint32 unknownMsgSize =  ((quint8)msg[3] +((quint8)msg[4]<<8)) / 8;
+        quint32 unknownMsgSize = (((quint16)(quint8)msg[3]) +(((quint16)(quint8)msg[4])<<8)) / 8;
         *player->receivedDatas = player->receivedDatas->mid(unknownMsgSize+5);
         msgSize=0;
     }

@@ -23,7 +23,7 @@ void sendMessage(Player* player,quint8 messageType, QByteArray data)
         msg[4] = 0;
         // Ping number
         player->lastPingNumber++;
-        msg[5]=player->lastPingNumber;
+        msg[5]=(quint8)player->lastPingNumber;
     }
     else if (messageType == MsgPong)
     {
@@ -32,7 +32,7 @@ void sendMessage(Player* player,quint8 messageType, QByteArray data)
         msg[3] = 8*5;
         msg[4] = 0;
         // Ping number
-        msg[5]=player->lastPingNumber;
+        msg[5]=(quint8)player->lastPingNumber;
         // Timestamp
         msg += floatToData(timestampNow());
     }
@@ -40,11 +40,11 @@ void sendMessage(Player* player,quint8 messageType, QByteArray data)
     {
         msg.resize(5);
         // Sequence
-        msg[1] = player->udpSequenceNumbers[32];
-        msg[2] = player->udpSequenceNumbers[32]>>8;
+        msg[1] = (quint8)(player->udpSequenceNumbers[32]&0xFF);
+        msg[2] = (quint8)((player->udpSequenceNumbers[32]>>8)&0xFF);
         // Data size
-        msg[3] = 8*(data.size());
-        msg[4] = (8*(data.size())) >> 8;
+        msg[3] = (quint8)((8*(data.size()))&0xFF);
+        msg[4] = (quint8)(((8*(data.size())) >> 8)&0xFF);
         // Data
         msg += data;
         player->udpSequenceNumbers[32]++;
@@ -58,11 +58,11 @@ void sendMessage(Player* player,quint8 messageType, QByteArray data)
         player->udpSendReliableGroupTimer->stop();
         msg.resize(5);
         // Sequence
-        msg[1] = player->udpSequenceNumbers[messageType-MsgUserReliableOrdered1];
-        msg[2] = player->udpSequenceNumbers[messageType-MsgUserReliableOrdered1] >> 8;
+        msg[1] = (quint8)(player->udpSequenceNumbers[messageType-MsgUserReliableOrdered1]&0xFF);
+        msg[2] = (quint8)((player->udpSequenceNumbers[messageType-MsgUserReliableOrdered1] >> 8)&0xFF);
         // Payload size
-        msg[3] = 8*(data.size());
-        msg[4] = (8*(data.size())) >> 8;
+        msg[3] = (quint8)((8*(data.size()))&0xFF);
+        msg[4] = (quint8)(((8*(data.size())) >> 8)&0xFF);
         // strlen
         msg+=data;
         player->udpSequenceNumbers[messageType-MsgUserReliableOrdered1] += 2;
@@ -81,8 +81,8 @@ void sendMessage(Player* player,quint8 messageType, QByteArray data)
     {
         msg.resize(5);
         // Payload size
-        msg[3] = (quint8)(data.size()*8);
-        msg[4] = (quint8)((data.size()*8)>>8);
+        msg[3] = (quint8)((data.size()*8)&0xFF);
+        msg[4] = (quint8)(((data.size()*8)>>8)&0xFF);
         msg.append(data); // Format of packet data n*(Ack type, Ack seq, Ack seq)
     }
     else if (messageType == MsgConnectResponse)
@@ -102,10 +102,10 @@ void sendMessage(Player* player,quint8 messageType, QByteArray data)
     {
         msg.resize(6);
         // Payload size
-        msg[3] = ((data.size()+1)*8);
-        msg[4] = ((data.size()+1)*8)>>8;
+        msg[3] = (quint8)(((data.size()+1)*8)&0xFF);
+        msg[4] = (quint8)((((data.size()+1)*8)>>8)&0xFF);
         // Message length
-        msg[5] = data.size();
+        msg[5] = (quint8)data.size();
         // Disconnect message
         msg += data;
     }
