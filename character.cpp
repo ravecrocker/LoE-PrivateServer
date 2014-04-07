@@ -650,7 +650,7 @@ void Pony::removeInventoryItem(quint8 id, quint32 qty)
     {
         if (inv[i].id == id)
         {
-            if (qty <= amount)
+            if (qty <= inv[i].amount)
             {
                 inv[i].amount -= qty;
                 return;
