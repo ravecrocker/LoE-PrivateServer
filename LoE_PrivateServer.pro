@@ -22,9 +22,9 @@ SOURCES += main.cpp \
 	sync.cpp \
     receiveMessage.cpp \
     sendMessage.cpp \
-    messageUtils.cpp \
     serverCommands.cpp \
-    quest.cpp
+    quest.cpp \
+    serialize.cpp
 
 HEADERS  += widget.h \
 	character.h \
@@ -33,7 +33,8 @@ HEADERS  += widget.h \
 	scene.h \
 	dataType.h \
 	sync.h \
-    quest.h
+    quest.h \
+    serialize.h
 
 FORMS    += widget.ui
 

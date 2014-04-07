@@ -31,9 +31,13 @@ UQuaternion::UQuaternion(float ux, float uy, float uz, float uw)
 }
 
 WearableItem::WearableItem()
+    : index(0), id(0)
 {
-    id=0;
-    index=0;
+}
+
+WearableItem::WearableItem(quint8 Index, quint32 Id)
+    : index(Index), id(Id)
+{
 }
 
 bool WearableItem::operator==(const WearableItem& other)
@@ -44,4 +48,15 @@ bool WearableItem::operator==(const WearableItem& other)
 InventoryItem::InventoryItem() : WearableItem()
 {
     amount=1;
+}
+
+InventoryItem::InventoryItem(quint8 Index, quint32 Id)
+    : WearableItem(Index, Id), amount(1)
+{
+
+}
+
+InventoryItem::InventoryItem(quint8 Index, quint32 Id, quint32 Amount)
+    : WearableItem(Index,Id), amount(Amount)
+{
 }

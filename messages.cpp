@@ -1,6 +1,7 @@
 #include "message.h"
 #include "character.h"
 #include "widget.h"
+#include "serialize.h"
 
 // File-global game-entering mutex (to prevent multiple instantiates)
 static QMutex levelLoadMutex;
@@ -111,24 +112,7 @@ void sendPonySave(Player *player, QByteArray msg)
 
         sendPonyData(player);
 
-        // Set inventory (start with always the same, until we implement it properly)
-        InventoryItem raincloudHat;
-        raincloudHat.id=73;
-        raincloudHat.index=0;
-        InventoryItem goggles;
-        goggles.id=17;
-        goggles.index=1;
-        InventoryItem hat;
-        hat.id=62;
-        hat.index=2;
-        InventoryItem bag;
-        bag.id=60;
-        bag.index=3;
-        player->pony.inv.clear();
-        player->pony.inv << raincloudHat << goggles << hat << bag;
-        player->pony.worn.clear();
-        //player->worn << goggles << bag;
-        player->pony.nBits = 15;
+        // Send inventory
         sendInventoryRPC(player, player->pony.inv, player->pony.worn, player->pony.nBits);
 
         // Send skills

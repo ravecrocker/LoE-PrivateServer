@@ -1,5 +1,6 @@
 #include "quest.h"
 #include "widget.h"
+#include "message.h"
 #include <QFile>
 
 Quest::Quest(QString path, Player *Owner)

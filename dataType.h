@@ -34,6 +34,7 @@ class WearableItem
 {
 public:
     WearableItem();
+    WearableItem(quint8 Index, quint32 Id);
     bool operator==(const WearableItem& other);
 
 public:
@@ -45,9 +46,22 @@ class InventoryItem : public WearableItem
 {
 public:
     InventoryItem();
+    InventoryItem(quint8 Index, quint32 Id);
+    InventoryItem(quint8 Index, quint32 Id, quint32 Amount);
 
 public:
     quint32 amount;
+};
+
+struct MessageHead
+{
+    quint16 channel;
+    quint16 seq;
+
+    bool operator==(const MessageHead& other)
+    {
+        return (channel==other.channel && seq==other.seq);
+    }
 };
 
 #endif // DATATYPE_H

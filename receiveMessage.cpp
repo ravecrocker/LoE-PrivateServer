@@ -2,6 +2,8 @@
 #include "character.h"
 #include "widget.h"
 #include "sync.h"
+#include "utils.h"
+#include "serialize.h"
 
 void receiveMessage(Player* player)
 {
@@ -403,7 +405,7 @@ void receiveMessage(Player* player)
             else
             {
                 quint32 id = (quint8)msg[6] +((quint8)msg[7]<<8) + ((quint8)msg[8]<<16) + ((quint8)msg[9]<<24);
-                if (ponies.size() <= id)
+                if (ponies.size()<0 || (quint32)ponies.size() <= id)
                 {
                     win.logMessage("UDP: Received invalid id in 'edit ponies' request. Disconnecting user.");
                     sendMessage(player,MsgDisconnect, "You were kicked for sending invalid data.");
@@ -420,6 +422,16 @@ void receiveMessage(Player* player)
             Player::savePonies(player, ponies);
 
             player->pony.loadQuests(player);
+            if (!player->pony.loadInventory(player)) // Create a default inventory if we can't find one saved
+            {
+                InventoryItem raincloudHat{0,73};
+                InventoryItem goggles{1,17};
+                InventoryItem hat{2,62};
+                InventoryItem bag{3,60};
+                player->pony.inv << raincloudHat << goggles << hat << bag;
+                player->pony.nBits = 15;
+                player->pony.saveInventory(player);
+            }
 
             sendLoadSceneRPC(player, player->pony.sceneName, player->pony.pos);
             // Send instantiate to the players of the new scene
