@@ -1,6 +1,12 @@
 #include "widget.h"
 #include "ui_widget.h"
 
+#if defined WIN32 || defined _WIN32
+#include <windows.h>
+#else
+#include <sys/time.h>
+#endif
+
 void saveResourceToDataFolder(QString resRelPath)
 {
     win.logMessage(QString("Saving ")+resRelPath);
@@ -19,6 +25,25 @@ QByteArray removeHTTPHeader(QByteArray data,QString header)
     data.remove(i1, i2-i1+1);
     return data;
 }
+
+float timestampNow()
+{
+    time_t newtime;
+#if defined WIN32 || defined _WIN32
+    newtime = GetTickCount();
+#elif defined __APPLE__
+    timeval time;
+    gettimeofday(&time, NULL);
+    newtime = (time.tv_sec * 1000) + (time.tv_usec / 1000);
+#else
+    struct timespec tp;
+    clock_gettime(CLOCK_MONOTONIC, &tp);
+    newtime = tp.tv_sec*1000 + tp.tv_nsec/1000/1000;
+#endif
+    return (float)(((float)(newtime - win.startTimestamp))/(float)1000); // Seconds since server start (startTimestamp)
+}
+
+
 
 char convertChar (char c, bool direction = true)
 {

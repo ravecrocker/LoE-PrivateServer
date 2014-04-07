@@ -1,28 +1,4 @@
-#include "message.h"
-#include "widget.h"
-
-#ifdef WIN32
-#include <windows.h>
-#else
-#include <sys/time.h>
-#endif
-
-float timestampNow()
-{
-    time_t newtime;
-#ifdef WIN32
-    newtime = GetTickCount();
-#elif __APPLE__
-    timeval time;
-    gettimeofday(&time, NULL);
-    newtime = (time.tv_sec * 1000) + (time.tv_usec / 1000);
-#else
-    struct timespec tp;
-    clock_gettime(CLOCK_MONOTONIC, &tp);
-    newtime = tp.tv_sec*1000 + tp.tv_nsec/1000/1000;
-#endif
-    return (float)(((float)(newtime - win.startTimestamp))/(float)1000); // Seconds since server start (startTimestamp)
-}
+#include "serialize.h"
 
 QByteArray doubleToData(double num)
 {
@@ -203,5 +179,62 @@ QByteArray rangedSingleToData(float value, float min, float max, int numberOfBit
     numberOfBits -= 8;
     data += (unsigned char)source>>24;
 
+    return data;
+}
+
+uint8_t dataToUint8(QByteArray data)
+{
+    return (uint8_t)data[0];
+}
+
+uint16_t dataToUint16(QByteArray data)
+{
+    return ((uint16_t)(uint8_t)data[0])
+            +(((uint16_t)(uint8_t)data[1])<<8);
+}
+
+uint32_t dataToUint32(QByteArray data)
+{
+    return ((uint16_t)(uint8_t)data[0])
+            +(((uint16_t)(uint8_t)data[1])<<8)
+            +(((uint16_t)(uint8_t)data[2])<<16)
+            +(((uint16_t)(uint8_t)data[3])<<24);
+}
+
+unsigned getVUint32Size(QByteArray data)
+{
+    unsigned lensize=0;
+    {
+        unsigned char num3;
+        do {
+            num3 = data[lensize];
+            lensize++;
+        } while ((num3 & 0x80) != 0);
+    }
+    return lensize;
+}
+
+QByteArray uint8ToData(uint8_t num)
+{
+    QByteArray data(1,0);
+    data[0] = num;
+    return data;
+}
+
+QByteArray uint16ToData(uint16_t num)
+{
+    QByteArray data(2,0);
+    data[0] = num & 0xFF;
+    data[1] = (num>>8) & 0xFF;
+    return data;
+}
+
+QByteArray uint32ToData(uint32_t num)
+{
+    QByteArray data(4,0);
+    data[0] = num;
+    data[1] = (num>>8) & 0xFF;
+    data[2] = (num>>16) & 0xFF;
+    data[3] = (num>>24) & 0xFF;
     return data;
 }

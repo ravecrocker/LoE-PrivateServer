@@ -1,6 +1,8 @@
 #include "widget.h"
 #include "ui_widget.h"
 #include "message.h"
+#include "utils.h"
+#include "serialize.h"
 
 // Processes the commands entered directly in the server, not the chat messages
 void Widget::sendCmdLine()

@@ -1,6 +1,8 @@
 #include "sync.h"
 #include "widget.h"
 #include "message.h"
+#include "utils.h"
+#include "serialize.h"
 
 Sync::Sync(QObject *parent) : QObject(parent)
 {

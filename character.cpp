@@ -2,6 +2,8 @@
 #include <QDir>
 #include "widget.h"
 #include "character.h"
+#include "utils.h"
+#include "serialize.h"
 #include "message.h"
 
 SceneEntity::SceneEntity()
@@ -305,6 +307,7 @@ void Player::disconnectPlayerCleanup(Player* player)
             ponies[i] = player->pony;
     savePonies(player, ponies);
     player->pony.saveQuests(player);
+    player->pony.saveInventory(player);
 
     QString uIP = player->IP;
     quint16 uPort = player->port;
@@ -409,25 +412,19 @@ void Pony::saveQuests(Player *owner)
     playerPath.mkdir(owner->name.toLatin1());
 
     QFile file(QDir::currentPath()+"/data/players/"+owner->name.toLatin1()+"/quests.dat");
-    file.open(QIODevice::ReadWrite);
+    if (!file.open(QIODevice::ReadWrite))
+    {
+        win.logMessage("Error saving quests for "+QString().setNum(netviewId)+" ("+owner->name+")");
+        return;
+    }
     QByteArray questData = file.readAll();
 
     // Try to find an existing entry for this pony, if found delete it. Then go at the end.
     for (int i=0; i<questData.size();)
     {
         // Read the name
-        unsigned strlen, lensize=0;
-        {
-            unsigned char num3; int num=0, num2=0;
-            do {
-                num3 = questData[i+lensize]; lensize++;
-                num |= (num3 & 0x7f) << num2;
-                num2 += 7;
-            } while ((num3 & 0x80) != 0);
-            strlen = (uint) num;
-        }
         QString entryName = dataToString(questData.mid(i));
-        int nameSize = strlen+lensize;
+        int nameSize = entryName.size()+getVUint32Size(questData.mid(i));
         i+=nameSize;
         win.logMessage("saveQuests : Reading entry "+entryName);
 
@@ -466,7 +463,10 @@ void Pony::loadQuests(Player* owner)
 
     QFile file(QDir::currentPath()+"/data/players/"+owner->name.toLatin1()+"/quests.dat");
     if (!file.open(QIODevice::ReadOnly))
+    {
+        win.logMessage("Error loading quests for "+QString().setNum(netviewId)+" ("+owner->name+")");
         return;
+    }
     QByteArray questData = file.readAll();
     file.close();
 
@@ -474,18 +474,8 @@ void Pony::loadQuests(Player* owner)
     for (int i=0; i<questData.size();)
     {
         // Read the name
-        unsigned strlen, lensize=0;
-        {
-            unsigned char num3; int num=0, num2=0;
-            do {
-                num3 = questData[i+lensize]; lensize++;
-                num |= (num3 & 0x7f) << num2;
-                num2 += 7;
-            } while ((num3 & 0x80) != 0);
-            strlen = (uint) num;
-        }
         QString entryName = dataToString(questData.mid(i));
-        int nameSize = strlen+lensize;
+        int nameSize = entryName.size()+getVUint32Size(questData.mid(i));
         i+=nameSize;
         win.logMessage("loadQuests : Reading entry "+entryName);
 
@@ -514,12 +504,124 @@ void Pony::loadQuests(Player* owner)
     }
 }
 
-void Pony::saveInventory()
+void Pony::saveInventory(Player* owner)
 {
-    throw "Saving inventory is not implemented !";
+    win.logMessage("UDP: Saving inventory for "+QString().setNum(netviewId)+" ("+owner->name+")");
+
+    QDir playerPath(QDir::currentPath());
+    playerPath.cd("data");
+    playerPath.cd("players");
+    playerPath.mkdir(owner->name.toLatin1());
+
+    QFile file(QDir::currentPath()+"/data/players/"+owner->name.toLatin1()+"/inventory.dat");
+    if (!file.open(QIODevice::ReadWrite))
+    {
+        win.logMessage("Error saving inventory for "+QString().setNum(netviewId)+" ("+owner->name+")");
+        return;
+    }
+    QByteArray invData = file.readAll();
+
+    // Try to find an existing entry for this pony, if found delete it. Then go at the end.
+    for (int i=0; i<invData.size();)
+    {
+        // Read the name
+        QString entryName = dataToString(invData.mid(i));
+        int nameSize = entryName.size()+getVUint32Size(invData.mid(i));
+        win.logMessage("saveInventory : Reading entry "+entryName);
+
+        quint8 invSize = invData[i+nameSize+4];
+        quint8 wornSize = invData[i+nameSize+4+invSize*9]; // Serialized sizeof InventoryItem is 9
+        if (entryName == this->name) // Delete the entry, we'll rewrite it at the end
+        {
+            invData.remove(i,nameSize+4+1+invSize*9+1+wornSize*5);
+            break;
+        }
+        else // Skip this entry
+            i += nameSize+4+1+invSize*9+1+wornSize*5;
+    }
+
+    // Now add our data at the end of the file
+    QByteArray newEntry = stringToData(this->name);
+    newEntry += uint32ToData(nBits);
+    newEntry += uint8ToData(inv.size());
+    for (const InventoryItem& item : inv)
+    {
+        newEntry += uint8ToData(item.index);
+        newEntry += uint32ToData(item.id);
+        newEntry += uint32ToData(item.amount);
+    }
+    newEntry += uint8ToData(worn.size());
+    for (const WearableItem& item : worn)
+    {
+        newEntry += uint8ToData(item.index);
+        newEntry += uint32ToData(item.id);
+    }
+    invData += newEntry;
+    file.resize(0);
+    file.write(invData);
+    file.close();
 }
 
-void Pony::loadInventory()
+bool Pony::loadInventory(Player *owner)
 {
-    throw "Loading inventory is not implemented !";
+    win.logMessage("UDP: Loading inventory for "+QString().setNum(netviewId)+" ("+owner->name+")");
+
+    QDir playerPath(QDir::currentPath());
+    playerPath.cd("data");
+    playerPath.cd("players");
+    playerPath.mkdir(owner->name.toLatin1());
+
+    QFile file(QDir::currentPath()+"/data/players/"+owner->name.toLatin1()+"/inventory.dat");
+    if (!file.open(QIODevice::ReadOnly))
+    {
+        win.logMessage("Error loading inventory for "+QString().setNum(netviewId)+" ("+owner->name+")");
+        return false;
+    }
+    QByteArray invData = file.readAll();
+    file.close();
+
+    // Try to find an existing entry for this pony, if found load it.
+    for (int i=0; i<invData.size();)
+    {
+        // Read the name
+        QString entryName = dataToString(invData.mid(i));
+        int nameSize = entryName.size()+getVUint32Size(invData.mid(i));
+        win.logMessage("loadInventory : Reading entry "+entryName);
+
+        quint8 invSize = invData[i+nameSize+4];
+        quint8 wornSize = invData[i+nameSize+4+invSize*9]; // Serialized sizeof InventoryItem is 9
+        if (entryName == this->name)
+        {
+            i += nameSize;
+            nBits = dataToUint32(invData.mid(i));
+            i+=8; // Skip nBits and invSize
+            inv.clear();
+            for (int j=0; j<invSize; j++)
+            {
+                InventoryItem item;
+                item.index = invData[i];
+                i++;
+                item.id = dataToUint32(invData.mid(i));
+                i+=4;
+                item.amount = dataToUint32(invData.mid(i));
+                i+=4;
+                inv.append(item);
+            }
+            i+=4; // Skip wornSize
+            worn.clear();
+            for (int j=0; j<wornSize; j++)
+            {
+                WearableItem item;
+                item.index = invData[i];
+                i++;
+                item.id = dataToUint32(invData.mid(i));
+                i+=4;
+                worn.append(item);
+            }
+            return true;
+        }
+        else // Skip this entry
+            i += nameSize+4+1+invSize*9+1+wornSize*5;
+    }
+    return false; // Entry not found
 }

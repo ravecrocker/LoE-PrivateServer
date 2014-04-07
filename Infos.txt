@@ -2284,4 +2284,9 @@ private char ConvertChar (char c, bool direction = true)
 => The inventory/money will be in data/players/$NAME/inventory.dat
 ==> Numbers are big endian
 ==> The file can have one entry per pony, each entry starts with the name of the pony, like the quests file
-==> The entry is immediatly followed by the money on 4 bytes, then the serialized inventory and finally the serialized worn items.
+==> The entry is immediatly followed by the money on 4 bytes, then the serialized inventory (1B size) and finally the serialized worn items (1B size).
+
+=> When we're done with the inventory save/loading, we can finally implement the usefull quest commands !
+
+=> Create a getVUint32Size(QByteArray) instead of calculating it ourselves everytime
+=> Create a set of getIntXX(QByteArray) functions, instead of rewriting this inline ourselves everytime

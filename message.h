@@ -35,17 +35,6 @@ enum MessageTypes {
     MsgUserReliableOrdered32 = 0x62
 };
 
-struct MessageHead
-{
-    quint16 channel;
-    quint16 seq;
-
-    bool operator==(const MessageHead& other)
-    {
-        return (channel==other.channel && seq==other.seq);
-    }
-};
-
 enum ChatType
 {
     ChatNone = 0,
@@ -61,17 +50,6 @@ enum ChatType
 // Public functions
 class Player;
 class Pony;
-float timestampNow();
-QByteArray doubleToData(double num);
-QByteArray floatToData(float num);
-float dataToFloat(QByteArray data);
-QByteArray stringToData(QString str);
-QString dataToString(QByteArray data);
-QByteArray vectorToData(UVector vec);
-UVector dataToVector(QByteArray data);
-float dataToRangedSingle(float min, float max, int numberOfBits, QByteArray data);
-QByteArray rangedSingleToData(float value, float min, float max, int numberOfBits);
-QByteArray quaternionToData(UQuaternion quat);
 void receiveMessage(Player* player);
 void sendMessage(Player* player, quint8 messageType, QByteArray data=QByteArray());
 void sendEntitiesList(Player* player);

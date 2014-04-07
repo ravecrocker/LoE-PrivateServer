@@ -8,7 +8,6 @@
 #include <QMutex>
 #include <QByteArray>
 #include "dataType.h"
-#include "message.h"
 #include "quest.h"
 
 struct SceneEntity
@@ -45,8 +44,8 @@ public:
     type getType();
     void saveQuests(Player* owner); ///< Saves the state of all the quests (NOT thread safe)
     void loadQuests(Player* owner); ///< Loads the state of all the quests
-    void saveInventory(); ///< Saves the worn/possesed items and the money (NOT thread safe)
-    void loadInventory(); ///< Loads the worn/possesed items and the money
+    void saveInventory(Player *owner); ///< Saves the worn/possesed items and the money (NOT thread safe)
+    bool loadInventory(Player *owner); ///< Loads the worn/possesed items and the money. False on error.
 
 public:
     QByteArray ponyData;
