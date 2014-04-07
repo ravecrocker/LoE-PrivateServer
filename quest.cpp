@@ -267,6 +267,25 @@ bool Quest::doCommand(int eip)
         else
             owner->pony.removeInventoryItem(itemId, -qty);
     }
+    else if (command[0] == "giveBits")
+    {
+        if (command.size() != 1)
+        {
+            logError("giveBits takes 1 argument");
+            return false;
+        }
+        bool ok1;
+        int qty = command[1].toInt(&ok1);
+        if (!ok1)
+        {
+            logError("invalid argument for command giveBits");
+            return false;
+        }
+        if ((int)owner->pony.nBits + qty <0)
+            owner->pony.nBits = 0;
+        else
+            owner->pony.nBits += qty;
+    }
     else if (command[0] == "setQuestState")
     {
         if (command.size() == 1)
@@ -296,7 +315,7 @@ bool Quest::doCommand(int eip)
         }
         else
         {
-            logError("setQuestState takes 2 arguments");
+            logError("setQuestState takes 1 or 2 arguments");
             return false;
         }
     }
