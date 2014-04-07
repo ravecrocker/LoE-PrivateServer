@@ -10,6 +10,9 @@
 #include "dataType.h"
 #include "quest.h"
 
+#define MAX_INVENTORY_SIZE 12
+#define MAX_WORN_ITEMS 32
+
 struct SceneEntity
 {
 public:
@@ -46,6 +49,8 @@ public:
     void loadQuests(Player* owner); ///< Loads the state of all the quests
     void saveInventory(Player *owner); ///< Saves the worn/possesed items and the money (NOT thread safe)
     bool loadInventory(Player *owner); ///< Loads the worn/possesed items and the money. False on error.
+    void addInventoryItem(quint8 id, quint32 qty); ///< Adds qty items with the given id to the inventory
+    void removeInventoryItem(quint8 id, quint32 qty); ///< Removes qty of the item from the inventory
 
 public:
     QByteArray ponyData;

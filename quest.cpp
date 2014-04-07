@@ -247,6 +247,26 @@ bool Quest::doCommand(int eip)
         logError("trying to run sayIcon command by itself");
         return false;
     }
+    else if (command[0] == "give")
+    {
+        if (command.size() != 2)
+        {
+            logError("give takes 2 arguments");
+            return false;
+        }
+        bool ok1,ok2;
+        int itemId = command[1].toInt(&ok1);
+        int qty = command[2].toInt(&ok2);
+        if (!ok1 || !ok2 || itemId<0)
+        {
+            logError("invalid arguments for command give");
+            return false;
+        }
+        if (qty > 0)
+            owner->pony.addInventoryItem(itemId, qty);
+        else
+            owner->pony.removeInventoryItem(itemId, -qty);
+    }
     else
     {
         logError("unknown command");

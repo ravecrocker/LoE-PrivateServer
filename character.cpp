@@ -625,3 +625,41 @@ bool Pony::loadInventory(Player *owner)
     }
     return false; // Entry not found
 }
+
+void Pony::addInventoryItem(quint8 id, quint32 qty)
+{
+    int firstFreeIndex=0;
+    for (InventoryItem& item : inv)
+    {
+        if (item.id == id)
+        {
+            item.amount += qty;
+            return;
+        }
+        if (item.index == firstFreeIndex)
+            firstFreeIndex++;
+    }
+    if (firstFreeIndex >= MAX_INVENTORY_SIZE)
+        return;
+    inv << InventoryItem(firstFreeIndex, id, qty);
+}
+
+void Pony::removeInventoryItem(quint8 id, quint32 qty)
+{
+    for (int i=0; i<inv.size(); i++)
+    {
+        if (inv[i].id == id)
+        {
+            if (qty <= amount)
+            {
+                inv[i].amount -= qty;
+                return;
+            }
+            else
+            {
+                qty -= inv[i].amount;
+                inv.removeAt(i);
+            }
+        }
+    }
+}
