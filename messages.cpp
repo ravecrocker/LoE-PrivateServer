@@ -508,14 +508,14 @@ void sendBeginDialog(Player* player)
     sendMessage(player,MsgUserReliableOrdered4, data);
 }
 
-void sendDialogMessage(Player* player, QString& message, QString NPCName)
+void sendDialogMessage(Player* player, QString& message, QString NPCName, quint16 iconId)
 {
     QByteArray data(1,0);
     data[0] = 0x11; // Request number
     data += stringToData(message);
     data += stringToData(NPCName);
-    data += (char)0; // emoticon
-    data += (char)0; // emoticon
+    data += (quint8)(iconId&0xFF);
+    data += (quint8)((iconId>>8)&0xFF);
 
     sendMessage(player,MsgUserReliableOrdered4, data);
 }

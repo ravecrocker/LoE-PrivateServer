@@ -86,7 +86,7 @@ Quest::Quest(QString path, Player *Owner)
                     id = line[1].toInt();
 
                     win.lastIdMutex.lock();
-                    npc->id = win.getNewId();
+                    npc->id = 0;
                     npc->netviewId = id;
                     win.lastIdMutex.unlock();
                 }
@@ -186,6 +186,7 @@ bool Quest::doCommand(int eip)
     else if (command[0] == "end")
     {
         sendEndDialog(owner);
+        sendEndDialog(owner);
         return false;
     }
     else if (command[0] == "say")
@@ -227,8 +228,8 @@ bool Quest::doCommand(int eip)
         }
 
         sendBeginDialog(owner);
-        sendDialogMessage(owner, msg, npcName);
-        sendDialogMessage(owner, msg, npcName);
+        sendDialogMessage(owner, msg, npcName, iconId);
+        sendDialogMessage(owner, msg, npcName, iconId);
         sendDialogOptions(owner, answers);
         return false; // We stop the script until we get a reply
     }
