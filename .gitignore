@@ -22,6 +22,9 @@ Makefile*
 object_script.LoE_PrivateServer.Debug
 object_script.LoE_PrivateServer.Release
 
+# My saves
+data/players/mlkj/
+
 # User files
 *.user
 *.user.*
