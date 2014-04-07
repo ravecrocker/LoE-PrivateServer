@@ -333,8 +333,12 @@ void receiveMessage(Player* player)
                 
                 if (txt == ":roll")
                 {
-                    rollnum = qrand() % 100;
-                    rollstr.sprintf("<span color=\"yellow\">#b%s#b rolls %02d</span>", author.toLocal8Bit().data(), rollnum);
+                    if (player->chatRollCooldownEnd < QDateTime::currentDateTime())
+                    {
+                        rollnum = qrand() % 100;
+                        rollstr.sprintf("<span color=\"yellow\">#b%s#b rolls %02d</span>", author.toLocal8Bit().data(), rollnum);
+                        player->chatRollCooldownEnd = QDateTime::currentDateTime().addSecs(10);
+                    }
                 }
                 if (txt.startsWith(":me "))
                 {
