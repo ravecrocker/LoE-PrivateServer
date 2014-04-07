@@ -281,7 +281,7 @@ bool Quest::doCommand(int eip)
             logError("invalid argument for command giveBits");
             return false;
         }
-        if ((int)owner->pony.nBits + qty <0)
+        if (qty<0 && (quint32)-qty > owner->pony.nBits)
             owner->pony.nBits = 0;
         else
             owner->pony.nBits += qty;
@@ -318,6 +318,55 @@ bool Quest::doCommand(int eip)
             logError("setQuestState takes 1 or 2 arguments");
             return false;
         }
+    }
+    else if (command[0] == "hasItem")
+    {
+        int itemId, qty=1, yesEip, noEip;
+        if (command.size() == 3)
+        {
+            bool ok1;
+            itemId = command[1].toInt(&ok1);
+            if (!ok1 || itemId<0)
+            {
+                logError("invalid arguments for command hasItem");
+                return false;
+            }
+            yesEip = findLabel(command[2]);
+            noEip = findLabel(command[3]);
+        }
+        else if (command.size() == 4)
+        {
+            bool ok1,ok2;
+            itemId = command[1].toInt(&ok1);
+            qty = command[2].toInt(&ok2);
+            if (!ok1 || !ok2 || qty<=0 || itemId<0)
+            {
+                logError("invalid arguments for command hasItem");
+                return false;
+            }
+            yesEip = findLabel(command[3]);
+            noEip = findLabel(command[4]);
+        }
+        else
+        {
+            logError("hasItem takes 3 or 4 arguments");
+            return false;
+        }
+        if (yesEip == -1)
+        {
+            logError("'yes' label not found");
+            return false;
+        }
+        else if (noEip == -1)
+        {
+            logError("'no' label not found");
+            return false;
+        }
+        if (owner->pony.hasInventoryItem(itemId, qty))
+            eip=yesEip;
+        else
+            eip=noEip;
+        return true;
     }
     else
     {
