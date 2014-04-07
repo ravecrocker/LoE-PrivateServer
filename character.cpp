@@ -57,6 +57,7 @@ Player::Player()
     udpRecvMissing.clear();
 
     // Prepare timers
+    chatRollCooldownEnd = QDateTime::currentDateTime();
     udpSendReliableTimer =  new QTimer;
     udpSendReliableTimer->setInterval(UDP_RESEND_TIMEOUT);
     udpSendReliableTimer->setSingleShot(true);
