@@ -249,7 +249,7 @@ bool Quest::doCommand(int eip)
     }
     else if (command[0] == "give")
     {
-        if (command.size() != 2)
+        if (command.size() != 3)
         {
             logError("give takes 2 arguments");
             return false;
@@ -269,7 +269,7 @@ bool Quest::doCommand(int eip)
     }
     else if (command[0] == "giveBits")
     {
-        if (command.size() != 1)
+        if (command.size() != 2)
         {
             logError("giveBits takes 1 argument");
             return false;
@@ -288,7 +288,7 @@ bool Quest::doCommand(int eip)
     }
     else if (command[0] == "setQuestState")
     {
-        if (command.size() == 1)
+        if (command.size() == 2)
         {
             bool ok1;
             int newState = command[1].toInt(&ok1);
@@ -299,7 +299,7 @@ bool Quest::doCommand(int eip)
             }
             this->state = newState;
         }
-        else if (command.size() == 2)
+        else if (command.size() == 3)
         {
             bool ok1,ok2;
             int newState = command[1].toInt(&ok1);
@@ -322,7 +322,7 @@ bool Quest::doCommand(int eip)
     else if (command[0] == "hasItem")
     {
         int itemId, qty=1, yesEip, noEip;
-        if (command.size() == 3)
+        if (command.size() == 4)
         {
             bool ok1;
             itemId = command[1].toInt(&ok1);
@@ -334,7 +334,7 @@ bool Quest::doCommand(int eip)
             yesEip = findLabel(command[2]);
             noEip = findLabel(command[3]);
         }
-        else if (command.size() == 4)
+        else if (command.size() == 5)
         {
             bool ok1,ok2;
             itemId = command[1].toInt(&ok1);
@@ -366,6 +366,36 @@ bool Quest::doCommand(int eip)
             eip=yesEip;
         else
             eip=noEip;
+        return true;
+    }
+    else if (command[0] == "hasBits")
+    {
+        if (command.size() != 4)
+        {
+            logError("hasBits takes 3 arguments");
+            return false;
+        }
+        int qty, yesEip, noEip;
+        bool ok1;
+        qty = command[1].toInt(&ok1);
+        if (!ok1 || qty<=0)
+        {
+            logError("invalid arguments for command hasBits");
+            return false;
+        }
+        yesEip = findLabel(command[2]);
+        noEip = findLabel(command[3]);
+        if (yesEip == -1)
+        {
+            logError("'yes' label not found");
+            return false;
+        }
+        else if (noEip == -1)
+        {
+            logError("'no' label not found");
+            return false;
+        }
+        eip = owner->pony.nBits >= (quint32)qty ? yesEip : noEip;
         return true;
     }
     else
