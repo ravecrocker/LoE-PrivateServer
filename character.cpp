@@ -663,3 +663,18 @@ void Pony::removeInventoryItem(quint8 id, quint32 qty)
         }
     }
 }
+
+bool Pony::hasInventoryItem(quint8 id, quint32 qty)
+{
+    for (const InventoryItem& item : inv)
+    {
+        if (item.id == id)
+        {
+            if (item.amount >= qty)
+                return true;
+            else
+                qty -= item.amount;
+        }
+    }
+    return qty==0;
+}
