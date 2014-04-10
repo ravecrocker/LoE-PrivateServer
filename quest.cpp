@@ -456,6 +456,63 @@ bool Quest::doCommand(int eip)
             return false;
         }
     }
+    else if (command[0] == "jumpAfterState")
+    {
+        if (command.size() == 3)
+        {
+            int uState, destEip;
+            bool ok1;
+            uState = command[1].toInt(&ok1);
+            destEip = findLabel(command[2]);
+            if (!ok1 || uState<0)
+            {
+                logError("invalid arguments for command jumpAfterState");
+                return false;
+            }
+            else if (destEip<0)
+            {
+                logError("can't find dest label for command jumpAfterState");
+                return false;
+            }
+            if (this->state >= uState)
+                eip = destEip;
+            return true;
+        }
+        else if (command.size() == 4)
+        {
+            int uState, questId, destEip;
+            bool ok1,ok2;
+            uState = command[1].toInt(&ok1);
+            questId = command[2].toInt(&ok2);
+            destEip = findLabel(command[3]);
+            if (!ok1 || !ok2 || questId<0 || uState<0)
+            {
+                logError("invalid arguments for command jumpAfterState");
+                return false;
+            }
+            else if (destEip<0)
+            {
+                logError("can't find dest label for command jumpAfterState");
+                return false;
+            }
+            for (const Quest& quest : owner->pony.quests)
+            {
+                if (quest.id == questId)
+                {
+                    if (quest.state >= uState)
+                        eip = destEip;
+                    return true;
+                }
+            }
+            logError("invalid quest id for command jumpAfterState");
+            return false;
+        }
+        else
+        {
+            logError("jumpAfterState takes 2 or 3 arguments");
+            return false;
+        }
+    }
     else
     {
         logError("unknown command");
