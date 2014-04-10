@@ -266,6 +266,7 @@ bool Quest::doCommand(int commandEip)
             owner->pony.addInventoryItem(itemId, qty);
         else
             owner->pony.removeInventoryItem(itemId, -qty);
+        sendInventoryRPC(owner, owner->pony.inv, owner->pony.worn, owner->pony.nBits);
     }
     else if (command[0] == "giveBits")
     {

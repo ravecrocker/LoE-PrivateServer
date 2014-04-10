@@ -15,7 +15,9 @@ gotoAfterState 1 default
 # Give 5 bits to the player the first time
 label giveFiveBits
 say I'm busy. Take those 5 bits and go.
+say You can take the book hat too if you want.
 giveBits 5
+give 16 1
 setQuestState 1
 goto end
 
