@@ -2295,6 +2295,7 @@ private char ConvertChar (char c, bool direction = true)
 
 => TODO: Test the new QuestScript commands.
 
-=> BUG: When you create a new player & pony, the first time you play the server doesn't get your pony's name. 
+=> When you create a new player & pony, the first time you play the server doesn't get your pony's name. 
 ==> That's probably what caused people writing in the chat without name/blank name
 ==> Now it's causing the save files to have a null name e.g. in the inventory !
+===> Fixed.
