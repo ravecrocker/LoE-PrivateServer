@@ -335,6 +335,15 @@ void sendInventoryRPC(Player *player, QList<InventoryItem>& inv, QList<WearableI
     sendMessage(player, MsgUserReliableOrdered18, data);
 }
 
+void sendSetBitsRPC(Player* player)
+{
+    QByteArray data(3, 0x10);
+    data[0] = (quint8)(player->pony.netviewId & 0xFF);
+    data[1] = (quint8)((player->pony.netviewId>>8) & 0xFF);
+    data += uint32ToData(player->pony.nBits);
+    sendMessage(player, MsgUserReliableOrdered18, data);
+}
+
 void sendSkillsRPC(Player* player, QList<QPair<quint32, quint32> > &skills)
 {
     QByteArray data(8, 0xC3);
