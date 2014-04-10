@@ -2315,3 +2315,8 @@ STX = 2
 ETX = 3
 BS = 8?
 SI = 15?
+
+Update Donut Steel's quest
+
+He now gives you 5 bits the first time you talk to him.
+I'm still terrible at writing dialogs. PRs are very welcome.
