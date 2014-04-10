@@ -154,7 +154,7 @@ void Quest::runScript(int Eip)
             break;
 }
 
-bool Quest::doCommand(int eip)
+bool Quest::doCommand(int commandEip)
 {
     if (!owner)
     {
@@ -164,7 +164,7 @@ bool Quest::doCommand(int eip)
 
     //win.logMessage("Executing command "+QString().setNum(eip));
 
-    QStringList command = (*commands)[eip];
+    QStringList command = (*commands)[commandEip];
 
     if (command[0] == "label")
         return true;
@@ -205,7 +205,7 @@ bool Quest::doCommand(int eip)
         }
 
         // Parse answers, icon, and name
-        for (int i=eip+1; i<commands->size();i++)
+        for (int i=commandEip+1; i<commands->size();i++)
         {
             if ((*commands)[i][0] == "answer")
                 answers << concatAfter((*commands)[i], 2);
@@ -285,6 +285,7 @@ bool Quest::doCommand(int eip)
             owner->pony.nBits = 0;
         else
             owner->pony.nBits += qty;
+        sendSetBitsRPC(owner);
     }
     else if (command[0] == "setQuestState")
     {
@@ -515,7 +516,7 @@ bool Quest::doCommand(int eip)
     }
     else
     {
-        logError("unknown command");
+        logError("unknown command : "+command[0]);
         return false;
     }
     return true;
