@@ -512,4 +512,12 @@ void Widget::sendCmdLine()
                            +") : "+QString().setNum(quest.state));
         }
     }
+    else if (str==("listInventory"))
+    {
+        for (const InventoryItem& item : cmdPeer->pony.inv)
+        {
+            win.logMessage("Item "+QString().setNum(item.id)+" (pos "+QString().setNum(item.index)
+                           +") : "+QString().setNum(item.amount));
+        }
+    }
 }
