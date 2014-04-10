@@ -590,12 +590,12 @@ bool Pony::loadInventory(Player *owner)
         win.logMessage("loadInventory : Reading entry "+entryName);
 
         quint8 invSize = invData[i+nameSize+4];
-        quint8 wornSize = invData[i+nameSize+4+invSize*9]; // Serialized sizeof InventoryItem is 9
+        quint8 wornSize = invData[i+nameSize+5+invSize*9]; // Serialized sizeof InventoryItem is 9
         if (entryName == this->name)
         {
             i += nameSize;
             nBits = dataToUint32(invData.mid(i));
-            i+=8; // Skip nBits and invSize
+            i+=5; // Skip nBits and invSize
             inv.clear();
             for (int j=0; j<invSize; j++)
             {
@@ -608,7 +608,7 @@ bool Pony::loadInventory(Player *owner)
                 i+=4;
                 inv.append(item);
             }
-            i+=4; // Skip wornSize
+            i++; // Skip wornSize
             worn.clear();
             for (int j=0; j<wornSize; j++)
             {
