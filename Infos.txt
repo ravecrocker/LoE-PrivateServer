@@ -2299,3 +2299,19 @@ private char ConvertChar (char c, bool direction = true)
 ==> That's probably what caused people writing in the chat without name/blank name
 ==> Now it's causing the save files to have a null name e.g. in the inventory !
 ===> Fixed.
+
+=> Fix bugs in loadInventory
+
+=> Default inv is :
+Item 73 (pos 0) : 1
+Item 17 (pos 1) : 1
+Item 62 (pos 2) : 1
+Item 60 (pos 3) : 1
+
+=> N++'s ASCII control characters :
+NUL = 0
+SOH = 1
+STX = 2
+ETX = 3
+BS = 8?
+SI = 15?
