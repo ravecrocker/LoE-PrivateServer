@@ -429,7 +429,7 @@ void Pony::saveQuests(Player *owner)
         i+=nameSize;
         win.logMessage("saveQuests : Reading entry "+entryName);
 
-        quint16 entryDataSize = 4 * ((quint16)(quint8)questData[i] + (((quint16)(quint8)questData[i+1])<<8));
+        quint16 entryDataSize = 4 * dataToUint16(questData.mid(i));
         if (entryName == this->name) // Delete the entry, we'll rewrite it at the end
             questData.remove(i-nameSize,nameSize+entryDataSize+2);
         else
