@@ -17,10 +17,10 @@ hasItem item yes no : Jump to yes or no if player has this item
 hasItem item qty yes no : Jump to yes or no if player has qty of item
 setQuestState state : set the quest state, will be saved on the savegame
 setQuestState state id : set the state of quest id, will be saved on the savegame
-jumpIfState state dest : Jumps to dest if the quest's state is state
-jumpIfState state id dest : Jumps to dest if the state of the quest with this id is state
-jumpAfterState state dest : Jumps to dest if the quest's state is >= state
-jumpAfterState state id dest : Jumps to dest if the state of the quest with this id is >= state
+gotoIfState state dest : Jumps to dest if the quest's state is state
+gotoIfState state id dest : Jumps to dest if the state of the quest with this id is state
+gotoAfterState state dest : Jumps to dest if the quest's state is >= state
+gotoAfterState state id dest : Jumps to dest if the state of the quest with this id is >= state
 hasBits qty yes no : Jumps to yes or no if player has qty bits
 questName name : Name of the quest.
 questId id : Should be unique. Used in the savegame and by other quests/npcs.

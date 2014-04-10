@@ -399,7 +399,7 @@ bool Quest::doCommand(int commandEip)
         eip = owner->pony.nBits >= (quint32)qty ? yesEip : noEip;
         return true;
     }
-    else if (command[0] == "jumpIfState")
+    else if (command[0] == "gotoIfState")
     {
         if (command.size() == 3)
         {
@@ -409,12 +409,12 @@ bool Quest::doCommand(int commandEip)
             destEip = findLabel(command[2]);
             if (!ok1 || uState<0)
             {
-                logError("invalid arguments for command jumpIfState");
+                logError("invalid arguments for command gotoIfState");
                 return false;
             }
             else if (destEip<0)
             {
-                logError("can't find dest label for command jumpIfState");
+                logError("can't find dest label for command gotoIfState");
                 return false;
             }
             if (this->state == uState)
@@ -430,12 +430,12 @@ bool Quest::doCommand(int commandEip)
             destEip = findLabel(command[3]);
             if (!ok1 || !ok2 || questId<0 || uState<0)
             {
-                logError("invalid arguments for command jumpIfState");
+                logError("invalid arguments for command gotoIfState");
                 return false;
             }
             else if (destEip<0)
             {
-                logError("can't find dest label for command jumpIfState");
+                logError("can't find dest label for command gotoIfState");
                 return false;
             }
             for (const Quest& quest : owner->pony.quests)
@@ -448,16 +448,16 @@ bool Quest::doCommand(int commandEip)
                 else
                     return true;
             }
-            logError("invalid quest id for command jumpIfState");
+            logError("invalid quest id for command gotoIfState");
             return false;
         }
         else
         {
-            logError("jumpIfState takes 2 or 3 arguments");
+            logError("gotoIfState takes 2 or 3 arguments");
             return false;
         }
     }
-    else if (command[0] == "jumpAfterState")
+    else if (command[0] == "gotoAfterState")
     {
         if (command.size() == 3)
         {
@@ -467,12 +467,12 @@ bool Quest::doCommand(int commandEip)
             destEip = findLabel(command[2]);
             if (!ok1 || uState<0)
             {
-                logError("invalid arguments for command jumpAfterState");
+                logError("invalid arguments for command gotoAfterState");
                 return false;
             }
             else if (destEip<0)
             {
-                logError("can't find dest label for command jumpAfterState");
+                logError("can't find dest label for command gotoAfterState");
                 return false;
             }
             if (this->state >= uState)
@@ -488,12 +488,12 @@ bool Quest::doCommand(int commandEip)
             destEip = findLabel(command[3]);
             if (!ok1 || !ok2 || questId<0 || uState<0)
             {
-                logError("invalid arguments for command jumpAfterState");
+                logError("invalid arguments for command gotoAfterState");
                 return false;
             }
             else if (destEip<0)
             {
-                logError("can't find dest label for command jumpAfterState");
+                logError("can't find dest label for command gotoAfterState");
                 return false;
             }
             for (const Quest& quest : owner->pony.quests)
@@ -505,12 +505,12 @@ bool Quest::doCommand(int commandEip)
                     return true;
                 }
             }
-            logError("invalid quest id for command jumpAfterState");
+            logError("invalid quest id for command gotoAfterState");
             return false;
         }
         else
         {
-            logError("jumpAfterState takes 2 or 3 arguments");
+            logError("gotoAfterState takes 2 or 3 arguments");
             return false;
         }
     }
