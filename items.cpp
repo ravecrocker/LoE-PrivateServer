@@ -75,8 +75,8 @@ uint8_t wearablePositionsToSlot(uint32_t positions)
 {
     // We don't have base 2 log, so we'll do it the hard way
 
-    if (positions & (uint32_t)WearablePositions::Hat)              return 17;
-    else if (positions & (uint32_t)WearablePositions::SaddleBags)  return 16;
+    if (positions & (uint32_t)WearablePositions::Hat)              return 32;
+    else if (positions & (uint32_t)WearablePositions::SaddleBags)  return 31;
     else if (positions & (uint32_t)WearablePositions::BackKnees)   return 15;
     else if (positions & (uint32_t)WearablePositions::FrontKnees)  return 14;
     else if (positions & (uint32_t)WearablePositions::Ears)        return 13;
