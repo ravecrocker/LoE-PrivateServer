@@ -634,18 +634,27 @@ bool Pony::loadInventory()
 
 void Pony::addInventoryItem(quint32 id, quint32 qty)
 {
+    bool found=false;
     int firstFreeIndex=0;
-    for (InventoryItem& item : inv)
+    while (!found && firstFreeIndex < MAX_INVENTORY_SIZE)
     {
-        if (item.id == id)
+        found=true;
+        for (InventoryItem& item : inv)
         {
-            item.amount += qty;
-            return;
+            if (item.id == id)
+            {
+                item.amount += qty;
+                return;
+            }
+            else if (item.index == firstFreeIndex)
+            {
+                found=false;
+                firstFreeIndex++;
+                break;
+            }
         }
-        if (item.index == firstFreeIndex)
-            firstFreeIndex++;
     }
-    if (firstFreeIndex >= MAX_INVENTORY_SIZE)
+    if (!found)
         return;
     InventoryItem newItem(firstFreeIndex, id, qty);
     inv << newItem;
