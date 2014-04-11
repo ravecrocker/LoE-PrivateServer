@@ -570,6 +570,16 @@ void sendWearItemRPC(Player* player, const WearableItem& item)
     sendMessage(player, MsgUserReliableOrdered18, data);
 }
 
+void sendWearItemRPC(Pony* wearing, Player* dest, const WearableItem& item)
+{
+    QByteArray data;
+    data += uint16ToData(wearing->netviewId);
+    data += 0x8;
+    data += uint32ToData(item.id);
+    data += uint8ToData(item.index);
+    sendMessage(dest, MsgUserReliableOrdered18, data);
+}
+
 void sendUnwearItemRPC(Player* player, uint8_t slot)
 {
     QByteArray data;
@@ -577,6 +587,15 @@ void sendUnwearItemRPC(Player* player, uint8_t slot)
     data += 0x9;
     data += uint8ToData(slot);
     sendMessage(player, MsgUserReliableOrdered18, data);
+}
+
+void sendUnwearItemRPC(Pony* wearing, Player* dest, uint8_t slot)
+{
+    QByteArray data;
+    data += uint16ToData(wearing->netviewId);
+    data += 0x9;
+    data += uint8ToData(slot);
+    sendMessage(dest, MsgUserReliableOrdered18, data);
 }
 
 void sendAddItemRPC(Player* player, const InventoryItem& item)

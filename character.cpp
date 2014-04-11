@@ -724,9 +724,17 @@ void Pony::unwearItemAt(quint8 index)
         win.logMessage("Couldn't unwear item, index "+QString().setNum(index)+" not found");
         return;
     }
-
-    //sendInventoryRPC(owner);
     sendUnwearItemRPC(owner, index);
+
+    Scene* scene = findScene(sceneName);
+    if (scene->name.isEmpty())
+        win.logMessage("UDP: Can't find the scene for unwearItem RPC, aborting");
+    else
+    {
+        for (Player* dest : scene->players)
+            if (dest->pony.netviewId != netviewId)
+                sendUnwearItemRPC(this, dest, index);
+    }
 }
 
 bool Pony::tryWearItem(quint8 invSlot)
@@ -768,7 +776,16 @@ bool Pony::tryWearItem(quint8 invSlot)
     //win.logMessage("Wearing at slot "+QString().setNum(item.index));
     worn << item;
     sendWearItemRPC(owner, item);
-    //sendInventoryRPC(owner);
+
+    Scene* scene = findScene(sceneName);
+    if (scene->name.isEmpty())
+        win.logMessage("UDP: Can't find the scene for wearItem RPC, aborting");
+    else
+    {
+        for (Player* dest : scene->players)
+            if (dest->pony.netviewId != netviewId)
+                sendWearItemRPC(this, dest, item);
+    }
 
     return true;
 }
