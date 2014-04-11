@@ -9,5 +9,5 @@ questName Buck
 questDescr Buck
 
 # Quest commands
-say Shove off,loser!
+say Shove off, loser!
 end
