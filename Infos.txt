@@ -2330,3 +2330,15 @@ I'm still terrible at writing dialogs. PRs are very welcome.
 ===> Yeah, probably half the people on the private server.
 ===> Just add a mutex.
 ====> Or maybe that's not really a bug. Slots are on the same thread in the event loop by default. Are we even threading ?
+
+=> Investigate AAAAAAAAAAAAAAAAAAAAFAAAgAIAAKBmZsYfAAAAAA== !
+
+=> Buck ponycode : OTg4NERYHGtkzMzMHGtkEBQAAAAAAGDsjcCf+i+/n40SFA==
+=>Pos : x=45.2917, y=-193.843, z=131.404
+=>Rot : x=0, y=1.50304, z=0, w=0
+=>PonyData BEJ1Y2sBAwAAAAAAAAAAAAAAAA4ODg0RFscaGTMzM8caGQQABQAAAAAA2BuBPy9
+
+=> BUG: When a player disconnects, if he's still the cmdPeer, next time we enter something in the server console it'll crash and burn.
+=> We should set cmdPeer to nullptr on playerCleanup is he's the player leaving
+
+=> TODO: BUG: Don't allow someone to create a pony with the same name as a NPC or another player ?
