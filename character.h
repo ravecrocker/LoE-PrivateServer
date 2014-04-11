@@ -53,6 +53,7 @@ public:
     void addInventoryItem(quint8 id, quint32 qty); ///< Adds qty items with the given id to the inventory
     void removeInventoryItem(quint8 id, quint32 qty); ///< Removes qty of the item from the inventory
     bool hasInventoryItem(quint8 id, quint32 qty=1); ///< Whether of not there are qty of this item in inventory
+    void unwearItemAt(Player* owner, quint8 index); ///< Unwear the item at the position index
 
 public:
     QByteArray ponyData;

@@ -538,6 +538,7 @@ void receiveMessage(Player* player)
                         if (scene->players[i]->inGame>=2)
                             sendWornRPC(&player->pony, scene->players[i], player->pony.worn);
             }
+            sendInventoryRPC(player);
         }
         else if ((unsigned char)msg[0]==MsgUserReliableOrdered11 && (unsigned char)msg[7]==0x04) // Get worn items request
         {
@@ -547,6 +548,17 @@ void receiveMessage(Player* player)
                 sendWornRPC(&target->pony, player, target->pony.worn);
             else
                 win.logMessage("Can't find netviewId "+QString().setNum(targetId)+" to send worn items");
+        }
+        else if ((unsigned char)msg[0]==MsgUserReliableOrdered11 && (unsigned char)msg[7]==0x09) // Unwear item request
+        {
+            quint16 targetId = ((quint16)(quint8)msg[5]) + (((quint16)(quint8)msg[6])<<8);
+            Player* target = Player::findPlayer(win.udpPlayers, targetId);
+            if (target->pony.netviewId == targetId)
+            {
+                target->pony.unwearItemAt(player, dataToUint16(msg.mid(8)));
+            }
+            else
+                win.logMessage("Can't find netviewId "+QString().setNum(targetId)+" to unwear item");
         }
         else if ((unsigned char)msg[0]==MsgUserReliableOrdered11 && (unsigned char)msg[7]==0x31) // Run script (NPC) request
         {
