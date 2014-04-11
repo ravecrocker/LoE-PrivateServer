@@ -2243,9 +2243,9 @@ private char ConvertChar (char c, bool direction = true)
 ==> But instead send one sync message during instantiate/savegame, like in the wireshark logs
 ==> Maybe the game is waiting for just one sync message, and that's why syncing with ourselves fixed #16
 
-=> TODO: BUG: In sendChatMessage we send a netviewId on 4 bytes ! Shouldn't we send id then netviewId ?
+=> In sendChatMessage we send a netviewId on 4 bytes ! Shouldn't we send id then netviewId ?
 
-=> TODO: BUG: When people get stuck on login, it looks like we're not sending the data correctly...
+=> When people get stuck on login, it looks like we're not sending the data correctly...
 
 => On the quests scripts, when we get to a say line, keep EIP on the say line, read the eventual answer lines without changing EIP, send setDialogMsg, setDialogOptions, beginDialog, then return with EIP still on the say.
 => When we get a reply to a say, if there was an answer, jump to the corresponding label, if there wasn't an answer, increment EIP and run the script from there.
@@ -2256,7 +2256,7 @@ private char ConvertChar (char c, bool direction = true)
 ===> Then again to update the current msg/add a new message on the side setDialogMsg once, twice if you need to shift focus to the eventual new msg, and setDialogOtions eventually
 ===> Then rinse&repeat as appropriate and endDialog to exit.
 
-=> TODO: sayIcon iconId : sets the NPC's sprite for say
+=> sayIcon iconId : sets the NPC's sprite for say
 
 => RunScript request for Donut Steel : 4d 0200 1800 0000 31
 => Replying to Donut Steel, no answer : 46 0800 0800 0b
@@ -2293,7 +2293,7 @@ private char ConvertChar (char c, bool direction = true)
 
 => Add a (10s?) cooldown to the roll command
 
-=> TODO: Test the new QuestScript commands.
+=> Test the new QuestScript commands.
 
 => When you create a new player & pony, the first time you play the server doesn't get your pony's name. 
 ==> That's probably what caused people writing in the chat without name/blank name
@@ -2321,10 +2321,10 @@ Update Donut Steel's quest
 He now gives you 5 bits the first time you talk to him.
 I'm still terrible at writing dialogs. PRs are very welcome.
 
-=> TODO: We can't unwear now !
+=> We can't unwear now !
 => The worn inventory is saved, and we have no way to remove a worn item.
 
-=> TODO: BUG: Maybe we should just save the inventory/quests of all the ponies of a player at the same time, to avoid concurrency problems ?
+=> Maybe we should just save the inventory/quests of all the ponies of a player at the same time, to avoid concurrency problems ?
 ==> Yeah, but no. Just add a saveFilesMutex to the player, so if he's logged in twice it still works.
 ==> Or just don't allow people to log in twice with the same account. I mean, who does that ?
 ===> Yeah, probably half the people on the private server.
@@ -2454,16 +2454,17 @@ BackKnees = 0x4000
 SaddleBags = 0x40000000
 Hat = 0x80000000
 => We'll parse the items.xml instead of maintaining our own DB.
-=> TODO: Okay now when we wear, check that we have this item, then check that the required wearing slots are free, and send the wear request
-=> TODO: When we unwear, add the item back in the inventory, and free the appropriate wearing slots
-=> TODO: When we wear, send the wear RPC request to update the client
+=> Okay now when we wear, check that we have this item, then check that the required wearing slots are free, and send the wear request
+=> When we unwear, add the item back in the inventory, and free the appropriate wearing slots
+=> When we wear, send the wear RPC request to update the client
 
-=> TODO: When loading the inventory, we should recalculate the wornSlots flag.
+=> When loading the inventory, we should recalculate the wornSlots flag.
 
 => TODO: In the quest interpreter, we sometime send redundunt messages. 
 => E.g calling addInventoryItem that does notify the client, then notifying ourselves again with sendInventoryRPC (slow as fuck).
 
-=> BUG: When putting it on, Ellowee's hat appears correctly. After a /stuck it doesn't appear. It's worn, invisible and you can't unwear it.
+=>  When putting it on, Ellowee's hat appears correctly. After a /stuck it doesn't appear. It's worn, invisible and you can't unwear it.
 ==> Apparently this could be a problem with sendWornRPC. It works better without it !
+==> Fixed.
 
-=> BUG: Unwear sometime doesn't works correctly
+=> Unwear sometime doesn't works correctly. Fixed
