@@ -502,15 +502,27 @@ void receiveMessage(Player* player)
         }
         else if ((unsigned char)msg[0]==MsgUserReliableOrdered11 && (unsigned char)msg[7]==0x3D) // Skill
         {
+            QByteArray reply;
+            if (dataToUint32(msg.mid(8)) == 2) // Teleport is a special case
+            {
+                reply += msg.mid(5, 7); // Netview, RPC, skill IDs
+                reply += msg.mid(16, 4*3); // Pos X, Y, Z (floats)
+                reply += uint32ToData(0); // Skill upgrade (0)
+                reply += floatToData(timestampNow());
+            }
+            else
+                reply =  msg.mid(5, msgSize - 5);
             //win.logMessage("UDP: Broadcasting skill");
             // Send to everyone
             Scene* scene = findScene(player->pony.sceneName);
             if (scene->name.isEmpty())
                 win.logMessage("UDP: Can't find the scene for skill message, aborting");
             else
+            {
                 for (int i=0; i<scene->players.size(); i++)
                     if (scene->players[i]->inGame>=2)
-                        sendMessage(scene->players[i], MsgUserReliableOrdered11, msg.mid(5, msgSize - 5)); // Broadcast
+                        sendMessage(scene->players[i], MsgUserReliableOrdered11,reply); // Broadcast
+            }
         }
         else if ((unsigned char)msg[0]==MsgUserReliableOrdered11 && (unsigned char)msg[7]==0x08) // Wear request
         {
