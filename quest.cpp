@@ -1,6 +1,7 @@
 #include "quest.h"
 #include "widget.h"
 #include "message.h"
+#include "items.h"
 #include <QFile>
 
 Quest::Quest(QString path, Player *Owner)
@@ -76,7 +77,7 @@ Quest::Quest(QString path, Player *Owner)
                         throw QString("Quest::Quest: Error reading wear, quest "+path);
                     WearableItem item;
                     item.id = id;
-                    item.index = i-1;
+                    item.index = wearablePositionsToSlot(win.wearablePositionsMap[id]);
                     npc->worn << item;
                 }
             }

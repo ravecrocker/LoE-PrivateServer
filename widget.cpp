@@ -162,6 +162,24 @@ void Widget::startServer()
         logMessage("Loaded " + QString().setNum(nVortex) + " vortexes in " + QString().setNum(scenes.size()) + " scenes");
     }
 
+    // Read/parse Items.xml
+    if (enableGameServer)
+    {
+        QFile itemsFile("data/data/Items.xml");
+        if (itemsFile.open(QIODevice::ReadOnly))
+        {
+            QByteArray data = itemsFile.readAll();
+            wearablePositionsMap = parseItemsXml(data);
+            win.logMessage("Loaded "+QString().setNum(wearablePositionsMap.size())+" items");
+        }
+        else
+        {
+            win.logMessage("Couln't open Items.xml");
+            stopServer();
+            return;
+        }
+    }
+
     // Read NPC/Quests DB
     if (enableGameServer)
     {
@@ -181,24 +199,6 @@ void Widget::startServer()
         catch (QString e)
         {
             enableGameServer = false;
-        }
-    }
-
-    // Read/parse Items.xml
-    if (enableGameServer)
-    {
-        QFile itemsFile("data/data/Items.xml");
-        if (itemsFile.open(QIODevice::ReadOnly))
-        {
-            QByteArray data = itemsFile.readAll();
-            wearablePositionsMap = parseItemsXml(data);
-            win.logMessage("Loaded "+QString().setNum(wearablePositionsMap.size())+" items");
-        }
-        else
-        {
-            win.logMessage("Couln't open Items.xml");
-            stopServer();
-            return;
         }
     }
 
