@@ -2351,24 +2351,24 @@ I'm still terrible at writing dialogs. PRs are very welcome.
 => Skill message: 4d0400b80006003d02000000fe2afa41e6958fc27004ff3cd26d1943
 => Received unknown message: 4e000078000600c9149a91c2a7949c3eb7161843
 ==> This one looks like it's the animation request, asking to play the teleport sound / flashing animation
-
-4d 0400 b800 
+4d 0400 b800
 0600		Target netviewId
 3d			RPC ID
-02000000	Skill ID
-fe2afa41	X
-e6958fc2	Y
-7004ff3c	Z
-d26d1943	Timestamp
+02000000	Skill/spell ID
+fe2afa41	Timestamp
+e6958fc2	X (float)
+7004ff3c	Y (float)
+d26d1943	Z (float)
 
 => Expected reply :
 [Rpc (61)] (0x3D)
 private void RpcPerformMagic (NetIncomingMessage msg)
 {
+	NetworkView view;
 	int spell = msg.ReadInt32 ();
 	this._vecSerializer.OnDeserialize (msg);
-	Vector3 vector = this._vecSerializer.vector3;
-	int num = msg.ReadInt32 ();
+	Vector3 target = this._vecSerializer.vector3;
+	int upgrade = msg.ReadInt32 ();
 	double num2 = msg.ReadTime (false);
 	NetworkView networkView;
 	if (msg.RemainingBits == 16L && NetworkView.Find (ref msg, out networkView))
@@ -2379,3 +2379,4 @@ private void RpcPerformMagic (NetIncomingMessage msg)
 	}
 	this.PerformSkill (spell, num, vector);
 }
+==> Okay so if the skill is 02 (teleport) we need to parse the message and rebuild a correct reply
