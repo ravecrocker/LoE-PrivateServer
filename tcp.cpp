@@ -144,7 +144,7 @@ void Widget::tcpProcessPendingDatagrams()
                     // Other GETs (not getlog)
                     data = removeHTTPHeader(data, "POST ");
                     data = removeHTTPHeader(data, "GET ");
-                    logMessage("Received GET:"+path);
+                    logMessage("TCP: Received GET:"+path);
                     QFile head(QString(NETDATAPATH)+"/dataHeader.bin");
                     QFile res("data/"+path);
                     head.open(QIODevice::ReadOnly);
@@ -165,7 +165,7 @@ void Widget::tcpProcessPendingDatagrams()
                     socket->write(res.readAll());
                     head.close();
                     res.close();
-                    logMessage("Sent "+QString().setNum(res.size()+head.size())+" bytes");
+                    logMessage("TCP: Sent "+QString().setNum(res.size()+head.size())+" bytes");
                 }
             } while (i1 != -1);
 
