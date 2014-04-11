@@ -623,7 +623,6 @@ bool Pony::loadInventory()
                 i+=4;
                 worn.append(item);
                 wornSlots |= win.wearablePositionsMap[item.id];
-                win.logMessage("wornSlots is now "+QString().setNum(wornSlots));
             }
             return true;
         }
