@@ -270,6 +270,7 @@ void sendWornRPC(Player* player)
 
 void sendWornRPC(Player *player, QList<WearableItem> &worn)
 {
+    win.logMessage("#### Sending inv RPC about "+QString().setNum(player->pony.netviewId));
     QByteArray data(3, 4);
     data[0] = (quint8)(player->pony.netviewId&0xFF);
     data[1] = (quint8)((player->pony.netviewId>>8)&0xFF);
@@ -277,7 +278,7 @@ void sendWornRPC(Player *player, QList<WearableItem> &worn)
     data += (uint8_t)worn.size();
     for (int i=0;i<worn.size();i++)
     {
-        data += (quint8)(worn[i].index&0xFF);
+        data += (quint8)((worn[i].index-1)&0xFF);
         data += (quint8)(worn[i].id&0xFF);
         data += (quint8)((worn[i].id>>8)&0xFF);
         data += (quint8)((worn[i].id>>16)&0xFF);
@@ -288,6 +289,7 @@ void sendWornRPC(Player *player, QList<WearableItem> &worn)
 
 void sendWornRPC(Pony *wearing, Player *dest, QList<WearableItem> &worn)
 {
+    win.logMessage("#### Sending inv RPC about "+QString().setNum(wearing->netviewId));
     QByteArray data(3, 4);
     data[0] = (quint8)(wearing->netviewId&0xFF);
     data[1] = (quint8)((wearing->netviewId>>8)&0xFF);
@@ -295,7 +297,7 @@ void sendWornRPC(Pony *wearing, Player *dest, QList<WearableItem> &worn)
     data += worn.size();
     for (int i=0;i<worn.size();i++)
     {
-        data += (quint8)(worn[i].index&0xFF);
+        data += (quint8)((worn[i].index-1)&0xFF);
         data += (quint8)(worn[i].id&0xFF);
         data += (quint8)((worn[i].id>>8)&0xFF);
         data += (quint8)((worn[i].id>>16)&0xFF);
@@ -311,6 +313,7 @@ void sendInventoryRPC(Player* player)
 
 void sendInventoryRPC(Player *player, QList<InventoryItem>& inv, QList<WearableItem>& worn, quint32 nBits)
 {
+    win.logMessage("#### Sending inv RPC about "+QString().setNum(player->pony.netviewId));
     QByteArray data(5, 5);
     data[0] = (quint8)(player->pony.netviewId & 0xFF);
     data[1] = (quint8)((player->pony.netviewId>>8) & 0xFF);
@@ -332,7 +335,7 @@ void sendInventoryRPC(Player *player, QList<InventoryItem>& inv, QList<WearableI
     data += worn.size();
     for (int i=0;i<worn.size();i++)
     {
-        data += (quint8)worn[i].index;
+        data += (quint8)worn[i].index-1;
         data += (quint8)(worn[i].id & 0xFF);
         data += (quint8)((worn[i].id>>8) & 0xFF);
         data += (quint8)((worn[i].id>>16) & 0xFF);
@@ -562,8 +565,40 @@ void sendEndDialog(Player* player)
 
 void sendWearItemRPC(Player* player, const WearableItem& item)
 {
-    QByteArray data(1,8);
+    QByteArray data;
+    data += uint16ToData(player->pony.netviewId);
+    data += 0x8;
     data += uint32ToData(item.id);
     data += uint8ToData(item.index);
+    sendMessage(player, MsgUserReliableOrdered18, data);
+}
+
+void sendUnwearItemRPC(Player* player, uint8_t slot)
+{
+    QByteArray data;
+    data += uint16ToData(player->pony.netviewId);
+    data += 0x9;
+    data += uint8ToData(slot);
+    sendMessage(player, MsgUserReliableOrdered18, data);
+}
+
+void sendAddItemRPC(Player* player, const InventoryItem& item)
+{
+    QByteArray data;
+    data += uint16ToData(player->pony.netviewId);
+    data += 0x6;
+    data += uint32ToData(item.id);
+    data += uint32ToData(item.amount);
+    data += uint32ToData(item.index);
+    sendMessage(player, MsgUserReliableOrdered18, data);
+}
+
+void sendDeleteItemRPC(Player* player, uint8_t index, uint32_t qty)
+{
+    QByteArray data;
+    data += uint16ToData(player->pony.netviewId);
+    data += 0x7;
+    data += uint8ToData(index);
+    data += uint32ToData(qty);
     sendMessage(player, MsgUserReliableOrdered18, data);
 }

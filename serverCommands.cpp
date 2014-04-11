@@ -520,4 +520,11 @@ void Widget::sendCmdLine()
                            +") : "+QString().setNum(item.amount));
         }
     }
+    else if (str==("listWorn"))
+    {
+        for (const WearableItem& item : cmdPeer->pony.worn)
+        {
+            win.logMessage("Item "+QString().setNum(item.id)+" : slot "+QString().setNum(item.index));
+        }
+    }
 }

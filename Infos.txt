@@ -2457,3 +2457,13 @@ Hat = 0x80000000
 => TODO: Okay now when we wear, check that we have this item, then check that the required wearing slots are free, and send the wear request
 => TODO: When we unwear, add the item back in the inventory, and free the appropriate wearing slots
 => TODO: When we wear, send the wear RPC request to update the client
+
+=> TODO: When loading the inventory, we should recalculate the wornSlots flag.
+
+=> TODO: In the quest interpreter, we sometime send redundunt messages. 
+=> E.g calling addInventoryItem that does notify the client, then notifying ourselves again with sendInventoryRPC (slow as fuck).
+
+=> BUG: When putting it on, Ellowee's hat appears correctly. After a /stuck it doesn't appear. It's worn, invisible and you can't unwear it.
+==> Apparently this could be a problem with sendWornRPC. It works better without it !
+
+=> BUG: Unwear sometime doesn't works correctly

@@ -17,7 +17,8 @@ SceneEntity::SceneEntity()
     sceneName = QString();
 }
 
-Pony::Pony() : SceneEntity()
+Pony::Pony(Player *Owner)
+    : SceneEntity(), owner(Owner)
 {
     modelName = "PlayerBase";
     name = "";
@@ -42,6 +43,7 @@ Pony::type Pony::getType()
 }
 
 Player::Player()
+    : pony{Pony(this)}
 {
     connected=false;
     inGame=0;
@@ -51,7 +53,6 @@ Player::Player()
     port=0;
     IP=QString();
     receivedDatas = new QByteArray;
-    pony = Pony();
     for (int i=0;i<33;i++)
         udpSequenceNumbers[i]=0;
     for (int i=0;i<33;i++)
@@ -91,7 +92,7 @@ void Player::reset()
     IP.clear();
     receivedDatas->clear();
     lastValidReceivedAnimation.clear();
-    pony = Pony();
+    pony = Pony(this);
     for (int i=0;i<33;i++)
         udpSequenceNumbers[i]=0;
     for (int i=0;i<33;i++)
@@ -237,7 +238,7 @@ QList<Pony> Player::loadPonies(Player* player)
     int i=0;
     while (i<data.size())
     {
-        Pony pony;
+        Pony pony{player};
         // Read the ponyData
         unsigned strlen;
         unsigned lensize=0;
@@ -309,8 +310,8 @@ void Player::disconnectPlayerCleanup(Player* player)
         if (ponies[i].ponyData == player->pony.ponyData)
             ponies[i] = player->pony;
     savePonies(player, ponies);
-    player->pony.saveQuests(player);
-    player->pony.saveInventory(player);
+    player->pony.saveQuests();
+    player->pony.saveInventory();
 
     QString uIP = player->IP;
     quint16 uPort = player->port;
@@ -405,7 +406,7 @@ void Player::udpDelayedSend()
     udpSendReliableMutex.unlock();
 }
 
-void Pony::saveQuests(Player *owner)
+void Pony::saveQuests()
 {
     win.logMessage("UDP: Saving quests for "+QString().setNum(netviewId)+" ("+owner->name+")");
 
@@ -455,7 +456,7 @@ void Pony::saveQuests(Player *owner)
     file.close();
 }
 
-void Pony::loadQuests(Player* owner)
+void Pony::loadQuests()
 {
     win.logMessage("UDP: Loading quests for "+QString().setNum(netviewId)+" ("+owner->name+")");
 
@@ -507,7 +508,7 @@ void Pony::loadQuests(Player* owner)
     }
 }
 
-void Pony::saveInventory(Player* owner)
+void Pony::saveInventory()
 {
     win.logMessage("UDP: Saving inventory for "+QString().setNum(netviewId)+" ("+owner->name+")");
 
@@ -565,7 +566,7 @@ void Pony::saveInventory(Player* owner)
     file.close();
 }
 
-bool Pony::loadInventory(Player *owner)
+bool Pony::loadInventory()
 {
     win.logMessage("UDP: Loading inventory for "+QString().setNum(netviewId)+" ("+owner->name+")");
 
@@ -644,7 +645,9 @@ void Pony::addInventoryItem(quint32 id, quint32 qty)
     }
     if (firstFreeIndex >= MAX_INVENTORY_SIZE)
         return;
-    inv << InventoryItem(firstFreeIndex, id, qty);
+    InventoryItem newItem(firstFreeIndex, id, qty);
+    inv << newItem;
+    sendAddItemRPC(owner, newItem);
 }
 
 void Pony::removeInventoryItem(quint32 id, quint32 qty)
@@ -653,9 +656,15 @@ void Pony::removeInventoryItem(quint32 id, quint32 qty)
     {
         if (inv[i].id == id)
         {
-            if (qty <= inv[i].amount)
+            sendDeleteItemRPC(owner, inv[i].index, qty);
+            if (qty < inv[i].amount)
             {
                 inv[i].amount -= qty;
+                return;
+            }
+            else if (qty == inv[i].amount)
+            {
+                inv.removeAt(i);
                 return;
             }
             else
@@ -682,23 +691,32 @@ bool Pony::hasInventoryItem(quint32 id, quint32 qty)
     return qty==0;
 }
 
-void Pony::unwearItemAt(Player *owner, quint8 index)
+void Pony::unwearItemAt(quint8 index)
 {
-    for (int i=0; i<worn.size();)
+    bool found=false;
+    for (int i=0; i<worn.size();i++)
     {
-        if (worn[i].index == index)
+        if (worn[i].index == index+1)
         {
+            found=true;
+            int itemSlots = win.wearablePositionsMap[worn[i].id];
+            wornSlots = (wornSlots | itemSlots) ^ itemSlots;
             addInventoryItem(worn[i].id, 1);
             worn.removeAt(i);
+            break;
         }
-        else
-            i++;
     }
-    sendInventoryRPC(owner);
-    sendWornRPC(owner);
+    if (!found)
+    {
+        win.logMessage("Couldn't unwear item, index "+QString().setNum(index)+" not found");
+        return;
+    }
+
+    //sendInventoryRPC(owner);
+    sendUnwearItemRPC(owner, index);
 }
 
-bool Pony::tryWearItem(Player* owner, quint8 invSlot)
+bool Pony::tryWearItem(quint8 invSlot)
 {
     win.logMessage("Invslot is "+QString().setNum(invSlot));
     uint32_t id = -1;
@@ -716,6 +734,7 @@ bool Pony::tryWearItem(Player* owner, quint8 invSlot)
                 return false;
             }
 
+            sendDeleteItemRPC(owner,inv[i].index,1);
             if (inv[i].amount>1)
                 inv[i].amount--;
             else
@@ -737,7 +756,7 @@ bool Pony::tryWearItem(Player* owner, quint8 invSlot)
     win.logMessage("Wearing at slot "+QString().setNum(item.index));
     worn << item;
     sendWearItemRPC(owner, item);
-    sendInventoryRPC(owner);
+    //sendInventoryRPC(owner);
 
     return true;
 }

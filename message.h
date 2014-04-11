@@ -69,6 +69,7 @@ void sendWornRPC(Player* player, QList<WearableItem>& worn); // Send items worn 
 void sendWornRPC(Player* player); // Send items worn by player to himself
 void sendWornRPC(Pony *wearing, Player* dest, QList<WearableItem>& worn); // Send items worn by wearing to dest
 void sendWearItemRPC(Player* player, const WearableItem& item); // Wear this item
+void sendUnwearItemRPC(Player* player, uint8_t slot); // Unwear this item
 void sendInventoryRPC(Player* player, QList<InventoryItem>& inv, QList<WearableItem>& worn, quint32 nBits);
 void sendInventoryRPC(Player* player);
 void sendSetBitsRPC(Player* player); // Resend how many bits we have to the clients
@@ -81,5 +82,7 @@ void sendBeginDialog(Player* player);
 void sendDialogMessage(Player* player, QString& message, QString NPCName, quint16 iconId=0);
 void sendDialogOptions(Player* player, QList<QString> &answers);
 void sendEndDialog(Player* player);
+void sendAddItemRPC(Player* player, const InventoryItem& item);
+void sendDeleteItemRPC(Player* player, uint8_t index, uint32_t qty);
 
 #endif // MESSAGE_H
