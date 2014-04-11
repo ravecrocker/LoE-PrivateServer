@@ -2079,7 +2079,7 @@ public void OnDeserialize (NetIncomingMessage message)
 
 => Maybe we could just close the msgbox when the player doubleclicks play instead of reloading.
 
-=> BUG: Syncing the player with himself in doSync (comment the i==j->continue) fixes #16 !
+=> Syncing the player with himself in doSync (comment the i==j->continue) fixes #16 !
 ==> I don't even, but it seems to work now.
 
 => The new DLL that limits the chat to 50 messages doesn't fix the problem
@@ -2158,9 +2158,10 @@ public void OnDeserialize(NetIncomingMessage msg)
     this.HornSize = msg.ReadRangedSingle(0f, 2f, 0x10);
 }
 
-=> TODO: BUG: Fix bug at shutdown. Again.
-=> TODO: Finish ponyCode in quests
-=> TODO: Add Flan in canterlot
+=> Fix bug at shutdown. Again.
+==> Fixed (?)
+=> Finish ponyCode in quests
+=> Add Flan in canterlot
 => PonyCode: 0mObdm8W3adDm0e2/P//MwAEAGMAAECVIL+fkKe8n28BGg==
 
 => ConvertChar
@@ -2227,13 +2228,13 @@ private char ConvertChar (char c, bool direction = true)
 => Maybe we should only send the player's inventory/worn when asked ?
 ==> Apparently we shouldn't. It breaks at least the incentory.
 
-=> TODO: Lidgren. "Trace" what happens when we send/receive a message
+=> Lidgren. "Trace" what happens when we send/receive a message
 => Roughly what functions are called, what happens.
 => See NetConnection.cs, NetPeer.Send.cs
 
 => lastId should start at 1, but always be 0 for NPCs. lastNetviewId should start at 0.
 
-=> TODO: BUG: Ensure that all network uses of netviewId and id are casted to quint8 correctly
+=> Ensure that all network uses of netviewId and id are casted to quint8 correctly
 
 => TODO: BUG: Sometime when there are two player, one will not see the other move
 ==> When both use the chat, all the messages will appear to come from the same player (the one that isn't refreshed on the other's screen)
@@ -2422,10 +2423,9 @@ Sorry = 26
 Surprised = 6
 Tired = 22
 
-=> TODO: BUG: I've seen the inventory getting weird entries, maybe we should test a little more thoroughly to make sure it always works.
+=> I've seen the inventory getting weird entries, maybe we should test a little more thoroughly to make sure it always works.
 => Confirmed. Probably worn items.
-
-=> Update the README.
+==> Fixed.
 
 => Unwear. We can't publish 0.5.0 without unwear.
 4d 0c00 2800
@@ -2472,3 +2472,7 @@ Hat = 0x80000000
 => Use default inv. Put on glasses. Take book at from Moose, put on. Remove stuff and some items can overwrite other items when unwearing !
 => From then on further inv operations are chaotic
 ==> Fixed
+
+=> TODO:Update the README.
+
+=> TODO: Harden before release. In particuular the inventory w/ worn items and quest save files need further testing.
