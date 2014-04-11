@@ -16,13 +16,13 @@ Then use either :
 The private server is still in beta, expect bugs. Patches and pull requests are welcome.<br/>
 Some important features are still lacking at the moment :
 - No monsters without server commands.
-- No real quests.
-- No items, except the ones you start with.
+- Not as many quests as the official servers.
+- No 'natural' items to collect (flower, gems, ...)
 
 <h3>Chat commands</h3>
 - /stuck : Reloads and sends you to the spawn. Use it if you can't move.
 - unstuck me : Same than above.
-- roll : Roll a dice, result between 0 and 99
+- :roll : Roll a dice, result between 0 and 99
 
 <h3>Server commands</h3>
 You don't need any of those commands to play, but they might be usefull.
@@ -57,6 +57,9 @@ For example if you're stuck, do setPeer with your IP and port, then do for examp
 - endDialog : For debugging only. Used when talking to NPCs.
 - setDialogMsg message : For debugging only. Used when talking to NPCs.
 - dbgStressLoad : For debugging only. Load GemMine on all clients now.
+- listQuests : Lists the state of the player's quests
+- listInventory : Lists the items in the player's inventory
+- listWorn : Lists the items worn by the player's pony
 
 <h3>List of scenes</h3>
 To use with the command "load scene".
