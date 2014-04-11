@@ -531,7 +531,7 @@ void Pony::saveInventory(Player* owner)
         win.logMessage("saveInventory : Reading entry "+entryName);
 
         quint8 invSize = invData[i+nameSize+4];
-        quint8 wornSize = invData[i+nameSize+4+invSize*9]; // Serialized sizeof InventoryItem is 9
+        quint8 wornSize = invData[i+nameSize+4+1+invSize*9]; // Serialized sizeof InventoryItem is 9
         if (entryName == this->name) // Delete the entry, we'll rewrite it at the end
         {
             invData.remove(i,nameSize+4+1+invSize*9+1+wornSize*5);
@@ -590,7 +590,7 @@ bool Pony::loadInventory(Player *owner)
         win.logMessage("loadInventory : Reading entry "+entryName);
 
         quint8 invSize = invData[i+nameSize+4];
-        quint8 wornSize = invData[i+nameSize+5+invSize*9]; // Serialized sizeof InventoryItem is 9
+        quint8 wornSize = invData[i+nameSize+4+1+invSize*9]; // Serialized sizeof InventoryItem is 9
         if (entryName == this->name)
         {
             i += nameSize;
@@ -678,4 +678,20 @@ bool Pony::hasInventoryItem(quint8 id, quint32 qty)
         }
     }
     return qty==0;
+}
+
+void Pony::unwearItemAt(Player *owner, quint8 index)
+{
+    for (int i=0; i<worn.size();)
+    {
+        if (worn[i].index == index)
+        {
+            worn.removeAt(i);
+            addInventoryItem(worn[i].id, 1);
+        }
+        else
+            i++;
+    }
+    sendInventoryRPC(owner);
+    sendWornRPC(owner);
 }

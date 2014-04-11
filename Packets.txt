@@ -47,6 +47,8 @@ For example the packet 5600001800030001 will be noted 56 03 00 01
 48 0A Add view
 
 4D (BEGIN_RPCMODES) RPC calls to a netview ID.
+4D XXXX 04 Get worn items
+4D XXXX 09 Unwear item
 4D XXXX 31 InvokeScript (used when clicking Talk on a NPC)
 
 54 XXXX Reliable messages, often RPC calls to network views. XXXX = NetviewId.

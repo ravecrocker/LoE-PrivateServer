@@ -263,6 +263,11 @@ void sendSetMaxStatRPC(Player* affected, Player* dest, quint8 statId, float valu
     sendMessage(dest, MsgUserReliableOrdered18, data);
 }
 
+void sendWornRPC(Player* player)
+{
+    sendWornRPC(player, player->pony.worn);
+}
+
 void sendWornRPC(Player *player, QList<WearableItem> &worn)
 {
     QByteArray data(3, 4);
@@ -297,6 +302,11 @@ void sendWornRPC(Pony *wearing, Player *dest, QList<WearableItem> &worn)
         data += (quint8)((worn[i].id>>24)&0xFF);
     }
     sendMessage(dest, MsgUserReliableOrdered18, data);
+}
+
+void sendInventoryRPC(Player* player)
+{
+    sendInventoryRPC(player, player->pony.inv, player->pony.worn, player->pony.nBits);
 }
 
 void sendInventoryRPC(Player *player, QList<InventoryItem>& inv, QList<WearableItem>& worn, quint32 nBits)

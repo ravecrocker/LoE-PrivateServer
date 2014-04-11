@@ -2421,3 +2421,14 @@ Smug = 24
 Sorry = 26
 Surprised = 6
 Tired = 22
+
+=> TODO: BUG: I've seen the inventory getting weird entries, maybe we should test a little more thoroughly to make sure it always works.
+=> Confirmed. Probably worn items.
+
+=> Update the README.
+
+=> TODO: Unwear. We can't publish 0.5.0 without unwear.
+4d 0c00 2800
+0600			NetviewId
+09				RPC number
+0400			Item slot (index)
