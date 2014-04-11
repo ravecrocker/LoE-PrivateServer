@@ -7,7 +7,7 @@ One command per line, arguments separated by spaces
 Commands :
 say msg : NPC says message msg
 sayName name : The message will be said by this NPC.
-sayIcon iconId : The message will have this icon
+sayIcon emotionId : The message will use the avatar/icon for this emotion if it exists.
 answer dest msg : Answer for previous message, goto label dest if selected
 goto label : Jumps to the label
 label name : Creates a label you can jump to. No spaces allowed in the label name.
@@ -41,3 +41,47 @@ Each player has a copy of the Quest class.
 An answer should always be following a say or another answer.
 When reaching a say, we send the say and all the answers under it, then wait until the client answers.
 If a say has no answers, we still send it and wait until the client clicks to continue.
+
+List of emotions (emotionId), used with the 'sayIcon' command. 
+This will only work if there is an actual avatar corresponding to the given emotion and NPC name.
+At the moment, there are only avatars for the main NPCs and only certain emotions.
+The avatars/icons are in the file resources.assets of the game client.
+Afraid = 2
+Angry = 3
+Blank = 8
+Bored = 9
+Concerned = 38
+Confident = 25
+Confused = 20
+Covertous = 36
+Crazed = 17
+@Default/Neutral/None = 0
+Depressed = 27
+Derp = 32
+Disgusted = 15
+Drunk = 30
+Excited = 10
+Flirty = 28
+Greedy = 19
+Happy = 1
+Hopeful = 23
+Incredulous = 33
+Introspective = 31
+Irritated = 16
+Lovestruck = 37
+Mischievious = 5
+Nervous = 14
+Paralyzed = 34
+Pouty = 18
+Proud = 12
+Relaxed = 13
+Sad = 4
+Sarcastic = 29
+Serious = 7
+Shocked = 21
+Sick = 35
+Silly = 11
+Smug = 24
+Sorry = 26
+Surprised = 6
+Tired = 22

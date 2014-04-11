@@ -2380,3 +2380,44 @@ private void RpcPerformMagic (NetIncomingMessage msg)
 	this.PerformSkill (spell, num, vector);
 }
 ==> Okay so if the skill is 02 (teleport) we need to parse the message and rebuild a correct reply
+
+=> Emotion codes :
+Afraid = 2
+Angry = 3
+Blank = 8
+Bored = 9
+Concerned = 38
+Confident = 25
+Confused = 20
+Covertous = 36
+Crazed = 17
+@Default/Neutral/None = 0
+Depressed = 27
+Derp = 32
+Disgusted = 15
+Drunk = 30
+Excited = 10
+Flirty = 28
+Greedy = 19
+Happy = 1
+Hopeful = 23
+Incredulous = 33
+Introspective = 31
+Irritated = 16
+Lovestruck = 37
+Mischievious = 5
+Nervous = 14
+Paralyzed = 34
+Pouty = 18
+Proud = 12
+Relaxed = 13
+Sad = 4
+Sarcastic = 29
+Serious = 7
+Shocked = 21
+Sick = 35
+Silly = 11
+Smug = 24
+Sorry = 26
+Surprised = 6
+Tired = 22
