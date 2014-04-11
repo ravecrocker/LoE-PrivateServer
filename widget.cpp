@@ -191,8 +191,8 @@ void Widget::startServer()
         if (itemsFile.open(QIODevice::ReadOnly))
         {
             QByteArray data = itemsFile.readAll();
-            itemWearableSlots = parseItemsXml(data);
-            win.logMessage("Loaded "+QString().setNum(itemWearableSlots.size())+" items");
+            wearablePositionsMap = parseItemsXml(data);
+            win.logMessage("Loaded "+QString().setNum(wearablePositionsMap.size())+" items");
         }
         else
         {

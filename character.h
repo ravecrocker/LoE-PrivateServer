@@ -50,10 +50,11 @@ public:
     void loadQuests(Player* owner); ///< Loads the state of all the quests
     void saveInventory(Player *owner); ///< Saves the worn/possesed items and the money (NOT thread safe)
     bool loadInventory(Player *owner); ///< Loads the worn/possesed items and the money. False on error.
-    void addInventoryItem(quint8 id, quint32 qty); ///< Adds qty items with the given id to the inventory
-    void removeInventoryItem(quint8 id, quint32 qty); ///< Removes qty of the item from the inventory
-    bool hasInventoryItem(quint8 id, quint32 qty=1); ///< Whether of not there are qty of this item in inventory
+    void addInventoryItem(quint32 id, quint32 qty); ///< Adds qty items with the given id to the inventory
+    void removeInventoryItem(quint32 id, quint32 qty); ///< Removes qty of the item from the inventory
+    bool hasInventoryItem(quint32 id, quint32 qty=1); ///< Whether of not there are qty of this item in inventory
     void unwearItemAt(Player* owner, quint8 index); ///< Unwear the item at the position index
+    bool tryWearItem(Player* owner, quint8 invSlot); ///< Tries to wear this item. Must be in the inventory
 
 public:
     QByteArray ponyData;
@@ -63,6 +64,7 @@ public:
     quint32 nBits; // Number of bits (money)
     QList<Quest> quests; // State of the player's quests
     quint32 lastQuest; // Last quest script the player ran
+    quint32 wornSlots; // Flag of the used item-wearing slots (See enum WearablePositions)
 };
 
 class Player : QObject

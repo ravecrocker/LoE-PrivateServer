@@ -559,3 +559,11 @@ void sendEndDialog(Player* player)
     data[0] = 13; // Request number
     sendMessage(player,MsgUserReliableOrdered4, data);
 }
+
+void sendWearItemRPC(Player* player, const WearableItem& item)
+{
+    QByteArray data(1,8);
+    data += uint32ToData(item.id);
+    data += uint8ToData(item.index);
+    sendMessage(player, MsgUserReliableOrdered18, data);
+}
