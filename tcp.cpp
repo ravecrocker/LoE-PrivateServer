@@ -5,7 +5,7 @@
 
 void Widget::tcpConnectClient()
 {
-    logMessage("TCP: New client connected");
+    //logMessage("TCP: New client connected");
 
     QTcpSocket *newClient = tcpServer->nextPendingConnection();
     tcpClientsList << newClient;
@@ -21,7 +21,7 @@ void Widget::tcpDisconnectClient()
     if (socket == 0)
     return;
 
-    logMessage("TCP: Client disconnected");
+    //logMessage("TCP: Client disconnected");
     disconnect(socket);
 
     tcpClientsList.removeOne(socket);
@@ -49,7 +49,7 @@ void Widget::tcpProcessPendingDatagrams()
 
         if (!tcpReceivedDatas->startsWith("POST") && !tcpReceivedDatas->startsWith("GET")) // Not HTTP, clear the buffer
         {
-            logMessage("TCP: Received non-HTTP request");
+            //logMessage("TCP: Received non-HTTP request");
             tcpReceivedDatas->clear();
             socket->close();
             return;
@@ -345,7 +345,7 @@ void Widget::tcpProcessData(QByteArray data, QTcpSocket* socket)
     }
     else if (data.contains("commfunction=removesession"))
     {
-        logMessage("TCP: Session closed by client");
+        //logMessage("TCP: Session closed by client");
     }
     else // Unknown request, erase tcp buffer
     {

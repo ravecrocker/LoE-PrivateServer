@@ -447,7 +447,7 @@ void receiveMessage(Player* player)
                     sendNetviewInstantiate(&player->pony, scene->players[i]);
 
             //Send the 46s init messages
-            win.logMessage(QString("UDP: Sending the 46 init messages"));
+            //win.logMessage(QString("UDP: Sending the 46 init messages"));
             sendMessage(player,MsgUserReliableOrdered4,QByteArray::fromHex("141500000000")); // Sends a 46, init friends
             sendMessage(player,MsgUserReliableOrdered4,QByteArray::fromHex("0e00000000")); // Sends a 46, init journal
         }
@@ -549,10 +549,12 @@ void receiveMessage(Player* player)
         {
             quint16 targetId = ((quint16)(quint8)msg[5]) + (((quint16)(quint8)msg[6])<<8);
             Player* target = Player::findPlayer(win.udpPlayers, targetId);
-            if (target->pony.netviewId == targetId)
+            if (target->pony.netviewId == targetId && target->connected)
                 sendWornRPC(&target->pony, player, target->pony.worn);
             else
+            {
                 win.logMessage("Can't find netviewId "+QString().setNum(targetId)+" to send worn items");
+            }
         }
         else if ((unsigned char)msg[0]==MsgUserReliableOrdered11 && (unsigned char)msg[7]==0x09) // Unwear item request
         {

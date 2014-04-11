@@ -2473,6 +2473,11 @@ Hat = 0x80000000
 => From then on further inv operations are chaotic
 ==> Fixed
 
-=> TODO:Update the README.
+=> Update the README.
 
 => TODO: Harden before release. In particuular the inventory w/ worn items and quest save files need further testing.
+
+=> Quests can apparently get corrupted.
+==> Fixed. No actual corruption possible, but still a read error.
+
+=> TODO: Bump the version number, make a release

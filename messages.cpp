@@ -54,7 +54,7 @@ void sendEntitiesList(Player *player)
     for (int i=0; i<win.npcs.size(); i++)
         if (win.npcs[i]->sceneName == player->pony.sceneName)
         {
-            win.logMessage("Sending NPC "+win.npcs[i]->name);
+            win.logMessage("UDP: Sending NPC "+win.npcs[i]->name);
             sendNetviewInstantiate(win.npcs[i], player);
         }
 
@@ -88,7 +88,7 @@ void sendPonySave(Player *player, QByteArray msg)
     // If we found a matching NPC, send him and exits
     if (npc != NULL)
     {
-        win.logMessage("Sending ponyData and worn items for NPC "+npc->name);
+        win.logMessage("UDP: Sending ponyData and worn items for NPC "+npc->name);
         sendPonyData(npc, player);
         //sendWornRPC(npc, player, npc->worn);
         return;

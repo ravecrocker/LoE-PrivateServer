@@ -429,14 +429,16 @@ void Pony::saveQuests()
         // Read the name
         QString entryName = dataToString(questData.mid(i));
         int nameSize = entryName.size()+getVUint32Size(questData.mid(i));
-        i+=nameSize;
-        win.logMessage("saveQuests : Reading entry "+entryName);
+        //win.logMessage("saveQuests : Reading entry "+entryName);
 
-        quint16 entryDataSize = 4 * dataToUint16(questData.mid(i));
+        quint16 entryDataSize = 4 * dataToUint16(questData.mid(i+nameSize));
         if (entryName == this->name) // Delete the entry, we'll rewrite it at the end
-            questData.remove(i-nameSize,nameSize+entryDataSize+2);
+        {
+            questData.remove(i,nameSize+entryDataSize+2);
+            break;
+        }
         else
-            i += entryDataSize+2;
+            i += nameSize+entryDataSize+2;
     }
 
     // Now add our data at the end of the file
@@ -481,16 +483,16 @@ void Pony::loadQuests()
         QString entryName = dataToString(questData.mid(i));
         int nameSize = entryName.size()+getVUint32Size(questData.mid(i));
         i+=nameSize;
-        win.logMessage("loadQuests : Reading entry "+entryName);
+        //win.logMessage("loadQuests : Reading entry "+entryName);
 
-        quint16 nquests = ((quint16)(quint8)questData[i] + (((quint16)(quint8)questData[i+1])<<8));
+        quint16 nquests = dataToUint16(questData.mid(i));
         i+=2;
         if (entryName == this->name) // Read the entry
         {
             for (int j=0; j<nquests; j++)
             {
-                quint16 questId = ((quint16)(quint8)questData[i] + (((quint16)(quint8)questData[i+1])<<8));
-                quint16 questState = ((quint16)(quint8)questData[i+2] + (((quint16)(quint8)questData[i+3])<<8));
+                quint16 questId = dataToUint16(questData.mid(i));
+                quint16 questState = dataToUint16(questData.mid(i+2));
                 i+=4;
                 for (Quest& quest : quests)
                 {
@@ -531,7 +533,7 @@ void Pony::saveInventory()
         // Read the name
         QString entryName = dataToString(invData.mid(i));
         int nameSize = entryName.size()+getVUint32Size(invData.mid(i));
-        win.logMessage("saveInventory : Reading entry "+entryName);
+        //win.logMessage("saveInventory : Reading entry "+entryName);
 
         quint8 invSize = invData[i+nameSize+4];
         quint8 wornSize = invData[i+nameSize+4+1+invSize*9]; // Serialized sizeof InventoryItem is 9
@@ -590,7 +592,7 @@ bool Pony::loadInventory()
         // Read the name
         QString entryName = dataToString(invData.mid(i));
         int nameSize = entryName.size()+getVUint32Size(invData.mid(i));
-        win.logMessage("loadInventory : Reading entry "+entryName);
+        //win.logMessage("loadInventory : Reading entry "+entryName);
 
         quint8 invSize = invData[i+nameSize+4];
         quint8 wornSize = invData[i+nameSize+4+1+invSize*9]; // Serialized sizeof InventoryItem is 9
