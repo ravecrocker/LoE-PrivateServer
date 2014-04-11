@@ -2460,7 +2460,7 @@ Hat = 0x80000000
 
 => When loading the inventory, we should recalculate the wornSlots flag.
 
-=> TODO: In the quest interpreter, we sometime send redundunt messages. 
+=> In the quest interpreter, we sometime send redundunt messages. 
 => E.g calling addInventoryItem that does notify the client, then notifying ourselves again with sendInventoryRPC (slow as fuck).
 
 =>  When putting it on, Ellowee's hat appears correctly. After a /stuck it doesn't appear. It's worn, invisible and you can't unwear it.
@@ -2468,3 +2468,7 @@ Hat = 0x80000000
 ==> Fixed.
 
 => Unwear sometime doesn't works correctly. Fixed
+
+=> Use default inv. Put on glasses. Take book at from Moose, put on. Remove stuff and some items can overwrite other items when unwearing !
+=> From then on further inv operations are chaotic
+==> Fixed
