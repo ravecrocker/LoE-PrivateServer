@@ -398,7 +398,7 @@ void receiveMessage(Player* player)
         {
             QList<Pony> ponies = Player::loadPonies(player);
             QByteArray ponyData = msg.right(msg.size()-10);
-            Pony pony;
+            Pony pony{player};
             if ((unsigned char)msg[6]==0xff && (unsigned char)msg[7]==0xff && (unsigned char)msg[8]==0xff && (unsigned char)msg[9]==0xff)
             {
                 // Create the new pony for this player
@@ -427,8 +427,8 @@ void receiveMessage(Player* player)
 
             Player::savePonies(player, ponies);
 
-            player->pony.loadQuests(player);
-            if (!player->pony.loadInventory(player)) // Create a default inventory if we can't find one saved
+            player->pony.loadQuests();
+            if (!player->pony.loadInventory()) // Create a default inventory if we can't find one saved
             {
                 InventoryItem raincloudHat{0,73};
                 InventoryItem goggles{1,17};
@@ -436,7 +436,7 @@ void receiveMessage(Player* player)
                 InventoryItem bag{3,60};
                 player->pony.inv << raincloudHat << goggles << hat << bag;
                 player->pony.nBits = 15;
-                player->pony.saveInventory(player);
+                player->pony.saveInventory();
             }
 
             sendLoadSceneRPC(player, player->pony.sceneName, player->pony.pos);
@@ -532,10 +532,11 @@ void receiveMessage(Player* player)
                 win.logMessage("UDP: Can't find the scene for wear message, aborting");
             else
             {
-                if (player->pony.tryWearItem(player, index))
+                if (player->pony.tryWearItem(index))
                 {
                     for (int i=0; i<scene->players.size(); i++)
-                        if (scene->players[i]->inGame>=2)
+                        if (scene->players[i]->inGame>=2
+                                && scene->players[i]->pony.netviewId != player->pony.netviewId)
                             sendWornRPC(&player->pony, scene->players[i], player->pony.worn);
                 }
                 else
@@ -559,7 +560,7 @@ void receiveMessage(Player* player)
             Player* target = Player::findPlayer(win.udpPlayers, targetId);
             if (target->pony.netviewId == targetId)
             {
-                target->pony.unwearItemAt(player, dataToUint16(msg.mid(8)));
+                target->pony.unwearItemAt(dataToUint8(msg.mid(8)));
             }
             else
                 win.logMessage("Can't find netviewId "+QString().setNum(targetId)+" to unwear item");

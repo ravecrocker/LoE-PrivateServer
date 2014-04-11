@@ -19,7 +19,7 @@ Quest::Quest(QString path, Player *Owner)
     commands = new QList<QList<QString> >;
     name = new QString();
     descr = new QString();
-    npc = new Pony();
+    npc = new Pony(nullptr); // A NPC doesn't have an owner player !
     npc->id = 0;
     npc->netviewId = 0;
     id = 0;
