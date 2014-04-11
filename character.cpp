@@ -5,6 +5,7 @@
 #include "utils.h"
 #include "serialize.h"
 #include "message.h"
+#include "items.h"
 
 SceneEntity::SceneEntity()
 {
@@ -20,6 +21,7 @@ Pony::Pony() : SceneEntity()
 {
     modelName = "PlayerBase";
     name = "";
+    wornSlots = 0;
 }
 
 Pony::type Pony::getType()
@@ -627,7 +629,7 @@ bool Pony::loadInventory(Player *owner)
     return false; // Entry not found
 }
 
-void Pony::addInventoryItem(quint8 id, quint32 qty)
+void Pony::addInventoryItem(quint32 id, quint32 qty)
 {
     int firstFreeIndex=0;
     for (InventoryItem& item : inv)
@@ -645,7 +647,7 @@ void Pony::addInventoryItem(quint8 id, quint32 qty)
     inv << InventoryItem(firstFreeIndex, id, qty);
 }
 
-void Pony::removeInventoryItem(quint8 id, quint32 qty)
+void Pony::removeInventoryItem(quint32 id, quint32 qty)
 {
     for (int i=0; i<inv.size(); i++)
     {
@@ -665,7 +667,7 @@ void Pony::removeInventoryItem(quint8 id, quint32 qty)
     }
 }
 
-bool Pony::hasInventoryItem(quint8 id, quint32 qty)
+bool Pony::hasInventoryItem(quint32 id, quint32 qty)
 {
     for (const InventoryItem& item : inv)
     {
@@ -694,4 +696,47 @@ void Pony::unwearItemAt(Player *owner, quint8 index)
     }
     sendInventoryRPC(owner);
     sendWornRPC(owner);
+}
+
+bool Pony::tryWearItem(Player* owner, quint8 invSlot)
+{
+    win.logMessage("Invslot is "+QString().setNum(invSlot));
+    uint32_t id = -1;
+    uint32_t itemSlots;
+    for (int i=0; i<inv.size(); i++)
+    {
+        if (inv[i].index == invSlot)
+        {
+            id = inv[i].id;
+
+            itemSlots = win.wearablePositionsMap[id];
+            if (wornSlots & itemSlots)
+            {
+                win.logMessage("Can't wear item : slots occupied");
+                return false;
+            }
+
+            if (inv[i].amount>1)
+                inv[i].amount--;
+            else
+                inv.removeAt(i);
+            break;
+        }
+    }
+    if (id == (uint32_t)-1)
+    {
+        win.logMessage("Index not found");
+        return false;
+    }
+
+    wornSlots |= itemSlots;
+
+    WearableItem item;
+    item.id = id;
+    item.index = wearablePositionsToSlot(itemSlots);
+    worn << item;
+    sendWearItemRPC(owner, item);
+    sendInventoryRPC(owner);
+
+    return true;
 }

@@ -3,6 +3,7 @@
 #include "widget.h"
 #include <QString>
 #include <QStringList>
+#include <cmath>
 
 QMap<uint32_t, uint32_t> parseItemsXml(QByteArray data)
 {
@@ -33,7 +34,7 @@ QMap<uint32_t, uint32_t> parseItemsXml(QByteArray data)
         if (slotsList.isEmpty())
             break;
 
-        uint32_t itemSlots;
+        uint32_t itemSlots=0;
         for (QString slot : slotsList)
         {
             if (slot == "None")
@@ -68,4 +69,38 @@ QMap<uint32_t, uint32_t> parseItemsXml(QByteArray data)
     }
 
     return map;
+}
+
+uint8_t wearablePositionsToSlot(uint32_t positions)
+{
+    // We don't have base 2 log, so we'll do it the hard way
+
+    if (positions & (uint32_t)WearablePositions::Hat)              return 17;
+    else if (positions & (uint32_t)WearablePositions::SaddleBags)  return 16;
+    else if (positions & (uint32_t)WearablePositions::BackKnees)   return 15;
+    else if (positions & (uint32_t)WearablePositions::FrontKnees)  return 14;
+    else if (positions & (uint32_t)WearablePositions::Ears)        return 13;
+    else if (positions & (uint32_t)WearablePositions::Eyes)        return 12;
+    else if (positions & (uint32_t)WearablePositions::Mask)        return 11;
+    else if (positions & (uint32_t)WearablePositions::Mouth)       return 10;
+    else if (positions & (uint32_t)WearablePositions::Necklace)    return 9;
+    else if (positions & (uint32_t)WearablePositions::Shirt)       return 8;
+    else if (positions & (uint32_t)WearablePositions::Saddle)      return 7;
+    else if (positions & (uint32_t)WearablePositions::BackShoes)   return 6;
+    else if (positions & (uint32_t)WearablePositions::FrontShoes)  return 5;
+    else if (positions & (uint32_t)WearablePositions::BackSocks)   return 4;
+    else if (positions & (uint32_t)WearablePositions::FrontSocks)  return 3;
+    else if (positions & (uint32_t)WearablePositions::Pants)       return 2;
+    else if (positions & (uint32_t)WearablePositions::Tail)        return 1;
+    else return 0;
+}
+
+uint32_t slotToWearablePositions(uint8_t slot)
+{
+    if (slot == 0)
+        return (uint32_t)WearablePositions::None;
+    else if (slot >= 0x20)
+        return -1;
+    else
+        return (slot-1)*(slot-1);
 }

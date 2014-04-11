@@ -527,18 +527,22 @@ void receiveMessage(Player* player)
         else if ((unsigned char)msg[0]==MsgUserReliableOrdered11 && (unsigned char)msg[7]==0x08) // Wear request
         {
             quint8 index = msg[9];
-            if (index < player->pony.inv.size() && !player->pony.worn.contains(player->pony.inv[index])) // Send the wear request to everyone in room
+            Scene* scene = findScene(player->pony.sceneName);
+            if (scene->name.isEmpty())
+                win.logMessage("UDP: Can't find the scene for wear message, aborting");
+            else
             {
-                player->pony.worn << player->pony.inv[index];
-                Scene* scene = findScene(player->pony.sceneName);
-                if (scene->name.isEmpty())
-                    win.logMessage("UDP: Can't find the scene for wear message, aborting");
-                else
+                if (player->pony.tryWearItem(player, index))
+                {
                     for (int i=0; i<scene->players.size(); i++)
                         if (scene->players[i]->inGame>=2)
                             sendWornRPC(&player->pony, scene->players[i], player->pony.worn);
+                }
+                else
+                {
+                    win.logMessage("Error trying to wear item");
+                }
             }
-            sendInventoryRPC(player);
         }
         else if ((unsigned char)msg[0]==MsgUserReliableOrdered11 && (unsigned char)msg[7]==0x04) // Get worn items request
         {
