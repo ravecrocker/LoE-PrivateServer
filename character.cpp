@@ -731,7 +731,7 @@ void Pony::unwearItemAt(quint8 index)
 
 bool Pony::tryWearItem(quint8 invSlot)
 {
-    win.logMessage("Invslot is "+QString().setNum(invSlot));
+    //win.logMessage("Invslot is "+QString().setNum(invSlot));
     uint32_t id = -1;
     uint32_t itemSlots;
     for (int i=0; i<inv.size(); i++)
@@ -765,7 +765,7 @@ bool Pony::tryWearItem(quint8 invSlot)
     WearableItem item;
     item.id = id;
     item.index = wearablePositionsToSlot(itemSlots);
-    win.logMessage("Wearing at slot "+QString().setNum(item.index));
+    //win.logMessage("Wearing at slot "+QString().setNum(item.index));
     worn << item;
     sendWearItemRPC(owner, item);
     //sendInventoryRPC(owner);
