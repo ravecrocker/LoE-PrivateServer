@@ -24,7 +24,8 @@ SOURCES += main.cpp \
     sendMessage.cpp \
     serverCommands.cpp \
     quest.cpp \
-    serialize.cpp
+    serialize.cpp \
+    items.cpp
 
 HEADERS  += widget.h \
 	character.h \
@@ -34,7 +35,8 @@ HEADERS  += widget.h \
 	dataType.h \
 	sync.h \
     quest.h \
-    serialize.h
+    serialize.h \
+    items.h
 
 FORMS    += widget.ui
 

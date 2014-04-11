@@ -3,6 +3,7 @@
 #include "character.h"
 #include "message.h"
 #include "utils.h"
+#include "items.h"
 
 #ifdef WIN32
 #include <windows.h>
@@ -158,7 +159,7 @@ void Widget::startServer()
             return;
         }
 
-        logMessage("Loaded " + QString().setNum(nVortex) + " vortex in " + QString().setNum(scenes.size()) + " scenes");
+        logMessage("Loaded " + QString().setNum(nVortex) + " vortexes in " + QString().setNum(scenes.size()) + " scenes");
     }
 
     // Read NPC/Quests DB
@@ -180,6 +181,24 @@ void Widget::startServer()
         catch (QString e)
         {
             enableGameServer = false;
+        }
+    }
+
+    // Read/parse Items.xml
+    if (enableGameServer)
+    {
+        QFile itemsFile("data/data/Items.xml");
+        if (itemsFile.open(QIODevice::ReadOnly))
+        {
+            QByteArray data = itemsFile.readAll();
+            itemWearableSlots = parseItemsXml(data);
+            win.logMessage("Loaded "+QString().setNum(itemWearableSlots.size())+" items");
+        }
+        else
+        {
+            win.logMessage("Couln't open Items.xml");
+            stopServer();
+            return;
         }
     }
 
