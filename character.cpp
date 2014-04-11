@@ -688,8 +688,8 @@ void Pony::unwearItemAt(Player *owner, quint8 index)
     {
         if (worn[i].index == index)
         {
-            worn.removeAt(i);
             addInventoryItem(worn[i].id, 1);
+            worn.removeAt(i);
         }
         else
             i++;
@@ -734,6 +734,7 @@ bool Pony::tryWearItem(Player* owner, quint8 invSlot)
     WearableItem item;
     item.id = id;
     item.index = wearablePositionsToSlot(itemSlots);
+    win.logMessage("Wearing at slot "+QString().setNum(item.index));
     worn << item;
     sendWearItemRPC(owner, item);
     sendInventoryRPC(owner);

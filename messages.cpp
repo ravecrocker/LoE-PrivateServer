@@ -274,7 +274,7 @@ void sendWornRPC(Player *player, QList<WearableItem> &worn)
     data[0] = (quint8)(player->pony.netviewId&0xFF);
     data[1] = (quint8)((player->pony.netviewId>>8)&0xFF);
     data += 32; // Max Worn Items
-    data += worn.size();
+    data += (uint8_t)worn.size();
     for (int i=0;i<worn.size();i++)
     {
         data += (quint8)(worn[i].index&0xFF);
