@@ -553,7 +553,19 @@ void receiveMessage(Player* player)
                 sendWornRPC(&target->pony, player, target->pony.worn);
             else
             {
-                win.logMessage("Can't find netviewId "+QString().setNum(targetId)+" to send worn items");
+                Pony* targetNpc = nullptr;
+                for (Pony* npc : win.npcs)
+                {
+                    if (npc->netviewId == targetId)
+                    {
+                        targetNpc = npc;
+                        break;
+                    }
+                }
+                if (targetNpc)
+                    sendWornRPC(targetNpc, player, targetNpc->worn);
+                else
+                    win.logMessage("Can't find netviewId "+QString().setNum(targetId)+" to send worn items");
             }
         }
         else if ((unsigned char)msg[0]==MsgUserReliableOrdered11 && (unsigned char)msg[7]==0x09) // Unwear item request
