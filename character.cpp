@@ -613,6 +613,7 @@ bool Pony::loadInventory()
             }
             i++; // Skip wornSize
             worn.clear();
+            wornSlots = 0;
             for (int j=0; j<wornSize; j++)
             {
                 WearableItem item;
@@ -621,6 +622,8 @@ bool Pony::loadInventory()
                 item.id = dataToUint32(invData.mid(i));
                 i+=4;
                 worn.append(item);
+                wornSlots |= win.wearablePositionsMap[item.id];
+                win.logMessage("wornSlots is now "+QString().setNum(wornSlots));
             }
             return true;
         }
@@ -747,7 +750,6 @@ bool Pony::tryWearItem(quint8 invSlot)
         win.logMessage("Index not found");
         return false;
     }
-
     wornSlots |= itemSlots;
 
     WearableItem item;

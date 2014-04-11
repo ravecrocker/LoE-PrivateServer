@@ -270,7 +270,6 @@ void sendWornRPC(Player* player)
 
 void sendWornRPC(Player *player, QList<WearableItem> &worn)
 {
-    win.logMessage("#### Sending inv RPC about "+QString().setNum(player->pony.netviewId));
     QByteArray data(3, 4);
     data[0] = (quint8)(player->pony.netviewId&0xFF);
     data[1] = (quint8)((player->pony.netviewId>>8)&0xFF);
@@ -289,7 +288,6 @@ void sendWornRPC(Player *player, QList<WearableItem> &worn)
 
 void sendWornRPC(Pony *wearing, Player *dest, QList<WearableItem> &worn)
 {
-    win.logMessage("#### Sending inv RPC about "+QString().setNum(wearing->netviewId));
     QByteArray data(3, 4);
     data[0] = (quint8)(wearing->netviewId&0xFF);
     data[1] = (quint8)((wearing->netviewId>>8)&0xFF);
@@ -313,7 +311,6 @@ void sendInventoryRPC(Player* player)
 
 void sendInventoryRPC(Player *player, QList<InventoryItem>& inv, QList<WearableItem>& worn, quint32 nBits)
 {
-    win.logMessage("#### Sending inv RPC about "+QString().setNum(player->pony.netviewId));
     QByteArray data(5, 5);
     data[0] = (quint8)(player->pony.netviewId & 0xFF);
     data[1] = (quint8)((player->pony.netviewId>>8) & 0xFF);
