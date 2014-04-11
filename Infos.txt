@@ -2427,8 +2427,30 @@ Tired = 22
 
 => Update the README.
 
-=> TODO: Unwear. We can't publish 0.5.0 without unwear.
+=> Unwear. We can't publish 0.5.0 without unwear.
 4d 0c00 2800
 0600			NetviewId
 09				RPC number
 0400			Item slot (index)
+
+=> TODO: Do the item wearing properly. We need some kind of DB of items and their wearable slots
+=> Wearable slots :
+None = 0
+Tail = 0x1
+Pants = 0x2
+FrontSocks = 0x4
+BackSocks = 0x8
+FrontShoes = 0x10
+BackShoes = 0x20
+Saddle = 0x40
+Shirt = 0x80
+Necklace = 0x100
+Mouth = 0x200
+Mask = 0x400
+Eyes = 0x800
+Ears = 0x1000
+FrontKnees = 0x2000
+BackKnees = 0x4000
+SaddleBags = 0x40000000
+Hat = 0x80000000
+=> We'll parse the items.xml instead of maintaining our own DB.

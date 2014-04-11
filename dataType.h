@@ -42,6 +42,28 @@ public:
     quint32 id;
 };
 
+enum class WearablePositions : uint32_t
+{
+    None = 0,
+    Tail = 0x1,
+    Pants = 0x2,
+    FrontSocks = 0x4,
+    BackSocks = 0x8,
+    FrontShoes = 0x10,
+    BackShoes = 0x20,
+    Saddle = 0x40,
+    Shirt = 0x80,
+    Necklace = 0x100,
+    Mouth = 0x200,
+    Mask = 0x400,
+    Eyes = 0x800,
+    Ears = 0x1000,
+    FrontKnees = 0x2000,
+    BackKnees = 0x4000,
+    SaddleBags = 0x40000000,
+    Hat = 0x80000000
+};
+
 class InventoryItem : public WearableItem
 {
 public:

@@ -14,6 +14,8 @@
 #include <QtConcurrent/QtConcurrentMap>
 #include <QCryptographicHash>
 #include <QMutex>
+#include <QMap>
+#include <cstdint>
 
 //#include <windows.h>
 #ifdef __APPLE__
@@ -69,6 +71,7 @@ public:
     QList<Player*> udpPlayers; // Used by the UDP game server
     QList<Pony*> npcs; // List of npcs from the npcs DB
     QList<Quest> quests; // List of quests from the npcs DB
+    QMap<uint32_t, uint32_t> itemWearableSlots; // Maps item IDs to their wearable positions.
     int loginPort; // Port for the login server
     int gamePort; // Port for the game server
     QList<Scene> scenes; // List of scenes from the vortex DB
