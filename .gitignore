@@ -7,6 +7,12 @@ LoE_PrivateServer.exe
 LoE - Ohayocon 2014 - w_x86/
 LoE - Ohayocon 2014 - Windows x64_fixed/
 
+
+# Release files
+PrivateServ-linux-x86/
+PrivateServ-x86/
+PrivateServ-x64/
+
 # Build files
 release/
 debug/
