@@ -2475,12 +2475,12 @@ Hat = 0x80000000
 
 => Update the README.
 
-=> TODO: Harden before release. In particuular the inventory w/ worn items and quest save files need further testing.
+=> Harden before release. In particuular the inventory w/ worn items and quest save files need further testing.
 
 => Quests can apparently get corrupted.
 ==> Fixed. No actual corruption possible, but still a read error.
 
-=> TODO: Bump the version number, make a release
+=> Bump the version number, make a release
 
 => Login bug. It doesn't finds the same passhash when you create the account and when you login next
 That's really weird, we actually receive different passhashes. If we erase and rewrite the password manually, it's the same as the first time
