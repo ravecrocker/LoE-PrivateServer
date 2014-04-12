@@ -12,3 +12,7 @@ Patched chat to only keep the last 50 messages
 
 LegendsOfEquestria.Shared.dll :
 Modified to ignore the chat filters.
+Modified to connect to the PrivateServer (127.0.0.1:1031)
+
+LegendsOfEquestria.Data.dll :
+Modified to connect to the PrivateServer (127.0.0.1:1031)
