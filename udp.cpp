@@ -125,9 +125,16 @@ void Widget::udpProcessPendingDatagrams()
         }
         else // You need to connect with TCP first
         {
-            logMessage("UDP: Request from unknown peer rejected : "+player->IP+":"+QString().setNum(rPort));
-            if (!player->IP.isEmpty())
-                sendMessage(player,MsgDisconnect);
+            logMessage("UDP: Request from unknown peer rejected : "+rAddr.toString()+":"+QString().setNum(rPort));
+            // Send disconnect message manually
+            QString data("Not connected, please login first");
+            QByteArray msg(6,0);
+            msg[0] = MsgDisconnect;
+            msg[3] = (quint8)(((data.size()+1)*8)&0xFF);
+            msg[4] = (quint8)((((data.size()+1)*8)>>8)&0xFF);
+            msg[5] = (quint8)data.size();
+            msg += data;
+            win.udpSocket->writeDatagram(msg,rAddr,rPort);
         }
     }
 }
