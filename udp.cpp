@@ -36,9 +36,11 @@ void Widget::udpProcessPendingDatagrams()
                 && (unsigned char)datagram[2]==0 && datagram.size()>=22)
         {
             QString name = dataToString(datagram.right(datagram.size()-22));
-            QString sesskey = dataToString(datagram.right(datagram.size()-datagram.lastIndexOf(name)-name.size()));
+            int nameFullSize = getVUint32Size(datagram.right(datagram.size()-22))+name.size();
+            QString sesskey = dataToString(datagram.right(datagram.size()-22-nameFullSize));
             //logMessage(QString("UDP: Connect detected with name : ")+name);
             //logMessage(QString("UDP: Connect detected with sesskey : ")+sesskey);
+            //logMessage(QString("UDP: Datagram was : ")+datagram.toHex());
 
             bool is_sesskey_valid = true;
 
@@ -100,7 +102,10 @@ void Widget::udpProcessPendingDatagrams()
             }
             else
             {
-                logMessage("UDP: Sesskey rejected");
+                QString badHash = QCryptographicHash::hash((QString(sesskey.right(40))
+                                +saltPassword).toLatin1(), QCryptographicHash::Md5).toHex();
+                logMessage("UDP: Sesskey rejected: got '"+badHash+"' instead of '"+sesskey.left(32)
+                           +"', passhash was '"+QString(sesskey.right(40)));
                 Player* newPlayer = new Player;
                 newPlayer->IP = rAddr.toString();
                 newPlayer->port = rPort;
