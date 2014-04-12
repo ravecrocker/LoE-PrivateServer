@@ -81,15 +81,15 @@ public:
     int syncInterval;
 
 private:
-    Ui::Widget *ui;
-    QTcpServer *tcpServer;
-    QList<QTcpSocket *> tcpClientsList;
+    Ui::Widget* ui;
+    QTcpServer* tcpServer;
+    QList<QPair<QTcpSocket*, QByteArray*>> tcpClientsList;
     QTcpSocket remoteLoginSock; // Socket to the remote login server, if we use one
-    QByteArray *tcpReceivedDatas;
+    QByteArray* tcpReceivedDatas;
     Player* cmdPeer; // Player selected for the server commands
     QTimer* pingTimer;
     Sync sync;
-    bool *usedids;
+    bool* usedids;
 
     // Config
     QString remoteLoginIP; // IP of the remote login server

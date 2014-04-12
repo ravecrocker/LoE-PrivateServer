@@ -2481,3 +2481,11 @@ Hat = 0x80000000
 ==> Fixed. No actual corruption possible, but still a read error.
 
 => TODO: Bump the version number, make a release
+
+=> Login bug. It doesn't finds the same passhash when you create the account and when you login next
+That's really weird, we actually receive different passhashes. If we erase and rewrite the password manually, it's the same as the first time
+But if we use the prefilled password (not remember password, just the prefilled field) we get a different passhash server side!
+=> Username: "1", password: "1", without quotes. 2 results :
+=> commfunction=login&username=1&passhash=17ba0791499db908433b80f37c5fbc89b870084b&version=201401
+=> commfunction=login&username=1&passhash=356a192b7913b04c54574d18c28d46e6395428ab&version=201401
+==> Fixed. The passhashes being different is a bug in the game.

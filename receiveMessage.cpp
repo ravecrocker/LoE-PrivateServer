@@ -103,7 +103,7 @@ void receiveMessage(Player* player)
         msg.resize(18); // Supprime le message LocalHail et le Timestamp
         msg = msg.right(13); // Supprime le Header
 
-        win.logMessage(QString("UDP: Connecting ..."));
+        //win.logMessage(QString("UDP: Connecting ..."));
 
         for (int i=0; i<32; i++) // Reset sequence counters
             player->udpSequenceNumbers[i]=0;
@@ -118,7 +118,7 @@ void receiveMessage(Player* player)
             player->udpSequenceNumbers[i]=0;
 
         // Start game
-        win.logMessage(QString("UDP: Starting game"));
+        //win.logMessage(QString("UDP: Starting game"));
 
         // Set local player id
         win.lastIdMutex.lock();
