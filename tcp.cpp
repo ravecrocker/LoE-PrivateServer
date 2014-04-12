@@ -3,12 +3,16 @@
 #include "message.h"
 #include "utils.h"
 
+#define DEBUG_LOG false
+
 void Widget::tcpConnectClient()
 {
-    //logMessage("TCP: New client connected");
+#if DEBUG_LOG
+    logMessage("TCP: New client connected");
+#endif
 
     QTcpSocket *newClient = tcpServer->nextPendingConnection();
-    tcpClientsList << newClient;
+    tcpClientsList << QPair<QTcpSocket*,QByteArray*>(newClient,new QByteArray());
 
     connect(newClient, SIGNAL(readyRead()), this, SLOT(tcpProcessPendingDatagrams()));
     connect(newClient, SIGNAL(disconnected()), this, SLOT(tcpDisconnectClient()));
@@ -20,14 +24,22 @@ void Widget::tcpDisconnectClient()
     QTcpSocket *socket = qobject_cast<QTcpSocket *>(sender());
     if (socket == 0)
     return;
-
-    //logMessage("TCP: Client disconnected");
+#if DEBUG_LOG
+    logMessage("TCP: Client disconnected");
+#endif
     disconnect(socket);
 
-    tcpClientsList.removeOne(socket);
+    for (int i=0; i<tcpClientsList.size(); i++)
+    {
+        if (tcpClientsList[i].first == socket)
+        {
+            delete tcpClientsList[i].second;
+            tcpClientsList.removeAt(i);
+            break;
+        }
+    }
 
     socket->deleteLater();
-    socket=0;
 }
 
 
@@ -36,27 +48,52 @@ void Widget::tcpProcessPendingDatagrams()
 {
     // Find who's sending
     QTcpSocket *socket = qobject_cast<QTcpSocket *>(sender());
-    if (socket == 0)
+    if (socket == nullptr)
         return;
+
+    QByteArray* recvBuffer=nullptr;
+    for (auto pair : tcpClientsList)
+    {
+        if (pair.first == socket)
+        {
+            recvBuffer = pair.second;
+            break;
+        }
+    }
+    if (recvBuffer == nullptr)
+    {
+        logMessage("TCP: Error fetching the socket's associated recv buffer");
+        return;
+    }
 
     unsigned nTries = 0;
 
     // Acquire data
     while(socket->state()==QAbstractSocket::ConnectedState && nTries<3) // Exit if disconnected, too much retries, malformed HTTP request, or after all requests are processed
     {
-        tcpReceivedDatas->append(socket->readAll());
+        recvBuffer->append(socket->readAll());
         nTries++;
 
-        if (!tcpReceivedDatas->startsWith("POST") && !tcpReceivedDatas->startsWith("GET")) // Not HTTP, clear the buffer
+        if (!recvBuffer->size())
         {
-            //logMessage("TCP: Received non-HTTP request");
-            tcpReceivedDatas->clear();
+#if DEBUG_LOG
+            logMessage("TCP: Nothing to read");
+#endif
+            continue;
+        }
+
+        if (!recvBuffer->startsWith("POST") && !recvBuffer->startsWith("GET")) // Not HTTP, clear the buffer
+        {
+#if DEBUG_LOG
+            logMessage(QString("TCP: Received non-HTTP request : ")+*recvBuffer->toHex());
+#endif
+            recvBuffer->clear();
             socket->close();
             return;
         }
-        else if (tcpReceivedDatas->contains("Content-Length:")) // POST or GET request, wait for Content-Length header
+        else if (recvBuffer->contains("Content-Length:")) // POST or GET request, wait for Content-Length header
         {
-            QByteArray contentLength = *tcpReceivedDatas;
+            QByteArray contentLength = *recvBuffer;
             contentLength = contentLength.right(contentLength.size() - contentLength.indexOf("Content-Length:") - 15);
             QList<QByteArray> lengthList = contentLength.trimmed().split('\n');
             if (lengthList.size()>1) // We want a number on this line and a next line to be sure we've got the full number
@@ -66,14 +103,16 @@ void Widget::tcpProcessPendingDatagrams()
                 if (!isNumeric) // We've got something but it's not a number
                 {
                     logMessage("TCP: Error: Content-Length must be a (decimal) number !");
-                    tcpReceivedDatas->clear();
+                    recvBuffer->clear();
                     socket->close();
                     return;
                 }
 
                 // Detect and send data files if we need to
-                QByteArray data = *tcpReceivedDatas;
-                //logMessage("DataReceived:"+data);
+                QByteArray data = *recvBuffer;
+#if DEBUG_LOG
+                logMessage("TCP: Got content-length request:"+data);
+#endif
 
                 // Get the payload only (remove headers)
                 data = removeHTTPHeader(data, "POST ");
@@ -100,17 +139,21 @@ void Widget::tcpProcessPendingDatagrams()
                     // Process data, if the buffer is not empty, keep reading
                     tcpProcessData(data, socket);
                     // Delete the processed message from the buffer
-                    *tcpReceivedDatas = tcpReceivedDatas->right(tcpReceivedDatas->size() - tcpReceivedDatas->indexOf(data) - data.size());
-                    if (tcpReceivedDatas->isEmpty())
+                    *recvBuffer = recvBuffer->right(recvBuffer->size() - recvBuffer->indexOf(data) - data.size());
+                    if (recvBuffer->isEmpty())
                         return;
                     nTries=0;
                 }
             }
         }
-        else if (tcpReceivedDatas->contains("\r\n\r\n")) // POST or GET request, without a Content-Length header
+        else if (recvBuffer->contains("\r\n\r\n")) // POST or GET request, without a Content-Length header
         {
-            QByteArray data = *tcpReceivedDatas;
+            QByteArray data = *recvBuffer;
             data = data.left(data.indexOf("\r\n\r\n")+4);
+            int dataSize = data.size();
+#if DEBUG_LOG
+            logMessage("Got non-content length request:"+data);
+#endif
 
             int i1=0;
             do
@@ -124,6 +167,9 @@ void Widget::tcpProcessPendingDatagrams()
                     {
                         data = removeHTTPHeader(data, "POST ");
                         data = removeHTTPHeader(data, "GET ");
+                        data = removeHTTPHeader(data, "if-modified-since:");
+                        data = removeHTTPHeader(data, "accept-encoding:");
+                        data = removeHTTPHeader(data, "host:");
                         if (!enableGetlog)
                             continue;
                         QFile head(QString(NETDATAPATH)+"/dataTextHeader.bin");
@@ -144,7 +190,7 @@ void Widget::tcpProcessPendingDatagrams()
                     // Other GETs (not getlog)
                     data = removeHTTPHeader(data, "POST ");
                     data = removeHTTPHeader(data, "GET ");
-                    logMessage("TCP: Received GET:"+path);
+                    logMessage("TCP: Replying to HTTP GET "+path);
                     QFile head(QString(NETDATAPATH)+"/dataHeader.bin");
                     QFile res("data/"+path);
                     head.open(QIODevice::ReadOnly);
@@ -165,26 +211,47 @@ void Widget::tcpProcessPendingDatagrams()
                     socket->write(res.readAll());
                     head.close();
                     res.close();
+#if DEBUG_LOG
                     logMessage("TCP: Sent "+QString().setNum(res.size()+head.size())+" bytes");
+#endif
                 }
             } while (i1 != -1);
 
-            *tcpReceivedDatas = tcpReceivedDatas->mid(data.size());
+            *recvBuffer = recvBuffer->mid(dataSize);
         }
     }
 }
 
 void Widget::tcpProcessData(QByteArray data, QTcpSocket* socket)
 {
+    QByteArray* recvBuffer=nullptr;
+    for (auto pair : tcpClientsList)
+    {
+        if (pair.first == socket)
+        {
+            recvBuffer = pair.second;
+            break;
+        }
+    }
+    if (recvBuffer == nullptr)
+    {
+        logMessage("TCP: Error fetching the socket's associated recv buffer");
+        return;
+    }
+
+#if DEBUG_LOG
+    logMessage("tcpProcessData received : "+data);
+#endif
+
     // Login request (forwarded)
-    if (useRemoteLogin && tcpReceivedDatas->contains("commfunction=login&") && tcpReceivedDatas->contains("&version="))
+    if (useRemoteLogin && recvBuffer->contains("commfunction=login&") && recvBuffer->contains("&version="))
     {
         logMessage("TCP: Remote login not implemented yet.");
         // We need to add the client with his IP/port/passhash to tcpPlayers if he isn't already there
         Player newPlayer;
         newPlayer.IP = socket->peerAddress().toIPv4Address();
         newPlayer.port = socket->peerPort();
-        QString passhash = QString(*tcpReceivedDatas);
+        QString passhash = QString(*recvBuffer);
         passhash = passhash.mid(passhash.indexOf("passhash=")+9);
         passhash.truncate(passhash.indexOf('&'));
         newPlayer.passhash = passhash;
@@ -201,22 +268,22 @@ void Widget::tcpProcessData(QByteArray data, QTcpSocket* socket)
                 return;
             }
         }
-        // We just blindly send everything that we're going to remove from tcpReceivedDatas at the end of tcpProcessData
-        QByteArray toSend = *tcpReceivedDatas;
+        // We just blindly send everything that we're going to remove from recvBuffer at the end of tcpProcessData
+        QByteArray toSend = *recvBuffer;
         toSend.left(toSend.indexOf(data) + data.size());
         remoteLoginSock.write(toSend);
     }
-    else if (useRemoteLogin && tcpReceivedDatas->contains("Server:")) // Login reply (forwarded)
+    else if (useRemoteLogin && recvBuffer->contains("Server:")) // Login reply (forwarded)
     {
         logMessage("TCP: Remote login not implemented yet.");
         // First we need to find a player matching the received passhash in tcpPlayers
         // Use the player's IP/port to find a matching socket in tcpClientsList
         // The login headers are all the same, so we can just use loginHeader.bin and send back data
     }
-    else if (tcpReceivedDatas->contains("commfunction=login&") && tcpReceivedDatas->contains("&version=")) // Login request
+    else if (recvBuffer->contains("commfunction=login&") && recvBuffer->contains("&version=")) // Login request
     {
-        QString postData = QString(*tcpReceivedDatas);
-        *tcpReceivedDatas = tcpReceivedDatas->right(postData.size()-postData.indexOf("version=")-8-4); // 4 : size of version number (ie:version=1344)
+        QString postData = QString(*recvBuffer);
+        *recvBuffer = recvBuffer->right(postData.size()-postData.indexOf("version=")-8-4); // 4 : size of version number (ie:version=1344)
         logMessage("TCP: Login request received :");
         QFile file(QString(NETDATAPATH)+"/loginHeader.bin");
         QFile fileServersList(SERVERSLISTFILEPATH);
@@ -316,6 +383,11 @@ void Widget::tcpProcessData(QByteArray data, QTcpSocket* socket)
 
                 QByteArray data1 = QByteArray::fromHex("0D0A61757468726573706F6E73653A0A747275650A");
                 QByteArray sesskey = QCryptographicHash::hash(QString(passhash + saltPassword).toLatin1(), QCryptographicHash::Md5).toHex();
+#if DEBUG_LOG
+                logMessage("TCP: Hash of '"+QString(passhash + saltPassword).toLatin1()
+                           +"' is '"+sesskey+"'");
+                logMessage("TCP: Sesskey is '"+sesskey+"', passhash is '"+passhash+"', salt is '"+saltPassword+"'");
+#endif
                 sesskey += passhash;
                 QByteArray data2 = QByteArray::fromHex("0A310A");
                 QByteArray serversList;
@@ -345,7 +417,9 @@ void Widget::tcpProcessData(QByteArray data, QTcpSocket* socket)
     }
     else if (data.contains("commfunction=removesession"))
     {
-        //logMessage("TCP: Session closed by client");
+#if DEBUG_LOG
+        logMessage("TCP: Session closed by client");
+#endif
     }
     else // Unknown request, erase tcp buffer
     {

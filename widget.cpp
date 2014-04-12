@@ -312,7 +312,7 @@ void Widget::stopServer(bool log)
     pingTimer->stop();
     tcpServer->close();
     for (int i=0;i<tcpClientsList.size();i++)
-        tcpClientsList[i]->close();
+        tcpClientsList[i].first->close();
     udpSocket->close();
 
     sync.stopSync();
