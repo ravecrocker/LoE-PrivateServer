@@ -22,7 +22,12 @@ Some important features are still lacking at the moment :
 <h3>Chat commands</h3>
 - /stuck : Reloads and sends you to the spawn. Use it if you can't move.
 - unstuck me : Same than above.
+- :commands : Gives a list of chat commands
 - :roll : Roll a dice, result between 0 and 99
+- :msg player msg : Sends a private message to a player
+- :names : Lists of the players on the server and where they are
+- :me action : States your current action
+- :tp location : Teleports your pony to this location (scene)
 
 <h3>Server commands</h3>
 You don't need any of those commands to play, but they might be usefull.
