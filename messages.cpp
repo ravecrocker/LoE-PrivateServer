@@ -52,7 +52,7 @@ void sendEntitiesList(Player *player)
 
     // Send npcs
     for (int i=0; i<win.npcs.size(); i++)
-        if (win.npcs[i]->sceneName == player->pony.sceneName)
+        if (win.npcs[i]->sceneName.toLower() == player->pony.sceneName.toLower())
         {
             win.logMessage("UDP: Sending NPC "+win.npcs[i]->name);
             sendNetviewInstantiate(win.npcs[i], player);
