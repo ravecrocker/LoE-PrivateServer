@@ -176,7 +176,6 @@ QByteArray rangedSingleToData(float value, float min, float max, int numberOfBit
         return data;
     }
     data += (unsigned char)source>>16;
-    numberOfBits -= 8;
     data += (unsigned char)source>>24;
 
     return data;

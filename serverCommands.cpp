@@ -185,7 +185,7 @@ void Widget::sendCmdLine()
             if (udpPlayers[i]->pony.id == destID)
             {
                 logMessage(QString("UDP: Teleported "+sourcePeer->pony.name+" to "+udpPlayers[i]->pony.name));
-                if (udpPlayers[i]->pony.sceneName != sourcePeer->pony.sceneName)
+                if (udpPlayers[i]->pony.sceneName.toLower() != sourcePeer->pony.sceneName.toLower())
                 {
                     sendLoadSceneRPC(sourcePeer, udpPlayers[i]->pony.sceneName, udpPlayers[i]->pony.pos);
                 }
@@ -295,7 +295,7 @@ void Widget::sendCmdLine()
             logMessage("Loaded "+QString().setNum(nQuests)+" quests/npcs.");
 
             // Resend the NPC if needed
-            if (npc->sceneName == cmdPeer->pony.sceneName)
+            if (npc->sceneName.toLower() == cmdPeer->pony.sceneName.toLower())
             {
                 sendNetviewRemove(cmdPeer, npc->netviewId);
                 sendNetviewInstantiate(npc, cmdPeer);

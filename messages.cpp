@@ -52,7 +52,7 @@ void sendEntitiesList(Player *player)
 
     // Send npcs
     for (int i=0; i<win.npcs.size(); i++)
-        if (win.npcs[i]->sceneName == player->pony.sceneName)
+        if (win.npcs[i]->sceneName.toLower() == player->pony.sceneName.toLower())
         {
             win.logMessage("UDP: Sending NPC "+win.npcs[i]->name);
             sendNetviewInstantiate(win.npcs[i], player);
@@ -424,10 +424,10 @@ void sendLoadSceneRPC(Player* player, QString sceneName) // Loads a scene and se
     levelLoadMutex.lock();
     player->inGame=1;
     player->pony.pos = vortex.destPos;
-    player->pony.sceneName = sceneName;
+    player->pony.sceneName = sceneName.toLower();
     player->lastValidReceivedAnimation.clear(); // Changing scenes resets animations
     Player::removePlayer(oldScene->players, player->IP, player->port);
-    if (oldScene->name != sceneName)
+    if (oldScene->name.toLower() != sceneName.toLower())
     {
         // Send remove RPC to the other players of the old scene
         for (int i=0; i<oldScene->players.size(); i++)
@@ -441,7 +441,7 @@ void sendLoadSceneRPC(Player* player, QString sceneName) // Loads a scene and se
     scene->players << player;
 
     QByteArray data(1,5);
-    data += stringToData(sceneName);
+    data += stringToData(sceneName.toLower());
     sendMessage(player,MsgUserReliableOrdered6,data); // Sends a 48
     //win.logMessage("sendLoadSceneRPC: unlocking");
     levelLoadMutex.unlock();
@@ -468,10 +468,10 @@ void sendLoadSceneRPC(Player* player, QString sceneName, UVector pos) // Loads a
     levelLoadMutex.lock();
     player->inGame=1;
     player->pony.pos = pos;
-    player->pony.sceneName = sceneName;
+    player->pony.sceneName = sceneName.toLower();
     player->lastValidReceivedAnimation.clear(); // Changing scenes resets animations
     Player::removePlayer(oldScene->players, player->IP, player->port);
-    if (oldScene->name != sceneName)
+    if (oldScene->name.toLower() != sceneName.toLower())
     {
         // Send remove RPC to the other players of the old scene
         for (int i=0; i<oldScene->players.size(); i++)
@@ -485,7 +485,7 @@ void sendLoadSceneRPC(Player* player, QString sceneName, UVector pos) // Loads a
     scene->players << player;
 
     QByteArray data(1,5);
-    data += stringToData(sceneName);
+    data += stringToData(sceneName.toLower());
     sendMessage(player,MsgUserReliableOrdered6,data); // Sends a 48
     //win.logMessage("sendLoadSceneRPC pos: unlocking");
     levelLoadMutex.unlock();

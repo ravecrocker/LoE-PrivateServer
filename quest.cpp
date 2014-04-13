@@ -41,7 +41,7 @@ Quest::Quest(QString path, Player *Owner)
                 else throw QString("Quest::Quest: Error reading name, quest "+path);
             else if (line[0] == "scene")
                 if (line.size()>=2)
-                    npc->sceneName = lines[i].mid(line[0].size()+1);
+                    npc->sceneName = lines[i].mid(line[0].size()+1).toLower();
                 else throw QString("Quest::Quest: Error reading scene, quest "+path);
             else if (line[0] == "ponyData")
                 if (line.size()==2)
@@ -104,14 +104,14 @@ Quest::Quest(QString path, Player *Owner)
                 commands->append(line);
         }
     }
-    catch (QString error)
+    catch (QString& error)
     {
         win.logMessage(error);
         win.stopServer();
     }
 }
 
-QString Quest::concatAfter(QList<QString> list, int id)
+QString Quest::concatAfter(QList<QString> list, int id) const
 {
     QString result;
     if (list.size() <= id)

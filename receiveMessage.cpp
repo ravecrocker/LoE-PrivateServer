@@ -404,7 +404,7 @@ void receiveMessage(Player* player)
                 // Create the new pony for this player
                 pony.ponyData = ponyData;
                 pony.name = dataToString(ponyData);
-                pony.sceneName = "PonyVille";
+                pony.sceneName = "ponyville";
                 pony.pos = findVortex(pony.sceneName, 0).destPos;
                 ponies += pony;
             }

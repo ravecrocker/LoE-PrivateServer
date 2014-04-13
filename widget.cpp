@@ -196,7 +196,7 @@ void Widget::startServer()
             }
             logMessage("Loaded "+QString().setNum(nQuests)+" quests/npcs.");
         }
-        catch (QString e)
+        catch (QString& e)
         {
             enableGameServer = false;
         }

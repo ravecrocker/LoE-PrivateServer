@@ -80,7 +80,7 @@ struct MessageHead
     quint16 channel;
     quint16 seq;
 
-    bool operator==(const MessageHead& other)
+    bool operator==(const MessageHead& other) const
     {
         return (channel==other.channel && seq==other.seq);
     }

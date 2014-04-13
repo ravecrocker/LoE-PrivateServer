@@ -10,7 +10,7 @@ Vortex::Vortex()
 
 Scene::Scene(QString sceneName)
 {
-    name = sceneName;
+    name = sceneName.toLower();
     vortexes = QList<Vortex>();
 }
 

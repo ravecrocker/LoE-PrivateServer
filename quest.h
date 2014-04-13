@@ -23,7 +23,7 @@ public:
 
 private:
     void runScript(int Eip); // Runs the script until the end or the next dialog
-    QString concatAfter(QList<QString> list, int id); // Concatenate the strings after id in the list
+    QString concatAfter(QList<QString> list, int id) const; // Concatenate the strings after id in the list
 
 public:
     QList<QList<QString> >* commands; // List of commands and their arguments, parsed from the quest file.

@@ -52,7 +52,7 @@ Player::Player()
     lastPingTime=timestampNow();
     port=0;
     IP=QString();
-    receivedDatas = new QByteArray;
+    receivedDatas = new QByteArray();
     for (int i=0;i<33;i++)
         udpSequenceNumbers[i]=0;
     for (int i=0;i<33;i++)
@@ -222,7 +222,7 @@ void Player::savePonies(Player *player, QList<Pony> ponies)
     {
         file.write(ponies[i].ponyData);
         file.write(vectorToData(ponies[i].pos));
-        file.write(stringToData(ponies[i].sceneName));
+        file.write(stringToData(ponies[i].sceneName.toLower()));
     }
 }
 
@@ -274,7 +274,7 @@ QList<Pony> Player::loadPonies(Player* player)
             } while ((num3 & 0x80) != 0);
             strlen2 = (uint) num;
         }
-        pony.sceneName = data.mid(i+lensize2, strlen2);
+        pony.sceneName = data.mid(i+lensize2, strlen2).toLower();
         i+=strlen2+lensize2;
 
         // Create quests

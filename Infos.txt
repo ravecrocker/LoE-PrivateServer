@@ -2489,3 +2489,15 @@ But if we use the prefilled password (not remember password, just the prefilled 
 => commfunction=login&username=1&passhash=17ba0791499db908433b80f37c5fbc89b870084b&version=201401
 => commfunction=login&username=1&passhash=356a192b7913b04c54574d18c28d46e6395428ab&version=201401
 ==> Fixed. The passhashes being different is a bug in the game.
+
+=> TODO: Might want to use color in the log for errors and warnings. As an optional parameter to logMessage maybe.
+
+=> TODO: BUG: Teleporting with a target pony instead of destination is not implemented and destination is semi-random
+
+=> TODO: setPeer/listPeers should use netviewIds, not Ids
+
+=> TODO: BUG: We accept loading a scene with a case insensitive name, but later we compare with case sensitivity
+=> So if a player does load RaritysBouTIQUE, he'll never sync with anyone else since we compare scene names case sensitive !
+==> We should just toLower everything.
+
+=> TODO: We should totally log the version of the client when they login. Just in case.
