@@ -1,7 +1,0 @@
-HTTP/1.1 200 OK
-Content-Type: application/xml
-Accept-Ranges: bytes
-ETag: "2871579846"
-Last-Modified: Wed, 22 Jan 2114 06:43:32 GMT
-Date: Fri, 24 Jan 2114 11:34:21 GMT
-Server: lighttpd/1.4.31
