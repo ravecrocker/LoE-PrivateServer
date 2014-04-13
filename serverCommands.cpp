@@ -92,7 +92,7 @@ void Widget::sendCmdLine()
         if (str.size()<=10)
         {
             for (int i=0; i<win.udpPlayers.size();i++)
-                win.logMessage(QString().setNum(win.udpPlayers[i]->pony.netviewId)
+                win.logMessage(QString().setNum(win.udpPlayers[i]->pony.id)
                                +"   "+win.udpPlayers[i]->pony.name
                                +"   "+win.udpPlayers[i]->IP
                                +":"+QString().setNum(win.udpPlayers[i]->port)
