@@ -11,8 +11,8 @@ sayIcon emotionId : The message will use the avatar/icon for this emotion if it 
 answer dest msg : Answer for previous message, goto label dest if selected
 goto label : Jumps to the label
 label name : Creates a label you can jump to. No spaces allowed in the label name.
-give item qty : Give qty items. Can be <0.
-giveBits qty : Give qty bits. Can be <0.
+give itemId qty : Give qty items with this itemId. Can be <0 to take items from the player.
+giveBits qty : Give qty bits. Can be <0 to take bits from the player.
 hasItem item yes no : Jump to yes or no if player has this item
 hasItem item qty yes no : Jump to yes or no if player has qty of item
 setQuestState state : set the quest state, will be saved on the savegame
@@ -36,6 +36,9 @@ pos x y z : Pos of the NPC
 rot rx ry rz rw : Rot of the NPC
 wear itemId : Add an item to be worn by the NPC
 end : end of conversation
+
+Special variables. Use these in a 'say' or 'answer' command :
+$PLAYERNAME - Name of the player's pony
 
 Each player has a copy of the Quest class.
 An answer should always be following a say or another answer.

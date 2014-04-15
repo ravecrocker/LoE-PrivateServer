@@ -227,6 +227,12 @@ bool Quest::doCommand(int commandEip)
                 break;
         }
 
+        // Replace special variables
+        msg.replace("$PLAYERNAME", owner->pony.name);
+        for (QString& s : answers)
+            s.replace("$PLAYERNAME", owner->pony.name);
+
+        // Send
         sendBeginDialog(owner);
         sendDialogMessage(owner, msg, npcName, iconId);
         sendDialogMessage(owner, msg, npcName, iconId);
@@ -442,13 +448,12 @@ bool Quest::doCommand(int commandEip)
             }
             for (const Quest& quest : owner->pony.quests)
             {
-                if (quest.id == questId && quest.state == uState)
+                if (quest.id == questId)
                 {
-                    eip = destEip;
+                    if (quest.state == uState)
+                        eip = destEip;
                     return true;
                 }
-                else
-                    return true;
             }
             logError("invalid quest id for command gotoIfState");
             return false;

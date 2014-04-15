@@ -1864,15 +1864,16 @@ UDP: Set id request : 1/1
 ...
 ===> Not really fixed, but we can safely ignore the error.
 
-=> TODO: Do Chip's idea of multiple tabs.
+=> Do Chip's idea of multiple tabs.
 One with everything, one with server commands, one with player info.
+=> Or maybe don't. Just remove some useless output
 
 => TODO: Save the logs to a text file
 ==> Filename should be the system time
 
 => When disconnecting players on server exit, save the ponies first !
 
-=> TODO: Update the DLL to download static data from the private server instead of the officials
+=> Update the DLL to download static data from the private server instead of the officials
 
 => Fix chat bug when you're alone or just entered, either no name or not working at all
 
@@ -1911,7 +1912,8 @@ UDP: Sending the ponyData for/to 2
 
 => What's with the login server adding tons of shit to players.dat ? Fixed.
 
-=> TODO: BUG: Search all the casts (search <<8 or msg[ or something) and cast correctly to quint8 first
+=> Search all the casts (search <<8 or msg[ or something) and cast correctly to quint8 first
+==> Fixed.
 
 => New example of spells (54 C3) : c300020000000a000000000000000b00000000000000
 
@@ -1965,7 +1967,8 @@ private void RpcPerformMagic (NetIncomingMessage msg)
 
 => Go look at PonyQuest. Seriously. Apparently there's a whole language and parser for quests/npcs/.. and it was already in ponyquest.
 
-=> TODO: BUG: The global chat isn't actually global ! Make it global, and implement the real global chat.
+=> The global chat isn't actually global ! Make it global, and implement the real global chat.
+==> Fixed
 
 => TODO: If we can't find loe.exe/LoE.exe/LoE-Windows-x64.exe/LoE-Windows.exe/LoE-Windows-x86.exe/loe.x86/loe.x86_64, show a warning
 ==> Because the user maybe didn't understood that he had to merge the folders.
@@ -2051,7 +2054,7 @@ public void OnDeserialize (NetIncomingMessage message)
 ===> The goggles tends to not be worn if we change anything. 
 ===> Sometimes the first item becomes an apple even if we never asked for this. Sometime items aren't in the inventory.
 
-=> BUG: When we speak in the local chat, we don't have a name !
+=> When we speak in the local chat, we don't have a name !
 ==> Maybe just print the player name when we're about to send a message
 ==> CharacterId is a ReadInt32, is ReadInt32 always 32 bit ?
 public void OnDeserialize (NetIncomingMessage message)
@@ -2062,6 +2065,7 @@ public void OnDeserialize (NetIncomingMessage message)
 	this.CharacterId = message.ReadInt32 ();
 	this.accessLevel = message.ReadByte ();
 }
+=> Fixed
 
 => Fix setMaxStat/.. etc not actully sending data about the refresh, but always about the player to the player. Add an overload.
 
@@ -2344,8 +2348,6 @@ I'm still terrible at writing dialogs. PRs are very welcome.
 
 => TODO: BUG: Don't allow someone to create a pony with the same name as a NPC or another player ?
 
-=> TODO: In a 'say' questscript command, replace $PLAYERNAME by the of the player. We need it for Spud, in Astral Charm's quest.
-
 => Astral Charm ponyCode : YmqvY2qv/0vrAf5//0vrKSgEAGYAAMATKL+fZmamH02aImDxuQOIGA==
 
 => Teleport example.
@@ -2433,7 +2435,7 @@ Tired = 22
 09				RPC number
 0400			Item slot (index)
 
-=> TODO: Do the item wearing properly. We need some kind of DB of items and their wearable slots
+=> Do the item wearing properly. We need some kind of DB of items and their wearable slots
 => Wearable slots :
 None = 0
 Tail = 0x1
@@ -2496,8 +2498,11 @@ But if we use the prefilled password (not remember password, just the prefilled 
 
 => TODO: setPeer/listPeers should use netviewIds, not Ids
 
-=> TODO: BUG: We accept loading a scene with a case insensitive name, but later we compare with case sensitivity
+=> We accept loading a scene with a case insensitive name, but later we compare with case sensitivity
 => So if a player does load RaritysBouTIQUE, he'll never sync with anyone else since we compare scene names case sensitive !
 ==> We should just toLower everything.
+===> Fixed
 
 => TODO: We should totally log the version of the client when they login. Just in case.
+
+=> TODO: In a 'say' or 'answer' questscript command, replace $PLAYERNAME by the name of the player. We need it for Spud, in Astral Charm's quest.
