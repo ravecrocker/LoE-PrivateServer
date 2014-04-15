@@ -179,7 +179,9 @@ void receiveMessage(Player* player)
     }
     else if ((unsigned char)msg[0] == MsgAcknowledge) // Acknowledge
     {
-        win.logMessage("ACK message : "+QString(msg.toHex()));
+#if DEBUG_LOG
+        //win.logMessage("ACK message : "+QString(msg.toHex()));
+#endif
         // Number of messages ACK'd by this message
         int nAcks = ((quint8)msg[3] + (((quint16)(quint8)msg[4])<<8)) / 24;
         if (nAcks)
@@ -197,6 +199,7 @@ void receiveMessage(Player* player)
             }
 
             // Print list of ACK'd messages
+#if DEBUG_LOG
             if (acks.size())
             {
                 QString ackMsg = "UDP: Messages acknoledged (";
@@ -209,6 +212,7 @@ void receiveMessage(Player* player)
                 ackMsg += ")";
                 win.logMessage(ackMsg);
             }
+#endif
 
             if (player->udpSendReliableQueue.size() && acks.size()) // If there's nothing to check, do nothing
             {
