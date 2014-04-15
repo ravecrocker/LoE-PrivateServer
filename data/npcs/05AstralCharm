@@ -12,6 +12,7 @@ questDescr Astral wants to use you as a messenger for ill news.
 gotoIfState 0 0-start
 gotoIfState 1 0-alt-start
 gotoIfState 2 0-accepted
+gotoIfState 3 0-talkedToSpud
 
 # State 0 : Send the player talking to Spud
 label 0-start
@@ -48,28 +49,16 @@ answer 0-accept3 Okay, I'm on it.
 label 0-accept1
 setQuestState 2
 say Just go. 
-
-# WARNING: Spud does not exist
-say Spud doesn't exist in the Private Server at the moment. Check back later !
-sayName [SERVER]
 end
 
 label 0-accept2
 setQuestState 2
 say You'd be amazed at how many hoops you have to jump through to have an experiment considered "ethical." It seems like half of the scientific community exists solely to make sure they can shun or imprison themselves and everyone around them at any opportunity. Also, somepony could get pretty sick. You had really better get going. 
-
-# WARNING: Spud does not exist
-say Spud doesn't exist in the Private Server at the moment. Check back later !
-sayName [SERVER]
 end
 
 label 0-accept3
 setQuestState 2
 say Okay, thanks. And I can reimburse whomever I need to after all this is taken care of. 
-
-# WARNING: Spud does not exist
-say Spud doesn't exist in the Private Server at the moment. Check back later !
-sayName [SERVER]
 end
 
 label 0-cancel
@@ -81,6 +70,7 @@ setQuestState 1
 say I can't just tell him myself because I'm not allowed on the property, genius. If you're not going to help me, I'll just find somepony who will.
 end
 
+# State 1 : We didn't accept the first time
 label 0-alt-start
 say I have nothing to say to you. 
 answer 0-alt-accept1 I decided I'd talk to Spud for you after all.
@@ -93,10 +83,6 @@ answer 0-alt-accept3 Well, fine, then!
 
 label 0-alt-accept2
 setQuestState 2
-
-# WARNING: Spud does not exist
-say Spud doesn't exist in the Private Server at the moment. Check back later !
-sayName [SERVER]
 end
 
 label 0-alt-accept3
@@ -110,19 +96,37 @@ answer 0-alt-accept5 ...yeah. That's right.
 label 0-alt-accept5
 setQuestState 2
 say Hmph.
-
-# WARNING: Spud does not exist
-say Spud doesn't exist in the Private Server at the moment. Check back later !
-sayName [SERVER]
 end
 
 label 0-alt-cancel
 end
 
+# State 2 : We need to go talk to Spud
 label 0-accepted
 say You're supposed to be talking to Spud, not me. I already know. 
-
-# WARNING: Spud does not exist
-say Spud doesn't exist in the Private Server at the moment. Check back later !
-sayName [SERVER]
 end
+
+#State 3 : We just talked to Spud and need to talk to Flan
+label 0-talkedToSpud
+say So, did you tell him? 
+answer 0-spudflan-explain1 Yes. He was pretty angry. He might have threatened you a little.
+answer 0-spudflan-explain2 I told him.
+
+label 0-spudflan-explain1
+say I can't say that surprises me. Well, thanks for your help, at least. I suppose your work here is done. ...And now I've got to think of another way to make it up to him too. A scientist's work is just never done. 
+answer 0-spudflan-accept1 Okay. Later.
+answer 0-spudflan-accept2 Don't I get a reward?
+answer 0-spudflan-accept2 Is there anything I can do to help?
+answer 0-spudflan-accept2 Maybe you should just leave him alone.
+
+label 0-spudflan-accept1
+end
+
+label 0-spudflan-accept2
+say ...No
+end
+
+label 0-spudflan-explain2
+say How'd he take it? 
+answer 0-spudflan-explain1 Not particularly well.
+
