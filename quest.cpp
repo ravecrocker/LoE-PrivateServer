@@ -72,12 +72,12 @@ Quest::Quest(QString path, Player *Owner)
                 for (int i=1; i<line.size(); i++)
                 {
                     bool ok;
-                    id = line[i].toInt(&ok);
+                    int itemId = line[i].toInt(&ok);
                     if (!ok)
                         throw QString("Quest::Quest: Error reading wear, quest "+path);
                     WearableItem item;
-                    item.id = id;
-                    item.index = wearablePositionsToSlot(win.wearablePositionsMap[id]);
+                    item.id = itemId;
+                    item.index = wearablePositionsToSlot(win.wearablePositionsMap[itemId]);
                     npc->worn << item;
                 }
             }
