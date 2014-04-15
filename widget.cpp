@@ -341,6 +341,8 @@ Widget::~Widget()
             if (ponies[i].ponyData == player->pony.ponyData)
                 ponies[i] = player->pony;
         Player::savePonies(player, ponies);
+        player->pony.saveInventory();
+        player->pony.saveQuests();
 
         // Free
         delete player;
