@@ -17,7 +17,7 @@ The private server is still in beta, expect bugs. Patches and pull requests are 
 Some important features are still lacking at the moment :
 - No monsters without server commands.
 - Not as many quests as the official servers.
-- No 'natural' items to collect (flower, gems, ...)
+- No 'natural' items to collect (flowers, gems, ...)
 
 <h3>Chat commands</h3>
 - /stuck : Reloads and sends you to the spawn. Use it if you can't move.
@@ -39,7 +39,7 @@ For example if you're stuck, do setPeer with your IP and port, then do for examp
 - setPeer : If there's only 1 client, select him for the other commands. If there's more than 1, use "setPeer IP port".
 - setPeer IP port : Select the client at this IP and port. The other commands will act on the selected client.
 - disconnect : Kick the player with the message "Connection closed by the server admin". Does not ban.
-- load scene : Loads a scene (PonyVille, Cloudsdale, ...) and teleport to it's spawn. See the list of scenes below.
+- load scene : Loads a scene (PonyVille, Cloudsdale, ...) and teleport to its spawn. See the list of scenes below.
 - getPos : Get the position (x, y, z) of the player. Often used with "move x y z".
 - getRot : Get the rotation (x, y, z, w) of the player.
 - move x y z : Instantly teleport the player to the given position. Not a spell. You just move.
@@ -69,7 +69,7 @@ For example if you're stuck, do setPeer with your IP and port, then do for examp
 <h3>List of scenes</h3>
 To use with the command "load scene".
 PM-Lvl1 is the Pony Muncher game (Pac Man).
-If you land in the void after loading a scene, try "move 0 0 0" (and either add an issue on GitHub or complain at mlpfightingismagic@gmail.com)
+If you land in the void after loading a scene, try "/stuck" in the chat (and either add an issue on GitHub or complain at mlpfightingismagic@gmail.com)
 - PonyVille
 - SugarCubeCorner
 - GemMines
@@ -89,4 +89,4 @@ If you land in the void after loading a scene, try "move 0 0 0" (and either add 
 - PM-Lvl1
 
 <img src="https://f.cloud.github.com/assets/5155966/1389911/6503cd02-3be3-11e3-987f-98611a94a106.jpg"/>
-(This screenshot was taken on the privat server, but isn't from the latest version)
+(This screenshot was taken on an older version the private server)
