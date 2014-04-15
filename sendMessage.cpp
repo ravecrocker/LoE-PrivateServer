@@ -1,4 +1,4 @@
-#include "message.h"
+#include "sendMessage.h"
 #include "character.h"
 #include "widget.h"
 #include "utils.h"
@@ -114,6 +114,15 @@ void sendMessage(Player* player,quint8 messageType, QByteArray data)
         win.logStatusMessage("sendMessage : Unknown message type");
         return;
     }
+
+    // Simulate packet loss if enabled (DEBUG ONLY!)
+#if UDP_SIMULATE_PACKETLOSS
+    if (qrand() % 100 <= UDP_PERCENT_DROPPED)
+    {
+        win.logMessage("UDP: Packet dropped !");
+        return;
+    }
+#endif
 
     if (win.udpSocket->writeDatagram(msg,QHostAddress(player->IP),player->port) != msg.size())
     {

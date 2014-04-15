@@ -5,6 +5,7 @@
 #include "utils.h"
 #include "serialize.h"
 #include "message.h"
+#include "sendMessage.h"
 #include "items.h"
 
 SceneEntity::SceneEntity()

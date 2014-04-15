@@ -36,7 +36,8 @@ HEADERS  += widget.h \
 	sync.h \
     quest.h \
     serialize.h \
-    items.h
+    items.h \
+    sendMessage.h
 
 FORMS    += widget.ui
 

@@ -2506,3 +2506,6 @@ But if we use the prefilled password (not remember password, just the prefilled 
 => TODO: We should totally log the version of the client when they login. Just in case.
 
 => TODO: In a 'say' or 'answer' questscript command, replace $PLAYERNAME by the name of the player. We need it for Spud, in Astral Charm's quest.
+
+=> TODO: Simulate UDP packet loss. In the send function, drop things randomly.
+=> Use a #define w/ comments to make sure people don't accidentally enable this
