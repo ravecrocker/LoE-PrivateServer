@@ -13,6 +13,7 @@ gotoIfState 0 0-start
 gotoIfState 1 0-alt-start
 gotoIfState 2 0-accepted
 gotoIfState 3 0-talkedToSpud
+gotoIfState 4 0-talkedToFlan
 
 # State 0 : Send the player talking to Spud
 label 0-start
@@ -106,7 +107,7 @@ label 0-accepted
 say You're supposed to be talking to Spud, not me. I already know. 
 end
 
-#State 3 : We just talked to Spud and need to talk to Flan
+# State 3 : We just talked to Spud and need to talk to Flan
 label 0-talkedToSpud
 say So, did you tell him? 
 answer 0-spudflan-explain1 Yes. He was pretty angry. He might have threatened you a little.
@@ -130,3 +131,7 @@ label 0-spudflan-explain2
 say How'd he take it? 
 answer 0-spudflan-explain1 Not particularly well.
 
+# State 4 : We just talked to Flan, need to talk to Wanda
+label 0-talkedToFlan
+say You've got things to be doing, so do them! 
+end
