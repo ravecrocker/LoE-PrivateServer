@@ -45,7 +45,7 @@ void Widget::logMessage(QString msg)
 
 void Widget::startServer()
 {
-    logStatusMessage("Private server v0.5.0");
+    logStatusMessage("Private server v0.5.1-alpha");
 #ifdef __APPLE__
     // this fixes the directory in OSX so we can use the relative CONFIGFILEPATH and etc properly
     CFBundleRef mainBundle = CFBundleGetMainBundle();
