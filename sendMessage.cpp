@@ -87,6 +87,9 @@ void sendMessage(Player* player,quint8 messageType, QByteArray data)
     }
     else if (messageType == MsgConnectResponse)
     {
+        //win.logMessage("sendMessage locking");
+        player->udpSendReliableMutex.lock();
+        player->udpSendReliableGroupTimer->stop();
         msg.resize(5);
         // Payload size
         msg[3] = 0x88;
@@ -97,6 +100,16 @@ void sendMessage(Player* player,quint8 messageType, QByteArray data)
         // AppId + UniqueId
         msg += data;
         msg += floatToData(timestampNow());
+
+        if (player->udpSendReliableGroupBuffer.size() + msg.size() > 1024) // Flush the buffer before starting a new grouped msg
+            player->udpDelayedSend();
+        player->udpSendReliableGroupBuffer.append(msg);
+
+        player->udpSendReliableGroupTimer->start(); // When this timeouts, the content of the buffer will be sent reliably
+
+        //win.logMessage("sendMessage unlocking");
+        player->udpSendReliableMutex.unlock();
+        return; // This isn't a normal send, but a delayed one with the timer callbacks
     }
     else if (messageType == MsgDisconnect)
     {
@@ -122,6 +135,8 @@ void sendMessage(Player* player,quint8 messageType, QByteArray data)
         win.logMessage("UDP: Packet dropped !");
         return;
     }
+    else
+        win.logMessage("UDP: Packet got throught");
 #endif
 
     if (win.udpSocket->writeDatagram(msg,QHostAddress(player->IP),player->port) != msg.size())

@@ -2505,7 +2505,14 @@ But if we use the prefilled password (not remember password, just the prefilled 
 
 => TODO: We should totally log the version of the client when they login. Just in case.
 
-=> TODO: In a 'say' or 'answer' questscript command, replace $PLAYERNAME by the name of the player. We need it for Spud, in Astral Charm's quest.
+=> In a 'say' or 'answer' questscript command, replace $PLAYERNAME by the name of the player. We need it for Spud, in Astral Charm's quest.
 
-=> TODO: Simulate UDP packet loss. In the send function, drop things randomly.
+=> Simulate UDP packet loss. In the send function, drop things randomly.
 => Use a #define w/ comments to make sure people don't accidentally enable this
+==> Okay, first thing is connecting to the server. We should be able to get to the menu everytime even with 50% packet loss.
+==> Okay we managed to reach the menu everytime with 75% packet loss ! 
+==> Then at 75% it sometimes timeouts because we drop the pongs every 5s, but it works.
+==> We even reached RaritysBoutique without a single bug at 75%!
+
+=> TODO: Actually, we only simulate packet loss when sending, not when receiving ! 
+=> Implement that too, when we're done fixing the mess with reliable sending.

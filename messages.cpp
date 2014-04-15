@@ -3,6 +3,8 @@
 #include "widget.h"
 #include "serialize.h"
 
+#define DEBUG_LOG false
+
 // File-global game-entering mutex (to prevent multiple instantiates)
 static QMutex levelLoadMutex;
 
@@ -34,6 +36,9 @@ void sendEntitiesList(Player *player)
     if (player->inGame == 0) // Not yet in game, send player's ponies list (Characters scene)
     {
         levelLoadMutex.unlock();
+#if DEBUG_LOG
+        win.logMessage("UDP: Sending ponies list");
+#endif
         sendPonies(player);
         return;
     }

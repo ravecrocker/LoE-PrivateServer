@@ -5,6 +5,8 @@
 #include "utils.h"
 #include "serialize.h"
 
+#define DEBUG_LOG false
+
 void receiveMessage(Player* player)
 {
     QByteArray msg = *(player->receivedDatas);
@@ -79,8 +81,8 @@ void receiveMessage(Player* player)
         {
             if (player->nReceivedDups > 0) // If he stopped sending dups, forgive him slowly.
                 player->nReceivedDups--;
-            //win.logMessage("UDP: Received message (="+QString().setNum(seq)
-            //               +") from "+QString().setNum(player->pony.netviewId));
+            win.logMessage("UDP: Received message (="+QString().setNum(seq)
+                           +") from "+QString().setNum(player->pony.netviewId));
             player->udpRecvSequenceNumbers[channel] = seq;
         }
     }
@@ -88,8 +90,8 @@ void receiveMessage(Player* player)
     // Process the received message
     if ((unsigned char)msg[0] == MsgPing) // Ping
     {
-        //win.logMessage("UDP: Ping received from "+player->IP+":"+QString().setNum(player->port)
-        //        +" ("+QString().setNum((timestampNow() - player->lastPingTime))+"s)");
+        win.logMessage("UDP: Ping received from "+player->IP+":"+QString().setNum(player->port)
+                +" ("+QString().setNum((timestampNow() - player->lastPingTime))+"s)");
         player->lastPingNumber = (quint8)msg[5];
         player->lastPingTime = timestampNow();
         sendMessage(player,MsgPong);
@@ -102,13 +104,14 @@ void receiveMessage(Player* player)
     {
         msg.resize(18); // Supprime le message LocalHail et le Timestamp
         msg = msg.right(13); // Supprime le Header
-
-        //win.logMessage(QString("UDP: Connecting ..."));
-
+#if DEBUG_LOG
+        win.logMessage(QString("UDP: Connecting ..."));
+#endif
         for (int i=0; i<32; i++) // Reset sequence counters
             player->udpSequenceNumbers[i]=0;
 
-        sendMessage(player, MsgConnectResponse, msg);
+        if (!player->connected)
+            sendMessage(player, MsgConnectResponse, msg);
     }
     else if ((unsigned char)msg[0] == MsgConnectionEstablished) // Connect ACK
     {
@@ -117,9 +120,43 @@ void receiveMessage(Player* player)
         for (int i=0; i<32; i++) // Reset sequence counters
             player->udpSequenceNumbers[i]=0;
 
-        // Start game
-        //win.logMessage(QString("UDP: Starting game"));
+        // Remove the connect SYN|ACK from the send queue
+        player->udpSendReliableMutex.lock();
+        player->udpSendReliableTimer->stop();
+        for (int i=0; i<player->udpSendReliableQueue.size();)
+        {
+            QByteArray qMsg = player->udpSendReliableQueue[i];
+            int pos=0;
+            while (pos < qMsg.size()) // Try to find a SYN|ACK
+            {
+                quint16 qMsgSize = (((quint16)(quint8)qMsg[pos+3])+(((quint16)(quint8)qMsg[pos+4])<<8))/8+5;
+                if ((quint16)(quint8)qMsg[pos] == 0x84) // Remove the msg, now that we're connected
+                {
+#if DEBUG_LOG
+                    win.logMessage("Removed SYN|ACK message");
+#endif
+                    qMsg = qMsg.left(pos) + qMsg.mid(pos+qMsgSize);
+                }
+                else
+                    pos += qMsgSize;
+            }
 
+            if (qMsg.size())
+            {
+                player->udpSendReliableQueue[i] = qMsg;
+                i++;
+            }
+            else
+                player->udpSendReliableQueue.remove(i);
+        }
+        if (player->udpSendReliableQueue.size())
+            player->udpSendReliableTimer->start();
+        player->udpSendReliableMutex.unlock();
+
+        // Start game
+#if DEBUG_LOG
+        win.logMessage(QString("UDP: Starting game"));
+#endif
         // Set local player id
         win.lastIdMutex.lock();
         player->pony.id = win.getNewId();
@@ -142,7 +179,7 @@ void receiveMessage(Player* player)
     }
     else if ((unsigned char)msg[0] == MsgAcknowledge) // Acknowledge
     {
-        //win.logMessage("ACK message : "+QString(msg.toHex()));
+        win.logMessage("ACK message : "+QString(msg.toHex()));
         // Number of messages ACK'd by this message
         int nAcks = ((quint8)msg[3] + (((quint16)(quint8)msg[4])<<8)) / 24;
         if (nAcks)
@@ -160,18 +197,18 @@ void receiveMessage(Player* player)
             }
 
             // Print list of ACK'd messages
-            //if (acks.size())
-            //{
-                //QString ackMsg = "UDP: Messages acknoledged (";
-                //for (int i=0; i<acks.size(); i++)
-                //{
-                //    if (i)
-                //        ackMsg += "/";
-                //    ackMsg+=QString(QByteArray().append(acks[i].channel).toHex())+":"+QString().setNum(acks[i].seq);
-                //}
-                //ackMsg += ")";
-                //win.logMessage(ackMsg);
-            //}
+            if (acks.size())
+            {
+                QString ackMsg = "UDP: Messages acknoledged (";
+                for (int i=0; i<acks.size(); i++)
+                {
+                    if (i)
+                        ackMsg += "/";
+                    ackMsg+=QString(QByteArray().append(acks[i].channel).toHex())+":"+QString().setNum(acks[i].seq);
+                }
+                ackMsg += ")";
+                win.logMessage(ackMsg);
+            }
 
             if (player->udpSendReliableQueue.size() && acks.size()) // If there's nothing to check, do nothing
             {

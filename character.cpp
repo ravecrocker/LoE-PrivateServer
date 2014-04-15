@@ -345,7 +345,30 @@ void Player::udpResendLast()
     }
     //udpSendReliableMutex.lock();
     QByteArray msg = udpSendReliableQueue.first();
-    //win.logMessage("Resending message : "+QString(msg.toHex().data()));
+    if (msg.isEmpty())
+    {
+        win.logMessage("udpResendLast: Empty message");
+        udpSendReliableTimer->start();
+        //win.logMessage("udpResendLast unlocking");
+        udpSendReliableMutex.unlock();
+        return;
+    }
+
+    win.logMessage("Resending message : "+QString(msg.toHex().data()));
+
+    // Simulate packet loss if enabled (DEBUG ONLY!)
+#if UDP_SIMULATE_PACKETLOSS
+    if (qrand() % 100 <= UDP_PERCENT_DROPPED)
+    {
+        win.logMessage("UDP: ResendLast packet dropped !");
+        udpSendReliableTimer->start();
+        //win.logMessage("udpResendLast unlocking");
+        udpSendReliableMutex.unlock();
+        return;
+    }
+    else
+        win.logMessage("UDP: ResendLast packet got throught");
+#endif
 
     if (win.udpSocket->writeDatagram(msg,QHostAddress(IP),port) != msg.size())
     {
@@ -375,7 +398,7 @@ void Player::udpDelayedSend()
         return; // Avoid deadlock if sendMessage just locked but didn't have the time to stop the timers
     }
     //udpSendReliableMutex.lock();
-    //win.logMessage("Sending delayed grouped message : "+QString(udpSendReliableGroupBuffer.toHex()));
+    win.logMessage("Sending delayed grouped message : "+QString(udpSendReliableGroupBuffer.toHex()));
 
     // Move the grouped message to the reliable queue
     udpSendReliableQueue.append(udpSendReliableGroupBuffer);
@@ -384,6 +407,22 @@ void Player::udpDelayedSend()
     // If it isn't, we need to wait until the previous one was ACK'd
     if (udpSendReliableQueue.size() >= 1)
     {
+        // Simulate packet loss if enabled (DEBUG ONLY!)
+#if UDP_SIMULATE_PACKETLOSS
+        if (qrand() % 100 <= UDP_PERCENT_DROPPED)
+        {
+            win.logMessage("UDP: Delayed send packet dropped !");
+            udpSendReliableGroupBuffer.clear();
+            if (!udpSendReliableTimer->isActive())
+                udpSendReliableTimer->start();
+            //win.logMessage("udpDelayedSend unlocking");
+            udpSendReliableMutex.unlock();
+            return;
+        }
+        else
+            win.logMessage("UDP: Delayed send packet got throught");
+#endif
+
         if (win.udpSocket->writeDatagram(udpSendReliableGroupBuffer,QHostAddress(IP),port) != udpSendReliableGroupBuffer.size())
         {
             win.logMessage("UDP: Error sending last message");

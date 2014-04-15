@@ -23,6 +23,8 @@ Widget::Widget(QWidget *parent) :
     ui->setupUi(this);
 
     pingTimer = new QTimer(this);
+
+    qsrand(QDateTime::currentMSecsSinceEpoch());
 }
 
 void Widget::logStatusMessage(QString msg)

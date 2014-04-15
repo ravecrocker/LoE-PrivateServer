@@ -57,7 +57,7 @@ void Widget::udpProcessPendingDatagrams()
                 if (newPlayer->IP != rAddr.toString()) // IP:Port not found in player list
                 {
                     newPlayer->resetNetwork();
-                    newPlayer->connected = true;
+                    //newPlayer->connected = true; // Not really connected until we finish the handshake
                     newPlayer->name = name;
                     newPlayer->IP = rAddr.toString();
                     newPlayer->port = rPort;
@@ -97,7 +97,7 @@ void Widget::udpProcessPendingDatagrams()
                     newPlayer->name = name;
                     newPlayer->IP = rAddr.toString();
                     newPlayer->port = rPort;
-                    newPlayer->connected = true;
+                    //newPlayer->connected = true; // We're not really connected until we finish the handshake
                 }
             }
             else
