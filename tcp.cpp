@@ -300,6 +300,7 @@ void Widget::tcpProcessData(QByteArray data, QTcpSocket* socket)
         }
         else
         {
+            win.logMessage("Version : "+postData.mid(postData.indexOf("version=")+8));
             bool ok=true;
             postData = postData.right(postData.size()-postData.indexOf("username=")-9);
             QString username = postData;
