@@ -1,9 +1,10 @@
 => Since I'm a faggot, I'll make my own NPC script and interpreter :
 ==> Filenames should be XXName where XX is id of the quest. Not mandatory.
-==> Have a quest struct wich remembers qstringlist of commands, quest id/name/descr/state and EIP
+==> Have a quest struct wich remembers qstringlist of commands, quest id/name/descr/state and EIP. Each player has a copy
 ==> EIP should be reset everytime you start a new conversation with a NPC. Don't resume from the last time.
 => Lines starting with # are comments. No midline comments tho.
 One command per line, arguments separated by spaces
+
 Commands :
 say msg : NPC says message msg
 sayName name : The message will be said by this NPC.
@@ -23,7 +24,7 @@ gotoAfterState state dest : Jumps to dest if the quest's state is >= state
 gotoAfterState state id dest : Jumps to dest if the state of the quest with this id is >= state
 hasBits qty yes no : Jumps to yes or no if player has qty bits
 questName name : Name of the quest.
-questId id : Should be unique. Used in the savegame and by other quests/npcs.
+questId id : MUST be unique. Used in the savegame and by other quests/npcs.
 questDescr txt : Description of the quest.
 teleport x y z : Teleport at given pos
 teleport x y z rx ry rz rw : Teleport at given pos/rot
@@ -40,10 +41,14 @@ end : end of conversation
 Special variables. Use these in a 'say' or 'answer' command :
 $PLAYERNAME - Name of the player's pony
 
-Each player has a copy of the Quest class.
-An answer should always be following a say or another answer.
-When reaching a say, we send the say and all the answers under it, then wait until the client answers.
-If a say has no answers, we still send it and wait until the client clicks to continue.
+An 'answer' should always be following a 'say' or another 'answer'.
+When reaching a 'say', we send the say and all the answers under it, then wait until the client clicks/answers.
+If a 'say' has no answers, we still send it and wait until the client clicks to continue.
+
+And I cannot stress this enough, quest IDs MUST be unique. 
+If they aren't, somes NPCs may have their scripts mixed up and share the same save, with unexpected consequences.
+If you want to add new NPCs, you should give them a high quest ID from the start (e.g. 100 and onward), 
+so that they won't conflict with the private server's 'official' NPCs even in later updates.
 
 List of emotions (emotionId), used with the 'sayIcon' command. 
 This will only work if there is an actual avatar corresponding to the given emotion and NPC name.
