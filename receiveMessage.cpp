@@ -81,8 +81,8 @@ void receiveMessage(Player* player)
         {
             if (player->nReceivedDups > 0) // If he stopped sending dups, forgive him slowly.
                 player->nReceivedDups--;
-            win.logMessage("UDP: Received message (="+QString().setNum(seq)
-                           +") from "+QString().setNum(player->pony.netviewId));
+            //win.logMessage("UDP: Received message (="+QString().setNum(seq)
+            //               +") from "+QString().setNum(player->pony.netviewId));
             player->udpRecvSequenceNumbers[channel] = seq;
         }
     }
@@ -90,8 +90,8 @@ void receiveMessage(Player* player)
     // Process the received message
     if ((unsigned char)msg[0] == MsgPing) // Ping
     {
-        win.logMessage("UDP: Ping received from "+player->IP+":"+QString().setNum(player->port)
-                +" ("+QString().setNum((timestampNow() - player->lastPingTime))+"s)");
+        //win.logMessage("UDP: Ping received from "+player->IP+":"+QString().setNum(player->port)
+        //        +" ("+QString().setNum((timestampNow() - player->lastPingTime))+"s)");
         player->lastPingNumber = (quint8)msg[5];
         player->lastPingTime = timestampNow();
         sendMessage(player,MsgPong);
@@ -246,7 +246,7 @@ void receiveMessage(Player* player)
                     player->udpSendReliableQueue.remove(0); // The whole grouped msg was ACK'd, remove it
                     if (player->udpSendReliableQueue.size()) // If there's a next message in the queue, send it
                     {
-                        win.logMessage("Sending next message in queue");
+                        win.logMessage("UDP: Sending next message in queue");
                         qMsg = player->udpSendReliableQueue[0];
                         if (win.udpSocket->writeDatagram(qMsg,QHostAddress(player->IP),player->port) != qMsg.size())
                         {
