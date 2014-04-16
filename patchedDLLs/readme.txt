@@ -9,6 +9,7 @@ Changed "Connecting to the official Legends of Equestria server" by "Connecting 
 Changed some other minor messages.
 Changed WebDataLoader to download files from the PrivateServer instead of the official server.
 Patched chat to only keep the last 50 messages
+Patched to show a somewhat helpful error instead of sleeping forever on the "Downloading..." screen after a deserialization error.
 
 LegendsOfEquestria.Shared.dll :
 Modified to ignore the chat filters.
@@ -16,3 +17,4 @@ Modified to connect to the PrivateServer (127.0.0.1:1031)
 
 LegendsOfEquestria.Data.dll :
 Modified to connect to the PrivateServer (127.0.0.1:1031)
+Modified to store 1 in a new public static field if there was a deserialization error.

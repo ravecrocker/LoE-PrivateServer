@@ -2516,3 +2516,10 @@ But if we use the prefilled password (not remember password, just the prefilled 
 
 => TODO: Actually, we only simulate packet loss when sending, not when receiving ! 
 => Implement that too, when we're done fixing the mess with reliable sending.
+
+=> Okay if I break the server's CutieMarks.xml but not the game's, I can trigger the "Downloading..." bug.
+=> We have Cutiemarks, abilities and skills downloading, but items, recipes and atlas done.
+==> The output log says "Deserialization of static data failed:System.ArgumentException: An element with the same key already exists in the dictionary."
+==> Would be nice to tell the user. Especially if that's what caused this damn "Downloading..." bug most of the time.
+===> Okay if we patch Data to store 1 in a static field (ldc.i4.1/stsfld) when there's this error, it should be possible.
+===> Then in Twilight Sparkle we append an error to the StringBuilder when this field's value is 1 (ldsfld/brfalse->normal flow/append error/normal flow)
