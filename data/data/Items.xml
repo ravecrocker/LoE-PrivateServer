@@ -1,28 +1,30 @@
-<?xml version="1.0" encoding="utf-16"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <ArrayOfItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Item>
     <ID>0</ID>
     <Icon>1</Icon>
     <Description>A fresh green apple. It is a bit sour, but maybe you're into that.</Description>
     <Name>Green Apple</Name>
-    <ResourcePath />
+    <ResourcePath/>
     <Stackable>true</Stackable>
     <MaxStackSize>10</MaxStackSize>
     <Price>3</Price>
+    <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>1</ID>
     <Icon>2</Icon>
     <Description>A red apple fresh from the farm.</Description>
     <Name>Red apple</Name>
-    <ResourcePath />
+    <ResourcePath/>
     <Stackable>true</Stackable>
     <MaxStackSize>10</MaxStackSize>
     <Price>3</Price>
+    <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>2</ID>
@@ -33,8 +35,9 @@
     <Stackable>true</Stackable>
     <MaxStackSize>10</MaxStackSize>
     <Price>3</Price>
+    <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>3</ID>
@@ -45,8 +48,9 @@
     <Stackable>true</Stackable>
     <MaxStackSize>15</MaxStackSize>
     <Price>5</Price>
+    <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>4</ID>
@@ -57,8 +61,9 @@
     <Stackable>true</Stackable>
     <MaxStackSize>20</MaxStackSize>
     <Price>5</Price>
+    <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>5</ID>
@@ -69,8 +74,9 @@
     <Stackable>true</Stackable>
     <MaxStackSize>20</MaxStackSize>
     <Price>5</Price>
+    <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>6</ID>
@@ -81,8 +87,9 @@
     <Stackable>true</Stackable>
     <MaxStackSize>20</MaxStackSize>
     <Price>5</Price>
+    <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>7</ID>
@@ -93,8 +100,9 @@
     <Stackable>true</Stackable>
     <MaxStackSize>8</MaxStackSize>
     <Price>5</Price>
+    <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>8</ID>
@@ -105,8 +113,9 @@
     <Stackable>true</Stackable>
     <MaxStackSize>10</MaxStackSize>
     <Price>0</Price>
+    <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>9</ID>
@@ -117,8 +126,9 @@
     <Stackable>false</Stackable>
     <MaxStackSize>0</MaxStackSize>
     <Price>25</Price>
+    <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>10</ID>
@@ -129,8 +139,9 @@
     <Stackable>false</Stackable>
     <MaxStackSize>0</MaxStackSize>
     <Price>35</Price>
+    <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>11</ID>
@@ -141,8 +152,9 @@
     <Stackable>false</Stackable>
     <MaxStackSize>0</MaxStackSize>
     <Price>30</Price>
+    <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>12</ID>
@@ -153,8 +165,9 @@
     <Stackable>false</Stackable>
     <MaxStackSize>0</MaxStackSize>
     <Price>23</Price>
+    <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>13</ID>
@@ -165,8 +178,9 @@
     <Stackable>false</Stackable>
     <MaxStackSize>0</MaxStackSize>
     <Price>40</Price>
+    <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>14</ID>
@@ -177,8 +191,9 @@
     <Stackable>true</Stackable>
     <MaxStackSize>8</MaxStackSize>
     <Price>0</Price>
+    <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>16</ID>
@@ -189,8 +204,9 @@
     <Stackable>false</Stackable>
     <MaxStackSize>0</MaxStackSize>
     <Price>8</Price>
+    <Salable>true</Salable>
     <WearableSlots>Hat</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>17</ID>
@@ -201,8 +217,9 @@
     <Stackable>false</Stackable>
     <MaxStackSize>0</MaxStackSize>
     <Price>6</Price>
+    <Salable>true</Salable>
     <WearableSlots>Mask</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>18</ID>
@@ -213,8 +230,9 @@
     <Stackable>false</Stackable>
     <MaxStackSize>0</MaxStackSize>
     <Price>6</Price>
+    <Salable>true</Salable>
     <WearableSlots>Mask</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>19</ID>
@@ -225,8 +243,9 @@
     <Stackable>false</Stackable>
     <MaxStackSize>0</MaxStackSize>
     <Price>6</Price>
+    <Salable>true</Salable>
     <WearableSlots>Hat</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>20</ID>
@@ -237,8 +256,9 @@
     <Stackable>false</Stackable>
     <MaxStackSize>0</MaxStackSize>
     <Price>6</Price>
+    <Salable>true</Salable>
     <WearableSlots>SaddleBags</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>21</ID>
@@ -249,8 +269,9 @@
     <Stackable>false</Stackable>
     <MaxStackSize>0</MaxStackSize>
     <Price>6</Price>
+    <Salable>true</Salable>
     <WearableSlots>Shirt</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>22</ID>
@@ -261,8 +282,9 @@
     <Stackable>false</Stackable>
     <MaxStackSize>0</MaxStackSize>
     <Price>6</Price>
+    <Salable>true</Salable>
     <WearableSlots>FrontShoes BackShoes</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>23</ID>
@@ -273,8 +295,9 @@
     <Stackable>false</Stackable>
     <MaxStackSize>1</MaxStackSize>
     <Price>20</Price>
+    <Salable>true</Salable>
     <WearableSlots>FrontShoes</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>24</ID>
@@ -285,8 +308,9 @@
     <Stackable>false</Stackable>
     <MaxStackSize>1</MaxStackSize>
     <Price>7</Price>
+    <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>25</ID>
@@ -297,8 +321,9 @@
     <Stackable>false</Stackable>
     <MaxStackSize>10</MaxStackSize>
     <Price>8</Price>
+    <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>26</ID>
@@ -309,8 +334,9 @@
     <Stackable>true</Stackable>
     <MaxStackSize>10</MaxStackSize>
     <Price>5</Price>
+    <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>27</ID>
@@ -321,8 +347,9 @@
     <Stackable>true</Stackable>
     <MaxStackSize>10</MaxStackSize>
     <Price>8</Price>
+    <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>28</ID>
@@ -333,8 +360,9 @@
     <Stackable>true</Stackable>
     <MaxStackSize>10</MaxStackSize>
     <Price>10</Price>
+    <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>29</ID>
@@ -345,8 +373,9 @@
     <Stackable>true</Stackable>
     <MaxStackSize>10</MaxStackSize>
     <Price>4</Price>
+    <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>30</ID>
@@ -357,8 +386,9 @@
     <Stackable>true</Stackable>
     <MaxStackSize>10</MaxStackSize>
     <Price>10</Price>
+    <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>31</ID>
@@ -369,8 +399,9 @@
     <Stackable>true</Stackable>
     <MaxStackSize>10</MaxStackSize>
     <Price>5</Price>
+    <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>32</ID>
@@ -381,8 +412,9 @@
     <Stackable>true</Stackable>
     <MaxStackSize>10</MaxStackSize>
     <Price>8</Price>
+    <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>33</ID>
@@ -393,8 +425,9 @@
     <Stackable>false</Stackable>
     <MaxStackSize>10</MaxStackSize>
     <Price>7</Price>
+    <Salable>true</Salable>
     <WearableSlots>Hat</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>34</ID>
@@ -405,8 +438,9 @@
     <Stackable>true</Stackable>
     <MaxStackSize>30</MaxStackSize>
     <Price>5</Price>
+    <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>35</ID>
@@ -417,8 +451,9 @@
     <Stackable>true</Stackable>
     <MaxStackSize>10</MaxStackSize>
     <Price>2</Price>
+    <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>36</ID>
@@ -429,8 +464,9 @@
     <Stackable>true</Stackable>
     <MaxStackSize>10</MaxStackSize>
     <Price>3</Price>
+    <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>37</ID>
@@ -441,8 +477,9 @@
     <Stackable>true</Stackable>
     <MaxStackSize>10</MaxStackSize>
     <Price>5</Price>
+    <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>38</ID>
@@ -453,8 +490,9 @@
     <Stackable>false</Stackable>
     <MaxStackSize>10</MaxStackSize>
     <Price>6</Price>
+    <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>39</ID>
@@ -465,8 +503,9 @@
     <Stackable>true</Stackable>
     <MaxStackSize>50</MaxStackSize>
     <Price>6</Price>
+    <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>40</ID>
@@ -477,8 +516,9 @@
     <Stackable>true</Stackable>
     <MaxStackSize>10</MaxStackSize>
     <Price>15</Price>
+    <Salable>true</Salable>
     <WearableSlots>Hat</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>41</ID>
@@ -489,8 +529,9 @@
     <Stackable>true</Stackable>
     <MaxStackSize>30</MaxStackSize>
     <Price>2</Price>
+    <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>42</ID>
@@ -501,8 +542,9 @@
     <Stackable>true</Stackable>
     <MaxStackSize>5</MaxStackSize>
     <Price>0</Price>
+    <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>43</ID>
@@ -513,8 +555,9 @@
     <Stackable>true</Stackable>
     <MaxStackSize>10</MaxStackSize>
     <Price>6</Price>
+    <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>44</ID>
@@ -525,8 +568,9 @@
     <Stackable>true</Stackable>
     <MaxStackSize>10</MaxStackSize>
     <Price>6</Price>
+    <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>45</ID>
@@ -537,8 +581,9 @@
     <Stackable>true</Stackable>
     <MaxStackSize>10</MaxStackSize>
     <Price>6</Price>
+    <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>46</ID>
@@ -549,8 +594,9 @@
     <Stackable>true</Stackable>
     <MaxStackSize>10</MaxStackSize>
     <Price>6</Price>
+    <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>47</ID>
@@ -561,8 +607,9 @@
     <Stackable>true</Stackable>
     <MaxStackSize>10</MaxStackSize>
     <Price>6</Price>
+    <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>48</ID>
@@ -573,8 +620,9 @@
     <Stackable>true</Stackable>
     <MaxStackSize>10</MaxStackSize>
     <Price>6</Price>
+    <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>49</ID>
@@ -585,8 +633,9 @@
     <Stackable>true</Stackable>
     <MaxStackSize>10</MaxStackSize>
     <Price>6</Price>
+    <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>50</ID>
@@ -597,8 +646,9 @@
     <Stackable>true</Stackable>
     <MaxStackSize>10</MaxStackSize>
     <Price>0</Price>
+    <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>51</ID>
@@ -609,8 +659,9 @@
     <Stackable>true</Stackable>
     <MaxStackSize>20</MaxStackSize>
     <Price>2</Price>
+    <Salable>true</Salable>
     <WearableSlots>Hat</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>52</ID>
@@ -621,8 +672,9 @@
     <Stackable>false</Stackable>
     <MaxStackSize>1</MaxStackSize>
     <Price>0</Price>
+    <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>53</ID>
@@ -633,8 +685,9 @@
     <Stackable>false</Stackable>
     <MaxStackSize>1</MaxStackSize>
     <Price>0</Price>
+    <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>54</ID>
@@ -645,8 +698,9 @@
     <Stackable>false</Stackable>
     <MaxStackSize>10</MaxStackSize>
     <Price>35</Price>
+    <Salable>true</Salable>
     <WearableSlots>BackShoes</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>55</ID>
@@ -657,8 +711,9 @@
     <Stackable>false</Stackable>
     <MaxStackSize>10</MaxStackSize>
     <Price>35</Price>
+    <Salable>true</Salable>
     <WearableSlots>Mask</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>56</ID>
@@ -669,8 +724,9 @@
     <Stackable>false</Stackable>
     <MaxStackSize>10</MaxStackSize>
     <Price>35</Price>
+    <Salable>true</Salable>
     <WearableSlots>Shirt</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>57</ID>
@@ -681,8 +737,9 @@
     <Stackable>false</Stackable>
     <MaxStackSize>10</MaxStackSize>
     <Price>35</Price>
+    <Salable>true</Salable>
     <WearableSlots>FrontShoes</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>58</ID>
@@ -693,8 +750,9 @@
     <Stackable>false</Stackable>
     <MaxStackSize>10</MaxStackSize>
     <Price>6</Price>
+    <Salable>true</Salable>
     <WearableSlots>Mask</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>59</ID>
@@ -705,8 +763,9 @@
     <Stackable>true</Stackable>
     <MaxStackSize>10</MaxStackSize>
     <Price>6</Price>
+    <Salable>true</Salable>
     <WearableSlots>SaddleBags</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>60</ID>
@@ -717,8 +776,9 @@
     <Stackable>false</Stackable>
     <MaxStackSize>10</MaxStackSize>
     <Price>6</Price>
+    <Salable>true</Salable>
     <WearableSlots>SaddleBags</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>61</ID>
@@ -729,8 +789,9 @@
     <Stackable>false</Stackable>
     <MaxStackSize>10</MaxStackSize>
     <Price>5</Price>
+    <Salable>true</Salable>
     <WearableSlots>SaddleBags</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>62</ID>
@@ -741,8 +802,9 @@
     <Stackable>false</Stackable>
     <MaxStackSize>10</MaxStackSize>
     <Price>10</Price>
+    <Salable>true</Salable>
     <WearableSlots>Hat</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>63</ID>
@@ -753,8 +815,9 @@
     <Stackable>false</Stackable>
     <MaxStackSize>10</MaxStackSize>
     <Price>5</Price>
+    <Salable>true</Salable>
     <WearableSlots>FrontShoes</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>64</ID>
@@ -765,8 +828,9 @@
     <Stackable>true</Stackable>
     <MaxStackSize>50</MaxStackSize>
     <Price>0</Price>
+    <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>65</ID>
@@ -777,8 +841,9 @@
     <Stackable>false</Stackable>
     <MaxStackSize>10</MaxStackSize>
     <Price>666</Price>
+    <Salable>true</Salable>
     <WearableSlots>FrontShoes BackShoes Shirt</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>66</ID>
@@ -789,8 +854,9 @@
     <Stackable>false</Stackable>
     <MaxStackSize>10</MaxStackSize>
     <Price>0</Price>
+    <Salable>true</Salable>
     <WearableSlots>Hat</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>67</ID>
@@ -801,8 +867,9 @@
     <Stackable>false</Stackable>
     <MaxStackSize>10</MaxStackSize>
     <Price>35</Price>
+    <Salable>true</Salable>
     <WearableSlots>SaddleBags</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>68</ID>
@@ -813,8 +880,9 @@
     <Stackable>true</Stackable>
     <MaxStackSize>10</MaxStackSize>
     <Price>5</Price>
+    <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>69</ID>
@@ -825,8 +893,9 @@
     <Stackable>true</Stackable>
     <MaxStackSize>10</MaxStackSize>
     <Price>3</Price>
+    <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>70</ID>
@@ -837,8 +906,9 @@
     <Stackable>true</Stackable>
     <MaxStackSize>30</MaxStackSize>
     <Price>1</Price>
+    <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>71</ID>
@@ -849,8 +919,9 @@
     <Stackable>true</Stackable>
     <MaxStackSize>20</MaxStackSize>
     <Price>7</Price>
+    <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>72</ID>
@@ -861,8 +932,9 @@
     <Stackable>true</Stackable>
     <MaxStackSize>20</MaxStackSize>
     <Price>4</Price>
+    <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
+    <ItemUse/>
   </Item>
   <Item>
     <ID>73</ID>
@@ -873,7 +945,86 @@
     <Stackable>false</Stackable>
     <MaxStackSize>10</MaxStackSize>
     <Price>15</Price>
-    <WearableSlots>Hat Tail Pants FrontSocks BackSocks FrontShoes BackShoes Saddle Shirt Necklace Mouth Mask Eyes Ears FrontKnees BackKnees SaddleBags</WearableSlots>
-    <ItemUse />
+    <Salable>true</Salable>
+    <WearableSlots>Tail Pants FrontSocks BackSocks Saddle Necklace Mouth Eyes Ears FrontKnees BackKnees FrontShoes BackShoes Shirt Mask SaddleBags Hat</WearableSlots>
+    <ItemUse/>
+  </Item>
+  <Item>
+    <ID>74</ID>
+    <Icon>0</Icon>
+    <Description>A pretty heavy package..</Description>
+    <Name>Big Package</Name>
+    <ResourcePath/>
+    <Stackable>false</Stackable>
+    <MaxStackSize>1</MaxStackSize>
+    <Price>0</Price>
+    <Salable>true</Salable>
+    <WearableSlots>None</WearableSlots>
+    <ItemUse/>
+  </Item>
+  <Item>
+    <ID>75</ID>
+    <Icon>0</Icon>
+    <Description>The Paso Fino Perfect Party Pastry Pack is the perfect pack for pacifying potentially perturbant party ponies. Purpotedly.</Description>
+    <Name>Paso Fino Basket</Name>
+    <ResourcePath>Undefined</ResourcePath>
+    <Stackable>false</Stackable>
+    <MaxStackSize>10</MaxStackSize>
+    <Price>0</Price>
+    <Salable>true</Salable>
+    <WearableSlots>None</WearableSlots>
+    <ItemUse/>
+  </Item>
+  <Item>
+    <ID>76</ID>
+    <Icon>31</Icon>
+    <Description>Cirrus's personal diary. Maybe just a peek?</Description>
+    <Name>Cirrus's Diary</Name>
+    <ResourcePath>Undefined</ResourcePath>
+    <Stackable>false</Stackable>
+    <MaxStackSize>10</MaxStackSize>
+    <Price>0</Price>
+    <Salable>true</Salable>
+    <WearableSlots>None</WearableSlots>
+    <ItemUse/>
+  </Item>
+  <Item>
+    <ID>77</ID>
+    <Icon>48</Icon>
+    <Description>A book written by Scribble</Description>
+    <Name>Scribble's Novel</Name>
+    <ResourcePath>Undefined</ResourcePath>
+    <Stackable>false</Stackable>
+    <MaxStackSize>10</MaxStackSize>
+    <Price>0</Price>
+    <Salable>true</Salable>
+    <WearableSlots>None</WearableSlots>
+    <ItemUse/>
+  </Item>
+  <Item>
+    <ID>78</ID>
+    <Icon>68</Icon>
+    <Description>Perfect pitch pony phones.</Description>
+    <Name>Hullabaloo's Headphones</Name>
+    <ResourcePath>Hats/Headphones</ResourcePath>
+    <Stackable>false</Stackable>
+    <MaxStackSize>10</MaxStackSize>
+    <Price>50</Price>
+    <Salable>true</Salable>
+    <WearableSlots>Hat</WearableSlots>
+    <ItemUse/>
+  </Item>
+  <Item>
+    <ID>79</ID>
+    <Icon>0</Icon>
+    <Description>A small device used to record conversations without being detected.</Description>
+    <Name>Bugsy's Bug</Name>
+    <ResourcePath>Undefined</ResourcePath>
+    <Stackable>false</Stackable>
+    <MaxStackSize>10</MaxStackSize>
+    <Price>0</Price>
+    <Salable>true</Salable>
+    <WearableSlots>None</WearableSlots>
+    <ItemUse/>
   </Item>
 </ArrayOfItem>
