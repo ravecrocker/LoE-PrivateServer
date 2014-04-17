@@ -52,7 +52,7 @@ void sendPonySave(Player* player, QByteArray msg);
 void sendPonies(Player* player);
 void sendPonyData(Player* player);
 void sendPonyData(Pony *src, Player* dst);
-void sendNetviewInstantiate(Player* player, QString key, quint16 ViewId, quint16 OwnerId, UVector pos, UQuaternion rot);
+void sendNetviewInstantiate(Player* player, QString key, quint16 NetviewId, quint16 ViewId, UVector pos, UQuaternion rot);
 void sendNetviewInstantiate(Player* player);
 void sendNetviewInstantiate(Pony *src, Player* dst);
 void sendNetviewRemove(Player* player, quint16 netviewId);

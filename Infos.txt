@@ -2528,3 +2528,12 @@ But if we use the prefilled password (not remember password, just the prefilled 
 
 => TODO: Earth Ponies have Seismic Buck and Rough Terrain, Unicorns have Rainbow Fields and Magical Arrow, and Pegasi have Dual Cyclone and Gale! All three races have Ground Pound.
 
+=> Some mobs :
+mobs/birch dryad
+mobs/bunny
+mobs/cockatrice
+mobs/dragon
+mobs/hornet
+mobs/husky diamond dog
+mobs/lantern monster
+mobs/timberwolf

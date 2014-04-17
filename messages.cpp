@@ -63,6 +63,12 @@ void sendEntitiesList(Player *player)
             sendNetviewInstantiate(win.npcs[i], player);
         }
 
+    // Spawn some mobs in Zecoras
+    if (scene->name.toLower() == "zecoras")
+    {
+        sendNetviewInstantiate(player,"mobs/dragon", win.getNewId(), win.getNewNetviewId(), {-33.0408, 0.000425577, 101.766}, {0,-1,0,1});
+    }
+
     player->inGame = 2;
     levelLoadMutex.unlock();
 
@@ -162,15 +168,15 @@ void sendPonySave(Player *player, QByteArray msg)
     }
 }
 
-void sendNetviewInstantiate(Player *player, QString key, quint16 ViewId, quint16 OwnerId, UVector pos, UQuaternion rot)
+void sendNetviewInstantiate(Player *player, QString key, quint16 NetviewId, quint16 ViewId, UVector pos, UQuaternion rot)
 {
     QByteArray data(1,1);
     data += stringToData(key);
     QByteArray data2(4,0);
-    data2[0]=(quint8)(ViewId&0xFF);
-    data2[1]=(quint8)((ViewId>>8)&0xFF);
-    data2[2]=(quint8)(OwnerId&0xFF);
-    data2[3]=(quint8)((OwnerId>>8)&0xFF);
+    data2[0]=(quint8)(NetviewId&0xFF);
+    data2[1]=(quint8)((NetviewId>>8)&0xFF);
+    data2[2]=(quint8)(ViewId&0xFF);
+    data2[3]=(quint8)((ViewId>>8)&0xFF);
     data += data2;
     data += vectorToData(pos);
     data += quaternionToData(rot);
