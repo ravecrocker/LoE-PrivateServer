@@ -50,6 +50,9 @@ If they aren't, somes NPCs may have their scripts mixed up and share the same sa
 If you want to add new NPCs, you should give them a high quest ID from the start (e.g. 100 and onward), 
 so that they won't conflict with the private server's 'official' NPCs even in later updates.
 
+It's a bad idea to create a player with the same name as a NPC.
+This will confuse the game, and might break the chat and quests for this player until the name is changed.
+
 List of emotions (emotionId), used with the 'sayIcon' command. 
 This will only work if there is an actual avatar corresponding to the given emotion and NPC name.
 At the moment, there are only avatars for the main NPCs and only certain emotions.

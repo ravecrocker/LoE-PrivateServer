@@ -2525,3 +2525,6 @@ But if we use the prefilled password (not remember password, just the prefilled 
 ===> Then in Twilight Sparkle we append an error to the StringBuilder when this field's value is 1 (ldsfld/brfalse->normal flow/append error/normal flow)
 
 => Okay, either comment or #ifdef out the debug log between every commit, instead of every 
+
+=> TODO: Earth Ponies have Seismic Buck and Rough Terrain, Unicorns have Rainbow Fields and Magical Arrow, and Pegasi have Dual Cyclone and Gale! All three races have Ground Pound.
+

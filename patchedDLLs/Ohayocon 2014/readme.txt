@@ -4,7 +4,7 @@ Feel free to scan those or send them to VirusTotal.
 Assembly-CSharp.dll :
 Modified to connect to the PrivateServer (127.0.0.1:1031)
 Changed the "Register" button to load "https://github.com/tux3/LoE-PrivateServer/"
-Changed the version string to v20140122-/mlp/
+Changed the version string to v20140122-/mlp/, made it actually visible
 Changed "Connecting to the official Legends of Equestria server" by "Connecting to the private Legends of Equestria server"
 Changed some other minor messages.
 Changed WebDataLoader to download files from the PrivateServer instead of the official server.
