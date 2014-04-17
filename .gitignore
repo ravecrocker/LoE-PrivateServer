@@ -7,6 +7,7 @@ LoE_PrivateServer.exe
 LoE - Ohayocon 2014 - w_x86/
 LoE - Ohayocon 2014 - Windows x64_fixed/
 LoE-Windows_86 2014 Babscon RC1/
+LoE-Windows_64 2014 Babscon RC2/
 
 # Release files
 PrivateServ-linux-x86/
@@ -27,6 +28,7 @@ Makefile*
 .fuse_hidden*
 object_script.LoE_PrivateServer.Debug
 object_script.LoE_PrivateServer.Release
+moc_*
 
 # My saves
 data/players/
