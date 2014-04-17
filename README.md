@@ -93,4 +93,4 @@ If you land in the void after loading a scene, try "/stuck" in the chat (and eit
 - PM-Lvl1
 
 <img src="https://f.cloud.github.com/assets/5155966/1389911/6503cd02-3be3-11e3-987f-98611a94a106.jpg"/>
-(This screenshot was taken on an older version of the private server)
+(This screenshot was taken on an older version of the game and private server)
