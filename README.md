@@ -1,7 +1,7 @@
 Legends of Equestria Private Server
 ===================================
 
-This is a Private Server, to play LoE even when the official servers are closed.
+This is a Private Server for the game Legends of Equestria, to play even when the official servers are closed.
 The official release is for Windows (x86 and x64). The server should work on Linux and Mac too, but you'll need to compile it yourself.<br/>
 <h5><b><a href="https://github.com/tux3/LoE-PrivateServer/releases">Downloads</a></b></h5>
 
@@ -19,6 +19,9 @@ Some important features are still lacking at the moment :
 - No monsters without server commands.
 - Not as many quests as the official servers.
 - No 'natural' items to collect (flowers, gems, ...)
+
+<h3>Online private servers</h3>
+The servers are run by independant volunteers. <br/>Anyone can start a private server, and they are not all running the same version or following the same rules. <br/>By default there is no chat filtering or moderation, the cutie marks are the ones of the official servers, and the quests/npcs are the ones on this repository.<br/>But server owners are free to change this as they wish, and their servers might not always be 'safe for work'.
 
 <h3>Chat commands</h3>
 - /stuck : Reloads and sends you to the spawn. Use it if you can't move.
@@ -90,4 +93,4 @@ If you land in the void after loading a scene, try "/stuck" in the chat (and eit
 - PM-Lvl1
 
 <img src="https://f.cloud.github.com/assets/5155966/1389911/6503cd02-3be3-11e3-987f-98611a94a106.jpg"/>
-(This screenshot was taken on an older version the private server)
+(This screenshot was taken on an older version of the private server)
