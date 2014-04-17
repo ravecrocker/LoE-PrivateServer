@@ -2537,3 +2537,8 @@ mobs/hornet
 mobs/husky diamond dog
 mobs/lantern monster
 mobs/timberwolf
+
+=> TODO: We should probably split receiveMessage again. Maybe the first seq checking in receiveMessage and the handling in handleMessage.cpp ?
+=> Nah the seq checking stops at line 90. We have 682 lines of receiveMessage.
+=> We could move the chat command handling in its own file. It's big and will probably get bigger.
+=> The ACK handling is also big. We should move it.
