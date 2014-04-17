@@ -475,7 +475,9 @@ void receiveMessage(Player* player)
                 InventoryItem goggles{1,17};
                 InventoryItem hat{2,62};
                 InventoryItem bag{3,60};
-                player->pony.inv << raincloudHat << goggles << hat << bag;
+                InventoryItem thbbbpt{4,65};
+                InventoryItem fluffleHat{5,66};
+                player->pony.inv << raincloudHat << goggles << hat << bag << thbbbpt << fluffleHat;
                 player->pony.nBits = 15;
                 player->pony.saveInventory();
             }
