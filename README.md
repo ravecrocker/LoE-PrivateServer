@@ -16,7 +16,7 @@ Then use either :
 <h3>Still in Beta</h3>
 The private server is still in beta, expect bugs. Patches and pull requests are welcome.<br/>
 Some important features are still lacking at the moment :
-- No monsters without server commands.
+- Almost no monsters, and none of them can fight.
 - Not as many quests as the official servers.
 - No 'natural' items to collect (flowers, gems, ...)
 
