@@ -22,6 +22,7 @@ Some important features are still lacking at the moment :
 
 <h3>Online private servers</h3>
 The servers are run by independant volunteers. <br/>Anyone can start a private server, and they are not all running the same version or following the same rules. <br/>By default there is no chat filtering or moderation, the cutie marks are the ones of the official servers, and the quests/npcs are the ones on this repository.<br/>But server owners are free to change this as they wish, and their servers might not always be 'safe for work'.
+You can find more informations on how to create/edit quests in the file QuestScript.txt.
 
 <h3>Chat commands</h3>
 - /stuck : Reloads and sends you to the spawn. Use it if you can't move.
