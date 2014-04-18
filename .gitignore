@@ -13,6 +13,7 @@ LoE-Windows_64 2014 Babscon RC2/
 PrivateServ-linux-x86/
 PrivateServ-x86/
 PrivateServ-x64/
+PrivateServer/
 
 # Build files
 release/
