@@ -7,70 +7,7 @@
     <Filepath>blank</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
-  </CutieMark>
-  <CutieMark>
-    <ID>5</ID>
-    <Name>Alchemy Air</Name>
-    <Description />
-    <Filepath>cutie_alchemy_air</Filepath>
-    <Bonuses />
-    <MarkType>None</MarkType>
-  </CutieMark>
-  <CutieMark>
-    <ID>6</ID>
-    <Name>Alchemy Creation</Name>
-    <Description />
-    <Filepath>cutie_alchemy_creation</Filepath>
-    <Bonuses />
-    <MarkType>None</MarkType>
-  </CutieMark>
-  <CutieMark>
-    <ID>7</ID>
-    <Name>Alchemy Death</Name>
-    <Description />
-    <Filepath>cutie_alchemy_death</Filepath>
-    <Bonuses />
-    <MarkType>None</MarkType>
-  </CutieMark>
-  <CutieMark>
-    <ID>8</ID>
-    <Name>Alchemy Earth</Name>
-    <Description />
-    <Filepath>cutie_alchemy_earth</Filepath>
-    <Bonuses />
-    <MarkType>None</MarkType>
-  </CutieMark>
-  <CutieMark>
-    <ID>9</ID>
-    <Name>Alchemy Fire</Name>
-    <Description />
-    <Filepath>cutie_alchemy_fire</Filepath>
-    <Bonuses />
-    <MarkType>None</MarkType>
-  </CutieMark>
-  <CutieMark>
-    <ID>10</ID>
-    <Name>Alchemy Life</Name>
-    <Description />
-    <Filepath>cutie_alchemy_life</Filepath>
-    <Bonuses />
-    <MarkType>None</MarkType>
-  </CutieMark>
-  <CutieMark>
-    <ID>11</ID>
-    <Name>Alchemy Terra</Name>
-    <Description />
-    <Filepath>cutie_alchemy_terra</Filepath>
-    <Bonuses />
-    <MarkType>None</MarkType>
-  </CutieMark>
-  <CutieMark>
-    <ID>12</ID>
-    <Name>Alchemy Water</Name>
-    <Description />
-    <Filepath>cutie_alchemy_water</Filepath>
-    <Bonuses />
-    <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>1</ID>
@@ -79,6 +16,7 @@
     <Filepath>cutie_alchemy1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>2</ID>
@@ -87,6 +25,7 @@
     <Filepath>cutie_alchemy2</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>3</ID>
@@ -95,6 +34,7 @@
     <Filepath>cutie_alchemy3</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>4</ID>
@@ -103,22 +43,79 @@
     <Filepath>cutie_alchemy4</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
-    <ID>138</ID>
-    <Name>Anchor</Name>
+    <ID>5</ID>
+    <Name>Alchemy Air</Name>
     <Description />
-    <Filepath>cutie_anchor</Filepath>
+    <Filepath>cutie_alchemy_air</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
-    <ID>204</ID>
-    <Name>Astralnpc</Name>
+    <ID>6</ID>
+    <Name>Alchemy Creation</Name>
     <Description />
-    <Filepath>cutie_astralnpc</Filepath>
+    <Filepath>cutie_alchemy_creation</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
+  </CutieMark>
+  <CutieMark>
+    <ID>7</ID>
+    <Name>Alchemy Death</Name>
+    <Description />
+    <Filepath>cutie_alchemy_death</Filepath>
+    <Bonuses />
+    <MarkType>None</MarkType>
+    <HealthLevelBonus />
+  </CutieMark>
+  <CutieMark>
+    <ID>8</ID>
+    <Name>Alchemy Earth</Name>
+    <Description />
+    <Filepath>cutie_alchemy_earth</Filepath>
+    <Bonuses />
+    <MarkType>None</MarkType>
+    <HealthLevelBonus />
+  </CutieMark>
+  <CutieMark>
+    <ID>9</ID>
+    <Name>Alchemy Fire</Name>
+    <Description />
+    <Filepath>cutie_alchemy_fire</Filepath>
+    <Bonuses />
+    <MarkType>None</MarkType>
+    <HealthLevelBonus />
+  </CutieMark>
+  <CutieMark>
+    <ID>10</ID>
+    <Name>Alchemy Life</Name>
+    <Description />
+    <Filepath>cutie_alchemy_life</Filepath>
+    <Bonuses />
+    <MarkType>None</MarkType>
+    <HealthLevelBonus />
+  </CutieMark>
+  <CutieMark>
+    <ID>11</ID>
+    <Name>Alchemy Terra</Name>
+    <Description />
+    <Filepath>cutie_alchemy_terra</Filepath>
+    <Bonuses />
+    <MarkType>None</MarkType>
+    <HealthLevelBonus />
+  </CutieMark>
+  <CutieMark>
+    <ID>12</ID>
+    <Name>Alchemy Water</Name>
+    <Description />
+    <Filepath>cutie_alchemy_water</Filepath>
+    <Bonuses />
+    <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>13</ID>
@@ -127,22 +124,7 @@
     <Filepath>cutie_axe1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
-  </CutieMark>
-  <CutieMark>
-    <ID>192</ID>
-    <Name>Axe 2</Name>
-    <Description />
-    <Filepath>cutie_axe2</Filepath>
-    <Bonuses />
-    <MarkType>None</MarkType>
-  </CutieMark>
-  <CutieMark>
-    <ID>185</ID>
-    <Name>Beachball</Name>
-    <Description />
-    <Filepath>cutie_beachball</Filepath>
-    <Bonuses />
-    <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>14</ID>
@@ -151,6 +133,7 @@
     <Filepath>cutie_blue_star</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>15</ID>
@@ -159,6 +142,7 @@
     <Filepath>cutie_book1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>16</ID>
@@ -167,6 +151,7 @@
     <Filepath>cutie_bunny1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>17</ID>
@@ -175,14 +160,7 @@
     <Filepath>cutie_butterfly2</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
-  </CutieMark>
-  <CutieMark>
-    <ID>184</ID>
-    <Name>Cactus 1</Name>
-    <Description />
-    <Filepath>cutie_cactus1</Filepath>
-    <Bonuses />
-    <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>18</ID>
@@ -191,6 +169,7 @@
     <Filepath>cutie_cake1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>19</ID>
@@ -199,6 +178,7 @@
     <Filepath>cutie_carrot</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>20</ID>
@@ -207,6 +187,7 @@
     <Filepath>cutie_chef_hat</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>21</ID>
@@ -215,6 +196,7 @@
     <Filepath>cutie_cherries</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>22</ID>
@@ -223,14 +205,7 @@
     <Filepath>cutie_chives</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
-  </CutieMark>
-  <CutieMark>
-    <ID>139</ID>
-    <Name>Citrine</Name>
-    <Description />
-    <Filepath>cutie_citrine</Filepath>
-    <Bonuses />
-    <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>23</ID>
@@ -239,14 +214,7 @@
     <Filepath>cutie_clover4</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
-  </CutieMark>
-  <CutieMark>
-    <ID>181</ID>
-    <Name>Comb</Name>
-    <Description />
-    <Filepath>cutie_comb1</Filepath>
-    <Bonuses />
-    <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>24</ID>
@@ -255,6 +223,7 @@
     <Filepath>cutie_confetti1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>25</ID>
@@ -263,22 +232,7 @@
     <Filepath>cutie_cookie1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
-  </CutieMark>
-  <CutieMark>
-    <ID>140</ID>
-    <Name>Cooking 3</Name>
-    <Description />
-    <Filepath>cutie_cooking3</Filepath>
-    <Bonuses />
-    <MarkType>None</MarkType>
-  </CutieMark>
-  <CutieMark>
-    <ID>141</ID>
-    <Name>Cooking 4</Name>
-    <Description />
-    <Filepath>cutie_cooking4</Filepath>
-    <Bonuses />
-    <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>27</ID>
@@ -287,6 +241,7 @@
     <Filepath>cutie_corn</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>28</ID>
@@ -295,14 +250,7 @@
     <Filepath>cutie_cupcake1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
-  </CutieMark>
-  <CutieMark>
-    <ID>142</ID>
-    <Name>Dice 1</Name>
-    <Description />
-    <Filepath>cutie_dice1</Filepath>
-    <Bonuses />
-    <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>29</ID>
@@ -311,6 +259,7 @@
     <Filepath>cutie_doughnut1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>30</ID>
@@ -319,14 +268,7 @@
     <Filepath>cutie_dragon_wing</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
-  </CutieMark>
-  <CutieMark>
-    <ID>143</ID>
-    <Name>Drum 1</Name>
-    <Description />
-    <Filepath>cutie_drum1</Filepath>
-    <Bonuses />
-    <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>31</ID>
@@ -335,14 +277,7 @@
     <Filepath>cutie_dumbell1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
-  </CutieMark>
-  <CutieMark>
-    <ID>144</ID>
-    <Name>Earth</Name>
-    <Description />
-    <Filepath>cutie_earth</Filepath>
-    <Bonuses />
-    <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>32</ID>
@@ -351,6 +286,7 @@
     <Filepath>cutie_eggplant</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>33</ID>
@@ -359,6 +295,7 @@
     <Filepath>cutie_electric_wing</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>34</ID>
@@ -367,6 +304,7 @@
     <Filepath>cutie_electricity1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>35</ID>
@@ -375,6 +313,7 @@
     <Filepath>cutie_emerald</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>36</ID>
@@ -383,6 +322,7 @@
     <Filepath>cutie_fall_leaves</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>37</ID>
@@ -391,6 +331,7 @@
     <Filepath>cutie_fennel</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>42</ID>
@@ -399,6 +340,7 @@
     <Filepath>cutie_fire_badge1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>43</ID>
@@ -407,6 +349,7 @@
     <Filepath>cutie_fire_wing</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>38</ID>
@@ -415,6 +358,7 @@
     <Filepath>cutie_fire1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>39</ID>
@@ -423,6 +367,7 @@
     <Filepath>cutie_fire2</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>40</ID>
@@ -431,14 +376,7 @@
     <Filepath>cutie_fire3</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
-  </CutieMark>
-  <CutieMark>
-    <ID>145</ID>
-    <Name>Fire 4</Name>
-    <Description />
-    <Filepath>cutie_fire4</Filepath>
-    <Bonuses />
-    <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>41</ID>
@@ -447,6 +385,7 @@
     <Filepath>cutie_fire5</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>44</ID>
@@ -455,6 +394,7 @@
     <Filepath>cutie_firework1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>191</ID>
@@ -463,6 +403,7 @@
     <Filepath>cutie_fish1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>198</ID>
@@ -471,6 +412,7 @@
     <Filepath>cutie_flannpc</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>45</ID>
@@ -479,6 +421,7 @@
     <Filepath>cutie_flower1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>146</ID>
@@ -487,6 +430,7 @@
     <Filepath>cutie_flower2</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>147</ID>
@@ -495,6 +439,7 @@
     <Filepath>cutie_flower3</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>46</ID>
@@ -503,6 +448,7 @@
     <Filepath>cutie_flower4</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>47</ID>
@@ -511,6 +457,7 @@
     <Filepath>cutie_flower5</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>48</ID>
@@ -519,6 +466,7 @@
     <Filepath>cutie_frog1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>49</ID>
@@ -527,6 +475,7 @@
     <Filepath>cutie_gear2</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>50</ID>
@@ -535,6 +484,7 @@
     <Filepath>cutie_gear3</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>148</ID>
@@ -543,6 +493,7 @@
     <Filepath>cutie_ghost1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>51</ID>
@@ -551,6 +502,7 @@
     <Filepath>cutie_gold_wing</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>149</ID>
@@ -559,6 +511,7 @@
     <Filepath>cutie_guitar1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>52</ID>
@@ -567,6 +520,7 @@
     <Filepath>cutie_hammer1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>53</ID>
@@ -575,6 +529,7 @@
     <Filepath>cutie_heart1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>54</ID>
@@ -583,6 +538,7 @@
     <Filepath>cutie_heart2</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>55</ID>
@@ -591,6 +547,7 @@
     <Filepath>cutie_holly</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>150</ID>
@@ -599,6 +556,7 @@
     <Filepath>cutie_horn1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>56</ID>
@@ -607,6 +565,7 @@
     <Filepath>cutie_horseshoe</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>151</ID>
@@ -615,6 +574,7 @@
     <Filepath>cutie_hourglass1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>58</ID>
@@ -623,6 +583,7 @@
     <Filepath>cutie_ice_wing</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>57</ID>
@@ -631,6 +592,7 @@
     <Filepath>cutie_ice1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>59</ID>
@@ -639,6 +601,7 @@
     <Filepath>cutie_judge</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>196</ID>
@@ -647,6 +610,7 @@
     <Filepath>cutie_key1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>60</ID>
@@ -655,6 +619,7 @@
     <Filepath>cutie_kiwi</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>61</ID>
@@ -663,6 +628,7 @@
     <Filepath>cutie_ladybug1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>152</ID>
@@ -671,6 +637,7 @@
     <Filepath>cutie_lawntotallydidntsneakthisinnopenotatall</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>62</ID>
@@ -679,6 +646,7 @@
     <Filepath>cutie_leaf1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>153</ID>
@@ -687,6 +655,7 @@
     <Filepath>cutie_leaf2</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>63</ID>
@@ -695,6 +664,7 @@
     <Filepath>cutie_lemon</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>180</ID>
@@ -710,6 +680,7 @@
       </Bonus>
     </Bonuses>
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>64</ID>
@@ -718,6 +689,7 @@
     <Filepath>cutie_lettuce</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>154</ID>
@@ -726,6 +698,7 @@
     <Filepath>cutie_lightbringer</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>65</ID>
@@ -734,6 +707,7 @@
     <Filepath>cutie_lightning2</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>155</ID>
@@ -742,6 +716,7 @@
     <Filepath>cutie_magic1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>156</ID>
@@ -750,6 +725,7 @@
     <Filepath>cutie_magic2</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>157</ID>
@@ -758,6 +734,7 @@
     <Filepath>cutie_magic3</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>158</ID>
@@ -766,6 +743,7 @@
     <Filepath>cutie_magic4</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>66</ID>
@@ -774,6 +752,7 @@
     <Filepath>cutie_magic5</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>67</ID>
@@ -782,6 +761,7 @@
     <Filepath>cutie_magic6</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>68</ID>
@@ -790,6 +770,7 @@
     <Filepath>cutie_magic7</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>69</ID>
@@ -798,6 +779,7 @@
     <Filepath>cutie_magnifying_glass</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>159</ID>
@@ -806,6 +788,7 @@
     <Filepath>cutie_marble1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>160</ID>
@@ -814,6 +797,7 @@
     <Filepath>cutie_marble2</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>161</ID>
@@ -822,6 +806,7 @@
     <Filepath>cutie_marble3</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>187</ID>
@@ -830,6 +815,7 @@
     <Filepath>cutie_mask1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>70</ID>
@@ -838,6 +824,7 @@
     <Filepath>cutie_melon</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>197</ID>
@@ -846,6 +833,7 @@
     <Filepath>cutie_mercurynpc</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>71</ID>
@@ -854,6 +842,7 @@
     <Filepath>cutie_meteor</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>72</ID>
@@ -862,6 +851,7 @@
     <Filepath>cutie_moon1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>162</ID>
@@ -870,6 +860,7 @@
     <Filepath>cutie_movie_clapper</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>73</ID>
@@ -878,6 +869,7 @@
     <Filepath>cutie_muffin1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>74</ID>
@@ -886,6 +878,7 @@
     <Filepath>cutie_okra</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>75</ID>
@@ -894,6 +887,7 @@
     <Filepath>cutie_orange</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>76</ID>
@@ -902,6 +896,7 @@
     <Filepath>cutie_orange_pepper</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>186</ID>
@@ -910,6 +905,7 @@
     <Filepath>cutie_paintbrush1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>182</ID>
@@ -918,6 +914,7 @@
     <Filepath>cutie_paintbrush2</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>77</ID>
@@ -926,6 +923,7 @@
     <Filepath>cutie_pan2</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>78</ID>
@@ -934,6 +932,7 @@
     <Filepath>cutie_party_hat1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>79</ID>
@@ -942,6 +941,7 @@
     <Filepath>cutie_party_hat2</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>80</ID>
@@ -950,6 +950,7 @@
     <Filepath>cutie_paw1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>163</ID>
@@ -958,6 +959,7 @@
     <Filepath>cutie_peace1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>81</ID>
@@ -966,6 +968,7 @@
     <Filepath>cutie_pearl1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>82</ID>
@@ -974,6 +977,7 @@
     <Filepath>cutie_pearl2</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>83</ID>
@@ -982,6 +986,7 @@
     <Filepath>cutie_pearl3</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>84</ID>
@@ -990,6 +995,7 @@
     <Filepath>cutie_pepper</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>85</ID>
@@ -998,6 +1004,7 @@
     <Filepath>cutie_pie1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>86</ID>
@@ -1006,6 +1013,7 @@
     <Filepath>cutie_pie2</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>87</ID>
@@ -1014,6 +1022,7 @@
     <Filepath>cutie_pinata1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>164</ID>
@@ -1022,6 +1031,7 @@
     <Filepath>cutie_pinball</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>88</ID>
@@ -1030,6 +1040,7 @@
     <Filepath>cutie_pineapple</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>165</ID>
@@ -1038,6 +1049,7 @@
     <Filepath>cutie_police_badge1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>89</ID>
@@ -1046,6 +1058,7 @@
     <Filepath>cutie_pot2</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>90</ID>
@@ -1054,6 +1067,7 @@
     <Filepath>cutie_potato</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>91</ID>
@@ -1062,6 +1076,7 @@
     <Filepath>cutie_present1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>92</ID>
@@ -1070,6 +1085,7 @@
     <Filepath>cutie_purple_grapes</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>166</ID>
@@ -1078,6 +1094,7 @@
     <Filepath>cutie_puzzle_eye</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>95</ID>
@@ -1086,6 +1103,7 @@
     <Filepath>cutie_puzzle_panda</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>93</ID>
@@ -1094,6 +1112,7 @@
     <Filepath>cutie_puzzle1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>94</ID>
@@ -1102,6 +1121,7 @@
     <Filepath>cutie_puzzle2</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>189</ID>
@@ -1110,6 +1130,7 @@
     <Filepath>cutie_quill1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>97</ID>
@@ -1118,6 +1139,7 @@
     <Filepath>cutie_rainbow_wing</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>96</ID>
@@ -1126,6 +1148,7 @@
     <Filepath>cutie_rainbow1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>98</ID>
@@ -1134,6 +1157,7 @@
     <Filepath>cutie_red_apple</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>99</ID>
@@ -1142,6 +1166,7 @@
     <Filepath>cutie_red_cross</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>195</ID>
@@ -1150,6 +1175,7 @@
     <Filepath>cutie_ring1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>100</ID>
@@ -1158,6 +1184,7 @@
     <Filepath>cutie_rod_of_asclepius2</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>101</ID>
@@ -1166,6 +1193,7 @@
     <Filepath>cutie_rose1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>102</ID>
@@ -1174,6 +1202,7 @@
     <Filepath>cutie_rosemary</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>103</ID>
@@ -1182,6 +1211,7 @@
     <Filepath>cutie_sage</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>104</ID>
@@ -1190,6 +1220,7 @@
     <Filepath>cutie_salt</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>194</ID>
@@ -1198,6 +1229,7 @@
     <Filepath>cutie_saw</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>105</ID>
@@ -1206,6 +1238,7 @@
     <Filepath>cutie_saxophone1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>167</ID>
@@ -1214,6 +1247,7 @@
     <Filepath>cutie_scroll1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>106</ID>
@@ -1222,6 +1256,7 @@
     <Filepath>cutie_shadow_wing</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>107</ID>
@@ -1230,6 +1265,7 @@
     <Filepath>cutie_sheriff_badge1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>108</ID>
@@ -1238,6 +1274,7 @@
     <Filepath>cutie_shield1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>109</ID>
@@ -1246,6 +1283,7 @@
     <Filepath>cutie_shield2</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>110</ID>
@@ -1254,6 +1292,7 @@
     <Filepath>cutie_shield3</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>111</ID>
@@ -1262,6 +1301,7 @@
     <Filepath>cutie_shooting_star6</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>193</ID>
@@ -1270,6 +1310,7 @@
     <Filepath>cutie_shovel</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>168</ID>
@@ -1278,6 +1319,7 @@
     <Filepath>cutie_silver_star</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>112</ID>
@@ -1286,6 +1328,7 @@
     <Filepath>cutie_silver_wing</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>113</ID>
@@ -1294,6 +1337,7 @@
     <Filepath>cutie_skull1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>114</ID>
@@ -1302,6 +1346,7 @@
     <Filepath>cutie_skull2</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>169</ID>
@@ -1310,6 +1355,7 @@
     <Filepath>cutie_smash</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>115</ID>
@@ -1318,6 +1364,7 @@
     <Filepath>cutie_spoons</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>202</ID>
@@ -1326,6 +1373,7 @@
     <Filepath>cutie_spudnpc</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>170</ID>
@@ -1334,6 +1382,7 @@
     <Filepath>cutie_Sticky_Note</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>190</ID>
@@ -1342,6 +1391,7 @@
     <Filepath>cutie_strawberry</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>116</ID>
@@ -1350,6 +1400,7 @@
     <Filepath>cutie_streamers1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>117</ID>
@@ -1358,6 +1409,7 @@
     <Filepath>cutie_sun1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>118</ID>
@@ -1366,6 +1418,7 @@
     <Filepath>cutie_sun2</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>171</ID>
@@ -1374,6 +1427,7 @@
     <Filepath>cutie_sunflower1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>183</ID>
@@ -1382,6 +1436,7 @@
     <Filepath>cutie_sword1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>188</ID>
@@ -1390,6 +1445,7 @@
     <Filepath>cutie_sword2</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>172</ID>
@@ -1398,6 +1454,7 @@
     <Filepath>cutie_tanzanite</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>119</ID>
@@ -1406,6 +1463,7 @@
     <Filepath>cutie_thread1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>173</ID>
@@ -1414,6 +1472,7 @@
     <Filepath>cutie_three_stars</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>120</ID>
@@ -1422,6 +1481,7 @@
     <Filepath>cutie_tomato</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>174</ID>
@@ -1430,6 +1490,7 @@
     <Filepath>cutie_topaz</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>121</ID>
@@ -1438,6 +1499,7 @@
     <Filepath>cutie_tourmaline</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>122</ID>
@@ -1446,6 +1508,7 @@
     <Filepath>cutie_tree1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>123</ID>
@@ -1454,6 +1517,7 @@
     <Filepath>cutie_turnip</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>203</ID>
@@ -1462,6 +1526,7 @@
     <Filepath>cutie_voguenpc</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>175</ID>
@@ -1470,6 +1535,7 @@
     <Filepath>cutie_wand1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>200</ID>
@@ -1478,6 +1544,7 @@
     <Filepath>cutie_wandanpc</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>124</ID>
@@ -1486,6 +1553,7 @@
     <Filepath>cutie_water1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>125</ID>
@@ -1494,6 +1562,7 @@
     <Filepath>cutie_waterdrop1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>176</ID>
@@ -1502,6 +1571,7 @@
     <Filepath>cutie_waterdrop2</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>126</ID>
@@ -1510,6 +1580,7 @@
     <Filepath>cutie_wave1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>177</ID>
@@ -1518,6 +1589,7 @@
     <Filepath>cutie_wind</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>178</ID>
@@ -1526,6 +1598,7 @@
     <Filepath>cutie_yellow_star</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>127</ID>
@@ -1534,6 +1607,7 @@
     <Filepath>cutie_yinyang</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>179</ID>
@@ -1542,6 +1616,7 @@
     <Filepath>flip_compass</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>128</ID>
@@ -1550,6 +1625,7 @@
     <Filepath>flip_dunce</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>129</ID>
@@ -1558,6 +1634,7 @@
     <Filepath>flip_music_note1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>130</ID>
@@ -1566,6 +1643,7 @@
     <Filepath>flip_music_note2</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>131</ID>
@@ -1574,6 +1652,7 @@
     <Filepath>flip_music_note3</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>132</ID>
@@ -1582,6 +1661,7 @@
     <Filepath>flip_music_note4</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>133</ID>
@@ -1590,6 +1670,7 @@
     <Filepath>flip_music_note5</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>134</ID>
@@ -1598,6 +1679,124 @@
     <Filepath>flip_music_note6</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
+  </CutieMark>
+  <CutieMark>
+    <ID>138</ID>
+    <Name>Anchor</Name>
+    <Description />
+    <Filepath>cutie_anchor</Filepath>
+    <Bonuses />
+    <MarkType>None</MarkType>
+    <HealthLevelBonus />
+  </CutieMark>
+  <CutieMark>
+    <ID>204</ID>
+    <Name>Astralnpc</Name>
+    <Description />
+    <Filepath>cutie_astralnpc</Filepath>
+    <Bonuses />
+    <MarkType>None</MarkType>
+    <HealthLevelBonus />
+  </CutieMark>
+  <CutieMark>
+    <ID>192</ID>
+    <Name>Axe 2</Name>
+    <Description />
+    <Filepath>cutie_axe2</Filepath>
+    <Bonuses />
+    <MarkType>None</MarkType>
+    <HealthLevelBonus />
+  </CutieMark>
+  <CutieMark>
+    <ID>185</ID>
+    <Name>Beachball</Name>
+    <Description />
+    <Filepath>cutie_beachball</Filepath>
+    <Bonuses />
+    <MarkType>None</MarkType>
+    <HealthLevelBonus />
+  </CutieMark>
+  <CutieMark>
+    <ID>184</ID>
+    <Name>Cactus 1</Name>
+    <Description />
+    <Filepath>cutie_cactus1</Filepath>
+    <Bonuses />
+    <MarkType>None</MarkType>
+    <HealthLevelBonus />
+  </CutieMark>
+  <CutieMark>
+    <ID>139</ID>
+    <Name>Citrine</Name>
+    <Description />
+    <Filepath>cutie_citrine</Filepath>
+    <Bonuses />
+    <MarkType>None</MarkType>
+    <HealthLevelBonus />
+  </CutieMark>
+  <CutieMark>
+    <ID>181</ID>
+    <Name>Comb</Name>
+    <Description />
+    <Filepath>cutie_comb1</Filepath>
+    <Bonuses />
+    <MarkType>None</MarkType>
+    <HealthLevelBonus />
+  </CutieMark>
+  <CutieMark>
+    <ID>140</ID>
+    <Name>Cooking 3</Name>
+    <Description />
+    <Filepath>cutie_cooking3</Filepath>
+    <Bonuses />
+    <MarkType>None</MarkType>
+    <HealthLevelBonus />
+  </CutieMark>
+  <CutieMark>
+    <ID>141</ID>
+    <Name>Cooking 4</Name>
+    <Description />
+    <Filepath>cutie_cooking4</Filepath>
+    <Bonuses />
+    <MarkType>None</MarkType>
+    <HealthLevelBonus />
+  </CutieMark>
+  <CutieMark>
+    <ID>142</ID>
+    <Name>Dice 1</Name>
+    <Description />
+    <Filepath>cutie_dice1</Filepath>
+    <Bonuses />
+    <MarkType>None</MarkType>
+    <HealthLevelBonus />
+  </CutieMark>
+  <CutieMark>
+    <ID>143</ID>
+    <Name>Drum 1</Name>
+    <Description />
+    <Filepath>cutie_drum1</Filepath>
+    <Bonuses />
+    <MarkType>None</MarkType>
+    <HealthLevelBonus />
+  </CutieMark>
+  <CutieMark>
+    <ID>144</ID>
+    <Name>Earth</Name>
+    <Description />
+    <Filepath>cutie_earth</Filepath>
+    <Bonuses />
+    <MarkType>None</MarkType>
+    <HealthLevelBonus />
+  </CutieMark>
+  <CutieMark>
+    <ID>145</ID>
+    <Name>Fire 4</Name>
+    <Description />
+    <Filepath>cutie_fire4</Filepath>
+    <Bonuses />
+    <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>205</ID>
@@ -1606,6 +1805,7 @@
     <Filepath>cutie_elloweenpc</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>206</ID>
@@ -1614,6 +1814,7 @@
     <Filepath>cutie_bonsai1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>207</ID>
@@ -1622,6 +1823,7 @@
     <Filepath>cutie_igloo1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>208</ID>
@@ -1630,6 +1832,7 @@
     <Filepath>cutie_inksplat1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>209</ID>
@@ -1638,6 +1841,7 @@
     <Filepath>cutie_mallet1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>210</ID>
@@ -1646,6 +1850,7 @@
     <Filepath>cutie_mortar1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>211</ID>
@@ -1654,6 +1859,7 @@
     <Filepath>cutie_tubes1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>212</ID>
@@ -1662,6 +1868,7 @@
     <Filepath>cutie_violin1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>213</ID>
@@ -1670,6 +1877,7 @@
     <Filepath>cutie_watch1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>214</ID>
@@ -1678,6 +1886,7 @@
     <Filepath>cutie_knight1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>215</ID>
@@ -1686,6 +1895,7 @@
     <Filepath>cutie_rook1</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>216</ID>
@@ -1694,6 +1904,7 @@
     <Filepath>cutie_mask2</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>217</ID>
@@ -1702,12 +1913,76 @@
     <Filepath>cutie_mask3</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
+    <HealthLevelBonus />
   </CutieMark>
   <CutieMark>
     <ID>218</ID>
     <Name>Gear Wing</Name>
     <Description>Undefined</Description>
     <Filepath>cutie_gear_wing</Filepath>
+    <Bonuses />
+    <MarkType>None</MarkType>
+    <HealthLevelBonus />
+  </CutieMark>
+  <CutieMark>
+    <ID>219</ID>
+    <Name>Gold Mining</Name>
+    <Description />
+    <Filepath>cutie_mining_gold</Filepath>
+    <Bonuses />
+    <MarkType>None</MarkType>
+    <HealthLevelBonus />
+  </CutieMark>
+  <CutieMark>
+    <ID>220</ID>
+    <Name>Cirrusnpc</Name>
+    <Description>Undefined</Description>
+    <Filepath>cutie_cirrusnpc</Filepath>
+    <Bonuses />
+    <MarkType>None</MarkType>
+    <HealthLevelBonus />
+  </CutieMark>
+  <CutieMark>
+    <ID>221</ID>
+    <Name>Hullabaloonpc</Name>
+    <Description>Undefined</Description>
+    <Filepath>cutie_hullabaloonpc</Filepath>
+    <Bonuses />
+    <MarkType>None</MarkType>
+    <HealthLevelBonus />
+  </CutieMark>
+  <CutieMark>
+    <ID>222</ID>
+    <Name>Scribblenpc</Name>
+    <Description>Undefined</Description>
+    <Filepath>cutie_scribblenpc</Filepath>
+    <Bonuses />
+    <MarkType>None</MarkType>
+    <HealthLevelBonus />
+  </CutieMark>
+  <CutieMark>
+    <ID>223</ID>
+    <Name>Silverhoofnpc</Name>
+    <Description>Undefined</Description>
+    <Filepath>cutie_silverhoofnpc</Filepath>
+    <Bonuses />
+    <MarkType>None</MarkType>
+    <HealthLevelBonus />
+  </CutieMark>
+  <CutieMark>
+    <ID>224</ID>
+    <Name>Waywardnpc</Name>
+    <Description>Undefined</Description>
+    <Filepath>cutie_waywardnpc</Filepath>
+    <Bonuses />
+    <MarkType>None</MarkType>
+    <HealthLevelBonus />
+  </CutieMark>
+  <CutieMark>
+    <ID>225</ID>
+    <Name>Opalnpc</Name>
+    <Description>Undefined</Description>
+    <Filepath>cutie_opal_npc</Filepath>
     <Bonuses />
     <MarkType>None</MarkType>
   </CutieMark>

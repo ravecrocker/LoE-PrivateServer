@@ -42,7 +42,7 @@
 						/* valid Targets: 
 						None, Enemy, Friendly, Self
 						*/
-						"Stat": "Tension",
+						"Stat": "Tension", /*currently (4/7/14) can be Health, Speed, Armor(percent change from 0 (no change) to 1 (completely stopped)*/  
 						"Chance": 1, /*default. 0-1 value, likelihood of this effect happening*/
 						"Amount": 1, /*default*/
 						"IsMultiplier": true, /*default. is amount a multiplier or a set value. how to do percent based changes to attributes*/
@@ -80,7 +80,7 @@
 				"ID": 0,
 				"Tier": 1,
 				"EnergyCost": 1000,
-				"TargetDistance": 30,
+				"TargetDistance": 100,
 				"TargetShapes": "Sphere"
 			},
 			{
@@ -88,7 +88,7 @@
 				"Tier": 2,
 				"ParentID": 0,
 				"EnergyCost": 1000,
-				"TargetDistance": 40,
+				"TargetDistance": 100,
 				"TargetShapes": "Sphere"
 			},
 			{
@@ -96,7 +96,7 @@
 				"Tier": 3,
 				"ParentID": 1,
 				"EnergyCost": 1000,
-				"TargetDistance": 50,
+				"TargetDistance": 100,
 				"TargetShapes": "Sphere"
 			}
 		]
@@ -250,7 +250,7 @@
 				"SplashEffects": [
 					{
 						"Stat": "Health",
-						"Amount": 9,
+						"Amount": 10,
 						"IsMultiplier": false,
 					},
 					{
@@ -346,14 +346,15 @@
 				"TargetDistance": 10,
 				"TargetShapes": "Target",
 				"CasterAnimation": "RainbowFields",
+				"ProjectileResource": "HealAbility",
 				"CastTime": 0.5,
-				"Cooldown": 5,
+				"Cooldown": 6,
 				"GlobalCooldown": 0.75,
 				"TargetEffects": [
 					{
 						"Targets": "Friendly",
 						"Stat": "Health",
-						"Amount": 75,
+						"Amount": 80,
 						"IsMultiplier": false,
 					},
 				]
@@ -384,6 +385,216 @@
 					},
 					{
 						"Stat": "Tension"
+					}
+				]
+			}
+		]
+	},
+	{
+		"ID": 14,
+		"Name": "Gale",
+		"Description": "Create a slicing windy gust",
+		"MaxLevel": 50,
+		"Icon": "gale",
+		"Races": "Pegasus",
+		"DamageType": "Physical",
+		"Upgrades": [
+			{
+				"ID": 0,
+				"Tier": 1,
+				"Aggression": 1,
+				"EnergyCost": 60,
+				"TargetDistance": 10,
+				"TargetShapes": "Frustum",
+				"CasterAnimation": "Gale",
+				"ProjectileResource": "Gale",
+				"CastTime": 0.5,
+				"Cooldown": 4,
+				"GlobalCooldown": 1,
+				"AoEDuration": 3, /* each time the aoe ticks (5 times), it will perform the splash effects */
+				"AoERadius": 10,
+				"ConeAngle": 40,
+				"SplashEffects": [
+					{
+						"Stat": "Health",
+						"Amount": 25,
+						"IsMultiplier": false,
+						"IsDPS": false,
+					},
+				]
+			}
+		]
+	},
+	{
+		"ID": 15,
+		"Name": "Magical Arrow",
+		"Description": "Shoots a magical arrow",
+		"MaxLevel": 50,
+		"Icon": "magicarrow",
+		"Races": "Unicorn",
+		"DamageType": "Magical",
+		"Upgrades": [
+			{
+				"ID": 0,
+				"Tier": 1,
+				"Aggression": 1,
+				"EnergyCost": 70,
+				"TargetDistance": 20,
+				"TargetShapes": "Target",
+				"CasterAnimation": "RainbowFields",
+				"ProjectileResource": "Magical Arrow",
+				"CastTime": 1,
+				"Cooldown": 7,
+				"GlobalCooldown": 1,
+				"TargetEffects": [
+					{
+						"Stat": "Health",
+						"Amount": 95,
+						"IsMultiplier": false,
+					},
+					{
+						"Stat": "Tension",
+					}
+				]
+			}
+		]
+	},
+	{
+		"ID": 16,
+		"Name": "Rough Terrain",
+		"Description": "Create a field of rocks that harms and slows enemies",
+		"MaxLevel": 50,
+		"Races": "Earth",
+		"Classes": "Combat",
+		"Icon": "roughterrain",
+		"DamageType": "Physical",
+		"Upgrades": [
+			{
+				"ID": 0,
+				"Tier": 1,
+				"Aggression": 1,
+				"EnergyCost": 50,
+				"TargetDistance": 0.5,
+				"TargetShapes": "Sphere",
+				"CasterAnimation": "RoughTerrain",
+				"ProjectileResource": "Rough Terrain",
+				"CastTime": 0.5,
+				"Cooldown": 15,
+				"GlobalCooldown": 1,
+				"AoEDuration": 10, /* each time the aoe ticks (5 times), it will perform the splash effects */
+				"AoERadius": 7,
+				"SplashEffects": [
+					{
+						"Stat": "Health",
+						"Amount": 7,
+						"IsMultiplier": false,
+					},
+					{
+						"Stat": "Speed",
+						"Amount": -0.5,
+						"IsMultiplier": true,
+						"Duration": 1,
+					},
+				]
+			}
+		]
+	},
+	{
+		"ID": 17,
+		"Name": "Fire Breath",
+		"Description": "roast the tasty pony's!",
+		"MaxLevel": 50,
+		"Upgrades": [
+			{
+				"ID": 0,
+				"Tier": 1,
+				"Aggression": 1,
+				"EnergyCost": 25,
+				"TargetDistance": 10,
+				"TargetShapes": "Frustum",
+				"CasterAnimation": "Attack 0",
+				"ProjectileResource": "DragonFire2",
+				"CastTime": 0.58,
+				"Cooldown": 4,
+				"GlobalCooldown": 1,
+				"AoEDuration": 5, /* each time the aoe ticks (5 times), it will perform the splash effects */
+				"AoERadius": 15,
+				"FrustumAspectRatio": 2,
+				"FrustumFieldOfViewY": 60,
+				"SplashEffects": [
+					{
+						"Stat": "Health",
+						"Amount": 13,
+						"IsMultiplier": false,
+						"IsDPS": false,
+					},
+					{
+						"Stat": "Health",
+						"Amount": 25,
+						"IsMultiplier": false,
+						"IsDPS": true,
+						"Duration": 5, 
+					},
+				]
+			}
+		]
+	},
+	{
+		"ID": 18,
+		"Name": "Stare",
+		"Description": "Stare damages and slows",
+		"MaxLevel": 50,
+		"Upgrades": [
+			{
+				"ID": 0,
+				"Tier": 1,
+				"Aggression": 1,
+				"EnergyCost": 25,
+				"TargetDistance": 6,
+				"TargetShapes": "Target",
+				"CasterAnimation": "Attack 0",
+				"ProjectileResource": "CockatriceStare",
+				"CastTime": 0.5,
+				"Cooldown": 3.5,
+				"GlobalCooldown": 3.5,
+				"TargetEffects": [
+					{
+						"Stat": "Health",
+						"Amount": 55,
+						"IsMultiplier": false,
+					},
+				]
+			}
+		]
+	},
+	{
+		"ID": 20,
+		"Name": "Admin Blast",
+		"Description": "Shoots a blast of administrative power.",
+		"MaxLevel": 50,
+		"Icon": "magicarrow",
+		"DamageType": "Magical",
+		"Upgrades": [
+			{
+				"ID": 0,
+				"Tier": 1,
+				"Aggression": 0,
+				"EnergyCost": 1,
+				"TargetDistance": 100,
+				"TargetShapes": "Target",
+				"CasterAnimation": "RainbowFields",
+				"ProjectileResource": "Magical Arrow",
+				"CastTime": 0,
+				"Cooldown": 0,
+				"GlobalCooldown": 0,
+				"TargetEffects": [
+					{
+						"Stat": "Health",
+						"Amount": 120,
+						"IsMultiplier": false,
+					},
+					{
+						"Stat": "Tension",
 					}
 				]
 			}
