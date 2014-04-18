@@ -1,4 +1,0 @@
-name:Cantermore;
-position: 37.6, -88;
-scale: 138.5, 79;
-north: 0.6, 0.4;

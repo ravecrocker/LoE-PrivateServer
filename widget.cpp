@@ -5,7 +5,7 @@
 #include "utils.h"
 #include "items.h"
 
-#ifdef WIN32
+#if defined _WIN32 || defined WIN32
 #include <windows.h>
 #else
 #include <sys/time.h>
@@ -27,6 +27,7 @@ Widget::Widget(QWidget *parent) :
     qsrand(QDateTime::currentMSecsSinceEpoch());
 }
 
+/// Adds the message in the log, and sets it as the status message
 void Widget::logStatusMessage(QString msg)
 {
     ui->log->appendPlainText(msg);
@@ -35,6 +36,7 @@ void Widget::logStatusMessage(QString msg)
     ui->status->repaint();
 }
 
+/// Adds the message to the log
 void Widget::logMessage(QString msg)
 {
     if (!logInfos)
@@ -43,9 +45,10 @@ void Widget::logMessage(QString msg)
     ui->log->repaint();
 }
 
+/// Reads the config file (server.ini) and start the server accordingly
 void Widget::startServer()
 {
-    logStatusMessage("Private server v0.5.1-alpha");
+    logStatusMessage("Private server v0.5.1-alpha2");
 #ifdef __APPLE__
     // this fixes the directory in OSX so we can use the relative CONFIGFILEPATH and etc properly
     CFBundleRef mainBundle = CFBundleGetMainBundle();
@@ -87,7 +90,7 @@ void Widget::startServer()
 
     /// Init servers
     tcpClientsList.clear();
-#ifdef WIN32
+#if defined _WIN32 || defined WIN32
     startTimestamp = GetTickCount();
 #elif __APPLE__
     timeval time;
@@ -98,7 +101,8 @@ void Widget::startServer()
     clock_gettime(CLOCK_MONOTONIC, &tp);
     startTimestamp = tp.tv_sec*1000 + tp.tv_nsec/1000/1000;
 #endif
-    // Read vortex DB
+
+    /// Read vortex DB
     if (enableGameServer)
     {
         bool corrupted=false;
@@ -107,6 +111,7 @@ void Widget::startServer()
         int nVortex=0;
         for (int i=0; i<files.size(); i++) // For each vortex file
         {
+            // Each file is a scene
             Scene scene(files[i].split('.')[0]);
 
             QFile file("data/vortex/"+files[i]);
@@ -118,6 +123,8 @@ void Widget::startServer()
             QByteArray data = file.readAll();
             data.replace('\r', "");
             QList<QByteArray> lines = data.split('\n');
+
+            // Each line is a vortex
             for (int j=0; j<lines.size(); j++)
             {
                 if (lines[j].size() == 0) // Skip empty lines
@@ -164,7 +171,7 @@ void Widget::startServer()
         logMessage("Loaded " + QString().setNum(nVortex) + " vortexes in " + QString().setNum(scenes.size()) + " scenes");
     }
 
-    // Read/parse Items.xml
+    /// Read/parse Items.xml
     if (enableGameServer)
     {
         QFile itemsFile("data/data/Items.xml");
@@ -182,7 +189,7 @@ void Widget::startServer()
         }
     }
 
-    // Read NPC/Quests DB
+    /// Read NPC/Quests DB
     if (enableGameServer)
     {
         try

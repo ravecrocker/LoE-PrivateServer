@@ -25,7 +25,9 @@ SOURCES += main.cpp \
     serverCommands.cpp \
     quest.cpp \
     serialize.cpp \
-    items.cpp
+    items.cpp \
+    receiveAck.cpp \
+    receiveChatMessage.cpp
 
 HEADERS  += widget.h \
 	character.h \
@@ -37,7 +39,9 @@ HEADERS  += widget.h \
     quest.h \
     serialize.h \
     items.h \
-    sendMessage.h
+    sendMessage.h \
+    receiveAck.h \
+    receiveChatMessage.h
 
 FORMS    += widget.ui
 

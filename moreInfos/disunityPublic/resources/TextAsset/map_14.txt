@@ -1,5 +1,0 @@
-name:Cloudopolis;
-position: -102, -102.5;
-scale: 125.5, 74.1;
-north: 0.0, -1.0;
-backcolor: 34, 118, 17;

@@ -563,7 +563,11 @@ OnSpawnEnemy(4); // 4 trolls, 4 Orcs
 OnSpawnEnemy -= CreateTrolls;
 OnSpawnEnemy(4); // 4 Orcs
 
+<<<<<<< HEAD
+On peut aussi faire des delegate anonymes, si on les appellent ils executent juste la fonction anynome entre {} example : OnSpawnEnemy = delegate {//stuff} 
+=======
 On peut aussi faire des delegate anonymes, si on les appellent ils executent juste la fonction anynome entre {} example : OnSpawnEnemy = delegate { //stuffToDo } 
+>>>>>>> 54f75ffce3b092539ce278dbd1875f2de7a19001
 
 
 => Donc quand on fait Net.OnRoomChange = foo, c'est la fonction foo qui sera executée au prochain loadLevel !!!!!
@@ -1615,6 +1619,17 @@ UDP: Last ping Dtime : 4.00999
 ====> The sesskey in the reply contains a private server hash + the original passhash. We just need to find who's passhash it was.
 ====> Add the clients to tcpPlayers before sending. Then at reception find their IP/port with the passhash
 ====> Then find the socket matching this IP/port and send back the reply
+<<<<<<< HEAD
+==> We'll seriouslt want this at some point. The local server could download everything from the remote and then forward to the game
+==> This way server owners would just need to update their local config and the local server would update on the clients.
+===> So yeah, the private server asks to select a login server at startup.
+===> Then if the selected server is a remote login server, we try to login and get the game server list from that server
+===> We need a different file for the list of login servers and game servers.
+===> By default the only game server is Local;127.0.0.1;1039
+===> By default the login servers are the ones in the current serverList
+===> This way we culd connect to LoE's official servers
+=======
+>>>>>>> 54f75ffce3b092539ce278dbd1875f2de7a19001
 
 => In the settings.ini you can use for example LoginServer=1.2.3.4:56 and SkipLogin=True
 
@@ -2494,7 +2509,12 @@ But if we use the prefilled password (not remember password, just the prefilled 
 
 => TODO: Might want to use color in the log for errors and warnings. As an optional parameter to logMessage maybe.
 
+<<<<<<< HEAD
+=> Teleporting with a target pony instead of destination is not implemented and destination is semi-random
+==> Fixed.
+=======
 => TODO: BUG: Teleporting with a target pony instead of destination is not implemented and destination is semi-random
+>>>>>>> 54f75ffce3b092539ce278dbd1875f2de7a19001
 
 => TODO: setPeer/listPeers should use netviewIds, not Ids
 
@@ -2538,7 +2558,31 @@ mobs/husky diamond dog
 mobs/lantern monster
 mobs/timberwolf
 
+<<<<<<< HEAD
+=> We should probably split receiveMessage again. Maybe the first seq checking in receiveMessage and the handling in handleMessage.cpp ?
+=> Nah the seq checking stops at line 90. We have 682 lines of receiveMessage.
+=> We could move the chat command handling in its own file. It's big and will probably get bigger.
+=> The ACK handling is also big. We should move it.
+==> Okay, we're at 430 lines of receiveMessage now. I guess it's acceptable.
+
+=> Remove unnecessary files from the history. Like game files or release files. Or .html files.
+
+=> TODO: Try to connect to the official game servers with the private server ?
+==> Probably not possible. We'd need a valid sesskey, and our login server is still the local private server.
+
+=> If we make the client connect to the Private Server for a HTTP request and the file isn't found, the client will freeze eventually.
+=> E.g if the client requests the blocked words and we don't have it, it'll freeze on the loading screen.
+=> If it's a cutiemark that the client already has, it'll freeze on exit.
+==> There are often checks for the If Modified Since. Maybe we should try to send a proper 404, or send a Not Modified and hope the client already has a copy.
+==> Try the 404 first, obviously.
+===> And as expected it doesn't work. The game only reacts if the send 304 Not Modified, so let's do that.
+===> We'll still ship the cutiemarks with the server. It'll make things easier to mod.
+====> Ditch the damn .qrc by the way. It's just not convenient enough.
+
+=> TODO: Get the new data files from the official servers, update the private server's copy of the data files.
+=======
 => TODO: We should probably split receiveMessage again. Maybe the first seq checking in receiveMessage and the handling in handleMessage.cpp ?
 => Nah the seq checking stops at line 90. We have 682 lines of receiveMessage.
 => We could move the chat command handling in its own file. It's big and will probably get bigger.
 => The ACK handling is also big. We should move it.
+>>>>>>> 54f75ffce3b092539ce278dbd1875f2de7a19001

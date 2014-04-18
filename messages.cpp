@@ -128,13 +128,20 @@ void sendPonySave(Player *player, QByteArray msg)
 
         // Send skills
         QList<QPair<quint32, quint32> > skills;
-        skills << QPair<quint32, quint32>(10, 0); // Ground pound
+        skills << QPair<quint32, quint32>(10, 0); // Ground pound (all races)
         if (player->pony.getType() == Pony::EarthPony)
+        {
             skills << QPair<quint32, quint32>(5, 0); // Seismic buck
+        }
         else if (player->pony.getType() == Pony::Pegasus)
-            skills << QPair<quint32, quint32>(11, 0); // Tornado
+        {
+            skills << QPair<quint32, quint32>(11, 0); // Dual Cyclone
+        }
         else if (player->pony.getType() == Pony::Unicorn)
+        {
             skills << QPair<quint32, quint32>(2, 0); // Teleport
+            skills << QPair<quint32, quint32>(9, 0); // Rainbow Fields
+        }
         sendSkillsRPC(player, skills);
 
         // Set current/max stats again (that's what the official server does, not my idea !)

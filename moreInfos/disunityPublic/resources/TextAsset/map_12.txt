@@ -1,5 +1,0 @@
-name:Ponydale;
-position: -44.1, 322;
-scale: 80.5, 93.2;
-north: 0.0, 1.0;
-backcolor: 123, 191, 77;

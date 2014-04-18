@@ -8,6 +8,8 @@
 #include "sendMessage.h"
 #include "items.h"
 
+#define DEBUG_LOG false
+
 SceneEntity::SceneEntity()
 {
     modelName = QString();
@@ -354,7 +356,9 @@ void Player::udpResendLast()
         return;
     }
 
+#if DEBUG_LOG
     win.logMessage("Resending message : "+QString(msg.toHex().data()));
+#endif
 
     // Simulate packet loss if enabled (DEBUG ONLY!)
 #if UDP_SIMULATE_PACKETLOSS
@@ -398,7 +402,9 @@ void Player::udpDelayedSend()
         return; // Avoid deadlock if sendMessage just locked but didn't have the time to stop the timers
     }
     //udpSendReliableMutex.lock();
-    //win.logMessage("Sending delayed grouped message : "+QString(udpSendReliableGroupBuffer.toHex()));
+#if DEBUG_LOG
+    win.logMessage("Sending delayed grouped message : "+QString(udpSendReliableGroupBuffer.toHex()));
+#endif
 
     // Move the grouped message to the reliable queue
     udpSendReliableQueue.append(udpSendReliableGroupBuffer);

@@ -196,14 +196,23 @@ void Widget::tcpProcessPendingDatagrams()
                     head.open(QIODevice::ReadOnly);
                     if (!head.isOpen())
                     {
-                        logMessage("Can't open header : "+head.errorString());
+                        logMessage("TCP: Can't open header : "+head.errorString());
                         continue;
                     }
                     res.open(QIODevice::ReadOnly);
                     if (!res.isOpen())
                     {
-                        logMessage("File not found");
+                        logMessage("TCP: File not found");
                         head.close();
+                        QFile head404(QString(NETDATAPATH)+"/notmodified.bin");
+                        head404.open(QIODevice::ReadOnly);
+                        if (!head404.isOpen())
+                        {
+                            logMessage("TCP: Can't open 304 Not Modified header : "+head404.errorString());
+                            continue;
+                        }
+                        socket->write(head404.readAll());
+                        head404.close();
                         continue;
                     }
                     socket->write(head.readAll());

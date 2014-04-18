@@ -1,4 +1,0 @@
-confused: true;
-name:Evershade Forest;
-position: 0.0, 0.0;
-scale: 200.0, 200.0;
