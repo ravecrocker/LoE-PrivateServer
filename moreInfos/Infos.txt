@@ -2586,3 +2586,9 @@ mobs/timberwolf
 => We could move the chat command handling in its own file. It's big and will probably get bigger.
 => The ACK handling is also big. We should move it.
 >>>>>>> 54f75ffce3b092539ce278dbd1875f2de7a19001
+
+=> Okay I can reproduce #36 when connected to the internet with Babscon 2014 and the fully patched DLLs
+=> Created a new account mlkjaaaa and loged in with mlkj's saved password, loged out, loged in with a wrong one letter password, it freezed.
+==> The client keeps trying to login again and again, so as said in #36, we're not denying the client correctly.
+==> It finally times out with "couldn't log in: problem (3) in the Chunk-Encoded data"
+===> Need a pcap of logging in with a wrong password !

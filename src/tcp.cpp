@@ -352,6 +352,7 @@ void Widget::tcpProcessData(QByteArray data, QTcpSocket* socket)
                 {
                     logMessage("TCP: Login failed, wrong password");
                     socket->write(fileBadPassword.readAll());
+                    socket->close();
                     ok=false;
                 }
                 /*
