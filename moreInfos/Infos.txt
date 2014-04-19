@@ -2509,12 +2509,8 @@ But if we use the prefilled password (not remember password, just the prefilled 
 
 => TODO: Might want to use color in the log for errors and warnings. As an optional parameter to logMessage maybe.
 
-<<<<<<< HEAD
 => Teleporting with a target pony instead of destination is not implemented and destination is semi-random
 ==> Fixed.
-=======
-=> TODO: BUG: Teleporting with a target pony instead of destination is not implemented and destination is semi-random
->>>>>>> 54f75ffce3b092539ce278dbd1875f2de7a19001
 
 => TODO: setPeer/listPeers should use netviewIds, not Ids
 
@@ -2558,7 +2554,6 @@ mobs/husky diamond dog
 mobs/lantern monster
 mobs/timberwolf
 
-<<<<<<< HEAD
 => We should probably split receiveMessage again. Maybe the first seq checking in receiveMessage and the handling in handleMessage.cpp ?
 => Nah the seq checking stops at line 90. We have 682 lines of receiveMessage.
 => We could move the chat command handling in its own file. It's big and will probably get bigger.
@@ -2567,7 +2562,7 @@ mobs/timberwolf
 
 => Remove unnecessary files from the history. Like game files or release files. Or .html files.
 
-=> TODO: Try to connect to the official game servers with the private server ?
+=> Try to connect to the official game servers with the private server ?
 ==> Probably not possible. We'd need a valid sesskey, and our login server is still the local private server.
 
 => If we make the client connect to the Private Server for a HTTP request and the file isn't found, the client will freeze eventually.
@@ -2579,13 +2574,7 @@ mobs/timberwolf
 ===> We'll still ship the cutiemarks with the server. It'll make things easier to mod.
 ====> Ditch the damn .qrc by the way. It's just not convenient enough.
 
-=> TODO: Get the new data files from the official servers, update the private server's copy of the data files.
-=======
-=> TODO: We should probably split receiveMessage again. Maybe the first seq checking in receiveMessage and the handling in handleMessage.cpp ?
-=> Nah the seq checking stops at line 90. We have 682 lines of receiveMessage.
-=> We could move the chat command handling in its own file. It's big and will probably get bigger.
-=> The ACK handling is also big. We should move it.
->>>>>>> 54f75ffce3b092539ce278dbd1875f2de7a19001
+=> Get the new data files from the official servers, update the private server's copy of the data files.
 
 => Okay I can reproduce #36 when connected to the internet with Babscon 2014 and the fully patched DLLs
 => Created a new account mlkjaaaa and loged in with mlkj's saved password, loged out, loged in with a wrong one letter password, it freezed.

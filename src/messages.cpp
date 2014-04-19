@@ -132,15 +132,19 @@ void sendPonySave(Player *player, QByteArray msg)
         if (player->pony.getType() == Pony::EarthPony)
         {
             skills << QPair<quint32, quint32>(5, 0); // Seismic buck
+            skills << QPair<quint32, quint32>(16, 0); // Rough Terrain
         }
         else if (player->pony.getType() == Pony::Pegasus)
         {
             skills << QPair<quint32, quint32>(11, 0); // Dual Cyclone
+            skills << QPair<quint32, quint32>(14, 0); // Gale
         }
         else if (player->pony.getType() == Pony::Unicorn)
         {
             skills << QPair<quint32, quint32>(2, 0); // Teleport
             skills << QPair<quint32, quint32>(9, 0); // Rainbow Fields
+            skills << QPair<quint32, quint32>(12, 0); // Heal
+            skills << QPair<quint32, quint32>(15, 0); // Magical Arrow
         }
         sendSkillsRPC(player, skills);
 
