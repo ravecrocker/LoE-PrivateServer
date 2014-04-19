@@ -2581,3 +2581,6 @@ mobs/timberwolf
 ==> The client keeps trying to login again and again, so as said in #36, we're not denying the client correctly.
 ==> It finally times out with "couldn't log in: problem (3) in the Chunk-Encoded data"
 ===> Need a pcap of logging in with a wrong password !
+
+=> Flash pony data : BUZsYXNoAwIAAAAAAAAAAAAAAAB+TDLGpzLw9P9Vk9P8//ADAAkAAAAAANMCgD8Fhg==
+=> Taffy Treat ponydata : C1RhZmZ5IFRyZWF0AgJXAAAAAAAAAAAAAADUb5PTwWSWh6Au3UVqe6AMAAwAAAAAAGJ3ez/Yfw==

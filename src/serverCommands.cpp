@@ -227,9 +227,9 @@ void Widget::sendCmdLine()
     }
     else if (str.startsWith("getPos"))
     {
-        logMessage(QString("Pos : x=") + QString().setNum(cmdPeer->pony.pos.x)
-                   + ", y=" + QString().setNum(cmdPeer->pony.pos.y)
-                   + ", z=" + QString().setNum(cmdPeer->pony.pos.z));
+        logMessage(QString("Pos : ") + QString().setNum(cmdPeer->pony.pos.x)
+                   + " " + QString().setNum(cmdPeer->pony.pos.y)
+                   + " " + QString().setNum(cmdPeer->pony.pos.z));
     }
     else if (str.startsWith("getRot"))
     {

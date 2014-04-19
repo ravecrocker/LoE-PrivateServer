@@ -47,7 +47,7 @@ If a 'say' has no answers, we still send it and wait until the client clicks to 
 
 And I cannot stress this enough, quest IDs MUST be unique. 
 If they aren't, somes NPCs may have their scripts mixed up and share the same save, with unexpected consequences.
-If you want to add new NPCs, you should give them a high quest ID from the start (e.g. 100 and onward), 
+If you want to add new NPCs, you should give them a high quest ID from the start (e.g. 50 and onward), 
 so that they won't conflict with the private server's 'official' NPCs even in later updates.
 
 It's a bad idea to create a player with the same name as a NPC.
