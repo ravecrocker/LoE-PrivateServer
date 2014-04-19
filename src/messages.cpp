@@ -59,7 +59,9 @@ void sendEntitiesList(Player *player)
     for (int i=0; i<win.npcs.size(); i++)
         if (win.npcs[i]->sceneName.toLower() == player->pony.sceneName.toLower())
         {
+#if DEBUG_LOG
             win.logMessage("UDP: Sending NPC "+win.npcs[i]->name);
+#endif
             sendNetviewInstantiate(win.npcs[i], player);
         }
 
@@ -99,7 +101,9 @@ void sendPonySave(Player *player, QByteArray msg)
     // If we found a matching NPC, send him and exits
     if (npc != NULL)
     {
+#if DEBUG_LOG
         win.logMessage("UDP: Sending ponyData and worn items for NPC "+npc->name);
+#endif
         sendPonyData(npc, player);
         //sendWornRPC(npc, player, npc->worn);
         return;
@@ -196,7 +200,9 @@ void sendNetviewInstantiate(Player *player, QString key, quint16 NetviewId, quin
 
 void sendNetviewInstantiate(Player *player)
 {
+#if DEBUG_LOG
     win.logMessage("UDP: Send instantiate for/to "+QString().setNum(player->pony.netviewId));
+#endif
     QByteArray data(1,1);
     data += stringToData("PlayerBase");
     QByteArray data2(4,0);
@@ -216,8 +222,10 @@ void sendNetviewInstantiate(Player *player)
 
 void sendNetviewInstantiate(Pony *src, Player *dst)
 {
+#if DEBUG_LOG
     win.logMessage("UDP: Send instantiate for "+QString().setNum(src->netviewId)
                    +" to "+QString().setNum(dst->pony.netviewId));
+#endif
     QByteArray data(1,1);
     data += stringToData("PlayerBase");
     QByteArray data2(4,0);
