@@ -48,7 +48,7 @@ void Widget::logMessage(QString msg)
 /// Reads the config file (server.ini) and start the server accordingly
 void Widget::startServer()
 {
-    logStatusMessage("Private server v0.5.1");
+    logStatusMessage("Private server v0.5.2-alpha");
 #ifdef __APPLE__
     // this fixes the directory in OSX so we can use the relative CONFIGFILEPATH and etc properly
     CFBundleRef mainBundle = CFBundleGetMainBundle();
