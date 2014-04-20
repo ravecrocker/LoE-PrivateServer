@@ -199,9 +199,18 @@ void Widget::startServer()
             QStringList files = npcsDir.entryList(QDir::Files);
             for (int i=0; i<files.size(); i++, nQuests++) // For each vortex file
             {
-                Quest quest("data/npcs/"+files[i], NULL);
-                quests << quest;
-                npcs << quest.npc;
+                try
+                {
+                    Quest quest("data/npcs/"+files[i], NULL);
+                    quests << quest;
+                    npcs << quest.npc;
+                }
+                catch (QString& error)
+                {
+                    win.logMessage(error);
+                    win.stopServer();
+                    throw error;
+                }
             }
             logMessage("Loaded "+QString().setNum(nQuests)+" quests/npcs.");
         }
@@ -325,6 +334,9 @@ void Widget::stopServer(bool log)
     udpSocket->close();
 
     sync.stopSync();
+
+    enableLoginServer = false;
+    enableGameServer = false;
 
     disconnect(ui->sendButton, SIGNAL(clicked()), this, SLOT(sendCmdLine()));
     disconnect(udpSocket, SIGNAL(readyRead()),this, SLOT(udpProcessPendingDatagrams()));
