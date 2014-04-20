@@ -81,6 +81,21 @@ Quest::Quest(QString path, Player *Owner)
                     npc->worn << item;
                 }
             }
+            else if (line[0] == "shop")
+            {
+                for (int i=1; i<line.size(); i++)
+                {
+                    bool ok;
+                    int itemId = line[i].toInt(&ok);
+                    if (!ok)
+                        throw QString("Quest::Quest: Error reading shop, quest "+path);
+                    InventoryItem item;
+                    item.id = itemId;
+                    item.index = i-1;
+                    item.amount = (quint32)-1;
+                    npc->inv << item;
+                }
+            }
             else if (line[0] == "questId")
                 if (line.size()==2)
                 {

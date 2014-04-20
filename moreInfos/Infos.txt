@@ -803,8 +803,8 @@ Then they start exchanging some 01 before the client's disconnection, the first 
 4 Header
 1 Util type (1)
 X String (Key)
-2 Uint16 (ViewId)
-2 Uint16 (OwnerId)
+2 Uint16 (netviewId)
+2 Uint16 (OwnerId aka viewId)
 Vector
 Quaternion
 
@@ -2584,3 +2584,87 @@ mobs/timberwolf
 
 => Flash pony data : BUZsYXNoAwIAAAAAAAAAAAAAAAB+TDLGpzLw9P9Vk9P8//ADAAkAAAAAANMCgD8Fhg==
 => Taffy Treat ponydata : C1RhZmZ5IFRyZWF0AgJXAAAAAAAAAAAAAADUb5PTwWSWh6Au3UVqe6AMAAwAAAAAAGJ3ez/Yfw==
+
+
+=> In shop2 our netviewId was probably 0x3C01
+=> Wiresharks finds two Begin Shop and three End Shop
+==> but we only match if it starts with a 54. The first begin shop was probably inside another message
+===> Now that we have our netviewId, we can just search for 54 XX XX 3C01 16 and 54 XX XX 3C01 17
+===> Okay now we can find 5 end shop and five begin shop, the first begin is at 2160
+===> Search filter : ip.proto == UDP && ip.addr == 162.243.19.87 && data.data contains 54 && data.data contains 3C:01:16
+
+==> Look just before the first Begin Shop, what did the client send to cause this ?
+ip.proto == UDP && ip.addr == 162.243.19.87 && data.data[0:1] contains 54 && data.data[7:1] contains 16
+
+=> So I found this :
+86000028024d00004802004d01004803004d02004804004d03004805004d04004806004d05004807004808004d06004809004d0700480a004d0800480b004d0900480c004d0a00480d0054200128005600042000542201b0015600c807576179776172640103e000000000000000000000009c5a5c9c5a5cd6af7c397d2968c85b0b000200000000000000803fff7f54240128005700042000542601a8015700c806426167656c730303000000000000000000000000000000000000764f17ecad16764f1704000500040000009a99993fff7f542801500058000420010516000000542a01e8015800c80e426167677920427269746368657302027400000000000000000000002aec2cad7e46dededee29f63ff00ff0700070000000000cdcc8c3fccac542c0128005900042000542e0198015900c8044275636b01010000000000000000000000000d0d0d0d0d0dc71b1b0000000d0d0d04000500030001006666663fff7f5430014000c00133010000c8425432014000c00132010000c8425434014000c00133030000c8425436014000c00132030000c84254380128005a00042000543a01c0015a00c8094275747465726375700102000000000000000000000000efcb86759ae8ffe4b094b6ffffe4b00900090000000000cdcc8c3fff7f543c0150005b000420011f13000000543e01a8015b00c80644616e6365720103000000000000000000000000184824718e68306c245b300a306c240000000000000000cdcc8c3fff7f54400138005b00ca0b00000054420128005d00042000544401a8015d00c806456e69676d610202000000000000000000000000a3ff9b7ac0ffefdd64cc3ca2ff00ff0c000c0000000000734a703f285c54460150005e000420010a11000000544801e8015e00c80e4669726562616c6c20426c69747a0303260000000000000000000000ffd700e25822ff1910ff00ffff00ff0d000c000000000003796a3f666648d40068000a5a003c010741646453686f70
+==> The very end is the string AddShop, there are NPC names inside.
+==> Decomposition :
+86 0000 2802 4d00004802004d01004803004d02004804004d03004805004d04004806004d05004807004808004d06004809004d0700480a004d0800480b004d0900480c004d0a00480d00
+54 2001 2800 5600042000
+54 2201 b001 5600 c8 07576179776172640103e000000000000000000000009c5a5c9c5a5cd6af7c397d2968c85b0b000200000000000000803fff7f
+54 2401 2800 5700 042000
+54 2601 a801 5700 c8 06426167656c730303000000000000000000000000000000000000764f17ecad16764f1704000500040000009a99993fff7f
+54 2801 5000 5800 0420010516000000
+54 2a01 e801 5800 c8 0e426167677920427269746368657302027400000000000000000000002aec2cad7e46dededee29f63ff00ff0700070000000000cdcc8c3fccac
+54 2c01 2800 5900 042000542e0198015900c8044275636b01010000000000000000000000000d0d0d0d0d0dc71b1b0000000d0d0d04000500030001006666663fff7f
+54 3001 4000 c001 33010000c842
+54 3201 4000 c001 32010000c842
+54 3401 4000 c001 33030000c842
+54 3601 4000 c001 32030000c842
+54 3801 2800 5a00 042000
+54 3a01 c001 5a00 c8 094275747465726375700102000000000000000000000000efcb86759ae8ffe4b094b6ffffe4b00900090000000000cdcc8c3fff7f
+54 3c01 5000 5b00 0420011f13000000
+54 3e01 a801 5b00 c8 0644616e6365720103000000000000000000000000184824718e68306c245b300a306c240000000000000000cdcc8c3fff7f
+54 4001 3800 5b00 ca0b000000
+54 4201 2800 5d00 042000
+54 4401 a801 5d00 c8 06456e69676d610202000000000000000000000000a3ff9b7ac0ffefdd64cc3ca2ff00ff0c000c0000000000734a703f285c
+54 4601 5000 5e00 0420010a11000000
+54 4801 e801 5e00 c8 0e4669726562616c6c20426c69747a0303260000000000000000000000ffd700e25822ff1910ff00ffff00ff0d000c000000000003796a3f6666
+48 d400 6800 0a 5a00 3c01 0741646453686f70 // The payload translates to data string AddShop
+==> The interesting part with the AddShop is the last 48.
+==> The RPC is 48 0A AddView, then it references 5A00, wich is buttercup, and 3C01, us. And then "AddShop". 
+==> Seriously, plaintext over the network for every shop instanciated? Good thing I'm not the one paying the bandwidth.
+===> Okay it worked. We just add the "shop" QuestScript command, it fills the NPC's inv, and then if the inv isn't empty, we send AddShop
+
+=> The BeginShop request we received was : 4d 1400 1800 0100 16
+==> So yeah, it's a 4D 16 BeginShop, as expected......... I need to sleep. And stop talking to myself in a text file.
+
+=> Example BuyItem request : 4d 1600 5800 0100 0a 37000000 01000000
+
+=> TODO: BUG: We're not checking the price of the item before buying. 
+=> There's no client side check, so we'll need to update the item.xml parser.
+
+=> Okay I'm not sure what to reply to a BuyItem RPC
+=> There's one at 1766 in shop pcap
+
+Sent add item, data : 0100 06 11000000 02000000 00000000
+Sent setBits
+Sent add item, data : 0100 06 11000000 03000000 00000000
+Sent setBits
+Sent add item, data : 010006110000000400000000000000
+Sent setBits
+Sent add item, data : 010006110000000500000000000000
+Sent setBits
+Sent add item, data : 010006110000000600000000000000
+Sent setBits
+Sent add item, data : 010006110000000700000000000000
+Sent setBits
+Sent add item, data : 0100 06 37000000 01000000 06000000
+Sent setBits
+
+=> Bug if you try to wear e.g. three times the same item, the inventory might not display the right count until you reload
+
+=> Sell : 4d 3200 5800 0100 0b 2d000000 01000000
+
+=> Okay now that's weird. After we shop, if I try to wear something, the NPC I shopped at is the one who wears the items !
+==> Actually it happens even if we don't shop. If there's a shop NPC, he's the one to wear/unwear our items !
+Sent add item, data : 0100 06 11000000 01000000 06000000
+sent wearItem RPC, data : 0100 08 11000000 0b
+=> Everything seems to be OK...
+==> Oddly, everything works just fine if we don't have a shop  NPC in the room
+===> So, it's a problem with AddView then ?
+====> Turns out it is. We'll just use the same netviewId twice. I'm not sure what they were trying to do, but this should work.
+=====> Fixed
+
+=> TODO: a shopName QuestScript command, instead of always "Wearable Items"

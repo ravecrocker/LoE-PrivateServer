@@ -93,6 +93,7 @@ void Widget::sendCmdLine()
         {
             for (int i=0; i<win.udpPlayers.size();i++)
                 win.logMessage(QString().setNum(win.udpPlayers[i]->pony.id)
+                               +" ("+QString().setNum(win.udpPlayers[i]->pony.netviewId)+")"
                                +"   "+win.udpPlayers[i]->pony.name
                                +"   "+win.udpPlayers[i]->IP
                                +":"+QString().setNum(win.udpPlayers[i]->port)
@@ -510,6 +511,14 @@ void Widget::sendCmdLine()
         {
             win.logMessage("Quest "+QString().setNum(quest.id)+" ("+*(quest.name)
                            +") : "+QString().setNum(quest.state));
+        }
+    }
+    else if (str==("listNpcs"))
+    {
+        for (const Pony* npc : win.npcs)
+        {
+            win.logMessage("NPC "+QString().setNum(npc->id)+"/"+QString().setNum(npc->netviewId)
+                           +" "+npc->name);
         }
     }
     else if (str==("listInventory"))

@@ -35,7 +35,8 @@ ponyData data : PonyData of the NPC in base64. Use getPonyData to get it.
 scene txt : Scene where the NPC is
 pos x y z : Pos of the NPC
 rot rx ry rz rw : Rot of the NPC
-wear itemId : Add an item to be worn by the NPC
+wear itemId... : Add items to be worn by the NPC
+shop itemId... : Add items to be sold by the NPC
 end : end of conversation
 
 Special variables. Use these in a 'say' or 'answer' command :

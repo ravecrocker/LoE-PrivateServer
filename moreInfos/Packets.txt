@@ -46,14 +46,10 @@ For example the packet 5600001800030001 will be noted 56 03 00 01
 48 08 Finished instantiate
 48 0A Add view
 
-4D (BEGIN_RPCMODES) RPC calls to a netview ID.
-4D XXXX 04 Get worn items
-4D XXXX 09 Unwear item
+4D (BEGIN_RPCMODES) RPC calls to a netview ID. Those are basically the same than the 54, but sent by the client.
 4D XXXX 31 InvokeScript (used when clicking Talk on a NPC)
 
-54 XXXX Reliable messages, often RPC calls to network views. XXXX = NetviewId.
-54 XXXX 32 AA BBBBBBBBB Set status AA's value to BBBBBBBBB.
-54 XXXX 33 AA BBBBBBBBB Set status AA's max value to BBBBBBBBB.
+54 XXXX Reliable messages, RPC calls to network views. XXXX = NetviewId. Sent by the server.
 54 XXXX 04 Inventory worn items
 54 XXXX 05 Inventory
 54 XXXX 06 Add item
@@ -63,6 +59,11 @@ For example the packet 5600001800030001 will be noted 56 03 00 01
 54 XXXX 0A Buy item
 54 XXXX 0B Sell item
 54 XXXX 10 Set bits
+54 XXXX 16 BeginShop
+54 XXXX 17 EndShop
+54 XXXX 32 AA BBBBBBBBB Set status AA's value to BBBBBBBBB.
+54 XXXX 33 AA BBBBBBBBB Set status AA's max value to BBBBBBBBB.
+54 XXXX 3D Perform Magic
 54 XXXX C3 Set skills
 54 XXXX C8 Sends ponyData to instantiate player
 54 XXXX C9 Summon

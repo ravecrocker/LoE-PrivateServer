@@ -692,6 +692,7 @@ void Pony::addInventoryItem(quint32 id, quint32 qty)
             if (item.id == id)
             {
                 item.amount += qty;
+                sendAddItemRPC(owner, item);
                 return;
             }
             else if (item.index == firstFreeIndex)

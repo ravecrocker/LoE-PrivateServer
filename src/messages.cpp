@@ -105,7 +105,12 @@ void sendPonySave(Player *player, QByteArray msg)
         win.logMessage("UDP: Sending ponyData and worn items for NPC "+npc->name);
 #endif
         sendPonyData(npc, player);
-        //sendWornRPC(npc, player, npc->worn);
+
+        if (npc->inv.size()) // This NPC has a shop
+        {
+            sendAddViewAddShop(player, npc);
+        }
+
         return;
     }
 
@@ -646,5 +651,44 @@ void sendDeleteItemRPC(Player* player, uint8_t index, uint32_t qty)
     data += 0x7;
     data += uint8ToData(index);
     data += uint32ToData(qty);
+    sendMessage(player, MsgUserReliableOrdered18, data);
+}
+
+void sendAddViewAddShop(Player* player, Pony* npcShop)
+{
+    QByteArray data;
+    data += 0x0A; // AddView RPC
+    data += uint16ToData(npcShop->netviewId);
+    data += uint16ToData(npcShop->netviewId);
+    //data += uint16ToData(player->pony.netviewId);
+    data += stringToData("AddShop");
+
+    sendMessage(player, MsgUserReliableOrdered6, data);
+}
+
+void sendBeginShop(Player* player, Pony* npcShop)
+{
+    QByteArray data;
+    data += uint16ToData(npcShop->netviewId);
+    data += 0x16; // BeginShop
+
+    data += uint32ToData(npcShop->inv.size());
+
+    for (const InventoryItem& item : npcShop->inv)
+    {
+        data += uint32ToData(item.id);
+        data += uint32ToData(item.amount);
+    }
+    data += stringToData("Wearable Items");
+
+    sendMessage(player, MsgUserReliableOrdered18, data);
+}
+
+void sendEndShop(Player* player)
+{
+    QByteArray data;
+    data += uint16ToData(player->pony.netviewId);
+    data += 0x17; // EndShop
+
     sendMessage(player, MsgUserReliableOrdered18, data);
 }

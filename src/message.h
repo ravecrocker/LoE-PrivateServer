@@ -81,5 +81,8 @@ void sendDialogOptions(Player* player, QList<QString> &answers);
 void sendEndDialog(Player* player);
 void sendAddItemRPC(Player* player, const InventoryItem& item);
 void sendDeleteItemRPC(Player* player, uint8_t index, uint32_t qty);
+void sendBeginShop(Player* player, Pony* npcShop);
+void sendEndShop(Player* player);
+void sendAddViewAddShop(Player* player, Pony* npcShop);
 
 #endif // MESSAGE_H

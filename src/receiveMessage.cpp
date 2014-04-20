@@ -226,13 +226,6 @@ void receiveMessage(Player* player)
             player->pony.loadQuests();
             if (!player->pony.loadInventory()) // Create a default inventory if we can't find one saved
             {
-                InventoryItem raincloudHat{0,73};
-                InventoryItem goggles{1,17};
-                InventoryItem hat{2,62};
-                InventoryItem bag{3,60};
-                InventoryItem thbbbpt{4,65};
-                InventoryItem fluffleHat{5,66};
-                player->pony.inv << raincloudHat << goggles << hat << bag << thbbbpt << fluffleHat;
                 player->pony.nBits = 15;
                 player->pony.saveInventory();
             }
@@ -370,6 +363,52 @@ void receiveMessage(Player* player)
                     win.logMessage("Error trying to wear item");
             }
         }
+        else if ((unsigned char)msg[0]==MsgUserReliableOrdered11 && (unsigned char)msg[7]==0x16) // BeginShop request
+        {
+            // BeginShop doesn't specify wich shop you want to buy from
+            // We'll assume that there's never more than one shop per scene.
+
+
+            uint16_t netviewId = dataToUint16(msg.mid(5));
+            win.logMessage("Begin shop with netview id "+QString().setNum(netviewId));
+
+
+            Pony* targetNpc = nullptr;
+            for (Pony* npc : win.npcs)
+            {
+                if (npc->sceneName == player->pony.sceneName && npc->inv.size()) // Has a shop
+                {
+                    targetNpc = npc;
+                    break;
+                }
+            }
+            if (targetNpc)
+                sendBeginShop(player, targetNpc);
+            else
+                win.logMessage("UDP: Can't find a shop on scene "+player->pony.sceneName+" for BeginShop");
+        }
+        else if ((unsigned char)msg[0]==MsgUserReliableOrdered11 && (unsigned char)msg[7]==0x17) // EndShop request
+        {
+            sendEndShop(player);
+        }
+        else if ((unsigned char)msg[0]==MsgUserReliableOrdered11 && (unsigned char)msg[7]==0x0A) // BuyItem request
+        {
+            /// TODO: At the moment we don't actually pay for items, since there are no monsters.
+            uint16_t itemId = dataToUint32(msg.mid(8));
+            uint16_t amount = dataToUint32(msg.mid(12));
+
+            player->pony.addInventoryItem(itemId, amount);
+            sendSetBitsRPC(player);
+        }
+        else if ((unsigned char)msg[0]==MsgUserReliableOrdered11 && (unsigned char)msg[7]==0x0B) // SellItem request
+        {
+            /// TODO: At the moment we don't actually pay for items, since there are no monsters.
+            uint16_t itemId = dataToUint32(msg.mid(8));
+            uint16_t amount = dataToUint32(msg.mid(12));
+
+            player->pony.removeInventoryItem(itemId, amount);
+            sendSetBitsRPC(player);
+        }
         else if ((unsigned char)msg[0]==MsgUserReliableOrdered11 && (unsigned char)msg[7]==0x04) // Get worn items request
         {
             quint16 targetId = ((quint16)(quint8)msg[5]) + (((quint16)(quint8)msg[6])<<8);
@@ -390,7 +429,7 @@ void receiveMessage(Player* player)
                 if (targetNpc)
                     sendWornRPC(targetNpc, player, targetNpc->worn);
                 else
-                    win.logMessage("Can't find netviewId "+QString().setNum(targetId)+" to send worn items");
+                    win.logMessage("UDP: Can't find netviewId "+QString().setNum(targetId)+" to send worn items");
             }
         }
         else if ((unsigned char)msg[0]==MsgUserReliableOrdered11 && (unsigned char)msg[7]==0x09) // Unwear item request
@@ -400,12 +439,12 @@ void receiveMessage(Player* player)
             if (target->pony.netviewId == targetId)
                 target->pony.unwearItemAt(dataToUint8(msg.mid(8)));
             else
-                win.logMessage("Can't find netviewId "+QString().setNum(targetId)+" to unwear item");
+                win.logMessage("UDP: Can't find netviewId "+QString().setNum(targetId)+" to unwear item");
         }
         else if ((unsigned char)msg[0]==MsgUserReliableOrdered11 && (unsigned char)msg[7]==0x31) // Run script (NPC) request
         {
             quint16 targetId = ((quint16)(quint8)msg[5]) + (((quint16)(quint8)msg[6])<<8);
-            //win.logMessage("Quest "+QString().setNum(targetId)+" requested");
+            //win.logMessage("UDP: Quest "+QString().setNum(targetId)+" requested");
             for (int i=0; i<player->pony.quests.size(); i++)
                 if (player->pony.quests[i].id == targetId)
                 {
@@ -416,7 +455,7 @@ void receiveMessage(Player* player)
         }
         else if ((unsigned char)msg[0]==MsgUserReliableOrdered4 && (unsigned char)msg[5]==0xB) // Continue dialog
         {
-            //win.logMessage("Resuming script for quest "+QString().setNum(player->pony.lastQuest));
+            //win.logMessage("UDP: Resuming script for quest "+QString().setNum(player->pony.lastQuest));
             player->pony.quests[player->pony.lastQuest].processAnswer();
         }
         else if ((unsigned char)msg[0]==MsgUserReliableOrdered4 && (unsigned char)msg[5]==0xC) // Continue dialog (with answer)
@@ -425,7 +464,7 @@ void receiveMessage(Player* player)
                             + (((quint32)(quint8)msg[7])<<8)
                             + (((quint32)(quint8)msg[8])<<16)
                             + (((quint32)(quint8)msg[9])<<24);
-            //win.logMessage("Resuming script with answer "+QString().setNum(answer)
+            //win.logMessage("UDP: Resuming script with answer "+QString().setNum(answer)
             //               +" for quest "+QString().setNum(player->pony.lastQuest));
             player->pony.quests[player->pony.lastQuest].processAnswer(answer);
         }
