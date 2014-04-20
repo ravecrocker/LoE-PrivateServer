@@ -367,16 +367,11 @@ void receiveMessage(Player* player)
         {
             // BeginShop doesn't specify wich shop you want to buy from
             // We'll assume that there's never more than one shop per scene.
-
-
             uint16_t netviewId = dataToUint16(msg.mid(5));
-            win.logMessage("Begin shop with netview id "+QString().setNum(netviewId));
-
-
             Pony* targetNpc = nullptr;
             for (Pony* npc : win.npcs)
             {
-                if (npc->sceneName == player->pony.sceneName && npc->inv.size()) // Has a shop
+                if (npc->netviewId == netviewId && npc->inv.size()) // Has a shop
                 {
                     targetNpc = npc;
                     break;

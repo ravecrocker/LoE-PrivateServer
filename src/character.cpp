@@ -398,12 +398,12 @@ void Player::udpDelayedSend()
     //win.logMessage("udpDelayedSend locking");
     if (!udpSendReliableMutex.tryLock())
     {
-        win.logMessage("udpDelayedSend failed to lock.");
+        win.logMessage("UDP: udpDelayedSend failed to lock.");
         return; // Avoid deadlock if sendMessage just locked but didn't have the time to stop the timers
     }
     //udpSendReliableMutex.lock();
 #if DEBUG_LOG
-    win.logMessage("Sending delayed grouped message : "+QString(udpSendReliableGroupBuffer.toHex()));
+    win.logMessage("UDP: Sending delayed grouped message : "+QString(udpSendReliableGroupBuffer.toHex()));
 #endif
 
     // Move the grouped message to the reliable queue
