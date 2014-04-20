@@ -574,6 +574,19 @@ void sendDialogMessage(Player* player, QString& message, QString NPCName, quint1
     sendMessage(player,MsgUserReliableOrdered4, data);
 }
 
+void sendDialogMessage(Player* player, QString& message, QString NPCName, quint16 npc3DNetviewId, quint16 iconId)
+{
+    QByteArray data(1,0);
+    data[0] = 0x11; // Request number
+    data += stringToData(message);
+    data += stringToData(NPCName);
+    data += uint16ToData(npc3DNetviewId);
+    data += (quint8)(iconId&0xFF);
+    data += (quint8)((iconId>>8)&0xFF);
+
+    sendMessage(player,MsgUserReliableOrdered4, data);
+}
+
 void sendDialogOptions(Player* player, QList<QString>& answers)
 {
     QByteArray data(5,0);

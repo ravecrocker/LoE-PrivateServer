@@ -209,6 +209,7 @@ bool Quest::doCommand(int commandEip)
         QString msg, npcName;
         QList<QString> answers;
         quint16 iconId=0;
+        bool hasIconId=false;
         if (command.size() >= 2)
         {
             msg = concatAfter(command, 1);
@@ -236,6 +237,7 @@ bool Quest::doCommand(int commandEip)
                     logError("invalid icon id");
                     return false;
                 }
+                hasIconId = true;
                 iconId = id;
             }
             else
@@ -249,8 +251,16 @@ bool Quest::doCommand(int commandEip)
 
         // Send
         sendBeginDialog(owner);
-        sendDialogMessage(owner, msg, npcName, iconId);
-        sendDialogMessage(owner, msg, npcName, iconId);
+        if (hasIconId) // Use the 2D sprites
+        {
+            sendDialogMessage(owner, msg, npcName, iconId);
+            sendDialogMessage(owner, msg, npcName, iconId);
+        }
+        else // Use the 3D view
+        {
+            sendDialogMessage(owner, msg, npcName, npc->netviewId, iconId);
+            sendDialogMessage(owner, msg, npcName, npc->netviewId, iconId);
+        }
         sendDialogOptions(owner, answers);
         return false; // We stop the script until we get a reply
     }

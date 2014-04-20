@@ -77,6 +77,7 @@ void sendChatMessage(Player* player, QString message, QString author, quint8 cha
 void sendMove(Player* player, float x, float y, float z);
 void sendBeginDialog(Player* player);
 void sendDialogMessage(Player* player, QString& message, QString NPCName, quint16 iconId=0);
+void sendDialogMessage(Player* player, QString& message, QString NPCName, quint16 npc3DNetviewId, quint16 iconId);
 void sendDialogOptions(Player* player, QList<QString> &answers);
 void sendEndDialog(Player* player);
 void sendAddItemRPC(Player* player, const InventoryItem& item);
