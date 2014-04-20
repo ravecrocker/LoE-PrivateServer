@@ -144,6 +144,13 @@ QList<Player*> Player::loadPlayers()
 {
     QList<Player*> players;
     QFile playersFile("data/players/players.dat");
+    if (!playersFile.exists())
+    {
+        win.logMessage("Players database not found, creating it");
+        playersFile.open(QIODevice::WriteOnly);
+        playersFile.close();
+    }
+
     if (!playersFile.open(QIODevice::ReadOnly))
     {
         win.logStatusMessage("Error reading players database");
