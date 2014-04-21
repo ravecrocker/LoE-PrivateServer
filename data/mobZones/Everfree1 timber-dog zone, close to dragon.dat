@@ -1,0 +1,10 @@
+# Zone
+scene Everfree3
+startPos -380.111 18.0738 14.658
+endPos -417.925 18.0707 -56.2056
+
+# Mobs
+mob type=husky diamond dog
+mob type=husky diamond dog
+mob type=timberwolf
+mob type=timberwolf
