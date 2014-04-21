@@ -18,9 +18,10 @@
 => They don't have to be unique, but we'll only remember the last statement's result to simplify the parser's code
 => startPos and endPos define the bounds of the mobzone. E.g "startPos 12.431 -3.147 121.08"
 => The coordinates can be found with server command getPos
+=> We'll need a scene statement, like the questscript's one
 => So, we'll have a "mob" statement.
 => As a readability/parser-simplicity compromise, the mob line will look like bochrc's cpuid, with pairs of key=value, key2=value2
-=> The first arg will be the type of mob, "mobName". E.g "mobName=Mobs/Timberwolf". Mandatory.
+=> The first arg will be the type of mob, "type". E.g "type=Timberwolf". Mandatory.
 => Next we'll need the agressiveness as an option. 
 => The radius of a mob's aggro zone, and the odds of the mob attacking you when you enter its aggro zone
 => Default value should be to never deal the first blow. So odds of 0% and a reasonable radius (not 0, or he'll never fight back)
@@ -30,7 +31,7 @@
 => So we'll have e.g "respawnMinTime=15, respawnMaxTime=20" in seconds
 => Finally we'll want to be able to set a reward. If we ever get dungeons and bosses, or quests with special mobs, or whatever. As an option.
 => "rewardBits=10, rewardItems=10 15 25 61"
-=> Default value is of course 0 bits and no items.
+=> Default values for the loots are defined per-mob, hardcoded in a header
 => We'll also want a param for the cooldown between attacks. So we can have mobs that are gattling-gun-tier or slowpokes.
 => And we need a hate cooldown for forgetting that someone attacked us and we hate him.
 => We need an idle cooldown. How long before we forget we're trying to kill ponies and go back to idling.
@@ -42,16 +43,16 @@
 => So we don't have the maps loaded server side. We don't know where the damn floor is. Fun ensues.
 => Unless mobs can into gravity (npcs can't so I don't have much hopes), we're going to stay inside the mobzone at all costs.
 => We can only walk on the square defined by the mobzone. Yes it's shit, any idea that doesn't involve writing a game engine & parsing the maps ?
-==> Waypoints ? Nope, it needs to be able to go anywhere in the zone, to follow the player and rekt his shit.
+==> Waypoints ? Nope, it needs to be able to go anywhere in the zone, to follow the player and rekt his shit. Plus I'm not making a fuckhuge waypoint DB.
 ==> Or we could define empty mobzones and allow mobs to switch to a different mobzone when they are aggressing a player.
 ===> Dammit this could actually work. We'd have squares you can walk on, a bad approximation of the map, but good enough.
 ===> We'd need a path finder algo. A way to tell what mobzone a player is in, and wether or not the mob can go in this mobzone
-===> So, we'd have three "modes" of movement. 
+===> So, we'd have four "modes" of movement. 
 ===> If we're idle and in our spawn zone, we move not too far at random in the zone from time to time.
 ===> If we're idle, but not in our spawn zone, we try to go back to the spawn zone.
 ===> If we're attacking a player and the player is in the zone we're in, we try to get closer to him while staying inside this zone
-===> If we're attacking a player and he's in another zone, we try to find a path to this other zone and rekt his asset
-===> If a player is too high above us or gets out of our aggro radius, we switch back to idle, but we don't forget that we hate him
+===> If we're attacking a player and he's in another zone, we try to find a path to this other zone and rekt his ass
+===> If a player is too high above us or gets out of our aggro radius, we can't attack, but if we don't have anything better to do, we follow him
 ===> If he gets in our aggro zone again and he attacked us before, we now have a 100% aggro odds.
 ==> The mob always knows what zone he's in. The player's doesn't have to remember if he's in a mobzone, the AI will compute it on the fly.
 ==> A player is in a mobzone if he's "in the square regardless of his height". If he's in the pillar defined by extruding the mobzone vertically.
@@ -66,3 +67,25 @@
 => If we have multiple persons we hate and we're not idle, attack the closest. If we're idle wait until they come in the aggro zone.
 => We don't attack someone if he's higher than our max attack height. We attack someone else if possible, or we follow him if not idle.
 => Dragons or cockatrices can attack someone even if he's high, lantern monsters can't.
+
+=> The data structures.
+=> A "Mobzone" class.
+==> We need the bounds : UVector boundsStart, boundsEnd
+==> We might want a list of adjacent zones, to be computed at startup, for the pathfinding, and the intersection lines with thoses zones
+=> A "Mob" class that inherits from SceneEntity.
+==> So we already have modelName, id, netviewId, sceneName, pos and rot from the inheritance
+==> Add a pointer to the mobzone this mob spawns in. A pointer to the mobzone this mob is currently in.
+==> Add the type of the mob as an enum, we don't want to compare strings in the AI loop
+==> Add the health, last times for the attack/hate/idle cooldowns, agro radius and odds, respawn min/max intervals, and loot
+==> Add a map of hated players, empty at first, to the last time we hated them
+==> Add the per-mob stats : attack range, attack range max height, speed
+
+=> TODO list, ordered by do it in this order :
+- A parser and classes to hold the data
+- Add a zone and try to make it spawn a couple of diamond dogs in the gem mines
+- Sync the position of the mobs correctly.
+- Handle the health of the mobs correctly. 
+- Enable the health/mana for the players, disable PvP, keep infinite sprinting.
+- Make a correct mobsStats.h header with the #defined stats for each type of mob. Such as attack range, attack heigh, speed, ...
+- Implement dying and respawning for mobs.
+- Make an AI thread, move the mobs's AI timers in this thread. The AI runs for each mob every 200ms+processing time. Use a single shot timer.

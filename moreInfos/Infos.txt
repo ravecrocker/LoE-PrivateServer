@@ -2668,3 +2668,10 @@ sent wearItem RPC, data : 0100 08 11000000 0b
 =====> Fixed
 
 => TODO: a shopName QuestScript command, instead of always "Wearable Items"
+
+=> For the GemMines we could have the mobzone start -12.6538 -9.99159 92.2353 end -26.8316 -10.4301 82.9566
+It goes from the upper left next to the arch, to the right of the pillar.
+
+=> Math tiem
+Okay. What I want to do is project the point of the plan on the plan's diagonal.
+Then divide the projection's pos along the diagonal by the total length of the diagonal

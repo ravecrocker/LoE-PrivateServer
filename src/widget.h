@@ -17,7 +17,6 @@
 #include <QMap>
 #include <cstdint>
 
-//#include <windows.h>
 #ifdef __APPLE__
 #include "CoreFoundation/CoreFoundation.h"
 #endif
@@ -29,12 +28,13 @@
 
 #define PLAYERSPATH "data/players/"
 #define NETDATAPATH "data/netData/"
+#define MOBSPATH "data/mobZones/"
 #define CONFIGFILEPATH "data/server.ini"
 #define SERVERSLISTFILEPATH "data/serversList.cfg"
 
-namespace Ui {
-class Widget;
-}
+class Mobzone;
+class Mob;
+namespace Ui {class Widget;}
 
 class Widget : public QWidget
 {
@@ -79,6 +79,8 @@ public:
     int lastId;
     QMutex lastIdMutex; // Protects lastId and lastNetviewId
     int syncInterval;
+    QList<Mobzone*> mobzones;
+    QList<Mob*> mobs;
 
 private:
     Ui::Widget* ui;

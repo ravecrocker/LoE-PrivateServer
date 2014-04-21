@@ -2,6 +2,7 @@
 #include "character.h"
 #include "widget.h"
 #include "serialize.h"
+#include "mob.h"
 
 #define DEBUG_LOG false
 
@@ -65,6 +66,14 @@ void sendEntitiesList(Player *player)
             sendNetviewInstantiate(win.npcs[i], player);
         }
 
+    // Send mobs
+    for (int i=0; i<win.mobs.size(); i++)
+        if (win.mobs[i]->sceneName.toLower() == player->pony.sceneName.toLower())
+        {
+            win.logMessage("UDP: Sending mob "+win.mobs[i]->modelName);
+            sendNetviewInstantiate(player, win.mobs[i]);
+        }
+
     // Spawn some mobs in Zecoras
     if (scene->name.toLower() == "zecoras")
     {
@@ -92,25 +101,33 @@ void sendPonySave(Player *player, QByteArray msg)
     quint16 netviewId = (quint8)msg[6] + ((quint16)(quint8)msg[7]<<8);
     Player* refresh = Player::findPlayer(win.udpPlayers, netviewId); // Find players
 
-    // Find NPC
+    // If we find a matching NPC, send him and exits
     Pony* npc = NULL;
     for (int i=0; i<win.npcs.size(); i++)
         if (win.npcs[i]->netviewId == netviewId)
             npc = win.npcs[i];
-
-    // If we found a matching NPC, send him and exits
     if (npc != NULL)
     {
 #if DEBUG_LOG
         win.logMessage("UDP: Sending ponyData and worn items for NPC "+npc->name);
 #endif
         sendPonyData(npc, player);
-
         if (npc->inv.size()) // This NPC has a shop
         {
             sendAddViewAddShop(player, npc);
         }
+        return;
+    }
 
+    // If we find a matching mob, send him and exits
+    Mob* mob = nullptr;
+    for (int i=0; i<win.mobs.size(); i++)
+        if (win.mobs[i]->netviewId == netviewId)
+            mob = win.mobs[i];
+    if (mob != nullptr)
+    {
+        // I'm not sure what we're supposed to send. Let's just return for the moment, it works.
+        //win.logMessage("UDP: mob ponyData requested, returning.");
         return;
     }
 
@@ -201,6 +218,11 @@ void sendNetviewInstantiate(Player *player, QString key, quint16 NetviewId, quin
     data += vectorToData(pos);
     data += quaternionToData(rot);
     sendMessage(player, MsgUserReliableOrdered6, data);
+}
+
+void sendNetviewInstantiate(Player* player, Mob* mob)
+{
+    sendNetviewInstantiate(player, mob->modelName, mob->netviewId, mob->id, mob->pos, mob->rot);
 }
 
 void sendNetviewInstantiate(Player *player)

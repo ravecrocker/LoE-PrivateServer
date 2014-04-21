@@ -3,6 +3,7 @@
 #include "message.h"
 #include "utils.h"
 #include "serialize.h"
+#include "mob.h"
 
 // Processes the commands entered directly in the server, not the chat messages
 void Widget::sendCmdLine()
@@ -519,6 +520,16 @@ void Widget::sendCmdLine()
         {
             win.logMessage("NPC "+QString().setNum(npc->id)+"/"+QString().setNum(npc->netviewId)
                            +" "+npc->name);
+        }
+    }
+    else if (str==("listMobs"))
+    {
+        for (const Mob* mob : win.mobs)
+        {
+            win.logMessage("Mob "+QString().setNum(mob->id)+"/"+QString().setNum(mob->netviewId)
+                           +" "+mob->modelName+" at "+QString().setNum(mob->pos.x)
+                           +" "+QString().setNum(mob->pos.y)
+                           +" "+QString().setNum(mob->pos.z));
         }
     }
     else if (str==("listInventory"))

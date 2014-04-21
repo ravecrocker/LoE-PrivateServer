@@ -27,7 +27,9 @@ SOURCES += main.cpp \
     serialize.cpp \
     items.cpp \
     receiveAck.cpp \
-    receiveChatMessage.cpp
+    receiveChatMessage.cpp \
+    mobsParser.cpp \
+    mob.cpp
 
 HEADERS  += widget.h \
 	character.h \
@@ -41,7 +43,11 @@ HEADERS  += widget.h \
     items.h \
     sendMessage.h \
     receiveAck.h \
-    receiveChatMessage.h
+    receiveChatMessage.h \
+    mobzone.h \
+    sceneEntity.h \
+    mobsParser.h \
+    mob.h
 
 FORMS    += widget.ui
 

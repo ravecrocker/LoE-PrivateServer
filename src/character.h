@@ -10,26 +10,10 @@
 #include <QDateTime>
 #include "dataType.h"
 #include "quest.h"
+#include "sceneEntity.h"
 
 #define MAX_INVENTORY_SIZE 12
 #define MAX_WORN_ITEMS 32
-
-struct SceneEntity
-{
-public:
-    SceneEntity();
-
-public:
-    // Infos
-    QString modelName;
-    quint16 id;
-    quint16 netviewId;
-
-    // Pos
-    QString sceneName;
-    UVector pos;
-    UQuaternion rot;
-};
 
 struct Pony : public SceneEntity
 {

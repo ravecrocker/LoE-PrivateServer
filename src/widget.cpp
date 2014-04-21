@@ -4,6 +4,8 @@
 #include "message.h"
 #include "utils.h"
 #include "items.h"
+#include "mobsParser.h"
+#include "mob.h"
 
 #if defined _WIN32 || defined WIN32
 #include <windows.h>
@@ -220,6 +222,38 @@ void Widget::startServer()
         }
     }
 
+    /// Read/parse mob zones
+    if (enableGameServer)
+    {
+        try
+        {
+            QDir mobsDir(MOBSPATH);
+            QStringList files = mobsDir.entryList(QDir::Files);
+            for (int i=0; i<files.size(); i++) // For each mobzone file
+            {
+                QFile file(MOBSPATH+files[i]);
+                if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+                {
+                    logStatusMessage("Error reading mob zones");
+                    return;
+                }
+                QByteArray data = file.readAll();
+                file.close();
+                try {
+                    parseMobzoneData(data); // Will fill our Mobzone and Mobs list
+                }
+                catch (QString& error)
+                {
+                    win.logMessage(error);
+                    win.stopServer();
+                    throw error;
+                }
+            }
+            logMessage("Loaded "+QString().setNum(mobs.size())+" mobs in "+QString().setNum(mobzones.size())+" zones");
+        }
+        catch (...) {}
+    }
+
     if (enableLoginServer)
     {
 //      logStatusMessage("Loading players database ...");
@@ -287,6 +321,9 @@ int Widget::getNewNetviewId()
     for (int c = 0; c < npcs.size(); c++) {
         usedids[npcs[c]->netviewId] = true;
     }
+    for (int c = 0; c < mobs.size(); c++) {
+        usedids[mobs[c]->netviewId] = true;
+    }
     for (int c = 0; c < udpPlayers.size(); c++) {
         usedids[udpPlayers[c]->pony.netviewId] = true;
     }
@@ -307,6 +344,9 @@ int Widget::getNewId()
 
     for (int c = 0; c < npcs.size(); c++) {
         usedids[npcs[c]->id] = true;
+    }
+    for (int c = 0; c < mobs.size(); c++) {
+        usedids[mobs[c]->id] = true;
     }
     for (int c = 0; c < udpPlayers.size(); c++) {
         usedids[udpPlayers[c]->pony.id] = true;

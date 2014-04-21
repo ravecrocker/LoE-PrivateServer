@@ -45,6 +45,7 @@ enum ChatType
 // Public functions
 class Player;
 class Pony;
+class Mob;
 void receiveMessage(Player* player);
 void sendMessage(Player* player, quint8 messageType, QByteArray data=QByteArray());
 void sendEntitiesList(Player* player);
@@ -54,6 +55,7 @@ void sendPonyData(Player* player);
 void sendPonyData(Pony *src, Player* dst);
 void sendNetviewInstantiate(Player* player, QString key, quint16 NetviewId, quint16 ViewId, UVector pos, UQuaternion rot);
 void sendNetviewInstantiate(Player* player);
+void sendNetviewInstantiate(Player* player, Mob* mob);
 void sendNetviewInstantiate(Pony *src, Player* dst);
 void sendNetviewRemove(Player* player, quint16 netviewId);
 void sendSetStatRPC(Player* player, quint8 statId, float value);

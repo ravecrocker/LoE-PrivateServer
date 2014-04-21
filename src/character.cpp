@@ -405,7 +405,9 @@ void Player::udpDelayedSend()
     //win.logMessage("udpDelayedSend locking");
     if (!udpSendReliableMutex.tryLock())
     {
+#if DEBUG_LOG
         win.logMessage("UDP: udpDelayedSend failed to lock.");
+#endif
         return; // Avoid deadlock if sendMessage just locked but didn't have the time to stop the timers
     }
     //udpSendReliableMutex.lock();
