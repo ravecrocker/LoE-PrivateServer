@@ -2679,3 +2679,5 @@ Then divide the projection's pos along the diagonal by the total length of the d
 => So if we want monsters to take damage, we'll have to start by parsing the skills.json
 => We need to know all the stats and effects of a skill.
 => We also don't know the base health of the monsters, so we'll have to make an educated guess.
+
+=> TODO: Animations when we use a skill on a mob

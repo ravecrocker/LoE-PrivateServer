@@ -81,11 +81,11 @@ void Mob::setType(QString ModelName)
 
 void Mob::takeDamage(unsigned amount)
 {
-    if (health <= amount)
+    if (health <= (float)amount/defaultDefense[type])
         kill();
     else
     {
-        health -= amount;
+        health -= (float)amount/defaultDefense[type];
         Scene* scene = findScene(sceneName);
         for (Player* player : scene->players)
         {

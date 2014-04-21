@@ -9,5 +9,6 @@
 #include "mob.h"
 
 extern unsigned defaultMaxHealth[];
+extern float defaultDefense[];
 
 #endif // MOBSSTATS_H

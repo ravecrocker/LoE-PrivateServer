@@ -33,7 +33,7 @@ private:
 
 public:
     MobType type;
-    unsigned health;
+    float health;
 
 private:
     Mobzone* spawnZone;
