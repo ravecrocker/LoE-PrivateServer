@@ -104,6 +104,8 @@ void Mob::kill()
     {
         sendNetviewRemove(player, netviewId);
     }
+
+    respawn();
 }
 
 void Mob::respawn()
