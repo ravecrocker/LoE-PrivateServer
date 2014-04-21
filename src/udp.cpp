@@ -19,10 +19,9 @@ void Widget::udpProcessPendingDatagrams()
             qint64 readNow = udpSocket->readDatagram(datagram.data()+dataRead, datagramSize, &rAddr, &rPort); // le +dataRead sur un tableau, ça décale le pointeur d'un offset de taille dataRead !
             if(readNow != -1)
             {
-                dataRead += readNow; // Compte le nombre d'octets lus au total, s'arreter quand dataRead atteint pendingDatagramSize
-                if (datagramSize > (datagram.size() - dataRead)) // Evite de lire après la fin du tableau en mode fragmenté, evite donc que dataSent dépasse datagramSize, sinon Overflow et envoi de données inutiles et aléatoires !!
+                dataRead += readNow; // Remember the total number of bytes read, so we know when to stop
+                if (datagramSize > (datagram.size() - dataRead)) // Make sure we don't overflow
                     datagramSize = (datagram.size() - dataRead);
-                //QMessageBox::information(NULL,"SenderInfo",QString("DatagramSize : %1  sentNow : %2  dataSent : %3 Sizeof(datagram->data()) : %4").arg(QString().setNum(datagramSize),QString().setNum(sentNow),QString().setNum(dataSent),QString().setNum(datagram->size())));
             }
             else
             {
@@ -45,7 +44,8 @@ void Widget::udpProcessPendingDatagrams()
             bool is_sesskey_valid = true;
 
             if (enableSessKeyValidation) {
-                is_sesskey_valid = QCryptographicHash::hash(QString(sesskey.right(40) + saltPassword).toLatin1(), QCryptographicHash::Md5).toHex() == sesskey.left(32);
+                is_sesskey_valid = QCryptographicHash::hash(QString(sesskey.right(40) + saltPassword).toLatin1(),
+                                                            QCryptographicHash::Md5).toHex() == sesskey.left(32);
             }
 
             if (is_sesskey_valid)
@@ -69,7 +69,7 @@ void Widget::udpProcessPendingDatagrams()
                             n++;
                     if (n>=maxConnected)
                     {
-                        sendMessage(newPlayer, MsgDisconnect, "Error : Too much players connected. Try again later.");
+                        sendMessage(newPlayer, MsgDisconnect, "Error : Too many players connected. Try again later.");
                     }
                     else
                         // If not add the player
@@ -90,7 +90,7 @@ void Widget::udpProcessPendingDatagrams()
                             n++;
                     if (n>=maxConnected)
                     {
-                        sendMessage(newPlayer, MsgDisconnect, "Error : Too much players connected. Try again later.");
+                        sendMessage(newPlayer, MsgDisconnect, "Error : Too many players connected. Try again later.");
                     }
 
                     newPlayer->resetNetwork();
