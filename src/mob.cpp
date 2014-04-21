@@ -12,6 +12,8 @@ Mob::Mob(Mobzone* zone)
 
     pos = getRandomPos(zone);
 
+    rot = {0, (float)(rand()%4-2), 0, 1};
+
     health = 100;
 }
 

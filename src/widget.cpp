@@ -27,6 +27,7 @@ Widget::Widget(QWidget *parent) :
     pingTimer = new QTimer(this);
 
     qsrand(QDateTime::currentMSecsSinceEpoch());
+    srand(QDateTime::currentMSecsSinceEpoch());
 }
 
 /// Adds the message in the log, and sets it as the status message

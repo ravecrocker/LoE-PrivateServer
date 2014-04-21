@@ -70,7 +70,9 @@ void sendEntitiesList(Player *player)
     for (int i=0; i<win.mobs.size(); i++)
         if (win.mobs[i]->sceneName.toLower() == player->pony.sceneName.toLower())
         {
+#if DEBUG_LOG
             win.logMessage("UDP: Sending mob "+win.mobs[i]->modelName);
+#endif
             sendNetviewInstantiate(player, win.mobs[i]);
         }
 
