@@ -1,0 +1,9 @@
+# Zone
+scene Everfree3
+startPos -353.942 18.0738 152.781
+endPos -447.577 18.0748 201.952
+
+# Mobs
+mob type=dragon
+mob type=lantern monster
+mob type=lantern monster
