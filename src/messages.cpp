@@ -74,12 +74,6 @@ void sendEntitiesList(Player *player)
             sendNetviewInstantiate(player, win.mobs[i]);
         }
 
-    // Spawn some mobs in Zecoras
-    if (scene->name.toLower() == "zecoras")
-    {
-        sendNetviewInstantiate(player,"mobs/dragon", win.getNewId(), win.getNewNetviewId(), {-33.0408, 0.000425577, 101.766}, {0,-1,0,1});
-    }
-
     player->inGame = 2;
     levelLoadMutex.unlock();
 
