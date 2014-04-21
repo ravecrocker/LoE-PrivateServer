@@ -4,7 +4,7 @@
 #include "message.h"
 
 // Resend the udp message if we didn't get an ACK before this timeouts
-#define UDP_RESEND_TIMEOUT 1000
+#define UDP_RESEND_TIMEOUT 500
 // If we send multiple reliable messages before this timeouts, group them before sending. Increases the latency.
 #define UDP_GROUPING_TIMEOUT 25
 // DO *NOT* USE the following options unless for debugging. Drops reliable UDP packets at random.
