@@ -1,0 +1,12 @@
+# Define the zone the mobs will spawn in. 
+# A zone is a rectangle area and should correspond roughly to the real floor. 
+# Mobs can spawn and move anywhere inside a zone, regardless of walls or objects.
+# You can get the coordinates for startPos and endPos with the getPos server command.
+scene GemMines
+startPos -12.6538 -9.99159 92.2353
+endPos -26 -10.4301 82.9566
+
+# Mobs
+mob type=husky diamond dog
+mob type=lantern monster
+mob type=lantern monster
