@@ -8,8 +8,8 @@ class Mobzone;
 
 class Mob : public SceneEntity
 {
-private:
-    enum class MobType
+public:
+    enum MobType : unsigned
     {
         birch_dryad,
         bunny,
@@ -29,11 +29,13 @@ public:
 private:
     static UVector getRandomPos(Mobzone* zone); ///< Returns a random position in this zone
 
-private:
+public:
     MobType type;
+    unsigned health;
+
+private:
     Mobzone* spawnZone;
     Mobzone* currentZone;
-    unsigned health;
 };
 
 #endif // MOB_H

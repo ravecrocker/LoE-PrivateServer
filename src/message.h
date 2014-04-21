@@ -58,6 +58,8 @@ void sendNetviewInstantiate(Player* player);
 void sendNetviewInstantiate(Player* player, Mob* mob);
 void sendNetviewInstantiate(Pony *src, Player* dst);
 void sendNetviewRemove(Player* player, quint16 netviewId);
+void sendSetStatRPC(Player* player, quint16 netviewId, quint8 statId, float value);
+void sendSetMaxStatRPC(Player* player, quint16 netviewId, quint8 statId, float value);
 void sendSetStatRPC(Player* player, quint8 statId, float value);
 void sendSetMaxStatRPC(Player* player, quint8 statId, float value);
 void sendSetStatRPC(Player* affected, Player* dest, quint8 statId, float value); // Set stat of affected on client dest

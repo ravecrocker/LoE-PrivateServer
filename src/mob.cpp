@@ -1,6 +1,7 @@
 #include "mob.h"
 #include "mobzone.h"
 #include "widget.h"
+#include "mobsStats.h"
 
 Mob::Mob(Mobzone* zone)
 {
@@ -14,7 +15,7 @@ Mob::Mob(Mobzone* zone)
 
     rot = {0, (float)(rand()%4-2), 0, 1};
 
-    health = 100;
+    health = 0; // We need to know the type to know the default healt
 }
 
 UVector Mob::getRandomPos(Mobzone* zone)
@@ -73,4 +74,6 @@ void Mob::setType(QString ModelName)
         type = MobType::timberwolf;
     else
         throw QString("Mob::setType(): Error, unknown type "+modelName);
+
+    health = defaultMaxHealth[type];
 }

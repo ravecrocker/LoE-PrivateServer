@@ -29,7 +29,8 @@ SOURCES += main.cpp \
     receiveAck.cpp \
     receiveChatMessage.cpp \
     mobsParser.cpp \
-    mob.cpp
+    mob.cpp \
+    mobStats.cpp
 
 HEADERS  += widget.h \
 	character.h \
@@ -47,7 +48,8 @@ HEADERS  += widget.h \
     mobzone.h \
     sceneEntity.h \
     mobsParser.h \
-    mob.h
+    mob.h \
+    mobsStats.h
 
 FORMS    += widget.ui
 

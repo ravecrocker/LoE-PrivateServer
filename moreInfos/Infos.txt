@@ -2675,3 +2675,7 @@ It goes from the upper left next to the arch, to the right of the pillar.
 => Math tiem
 Okay. What I want to do is project the point of the plan on the plan's diagonal.
 Then divide the projection's pos along the diagonal by the total length of the diagonal
+
+=> So if we want monsters to take damage, we'll have to start by parsing the skills.json
+=> We need to know all the stats and effects of a skill.
+=> We also don't know the base health of the monsters, so we'll have to make an educated guess.

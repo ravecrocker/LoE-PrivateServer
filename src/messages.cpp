@@ -3,6 +3,7 @@
 #include "widget.h"
 #include "serialize.h"
 #include "mob.h"
+#include "mobsStats.h"
 
 #define DEBUG_LOG false
 
@@ -122,8 +123,10 @@ void sendPonySave(Player *player, QByteArray msg)
             mob = win.mobs[i];
     if (mob != nullptr)
     {
-        // I'm not sure what we're supposed to send. Let's just return for the moment, it works.
-        //win.logMessage("UDP: mob ponyData requested, returning.");
+        //win.logMessage("UDP: mob ponyData requested");
+        // We should probably send the mob's stats here
+        sendSetMaxStatRPC(player, mob->netviewId, 0, defaultMaxHealth[(unsigned)mob->type]);
+        sendSetMaxStatRPC(player, mob->netviewId, 0, mob->health);
         return;
     }
 
@@ -276,24 +279,34 @@ void sendNetviewRemove(Player *player, quint16 netviewId)
     sendMessage(player, MsgUserReliableOrdered6, data);
 }
 
-void sendSetStatRPC(Player *player, quint8 statId, float value)
+void sendSetStatRPC(Player* player, quint16 netviewId, quint8 statId, float value)
 {
     QByteArray data(4,50);
-    data[0] = (quint8)(player->pony.netviewId&0xFF);
-    data[1] = (quint8)((player->pony.netviewId>>8)&0xFF);
+    data[0] = (quint8)(netviewId&0xFF);
+    data[1] = (quint8)((netviewId>>8)&0xFF);
     data[3] = statId;
     data += floatToData(value);
     sendMessage(player, MsgUserReliableOrdered18, data);
 }
 
-void sendSetMaxStatRPC(Player* player, quint8 statId, float value)
+void sendSetMaxStatRPC(Player* player, quint16 netviewId, quint8 statId, float value)
 {
     QByteArray data(4,51);
-    data[0] = (quint8)(player->pony.netviewId&0xFF);
-    data[1] = (quint8)((player->pony.netviewId>>8)&0xFF);
+    data[0] = (quint8)(netviewId&0xFF);
+    data[1] = (quint8)((netviewId>>8)&0xFF);
     data[3] = statId;
     data += floatToData(value);
     sendMessage(player, MsgUserReliableOrdered18, data);
+}
+
+void sendSetStatRPC(Player *player, quint8 statId, float value)
+{
+    sendSetStatRPC(player, player->pony.netviewId, statId, value);
+}
+
+void sendSetMaxStatRPC(Player* player, quint8 statId, float value)
+{
+    sendSetMaxStatRPC(player, player->pony.netviewId, statId, value);
 }
 
 void sendSetStatRPC(Player* affected, Player* dest, quint8 statId, float value)

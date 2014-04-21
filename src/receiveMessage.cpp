@@ -332,7 +332,10 @@ void receiveMessage(Player* player)
             }
             else
                 reply =  msg.mid(5, msgSize - 5);
-            //win.logMessage("UDP: Broadcasting skill");
+
+#if DEBUG_LOG
+            win.logMessage("UDP: Broadcasting skill "+QString().setNum(dataToUint32(msg.mid(8))));
+#endif
             // Send to everyone
             Scene* scene = findScene(player->pony.sceneName);
             if (scene->name.isEmpty())
