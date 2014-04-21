@@ -125,8 +125,8 @@ void sendPonySave(Player *player, QByteArray msg)
     {
         //win.logMessage("UDP: mob ponyData requested");
         // We should probably send the mob's stats here
-        sendSetMaxStatRPC(player, mob->netviewId, 0, defaultMaxHealth[(unsigned)mob->type]);
-        sendSetMaxStatRPC(player, mob->netviewId, 0, mob->health);
+        sendSetMaxStatRPC(player, mob->netviewId, 1, defaultMaxHealth[(unsigned)mob->type]);
+        sendSetMaxStatRPC(player, mob->netviewId, 1, mob->health);
         return;
     }
 

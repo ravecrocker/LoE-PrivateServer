@@ -24,7 +24,9 @@ public:
 public:
     explicit Mob(Mobzone* zone);
     void setType(QString ModelName); ///< Don't change the SceneEntity model name directly
+    void kill(); ///< Kills the mob. He'll respawn
     void respawn(); ///< Resets the mob
+    void takeDamage(unsigned amount); ///< Remove health, update the client, may kill the mob
 
 private:
     static UVector getRandomPos(Mobzone* zone); ///< Returns a random position in this zone

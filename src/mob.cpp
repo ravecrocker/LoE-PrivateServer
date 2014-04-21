@@ -2,6 +2,7 @@
 #include "mobzone.h"
 #include "widget.h"
 #include "mobsStats.h"
+#include "message.h"
 
 Mob::Mob(Mobzone* zone)
 {
@@ -76,4 +77,46 @@ void Mob::setType(QString ModelName)
         throw QString("Mob::setType(): Error, unknown type "+modelName);
 
     health = defaultMaxHealth[type];
+}
+
+void Mob::takeDamage(unsigned amount)
+{
+    if (health <= amount)
+        kill();
+    else
+    {
+        health -= amount;
+        Scene* scene = findScene(sceneName);
+        for (Player* player : scene->players)
+        {
+            sendSetStatRPC(player, netviewId, 1, health);
+        }
+    }
+}
+
+void Mob::kill()
+{
+    currentZone = spawnZone;
+    health = 0;
+
+    Scene* scene = findScene(sceneName);
+    for (Player* player : scene->players)
+    {
+        sendNetviewRemove(player, netviewId);
+    }
+}
+
+void Mob::respawn()
+{
+    currentZone = spawnZone;
+    pos = getRandomPos(spawnZone);
+    rot = {0, (float)(rand()%4-2), 0, 1};
+
+    health = defaultMaxHealth[type];
+
+    Scene* scene = findScene(sceneName);
+    for (Player* player : scene->players)
+    {
+        sendNetviewInstantiate(player, modelName, netviewId, id, pos, rot);
+    }
 }

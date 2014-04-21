@@ -6,6 +6,7 @@
 #include "serialize.h"
 #include "receiveAck.h"
 #include "receiveChatMessage.h"
+#include "mob.h"
 
 #define DEBUG_LOG false
 
@@ -292,7 +293,8 @@ void receiveMessage(Player* player)
         else if ((unsigned char)msg[0]==MsgUserReliableOrdered11 && (unsigned char)msg[7]==0x3D) // Skill
         {
             QByteArray reply;
-            if (dataToUint32(msg.mid(8)) == 2) // Teleport is a special case
+            uint32_t skillId = dataToUint32(msg.mid(8));
+            if (skillId == 2) // Teleport is a special case
             {
                 if (msgSize == 28)
                 {
@@ -336,6 +338,24 @@ void receiveMessage(Player* player)
 #if DEBUG_LOG
             win.logMessage("UDP: Broadcasting skill "+QString().setNum(dataToUint32(msg.mid(8))));
 #endif
+
+            // Mob health test
+            if (skillId==5 || skillId==10 || skillId==11 || skillId==14 || skillId==15 || skillId==20)
+            {
+                if (msgSize == 18)
+                {
+                    // Targeted attack. First try to find the target in the mobs
+                    quint16 targetNetId = dataToUint16(msg.mid(16));
+                    for (Mob* mob : win.mobs)
+                    {
+                        if (mob->netviewId == targetNetId)
+                        {
+                            mob->takeDamage(25);
+                        }
+                    }
+               }
+            }
+
             // Send to everyone
             Scene* scene = findScene(player->pony.sceneName);
             if (scene->name.isEmpty())
