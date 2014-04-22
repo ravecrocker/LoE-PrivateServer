@@ -42,30 +42,30 @@ For example if you're stuck, do setPeer with your IP and port, then do for examp
 - clear : Clears the server's log.
 - listPeers : Give the list of all the clients (= other players) connected
 - setPeer : If there's only 1 client, select him for the other commands. If there's more than 1, use "setPeer IP port".
-- setPeer IP port : Select the client at this IP and port. The other commands will act on the selected client.
+- setPeer \<IP\> \<port\> : Select the client at this IP and port. The other commands will act on the selected client.
 - disconnect : Kick the player with the message "Connection closed by the server admin". Does not ban.
-- load scene : Loads a scene (PonyVille, Cloudsdale, ...) and teleport to its spawn. See the list of scenes below.
+- load \<scene name\> : Loads a scene (PonyVille, Cloudsdale, ...) and teleport to its spawn. See the list of scenes below.
 - getPos : Get the position (x, y, z) of the player. Often used with "move x y z".
 - getRot : Get the rotation (x, y, z, w) of the player.
-- move x y z : Instantly teleport the player to the given position. Not a spell. You just move.
-- setStat statId value : Set the given stat (health, mana, ..) to the given value. 
-- setMaxStat statId value : Set the max of the given stat (health, mana, ..) to the given value. 
-- error message : Sends a message-box-scroll-thingy to the player with the title "Error" and the given message. Doesn't disconnect.
+- move \<x\> \<y\> \<z\> : Instantly teleport the player to the given position. Not a spell. You just move.
+- setStat \<statId\> \<value\> : Set the given stat (health, mana, ..) to the given value. 
+- setMaxStat \<statId\> \<value\> : Set the max of the given stat (health, mana, ..) to the given value. 
+- error \<message\> : Sends a message-box-scroll-thingy to the player with the title "Error" and the given message. Doesn't disconnect.
 
 <br/>The following commands are for debugging only. You really don't need them, and most of the time you don't want to use them.
 - sync : Syncs the position of all the clients now. Doesn't need setPeer to work.
 - sendPonies : For debugging only.
 - sendPonyData : For debugging only.
 - sendUtils3 : For debugging only.
-- setPlayerId id : For debugging only. Change the player's netview id.
-- remove id : For debugging only. Remove the entity with this netview id from the selected player's point of view.
-- instantiate : For debugging only. Spawns the player's body. Will clone the body if used repeatedly. Will lag. Oh god the lag.
-- instantiate key viewId ownerId : Will spawn key (PlayerBase for a pony). If the Ids are already taken, bad things will happen.
-- instantiate key viewId ownerId x y z : Same than above but spawn at the given position.
-- instantiate key viewId ownerId x y z rx ry rz: Same than above but spawn at the given position and rotation.
+- setPlayerId \<id\> : For debugging only. Change the player's netview id.
+- remove \<id\> : For debugging only. Remove the entity with this netview id from the selected player's point of view.
+- instantiate : For debugging only. Spawns the player's body. Will clone the body if used repeatedly. May lag.
+- instantiate \<key\> \<netview id\> \<view id\> : Will spawn key (PlayerBase for a pony). If the Ids are already taken, bad things will happen.
+- instantiate \<key\> \<netview id\> \<view id\> \<x\> \<y\> \<z\> : Same than above but spawn at the given position.
+- instantiate \<key\> \<netview id\> \<view id\> \<x\> \<y\> \<z\> \<rx\> \<ry\> \<rz\>: Same than above but spawn at the given position and rotation.
 - beginDialog : For debugging only. Used when talking to NPCs.
 - endDialog : For debugging only. Used when talking to NPCs.
-- setDialogMsg message : For debugging only. Used when talking to NPCs.
+- setDialogMsg \<message\> : For debugging only. Used when talking to NPCs.
 - dbgStressLoad : For debugging only. Load GemMine on all clients now.
 - listQuests : Lists the state of the player's quests
 - listInventory : Lists the items in the player's inventory
