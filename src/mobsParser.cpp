@@ -11,8 +11,6 @@ void parseMobzoneData(QByteArray data)
 
     Mobzone* zone = new Mobzone;
 
-    bool gotStart = false, gotEnd = false; // True when we have the start/end bounds
-
     for (QString line : lines)
     {
         // Skip empty lines and comments
@@ -33,20 +31,6 @@ void parseMobzoneData(QByteArray data)
                 throw QString("parseMobzoneData(): error reading startPos");
 
             zone->start = UVector{x,y,z};
-
-            gotStart = true;
-            if (gotEnd)
-            {
-                // "Normalize" the bounds. The start gets the smaller coordinates, the end gets the bigger
-                UVector newStart = {std::min(zone->start.x, zone->end.x),
-                                    std::min(zone->start.y, zone->end.y),
-                                    std::min(zone->start.z, zone->end.z)};
-                UVector newEnd = {std::max(zone->start.x, zone->end.x),
-                                  std::max(zone->start.y, zone->end.y),
-                                  std::max(zone->start.z, zone->end.z)};
-                zone->start = newStart;
-                zone->end = newEnd;
-            }
         }
         else if (line.startsWith("endPos "))
         {
@@ -62,20 +46,6 @@ void parseMobzoneData(QByteArray data)
                 throw QString("parseMobzoneData(): error reading endPos");
 
             zone->end = UVector{x,y,z};
-
-            gotEnd = true;
-            if (gotStart)
-            {
-                // "Normalize" the bounds. The start gets the smaller coordinates, the end gets the bigger
-                UVector newStart = {std::min(zone->start.x, zone->end.x),
-                                    std::min(zone->start.y, zone->end.y),
-                                    std::min(zone->start.z, zone->end.z)};
-                UVector newEnd = {std::max(zone->start.x, zone->end.x),
-                                  std::max(zone->start.y, zone->end.y),
-                                  std::max(zone->start.z, zone->end.z)};
-                zone->start = newStart;
-                zone->end = newEnd;
-            }
         }
         else if (line.startsWith("scene "))
         {

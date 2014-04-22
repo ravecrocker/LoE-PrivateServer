@@ -2691,3 +2691,14 @@ Then divide the projection's pos along the diagonal by the total length of the d
 ==> Google says this happens if you're sending a SYN|ACK to an IP/port that never sent a SYN
 ==> So make sure we're actually sending our SYN|ACKs to the same port
 ===> Fixed, that was a bug in Lidgren.
+
+=> TODO: BUG: Try to fix #47 again
+
+=> Turns out my math from above is wrong ! Should definitely sleep more, shouldn't I ?
+==> First we obviously need to use coords in the ref of the zone. Done.
+===> Then our little tricks with the start/end are apparently backfiring horribly
+===> It does follow the y of the plane, but the plane is sometimes in the wrong side. 
+===> E.g instead of having the upper on the left and down on the right, it'll be inverted
+===> So we have mobs floating in the air and other mobs stuck under the ground ...
+====> Why the fuck are we "normalizing" anyway ? We could do it only inside the randomization function for X and Z maybe
+=====> Fixed.
