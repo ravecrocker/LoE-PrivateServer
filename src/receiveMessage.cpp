@@ -71,7 +71,9 @@ void receiveMessage(Player* player)
                 // Ack if needed, so that the client knows to move on already.
                 if ((unsigned char)msg[0] >= MsgUserReliableOrdered1 && (unsigned char)msg[0] <= MsgUserReliableOrdered32) // UserReliableOrdered
                 {
+#if DEBUG_LOG
                     win.logMessage("UDP: ACKing discarded message");
+#endif
                     QByteArray data(3,0);
                     data[0] = (quint8)(msg[0]); // ack type
                     data[1] = (quint8)(((quint8)msg[1])/2); // seq
