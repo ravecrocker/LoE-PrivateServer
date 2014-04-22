@@ -22,7 +22,8 @@ SceneEntity::SceneEntity()
 }
 
 Pony::Pony(Player *Owner)
-    : SceneEntity(), owner(Owner)
+    : SceneEntity(), owner(Owner),
+      maxHealth{100}, health{100}, defense{2.0}
 {
     modelName = "PlayerBase";
     name = "";
@@ -849,4 +850,40 @@ bool Pony::tryWearItem(quint8 invSlot)
     }
 
     return true;
+}
+
+void Pony::takeDamage(unsigned amount)
+{
+    if (health <= (float)amount/defense)
+        kill();
+    else
+    {
+        health -= (float)amount/defense;
+        Scene* scene = findScene(sceneName);
+        for (Player* player : scene->players)
+        {
+            sendSetStatRPC(player, netviewId, 1, health);
+        }
+    }
+}
+
+void Pony::kill()
+{
+    health = 0;
+
+    Scene* scene = findScene(sceneName);
+    for (Player* player : scene->players)
+    {
+        if (player->pony.netviewId != netviewId)
+            sendNetviewRemove(player, netviewId);
+    }
+
+    respawn();
+}
+
+void Pony::respawn()
+{
+    health = maxHealth;
+
+    sendLoadSceneRPC(owner, sceneName);
 }

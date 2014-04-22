@@ -371,20 +371,28 @@ void receiveMessage(Player* player)
                 if (msgSize == 18)
                 {
                     // Targeted attack. First try to find the target in the mobs
-                    quint16 targetNetId = dataToUint16(msg.mid(16));                    
+                    quint16 targetNetId = dataToUint16(msg.mid(16));
                     for (Mob* mob : win.mobs)
                     {
                         if (mob->netviewId == targetNetId)
                         {
-                            mob->takeDamage(25);
+                            if (skillId == 20)
+                                mob->takeDamage(75);
+                            else
+                                mob->takeDamage(25);
                             break;
                         }
                     }
+
+                    // Player health test with Admin Blast so we don't accidentally enable PvP
+                    if (skillId == 20)
+                    {
+                        Player* target = Player::findPlayer(win.udpPlayers, targetNetId);
+                        if (target)
+                            target->pony.takeDamage(75);
+                    }
                }
             }
-
-            // Player health test with Admin Blast so we don't accidentally enable PvP
-            if (skillId == 20)
 
             // Send to everyone
             Scene* scene = findScene(player->pony.sceneName);

@@ -39,6 +39,9 @@ public:
     bool hasInventoryItem(quint32 id, quint32 qty=1); ///< Whether of not there are qty of this item in inventory
     void unwearItemAt(quint8 index); ///< Unwear the item at the position index
     bool tryWearItem(quint8 invSlot); ///< Tries to wear this item. Must be in the inventory
+    void takeDamage(unsigned amount); ///< Remove health, update the client, may kill the pony
+    void kill(); ///< Kills the player. He'll respawn
+    void respawn(); ///< Respawn the player at the default spawn of his scene
 
 public:
     QByteArray ponyData;
@@ -50,6 +53,9 @@ public:
     quint32 lastQuest; // Last quest script the player ran
     quint32 wornSlots; // Flag of the used item-wearing slots (See enum WearablePositions)
     Player* owner;
+    float maxHealth;
+    float health;
+    float defense;
 };
 
 class Player : QObject

@@ -495,17 +495,13 @@ void sendLoadSceneRPC(Player* player, QString sceneName) // Loads a scene and se
     player->pony.sceneName = sceneName.toLower();
     player->lastValidReceivedAnimation.clear(); // Changing scenes resets animations
     Player::removePlayer(oldScene->players, player->IP, player->port);
-    if (oldScene->name.toLower() != sceneName.toLower())
-    {
-        // Send remove RPC to the other players of the old scene
-        for (int i=0; i<oldScene->players.size(); i++)
-            sendNetviewRemove(oldScene->players[i], player->pony.netviewId);
-
-        // Send instantiate to the players of the new scene
-        for (int i=0; i<scene->players.size(); i++)
-            if (scene->players[i]->inGame>=2)
-                sendNetviewInstantiate(&player->pony, scene->players[i]);
-    }
+    // Send remove RPC to the other players of the old scene
+    for (int i=0; i<oldScene->players.size(); i++)
+        sendNetviewRemove(oldScene->players[i], player->pony.netviewId);
+    // Send instantiate to the players of the new scene
+    for (int i=0; i<scene->players.size(); i++)
+        if (scene->players[i]->inGame>=2)
+            sendNetviewInstantiate(&player->pony, scene->players[i]);
     scene->players << player;
 
     QByteArray data(1,5);
@@ -539,17 +535,13 @@ void sendLoadSceneRPC(Player* player, QString sceneName, UVector pos) // Loads a
     player->pony.sceneName = sceneName.toLower();
     player->lastValidReceivedAnimation.clear(); // Changing scenes resets animations
     Player::removePlayer(oldScene->players, player->IP, player->port);
-    if (oldScene->name.toLower() != sceneName.toLower())
-    {
-        // Send remove RPC to the other players of the old scene
-        for (int i=0; i<oldScene->players.size(); i++)
-            sendNetviewRemove(oldScene->players[i], player->pony.netviewId);
-
-        // Send instantiate to the players of the new scene
-        for (int i=0; i<scene->players.size(); i++)
-            if (scene->players[i]->inGame>=2)
-                sendNetviewInstantiate(&player->pony, scene->players[i]);
-    }
+    // Send remove RPC to the other players of the old scene
+    for (int i=0; i<oldScene->players.size(); i++)
+        sendNetviewRemove(oldScene->players[i], player->pony.netviewId);
+    // Send instantiate to the players of the new scene
+    for (int i=0; i<scene->players.size(); i++)
+        if (scene->players[i]->inGame>=2)
+            sendNetviewInstantiate(&player->pony, scene->players[i]);
     scene->players << player;
 
     QByteArray data(1,5);
