@@ -2681,3 +2681,6 @@ Then divide the projection's pos along the diagonal by the total length of the d
 => We also don't know the base health of the monsters, so we'll have to make an educated guess.
 
 => TODO: Animations when we use a skill on a mob
+
+=> TODO: When the client losses packets, it causes a ton of bugs. We need simulated client packet loss
+==> You were kicked for lagging the server

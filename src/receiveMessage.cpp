@@ -37,9 +37,9 @@ void receiveMessage(Player* player)
             else
             {
                 // We already processed this packet, we should discard it
+#if DEBUG_LOG
                 win.logMessage("UDP: Discarding double message (-"+QString().setNum(player->udpRecvSequenceNumbers[channel]-seq)
                                +") from "+QString().setNum(player->pony.netviewId));
-#if DEBUG_LOG
                 win.logMessage("UDP: Message was : "+QString(player->receivedDatas->left(msgSize).toHex().data()));
 #endif
                 player->nReceivedDups++;
@@ -103,7 +103,9 @@ void receiveMessage(Player* player)
     }
     else if ((unsigned char)msg[0] == MsgPong) // Pong
     {
+#if DEBUG_LOG
         win.logMessage("UDP: Pong received");
+#endif
     }
     else if ((unsigned char)msg[0] == MsgConnect) // Connect SYN
     {
