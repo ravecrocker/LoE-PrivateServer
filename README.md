@@ -72,9 +72,8 @@ For example if you're stuck, do setPeer with your IP and port, then do for examp
 - listWorn : Lists the items worn by the player's pony
 
 <h3>List of scenes</h3>
-To use with the command "load scene".
-PM-Lvl1 is the Pony Muncher game (Pac Man).
-If you land in the void after loading a scene, try "/stuck" in the chat (and either add an issue on GitHub or complain at mlpfightingismagic@gmail.com)
+To use with the command "load scene_name".
+
 - PonyVille
 - SugarCubeCorner
 - GemMines
@@ -92,6 +91,13 @@ If you land in the void after loading a scene, try "/stuck" in the chat (and eit
 - Ponyville Library 2nd floor
 - minigameLoader
 - PM-Lvl1
+
+Notes:
+
+- Cottage has no textures nor visible sky box, and the warp points doing nothing
+- Tartarus is a character editor screen. Accessing it will cause game to display loading screen indefinitely
+- PM-Lvl1 is the Pony Muncher game (Pac-Man clone)
+- If you land in the void after loading a scene, try "/stuck" in the chat (and either add an issue on GitHub or complain at mlpfightingismagic@gmail.com)
 
 <img src="https://f.cloud.github.com/assets/5155966/1389911/6503cd02-3be3-11e3-987f-98611a94a106.jpg"/>
 (This screenshot was taken on an older version of the game and private server)
