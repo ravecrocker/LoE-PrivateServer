@@ -306,6 +306,23 @@ void Widget::sendCmdLine()
         else
             logMessage("NPC not found");
     }
+    else if (str.startsWith("removekill"))
+    {
+        str = str.right(str.size()-11);
+        QByteArray data(4,2);
+        bool ok;
+        unsigned id = str.toUInt(&ok);
+        if (ok)
+        {
+            logMessage("UDP: Sending remove request with kill reason code");
+            data[1]=id;
+            data[2]=id >> 8;
+            data[3]=NetviewRemoveReasonKill;
+            sendMessage(cmdPeer,MsgUserReliableOrdered6,data);
+        }
+        else
+            logStatusMessage("Error : Removekill needs the id of the view to remove");
+    }
     else if (str.startsWith("remove"))
     {
         str = str.right(str.size()-7);
