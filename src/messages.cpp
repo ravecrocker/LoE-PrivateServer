@@ -138,7 +138,11 @@ void sendPonySave(Player *player, QByteArray msg)
                            +", resending anyway");
         }
         else
+        {
+#if DEBUG_LOG
             win.logMessage(QString("UDP: Sending pony save for/to ")+QString().setNum(netviewId));
+#endif
+        }
 
         // Set current/max stats
         sendSetMaxStatRPC(player, 0, 100);
@@ -185,8 +189,10 @@ void sendPonySave(Player *player, QByteArray msg)
     }
     else if (!refresh->IP.isEmpty())
     {
+#if DEBUG_LOG
         win.logMessage(QString("UDP: Sending pony save for ")+QString().setNum(refresh->pony.netviewId)
                        +" to "+QString().setNum(player->pony.netviewId));
+#endif
 
         //sendWornRPC(refresh, player, refresh->worn);
 
