@@ -103,7 +103,7 @@ void receiveMessage(Player* player)
     }
     else if ((unsigned char)msg[0] == MsgPong) // Pong
     {
-        win.logMessage("UDP: Unexpected pong received !");
+        win.logMessage("UDP: Pong received");
     }
     else if ((unsigned char)msg[0] == MsgConnect) // Connect SYN
     {
