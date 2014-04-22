@@ -2702,3 +2702,5 @@ Then divide the projection's pos along the diagonal by the total length of the d
 ===> So we have mobs floating in the air and other mobs stuck under the ground ...
 ====> Why the fuck are we "normalizing" anyway ? We could do it only inside the randomization function for X and Z maybe
 =====> Fixed.
+
+=> The chat can get you kicked for packet dups if there's packet loss ?
