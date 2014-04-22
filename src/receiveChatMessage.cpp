@@ -14,6 +14,19 @@ void receiveChatMessage(QByteArray msg, Player* player)
     {
         sendLoadSceneRPC(player, player->pony.sceneName);
     }
+    else if (txt == ":anhero")
+    {
+        sendNetviewRemove(player, player->pony.netviewId, NetviewRemoveReasonKill);
+
+        QTimer *timer = new QTimer();
+        timer->setSingleShot(true);
+
+        QObject::connect(timer, &QTimer::timeout, [=]() {
+            sendNetviewInstantiate(player);
+            timer->deleteLater();
+          } );
+        timer->start(5000);
+    }
     else if (txt == ":commands")
     {
         sendChatMessage(player, "<span color=\"yellow\">List of Commands:</span><br /><em>:roll</em><br /><span color=\"yellow\">Rolls a random number between 00 and 99</span><br /><em>:msg player message</em><br /><span color=\"yellow\">Sends a private message to a player</span><br /><em>:names</em><br /><span color=\"yellow\">Lists all players on the server</span><br /><em>:me action</em><br /><span color=\"yellow\">States your current action</span><br /><em>:tp location</em><br /><span color=\"yellow\">Teleports your pony to the specified region</span>", "[Server]", ChatLocal);
