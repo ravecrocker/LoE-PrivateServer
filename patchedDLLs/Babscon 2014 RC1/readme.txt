@@ -14,3 +14,6 @@ Modified to connect to the PrivateServer (127.0.0.1:1031)
 LegendsOfEquestria.Shared.dll :
 Modified to ignore the chat filters (TextFilter).
 Modified to connect to the PrivateServer for chat filters (127.0.0.1:1031)
+
+Lidgren.Network.dll :
+Compiled from source the 23/04/2014 after applying this patch with git : https://github.com/jbruening/PNet/blob/master/lidgren_patch.patch
