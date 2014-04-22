@@ -7,6 +7,7 @@
 #include "receiveAck.h"
 #include "receiveChatMessage.h"
 #include "mob.h"
+#include "packetloss.h"
 
 #define DEBUG_LOG false
 
@@ -14,6 +15,21 @@ void receiveMessage(Player* player)
 {
     QByteArray msg = *(player->receivedDatas);
     int msgSize=5 + (((unsigned char)msg[3]) + (((unsigned char)msg[4]) << 8))/8;
+
+#if UDP_SIMULATE_PACKETLOSS
+    if (qrand() % 100 <= UDP_RECV_PERCENT_DROPPED)
+    {
+        //win.logMessage("UDP: Received packet dropped !");
+        *(player->receivedDatas) = player->receivedDatas->mid(msgSize);
+        if (player->receivedDatas->size())
+            receiveMessage(player);
+        return; // When we're done with the recursion, we still need to skip this message.
+    }
+    else
+    {
+        //win.logMessage("UDP: Received packet got through !");
+    }
+#endif
 
     // Check the sequence (seq) of the received messag
     if ((unsigned char)msg[0] >= MsgUserReliableOrdered1 && (unsigned char)msg[0] <= MsgUserReliableOrdered32)
@@ -55,7 +71,7 @@ void receiveMessage(Player* player)
                 // Ack if needed, so that the client knows to move on already.
                 if ((unsigned char)msg[0] >= MsgUserReliableOrdered1 && (unsigned char)msg[0] <= MsgUserReliableOrdered32) // UserReliableOrdered
                 {
-                    //win.logMessage("UDP: ACKing discarded message");
+                    win.logMessage("UDP: ACKing discarded message");
                     QByteArray data(3,0);
                     data[0] = (quint8)(msg[0]); // ack type
                     data[1] = (quint8)(((quint8)msg[1])/2); // seq
@@ -104,7 +120,7 @@ void receiveMessage(Player* player)
     else if ((unsigned char)msg[0] == MsgPong) // Pong
     {
 #if DEBUG_LOG
-        win.logMessage("UDP: Pong received");
+        //win.logMessage("UDP: Pong received");
 #endif
     }
     else if ((unsigned char)msg[0] == MsgConnect) // Connect SYN
@@ -114,6 +130,7 @@ void receiveMessage(Player* player)
 #if DEBUG_LOG
         win.logMessage(QString("UDP: Connecting ..."));
 #endif
+
         for (int i=0; i<32; i++) // Reset sequence counters
             player->udpSequenceNumbers[i]=0;
 
@@ -122,32 +139,37 @@ void receiveMessage(Player* player)
     }
     else if ((unsigned char)msg[0] == MsgConnectionEstablished) // Connect ACK
     {
-        win.logMessage("UDP: Connected to client");
-        player->connected=true;
-        for (int i=0; i<32; i++) // Reset sequence counters
-            player->udpSequenceNumbers[i]=0;
-        onConnectAckReceived(player); // Clean the reliable message queue from SYN|ACKs
+        if (player->connected)
+            win.logMessage("UDP: Received duplicate connect ACK");
+        else
+        {
+            win.logMessage("UDP: Connected to client");
+            player->connected=true;
+            for (int i=0; i<32; i++) // Reset sequence counters
+                player->udpSequenceNumbers[i]=0;
+            onConnectAckReceived(player); // Clean the reliable message queue from SYN|ACKs
 
-        // Start game
-#if DEBUG_LOG
-        win.logMessage(QString("UDP: Starting game"));
-#endif
-        // Set player id
-        win.lastIdMutex.lock();
-        player->pony.id = win.getNewId();
-        player->pony.netviewId = win.getNewNetviewId();
-        win.lastIdMutex.unlock();
-        win.logMessage("UDP: Set id request : " + QString().setNum(player->pony.id) + "/" + QString().setNum(player->pony.netviewId));
-        QByteArray id(3,0); // Set player Id request
-        id[0]=4;
-        id[1]=(quint8)(player->pony.id&0xFF);
-        id[2]=(quint8)((player->pony.id>>8)&0xFF);
-        sendMessage(player,MsgUserReliableOrdered6,id);
+            // Start game
+    #if DEBUG_LOG
+            win.logMessage(QString("UDP: Starting game"));
+    #endif
+            // Set player id
+            win.lastIdMutex.lock();
+            player->pony.id = win.getNewId();
+            player->pony.netviewId = win.getNewNetviewId();
+            win.lastIdMutex.unlock();
+            win.logMessage("UDP: Set id request : " + QString().setNum(player->pony.id) + "/" + QString().setNum(player->pony.netviewId));
+            QByteArray id(3,0); // Set player Id request
+            id[0]=4;
+            id[1]=(quint8)(player->pony.id&0xFF);
+            id[2]=(quint8)((player->pony.id>>8)&0xFF);
+            sendMessage(player,MsgUserReliableOrdered6,id);
 
-        // Load characters screen request
-        QByteArray data(1,5);
-        data += stringToData("characters");
-        sendMessage(player,MsgUserReliableOrdered6,data);
+            // Load characters screen request
+            QByteArray data(1,5);
+            data += stringToData("characters");
+            sendMessage(player,MsgUserReliableOrdered6,data);
+        }
     }
     else if ((unsigned char)msg[0] == MsgAcknowledge) // Acknowledge
     {

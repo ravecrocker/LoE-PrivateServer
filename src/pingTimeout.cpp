@@ -6,9 +6,8 @@ void Widget::checkPingTimeouts()
 {
     for (int i=0;i<udpPlayers.size();i++)
     {
-        // Check ping timeout
+        // Check ping timeouts
         int time = (timestampNow()-udpPlayers[i]->lastPingTime);
-        //win.logMessage(QString().setNum(time)+"s");
         if (time > pingTimeout)
         {
             logMessage("UDP: Ping timeout ("+QString().setNum(((int)timestampNow()-udpPlayers[i]->lastPingTime))+"s) for "

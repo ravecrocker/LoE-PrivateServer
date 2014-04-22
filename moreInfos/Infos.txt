@@ -2682,5 +2682,12 @@ Then divide the projection's pos along the diagonal by the total length of the d
 
 => TODO: Animations when we use a skill on a mob
 
-=> TODO: When the client losses packets, it causes a ton of bugs. We need simulated client packet loss
-==> You were kicked for lagging the server
+=> When the client loses packets, it causes a ton of bugs. We need simulated client packet loss
+==> May cause "You were kicked for lagging the server"
+==> Causes clients stuck on the loaded default screen view
+
+=> Connection received unhandled library message: ConnectResponse
+=> This cause the "reliable" handshake to not work. The client rejects our retransmissions of the SYN|ACK
+==> Google says this happens if you're sending a SYN|ACK to an IP/port that never sent a SYN
+==> So make sure we're actually sending our SYN|ACKs to the same port
+===> Fixed, that was a bug in Lidgren.

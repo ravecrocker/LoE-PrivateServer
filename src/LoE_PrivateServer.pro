@@ -49,7 +49,8 @@ HEADERS  += widget.h \
     sceneEntity.h \
     mobsParser.h \
     mob.h \
-    mobsStats.h
+    mobsStats.h \
+    packetloss.h
 
 FORMS    += widget.ui
 

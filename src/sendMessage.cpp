@@ -3,6 +3,7 @@
 #include "widget.h"
 #include "utils.h"
 #include "serialize.h"
+#include "packetloss.h"
 
 void sendMessage(Player* player,quint8 messageType, QByteArray data)
 {
@@ -130,12 +131,13 @@ void sendMessage(Player* player,quint8 messageType, QByteArray data)
 
     // Simulate packet loss if enabled (DEBUG ONLY!)
 #if UDP_SIMULATE_PACKETLOSS
-    if (qrand() % 100 <= UDP_PERCENT_DROPPED)
+    if (qrand() % 100 <= UDP_SEND_PERCENT_DROPPED)
     {
-        win.logMessage("UDP: Packet dropped !");
+        if (UDP_LOG_PACKETLOSS)
+            win.logMessage("UDP: Packet dropped !");
         return;
     }
-    else
+    else if (UDP_LOG_PACKETLOSS)
         win.logMessage("UDP: Packet got throught");
 #endif
 

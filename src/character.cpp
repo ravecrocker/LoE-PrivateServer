@@ -7,6 +7,7 @@
 #include "message.h"
 #include "sendMessage.h"
 #include "items.h"
+#include "packetloss.h"
 
 #define DEBUG_LOG false
 
@@ -369,15 +370,16 @@ void Player::udpResendLast()
 
     // Simulate packet loss if enabled (DEBUG ONLY!)
 #if UDP_SIMULATE_PACKETLOSS
-    if (qrand() % 100 <= UDP_PERCENT_DROPPED)
+    if (qrand() % 100 <= UDP_SEND_PERCENT_DROPPED)
     {
-        win.logMessage("UDP: ResendLast packet dropped !");
+        if (UDP_LOG_PACKETLOSS)
+            win.logMessage("UDP: ResendLast packet dropped !");
         udpSendReliableTimer->start();
         //win.logMessage("udpResendLast unlocking");
         udpSendReliableMutex.unlock();
         return;
     }
-    else
+    else if (UDP_LOG_PACKETLOSS)
         win.logMessage("UDP: ResendLast packet got throught");
 #endif
 
@@ -408,6 +410,8 @@ void Player::udpDelayedSend()
 #if DEBUG_LOG
         win.logMessage("UDP: udpDelayedSend failed to lock.");
 #endif
+        if (!udpSendReliableTimer->isActive())
+            udpSendReliableTimer->start();
         return; // Avoid deadlock if sendMessage just locked but didn't have the time to stop the timers
     }
     //udpSendReliableMutex.lock();
@@ -424,9 +428,10 @@ void Player::udpDelayedSend()
     {
         // Simulate packet loss if enabled (DEBUG ONLY!)
 #if UDP_SIMULATE_PACKETLOSS
-        if (qrand() % 100 <= UDP_PERCENT_DROPPED)
+        if (qrand() % 100 <= UDP_SEND_PERCENT_DROPPED)
         {
-            win.logMessage("UDP: Delayed send packet dropped !");
+            if (UDP_LOG_PACKETLOSS)
+                win.logMessage("UDP: Delayed send packet dropped !");
             udpSendReliableGroupBuffer.clear();
             if (!udpSendReliableTimer->isActive())
                 udpSendReliableTimer->start();
@@ -434,7 +439,7 @@ void Player::udpDelayedSend()
             udpSendReliableMutex.unlock();
             return;
         }
-        else
+        else if (UDP_LOG_PACKETLOSS)
             win.logMessage("UDP: Delayed send packet got throught");
 #endif
 
