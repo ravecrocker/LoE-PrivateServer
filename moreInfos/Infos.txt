@@ -2704,3 +2704,6 @@ Then divide the projection's pos along the diagonal by the total length of the d
 =====> Fixed.
 
 => The chat can get you kicked for packet dups if there's packet loss ?
+
+=> Okay if we want the death animation, we have to give a reasonCode==1 to NetworkCharacterController::Remove()
+==> Done

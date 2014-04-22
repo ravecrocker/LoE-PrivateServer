@@ -108,7 +108,7 @@ void Mob::kill()
     Scene* scene = findScene(sceneName);
     for (Player* player : scene->players)
     {
-        sendNetviewRemove(player, netviewId);
+        sendNetviewRemove(player, netviewId, NetviewRemoveReasonKill);
     }
 
     respawn();

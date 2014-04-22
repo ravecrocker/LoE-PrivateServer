@@ -875,7 +875,7 @@ void Pony::kill()
     for (Player* player : scene->players)
     {
         if (player->pony.netviewId != netviewId)
-            sendNetviewRemove(player, netviewId);
+            sendNetviewRemove(player, netviewId, NetviewRemoveReasonKill);
     }
 
     respawn();

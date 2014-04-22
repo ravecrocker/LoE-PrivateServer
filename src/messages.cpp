@@ -281,6 +281,18 @@ void sendNetviewRemove(Player *player, quint16 netviewId)
     sendMessage(player, MsgUserReliableOrdered6, data);
 }
 
+void sendNetviewRemove(Player* player, quint16 netviewId, quint8 reasonCode)
+{
+    win.logMessage("UDP: Removing netview "+QString().setNum(netviewId)+" to "+QString().setNum(player->pony.netviewId)
+                   +", reason code "+QString().setNum(reasonCode));
+
+    QByteArray data(4,2);
+    data[1] = (quint8)(netviewId&0xFF);
+    data[2] = (quint8)((netviewId>>8)&0xFF);
+    data[3] = reasonCode;
+    sendMessage(player, MsgUserReliableOrdered6, data);
+}
+
 void sendSetStatRPC(Player* player, quint16 netviewId, quint8 statId, float value)
 {
     QByteArray data(4,50);
