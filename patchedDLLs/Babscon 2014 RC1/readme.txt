@@ -7,6 +7,8 @@ Modified to connect to the PrivateServer for cutiemarks (127.0.0.1:1031)
 Changed the version string to v 0.0.20140416-MPS, and made it actually visible
 Changed "Connecting to the official Legends of Equestria server" by "Connecting to the Legends of Equestria private server"
 Changed the "Register" button to load "https://github.com/tux3/LoE-PrivateServer/"
+Change the body and horn size checks when importing ponycodes to only restrict between 0.01 and 100.0
+Disable the race-locking checks when importing a ponycode.
 
 LegendsOfEquestria.Data.dll :
 Modified to connect to the PrivateServer (127.0.0.1:1031)

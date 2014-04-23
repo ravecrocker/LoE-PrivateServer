@@ -2707,3 +2707,6 @@ Then divide the projection's pos along the diagonal by the total length of the d
 
 => Okay if we want the death animation, we have to give a reasonCode==1 to NetworkCharacterController::Remove()
 ==> Done
+
+=> Allow hueg/tiny pones with the ponycodes, and allow changing races with the ponycode
+=> We'll need to edit Assembly-CSharp again
