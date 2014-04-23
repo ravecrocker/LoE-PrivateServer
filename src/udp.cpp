@@ -109,7 +109,7 @@ void Widget::udpProcessPendingDatagrams()
                 Player* newPlayer = new Player;
                 newPlayer->IP = rAddr.toString();
                 newPlayer->port = rPort;
-                sendMessage(newPlayer, MsgDisconnect, "Error : Wrong sesskey hash.");
+                sendMessage(newPlayer, MsgDisconnect, "Error: Wrong server password. This server is protected with a salt password.");
                 return;
             }
         }
