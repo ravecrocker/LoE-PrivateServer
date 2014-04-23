@@ -16,18 +16,26 @@ void receiveChatMessage(QByteArray msg, Player* player)
     }
     else if (txt == ":anhero")
     {
-        sendNetviewRemove(player, player->pony.netviewId, NetviewRemoveReasonKill);
-
-        static QTimer *anheroTimer = new QTimer();
+        QTimer *anheroTimer = new QTimer();
         anheroTimer->setSingleShot(true);
 
         QObject::connect(anheroTimer, &QTimer::timeout, [=]() {
-            sendNetviewInstantiate(player);
-            anheroTimer->deleteLater();
-            anheroTimer->disconnect();
+            sendSetStatRPC(player, 1, player->pony.health);
+            Scene* scene = findScene(player->pony.sceneName);
+            for (Player* other : scene->players)
+                sendNetviewInstantiate(&player->pony, other);
+            player->pony.dead = false;
+            delete anheroTimer;
           } );
-        if (!anheroTimer->isActive())
+        if (!player->pony.dead)
+        {
+            player->pony.dead = true;
+            sendSetStatRPC(player, 1, 0);
             anheroTimer->start(5000);
+            Scene* scene = findScene(player->pony.sceneName);
+            for (Player* other : scene->players)
+                sendNetviewRemove(other, player->pony.netviewId, NetviewRemoveReasonKill);
+        }
     }
     else if (txt == ":commands")
     {

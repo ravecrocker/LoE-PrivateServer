@@ -22,7 +22,7 @@ SceneEntity::SceneEntity()
 }
 
 Pony::Pony(Player *Owner)
-    : SceneEntity(), owner(Owner),
+    : SceneEntity(), owner(Owner), dead{false},
       maxHealth{100}, health{100}, defense{2.0}
 {
     modelName = "PlayerBase";
@@ -870,6 +870,7 @@ void Pony::takeDamage(unsigned amount)
 void Pony::kill()
 {
     health = 0;
+    dead = true;
 
     Scene* scene = findScene(sceneName);
     for (Player* player : scene->players)
@@ -886,4 +887,5 @@ void Pony::respawn()
     health = maxHealth;
 
     sendLoadSceneRPC(owner, sceneName);
+    dead = false;
 }

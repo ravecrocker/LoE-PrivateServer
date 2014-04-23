@@ -2710,3 +2710,5 @@ Then divide the projection's pos along the diagonal by the total length of the d
 
 => Allow hueg/tiny pones with the ponycodes, and allow changing races with the ponycode
 => We'll need to edit Assembly-CSharp again
+
+=> Reminder that stat 1 is health
