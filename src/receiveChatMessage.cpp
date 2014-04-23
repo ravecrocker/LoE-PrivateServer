@@ -18,14 +18,16 @@ void receiveChatMessage(QByteArray msg, Player* player)
     {
         sendNetviewRemove(player, player->pony.netviewId, NetviewRemoveReasonKill);
 
-        QTimer *timer = new QTimer();
-        timer->setSingleShot(true);
+        static QTimer *anheroTimer = new QTimer();
+        anheroTimer->setSingleShot(true);
 
-        QObject::connect(timer, &QTimer::timeout, [=]() {
+        QObject::connect(anheroTimer, &QTimer::timeout, [=]() {
             sendNetviewInstantiate(player);
-            timer->deleteLater();
+            anheroTimer->deleteLater();
+            anheroTimer->disconnect();
           } );
-        timer->start(5000);
+        if (!anheroTimer->isActive())
+            anheroTimer->start(5000);
     }
     else if (txt == ":commands")
     {
