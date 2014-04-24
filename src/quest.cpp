@@ -9,7 +9,7 @@ Quest::Quest(QString path, Player *Owner)
     QFile file(path);
     if (!file.open(QFile::ReadOnly))
     {
-        win.logMessage("Error reading quest DB.");
+        win.logMessage(QObject::tr("Error reading quest DB"));
         win.stopServer();
         throw std::exception();
     }
@@ -36,15 +36,15 @@ Quest::Quest(QString path, Player *Owner)
         if (line[0] == "name")
             if (line.size()>=2)
                 npc->name = lines[i].mid(line[0].size()+1);
-            else throw QString("Quest::Quest: Error reading name, quest "+path);
+            else throw QString(QObject::tr("Quest::Quest: Error reading name, quest %1").arg(path));
         else if (line[0] == "scene")
             if (line.size()>=2)
                 npc->sceneName = lines[i].mid(line[0].size()+1).toLower();
-            else throw QString("Quest::Quest: Error reading scene, quest "+path);
+            else throw QString(QObject::tr("Quest::Quest: Error reading scene, quest %1").arg(path));
         else if (line[0] == "ponyData")
             if (line.size()==2)
                 npc->ponyData = QByteArray::fromBase64(line[1].toLatin1());
-            else throw QString("Quest::Quest: Error reading ponyData, quest "+path);
+            else throw QString(QObject::tr("Quest::Quest: Error reading ponyData, quest %1").arg(path));
         else if (line[0] == "pos")
             if (line.size()==4)
             {
@@ -52,9 +52,9 @@ Quest::Quest(QString path, Player *Owner)
                 npc->pos = UVector(line[1].toFloat(&ok1), line[2].toFloat(&ok2),
                                     line[3].toFloat(&ok3));
                 if (!(ok1 && ok2 && ok3))
-                    throw QString("Quest::Quest: Error reading pos, quest "+path);
+                    throw QString(QObject::tr("Quest::Quest: Error reading pos, quest %1").arg(path));
             }
-            else throw QString("Quest::Quest: Error reading pos, quest "+path);
+            else throw QString(QObject::tr("Quest::Quest: Error reading pos, quest %1").arg(path));
         else if (line[0] == "rot")
             if (line.size()==5)
             {
@@ -62,9 +62,9 @@ Quest::Quest(QString path, Player *Owner)
                 npc->rot = UQuaternion(line[1].toFloat(&ok1), line[2].toFloat(&ok2),
                                         line[3].toFloat(&ok3), line[4].toFloat(&ok4));
                 if (!(ok1 && ok2 && ok3 && ok4))
-                    throw QString("Quest::Quest: Error reading rot, quest "+path);
+                    throw QString(QObject::tr("Quest::Quest: Error reading rot, quest %1").arg(path));
             }
-            else throw QString("Quest::Quest: Error reading rot, quest "+path);
+            else throw QString(QObject::tr("Quest::Quest: Error reading rot, quest %1").arg(path));
         else if (line[0] == "wear")
         {
             for (int i=1; i<line.size(); i++)
@@ -72,7 +72,7 @@ Quest::Quest(QString path, Player *Owner)
                 bool ok;
                 int itemId = line[i].toInt(&ok);
                 if (!ok)
-                    throw QString("Quest::Quest: Error reading wear, quest "+path);
+                    throw QString(QObject::tr("Quest::Quest: Error reading wear, quest %1").arg(path));
                 WearableItem item;
                 item.id = itemId;
                 item.index = wearablePositionsToSlot(win.wearablePositionsMap[itemId]);
@@ -86,7 +86,7 @@ Quest::Quest(QString path, Player *Owner)
                 bool ok;
                 int itemId = line[i].toInt(&ok);
                 if (!ok)
-                    throw QString("Quest::Quest: Error reading shop, quest "+path);
+                    throw QString(QObject::tr("Quest::Quest: Error reading shop, quest %1").arg(path));
                 InventoryItem item;
                 item.id = itemId;
                 item.index = i-1;
@@ -104,15 +104,15 @@ Quest::Quest(QString path, Player *Owner)
                 npc->netviewId = id;
                 win.lastIdMutex.unlock();
             }
-            else throw QString("Quest::Quest: Error reading questId, quest "+path);
+            else throw QString(QObject::tr("Quest::Quest: Error reading questId, quest %1").arg(path));
         else if (line[0] == "questName")
             if (line.size()>=2)
                 *name = lines[i].mid(line[0].size()+1);
-            else throw QString("Quest::Quest: Error reading questName, quest "+path);
+            else throw QString(QObject::tr("Quest::Quest: Error reading questName, quest %1").arg(path));
         else if (line[0] == "questDescr")
             if (line.size()>=2)
                 *descr = lines[i].mid(line[0].size()+1);
-            else throw QString("Quest::Quest: Error reading questDescr, quest "+path);
+            else throw QString(QObject::tr("Quest::Quest: Error reading questDescr, quest %1").arg(path));
         else
             commands->append(line);
     }
@@ -139,8 +139,7 @@ int Quest::findLabel(QString label)
 
 void Quest::logError(QString message)
 {
-    win.logMessage("Error running quest script "+QString().setNum(id)
-                   +", eip="+QString().setNum(eip)+" : "+message);
+    win.logMessage(QObject::tr("Error running quest script %1, eip=%2 : %3").arg(id).arg(eip).arg(message));
 }
 
 void Quest::setOwner(Player* Owner)
@@ -166,7 +165,7 @@ bool Quest::doCommand(int commandEip)
 {
     if (!owner)
     {
-        win.logMessage("Quest::doCommand called with no owner");
+        win.logMessage(QObject::tr("Quest::doCommand called with no owner"));
         return false;
     }
 
@@ -180,13 +179,13 @@ bool Quest::doCommand(int commandEip)
     {
         if (command.size() != 2)
         {
-            logError("goto takes exactly one argument");
+            logError(QObject::tr("goto takes exactly one argument"));
             return false;
         }
         int newEip = findLabel(command[1]);
         if (newEip == -1)
         {
-            logError("label not found");
+            logError(QObject::tr("label not found"));
             return false;
         }
         eip = newEip;
@@ -209,7 +208,7 @@ bool Quest::doCommand(int commandEip)
         }
         else
         {
-            logError("say takes 2 arguments");
+            logError(QObject::tr("say takes 2 arguments"));
             return false;
         }
 
@@ -226,7 +225,7 @@ bool Quest::doCommand(int commandEip)
                 int id = (*commands)[i][1].toInt(&ok);
                 if (!ok || id < 0)
                 {
-                    logError("invalid icon id");
+                    logError(QObject::tr("invalid icon id"));
                     return false;
                 }
                 hasIconId = true;
@@ -258,24 +257,24 @@ bool Quest::doCommand(int commandEip)
     }
     else if (command[0] == "answer") // can only be ran after a say, sayName, sayIcon, or another answer
     {
-        logError("trying to run answer command by itself");
+        logError(QObject::tr("trying to run answer command by itself"));
         return false;
     }
     else if (command[0] == "sayName") // can only be ran after a say, sayIcon, answer, or another sayName
     {
-        logError("trying to run sayName command by itself");
+        logError(QObject::tr("trying to run sayName command by itself"));
         return false;
     }
     else if (command[0] == "sayIcon") // Answer can only be ran after a say, sayName, answer, or another sayIcon
     {
-        logError("trying to run sayIcon command by itself");
+        logError(QObject::tr("trying to run sayIcon command by itself"));
         return false;
     }
     else if (command[0] == "give")
     {
         if (command.size() != 3)
         {
-            logError("give takes 2 arguments");
+            logError(QObject::tr("give takes 2 arguments"));
             return false;
         }
         bool ok1,ok2;
@@ -283,7 +282,7 @@ bool Quest::doCommand(int commandEip)
         int qty = command[2].toInt(&ok2);
         if (!ok1 || !ok2 || itemId<0)
         {
-            logError("invalid arguments for command give");
+            logError(QObject::tr("invalid arguments for command give"));
             return false;
         }
         if (qty > 0)
@@ -296,14 +295,14 @@ bool Quest::doCommand(int commandEip)
     {
         if (command.size() != 2)
         {
-            logError("giveBits takes 1 argument");
+            logError(QObject::tr("giveBits takes 1 argument"));
             return false;
         }
         bool ok1;
         int qty = command[1].toInt(&ok1);
         if (!ok1)
         {
-            logError("invalid argument for command giveBits");
+            logError(QObject::tr("invalid argument for command giveBits"));
             return false;
         }
         if (qty<0 && (quint32)-qty > owner->pony.nBits)
@@ -320,7 +319,7 @@ bool Quest::doCommand(int commandEip)
             int newState = command[1].toInt(&ok1);
             if (!ok1 || newState<0)
             {
-                logError("invalid argument for command setQuestState");
+                logError(QObject::tr("invalid argument for command setQuestState"));
                 return false;
             }
             this->state = newState;
@@ -332,7 +331,7 @@ bool Quest::doCommand(int commandEip)
             int id = command[2].toInt(&ok2);
             if (!ok1 || !ok2 || newState<0 || id<0)
             {
-                logError("invalid arguments for command setQuestState");
+                logError(QObject::tr("invalid arguments for command setQuestState"));
                 return false;
             }
             for (Quest& quest : owner->pony.quests)
@@ -341,7 +340,7 @@ bool Quest::doCommand(int commandEip)
         }
         else
         {
-            logError("setQuestState takes 1 or 2 arguments");
+            logError(QObject::tr("setQuestState takes 1 or 2 arguments"));
             return false;
         }
     }
@@ -354,7 +353,7 @@ bool Quest::doCommand(int commandEip)
             itemId = command[1].toInt(&ok1);
             if (!ok1 || itemId<0)
             {
-                logError("invalid arguments for command hasItem");
+                logError(QObject::tr("invalid arguments for command hasItem"));
                 return false;
             }
             yesEip = findLabel(command[2]);
@@ -367,7 +366,7 @@ bool Quest::doCommand(int commandEip)
             qty = command[2].toInt(&ok2);
             if (!ok1 || !ok2 || qty<=0 || itemId<0)
             {
-                logError("invalid arguments for command hasItem");
+                logError(QObject::tr("invalid arguments for command hasItem"));
                 return false;
             }
             yesEip = findLabel(command[3]);
@@ -375,17 +374,17 @@ bool Quest::doCommand(int commandEip)
         }
         else
         {
-            logError("hasItem takes 3 or 4 arguments");
+            logError(QObject::tr("hasItem takes 3 or 4 arguments"));
             return false;
         }
         if (yesEip == -1)
         {
-            logError("'yes' label not found");
+            logError(QObject::tr("label for a verified condition not found"));
             return false;
         }
         else if (noEip == -1)
         {
-            logError("'no' label not found");
+            logError(QObject::tr("label for an unverified condition not found"));
             return false;
         }
         if (owner->pony.hasInventoryItem(itemId, qty))
@@ -398,7 +397,7 @@ bool Quest::doCommand(int commandEip)
     {
         if (command.size() != 4)
         {
-            logError("hasBits takes 3 arguments");
+            logError(QObject::tr("hasBits takes 3 arguments"));
             return false;
         }
         int qty, yesEip, noEip;
@@ -406,19 +405,19 @@ bool Quest::doCommand(int commandEip)
         qty = command[1].toInt(&ok1);
         if (!ok1 || qty<=0)
         {
-            logError("invalid arguments for command hasBits");
+            logError(QObject::tr("invalid arguments for command hasBits"));
             return false;
         }
         yesEip = findLabel(command[2]);
         noEip = findLabel(command[3]);
         if (yesEip == -1)
         {
-            logError("'yes' label not found");
+            logError(QObject::tr("label for a verified condition not found"));
             return false;
         }
         else if (noEip == -1)
         {
-            logError("'no' label not found");
+            logError(QObject::tr("label for an unverified condition not found"));
             return false;
         }
         eip = owner->pony.nBits >= (quint32)qty ? yesEip : noEip;
@@ -434,12 +433,12 @@ bool Quest::doCommand(int commandEip)
             destEip = findLabel(command[2]);
             if (!ok1 || uState<0)
             {
-                logError("invalid arguments for command gotoIfState");
+                logError(QObject::tr("invalid arguments for command gotoIfState"));
                 return false;
             }
             else if (destEip<0)
             {
-                logError("can't find dest label for command gotoIfState");
+                logError(QObject::tr("can't find dest label for command gotoIfState"));
                 return false;
             }
             if (this->state == uState)
@@ -455,12 +454,12 @@ bool Quest::doCommand(int commandEip)
             destEip = findLabel(command[3]);
             if (!ok1 || !ok2 || questId<0 || uState<0)
             {
-                logError("invalid arguments for command gotoIfState");
+                logError(QObject::tr("invalid arguments for command gotoIfState"));
                 return false;
             }
             else if (destEip<0)
             {
-                logError("can't find dest label for command gotoIfState");
+                logError(QObject::tr("can't find dest label for command gotoIfState"));
                 return false;
             }
             for (const Quest& quest : owner->pony.quests)
@@ -472,12 +471,12 @@ bool Quest::doCommand(int commandEip)
                     return true;
                 }
             }
-            logError("invalid quest id for command gotoIfState");
+            logError(QObject::tr("invalid quest id for command gotoIfState"));
             return false;
         }
         else
         {
-            logError("gotoIfState takes 2 or 3 arguments");
+            logError(QObject::tr("gotoIfState takes 2 or 3 arguments"));
             return false;
         }
     }
@@ -491,12 +490,12 @@ bool Quest::doCommand(int commandEip)
             destEip = findLabel(command[2]);
             if (!ok1 || uState<0)
             {
-                logError("invalid arguments for command gotoAfterState");
+                logError(QObject::tr("invalid arguments for command gotoAfterState"));
                 return false;
             }
             else if (destEip<0)
             {
-                logError("can't find dest label for command gotoAfterState");
+                logError(QObject::tr("can't find dest label for command gotoAfterState"));
                 return false;
             }
             if (this->state >= uState)
@@ -512,12 +511,12 @@ bool Quest::doCommand(int commandEip)
             destEip = findLabel(command[3]);
             if (!ok1 || !ok2 || questId<0 || uState<0)
             {
-                logError("invalid arguments for command gotoAfterState");
+                logError(QObject::tr("invalid arguments for command gotoAfterState"));
                 return false;
             }
             else if (destEip<0)
             {
-                logError("can't find dest label for command gotoAfterState");
+                logError(QObject::tr("can't find dest label for command gotoAfterState"));
                 return false;
             }
             for (const Quest& quest : owner->pony.quests)
@@ -529,18 +528,18 @@ bool Quest::doCommand(int commandEip)
                     return true;
                 }
             }
-            logError("invalid quest id for command gotoAfterState");
+            logError(QObject::tr("invalid quest id for command gotoAfterState"));
             return false;
         }
         else
         {
-            logError("gotoAfterState takes 2 or 3 arguments");
+            logError(QObject::tr("gotoAfterState takes 2 or 3 arguments"));
             return false;
         }
     }
     else
     {
-        logError("unknown command : "+command[0]);
+        logError(QObject::tr("unknown command : %1").arg(command[0]));
         return false;
     }
     return true;
@@ -558,7 +557,7 @@ void Quest::processAnswer(int answer)
                 int newEip = findLabel((*commands)[i][1]);
                 if (newEip == -1)
                 {
-                    logError("label not found for answer "+QString().setNum(answer));
+                    logError(QObject::tr("label not found for answer %1").arg(answer));
                     sendEndDialog(owner);
                     return;
                 }
@@ -576,7 +575,7 @@ void Quest::processAnswer(int answer)
             continue;
         else
         {
-            logError("answer "+QString().setNum(answer)+" not found");
+            logError(QObject::tr("answer %1 not found").arg(answer));
             sendEndDialog(owner);
             return;
         }

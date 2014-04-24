@@ -44,8 +44,8 @@ void receiveMessage(Player* player)
             missingMsg.seq = seq;
             if (player->udpRecvMissing.contains(missingMsg))
             {
-                win.logMessage("UDP: Processing retransmission (-"+QString().setNum(player->udpRecvSequenceNumbers[channel]-seq)
-                               +") from "+QString().setNum(player->pony.netviewId));
+                win.logMessage(QObject::tr("UDP: Processing retransmission (-%1) from %2")
+                               .arg(player->udpRecvSequenceNumbers[channel]-seq).arg(player->pony.netviewId));
                 for (int i=0; i<player->udpRecvMissing.size(); i++)
                     if (player->udpRecvMissing[i] == missingMsg)
                         player->udpRecvMissing.remove(i);
@@ -61,7 +61,7 @@ void receiveMessage(Player* player)
                 player->nReceivedDups++;
                 if (player->nReceivedDups >= 100) // Kick the player if he's infinite-looping on us
                 {
-                    win.logMessage(QString("UDP: Kicking "+QString().setNum(player->pony.netviewId)+" : Too many packet dups."));
+                    win.logMessage(QObject::tr("UDP: Kicking %1 : Too many packet dups").arg(player->pony.netviewId));
                     sendMessage(player,MsgDisconnect, "You were kicked for lagging the server, sorry. You can login again.");
                     Player::disconnectPlayerCleanup(player); // Save game and remove the player
                     return;
@@ -87,8 +87,8 @@ void receiveMessage(Player* player)
         }
         else if (seq > player->udpRecvSequenceNumbers[channel]+2) // If a message was skipped, keep going.
         {
-            win.logMessage("UDP: Unordered message (+"+QString().setNum(seq-player->udpRecvSequenceNumbers[channel])
-                           +") received from "+QString().setNum(player->pony.netviewId));
+            win.logMessage(QObject::tr("UDP: Unordered message (+%1) received from %2")
+                           .arg(seq-player->udpRecvSequenceNumbers[channel]).arg(player->pony.netviewId));
             player->udpRecvSequenceNumbers[channel] = seq;
 
             // Mark the packets we skipped as missing
@@ -142,10 +142,10 @@ void receiveMessage(Player* player)
     else if ((unsigned char)msg[0] == MsgConnectionEstablished) // Connect ACK
     {
         if (player->connected)
-            win.logMessage("UDP: Received duplicate connect ACK");
+            win.logMessage(QObject::tr("UDP: Received duplicate connect ACK"));
         else
         {
-            win.logMessage("UDP: Connected to client");
+            win.logMessage(QObject::tr("UDP: Connected to client"));
             player->connected=true;
             for (int i=0; i<32; i++) // Reset sequence counters
                 player->udpSequenceNumbers[i]=0;
@@ -160,7 +160,7 @@ void receiveMessage(Player* player)
             player->pony.id = win.getNewId();
             player->pony.netviewId = win.getNewNetviewId();
             win.lastIdMutex.unlock();
-            win.logMessage("UDP: Set id request : " + QString().setNum(player->pony.id) + "/" + QString().setNum(player->pony.netviewId));
+            win.logMessage(QObject::tr("UDP: Set id request : %1/%2").arg(player->pony.id,player->pony.netviewId));
             QByteArray id(3,0); // Set player Id request
             id[0]=4;
             id[1]=(quint8)(player->pony.id&0xFF);
@@ -179,7 +179,7 @@ void receiveMessage(Player* player)
     }
     else if ((unsigned char)msg[0] == MsgDisconnect) // Disconnect
     {
-        win.logMessage("UDP: Client disconnected");
+        win.logMessage(QObject::tr("UDP: Client disconnected"));
         Player::disconnectPlayerCleanup(player); // Save game and remove the player
         return; // We can't use Player& player anymore, it refers to free'd memory.
     }
@@ -207,8 +207,8 @@ void receiveMessage(Player* player)
         }
         else if ((quint8)msg[0]==MsgUserReliableOrdered4 && (quint8)msg[5]==0x1 && player->inGame!=0) // Edit ponies request error (happens if you click play twice quicly, for example)
         {
-            win.logMessage("UDP: Rejecting game start request from "+QString().setNum(player->pony.netviewId)
-                           +" : player already in game");
+            win.logMessage(QObject::tr("UDP: Rejecting game start request from %1 : player already in game")
+                           .arg(player->pony.netviewId));
             // Fix the buggy state we're now in
             // Reload to hide the "saving ponies" message box
             QByteArray data(1,5);
@@ -236,7 +236,7 @@ void receiveMessage(Player* player)
                 quint32 id = (quint8)msg[6] +((quint8)msg[7]<<8) + ((quint8)msg[8]<<16) + ((quint8)msg[9]<<24);
                 if (ponies.size()<0 || (quint32)ponies.size() <= id)
                 {
-                    win.logMessage("UDP: Received invalid id in 'edit ponies' request. Disconnecting user.");
+                    win.logMessage(QObject::tr("UDP: Received invalid id in 'edit ponies' request. Disconnecting user."));
                     sendMessage(player,MsgDisconnect, "You were kicked for sending invalid data.");
                     Player::disconnectPlayerCleanup(player); // Save game and remove the player
                     return; // It's ok, since we just disconnected the player
@@ -276,14 +276,14 @@ void receiveMessage(Player* player)
                 quint8 id = (quint8)msg[5];
                 Vortex vortex = findVortex(player->pony.sceneName, id);
                 if (vortex.destName.isEmpty())
-                    win.logMessage("Can't find vortex "+QString().setNum(id)+" on map "+player->pony.sceneName);
+                    win.logMessage(QObject::tr("Can't find vortex %1 on map %2").arg(id).arg(player->pony.sceneName));
                 else
                     sendLoadSceneRPC(player, vortex.destName, vortex.destPos);
             }
         }
         else if ((unsigned char)msg[0]==MsgUserReliableOrdered4 && (unsigned char)msg[5]==0x2) // Delete pony request
         {
-            win.logMessage(QString("UDP: Deleting a character"));
+            win.logMessage(QObject::tr("UDP: Deleting a character"));
             QList<Pony> ponies = Player::loadPonies(player);
             quint32 id = (quint8)msg[6] +((quint8)msg[7]<<8) + ((quint8)msg[8]<<16) + ((quint8)msg[9]<<24);
             ponies.removeAt(id);
@@ -297,7 +297,7 @@ void receiveMessage(Player* player)
             // Send to everyone
             Scene* scene = findScene(player->pony.sceneName);
             if (scene->name.isEmpty())
-                win.logMessage("UDP: Can't find the scene for animation message, aborting");
+                win.logMessage(QObject::tr("UDP: Can't find the scene for animation message, aborting"));
             else
             {
                 if (player->lastValidReceivedAnimation.isEmpty() ||
@@ -355,7 +355,7 @@ void receiveMessage(Player* player)
                         reply += floatToData(timestampNow());
                     }
                     else
-                        win.logMessage("UDP: Teleport target not found");
+                        win.logMessage(QObject::tr("UDP: Teleport target not found"));
                 }
             }
             else
@@ -397,7 +397,7 @@ void receiveMessage(Player* player)
             // Send to everyone
             Scene* scene = findScene(player->pony.sceneName);
             if (scene->name.isEmpty())
-                win.logMessage("UDP: Can't find the scene for skill message, aborting");
+                win.logMessage(QObject::tr("UDP: Can't find the scene for skill message, aborting"));
             else
             {
                 for (int i=0; i<scene->players.size(); i++)
@@ -410,7 +410,7 @@ void receiveMessage(Player* player)
             quint8 index = msg[9];
             Scene* scene = findScene(player->pony.sceneName);
             if (scene->name.isEmpty())
-                win.logMessage("UDP: Can't find the scene for wear message, aborting");
+                win.logMessage(QObject::tr("UDP: Can't find the scene for wear message, aborting"));
             else
             {
                 if (player->pony.tryWearItem(index))
@@ -421,7 +421,7 @@ void receiveMessage(Player* player)
                             sendWornRPC(&player->pony, scene->players[i], player->pony.worn);
                 }
                 else
-                    win.logMessage("Error trying to wear item");
+                    win.logMessage(QObject::tr("Error trying to wear item"));
             }
         }
         else if ((unsigned char)msg[0]==MsgUserReliableOrdered11 && (unsigned char)msg[7]==0x16) // BeginShop request
@@ -441,7 +441,8 @@ void receiveMessage(Player* player)
             if (targetNpc)
                 sendBeginShop(player, targetNpc);
             else
-                win.logMessage("UDP: Can't find a shop on scene "+player->pony.sceneName+" for BeginShop");
+                win.logMessage(QObject::tr("UDP: Can't find a shop on scene %1 for BeginShop")
+                               .arg(player->pony.sceneName));
         }
         else if ((unsigned char)msg[0]==MsgUserReliableOrdered11 && (unsigned char)msg[7]==0x17) // EndShop request
         {
@@ -485,7 +486,8 @@ void receiveMessage(Player* player)
                 if (targetNpc)
                     sendWornRPC(targetNpc, player, targetNpc->worn);
                 else
-                    win.logMessage("UDP: Can't find netviewId "+QString().setNum(targetId)+" to send worn items");
+                    win.logMessage(QObject::tr("UDP: Can't find netviewId %1 to send worn items")
+                                   .arg(targetId));
             }
         }
         else if ((unsigned char)msg[0]==MsgUserReliableOrdered11 && (unsigned char)msg[7]==0x09) // Unwear item request
@@ -495,7 +497,8 @@ void receiveMessage(Player* player)
             if (target->pony.netviewId == targetId)
                 target->pony.unwearItemAt(dataToUint8(msg.mid(8)));
             else
-                win.logMessage("UDP: Can't find netviewId "+QString().setNum(targetId)+" to unwear item");
+                win.logMessage(QObject::tr("UDP: Can't find netviewId %1 to unwear item")
+                               .arg(targetId));
         }
         else if ((unsigned char)msg[0]==MsgUserReliableOrdered11 && (unsigned char)msg[7]==0x31) // Run script (NPC) request
         {
@@ -528,8 +531,8 @@ void receiveMessage(Player* player)
         {
             // Display data
             quint32 unknownMsgSize =  (((quint16)(quint8)msg[3]) +(((quint16)(quint8)msg[4])<<8)) / 8;
-            win.logMessage("UDP: Unknown message received : "
-                           +QString(player->receivedDatas->left(unknownMsgSize+5).toHex().data()));
+            win.logMessage(QObject::tr("UDP: Unknown message received : %1")
+                           .arg(player->receivedDatas->left(unknownMsgSize+5).toHex().data()));
             *player->receivedDatas = player->receivedDatas->mid(unknownMsgSize+5);
             msgSize=0;
         }
@@ -542,7 +545,7 @@ void receiveMessage(Player* player)
     else
     {
         // Display data
-        win.logMessage("Unknown data received (UDP) (hex) : ");
+        win.logMessage(QObject::tr("Unknown data received (UDP) (hex) : "));
         win.logMessage(QString(player->receivedDatas->toHex().data()));
         quint32 unknownMsgSize = (((quint16)(quint8)msg[3]) +(((quint16)(quint8)msg[4])<<8)) / 8;
         *player->receivedDatas = player->receivedDatas->mid(unknownMsgSize+5);

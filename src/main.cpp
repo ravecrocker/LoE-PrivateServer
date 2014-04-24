@@ -17,12 +17,7 @@ int main(int, char**)
     QString locale = QLocale::system().name().section('_', 0, 0);
 
     QTranslator translator;
-    if (!translator.load("translations/"+locale))
-    {
-        qDebug() << "Unable to load translation";
-    }
-    else
-        qDebug() << "Translation loaded";
+    translator.load("translations/"+locale);
     a.installTranslator(&translator);
 
     win.show();

@@ -426,7 +426,6 @@ public void OnSerialize(NetOutgoingMessage msg)
     msg.Write(this.Hoof);
     msg.Write(this.BodySize);
     msg.WriteRangedSingle(this.HornSize, 0f, 2f, 0x10);
-
 }
 	
 public void OnDeserialize(NetIncomingMessage msg)

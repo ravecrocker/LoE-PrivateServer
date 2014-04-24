@@ -80,7 +80,7 @@ void Mob::setType(QString ModelName)
     else if (modelName == "mobs/timberwolf")
         type = MobType::timberwolf;
     else
-        throw QString("Mob::setType(): Error, unknown type "+modelName);
+        throw QString(QObject::tr("Mob::setType(): Error, unknown type %1").arg(modelName));
 
     health = defaultMaxHealth[type];
 }

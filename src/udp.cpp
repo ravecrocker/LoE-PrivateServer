@@ -25,7 +25,7 @@ void Widget::udpProcessPendingDatagrams()
             }
             else
             {
-                logStatusMessage(QString("Socket error : ").arg(udpSocket->errorString()));
+                logStatusMessage(tr("Socket error : %1").arg(udpSocket->errorString()));
                 return;
             }
         }
@@ -102,10 +102,7 @@ void Widget::udpProcessPendingDatagrams()
             }
             else
             {
-                QString badHash = QCryptographicHash::hash((QString(sesskey.right(40))
-                                +saltPassword).toLatin1(), QCryptographicHash::Md5).toHex();
-                logMessage("UDP: Sesskey rejected: got '"+badHash+"' instead of '"+sesskey.left(32)
-                           +"', passhash was '"+QString(sesskey.right(40)));
+                logMessage(tr("UDP: Sesskey rejected","The sesskey is a cryptographic hash, short for session key"));
                 Player* newPlayer = new Player;
                 newPlayer->IP = rAddr.toString();
                 newPlayer->port = rPort;
@@ -125,7 +122,7 @@ void Widget::udpProcessPendingDatagrams()
         }
         else // You need to connect with TCP first
         {
-            logMessage("UDP: Request from unknown peer rejected : "+rAddr.toString()+":"+QString().setNum(rPort));
+            logMessage(tr("UDP: Request from unknown peer rejected : %1:%2").arg(rAddr.toString()).arg(rPort));
             // Send disconnect message manually
             QString data("You're not connected, please login first. (aka the server has no idea who the hell you are)");
             QByteArray msg(6,0);

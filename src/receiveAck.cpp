@@ -108,16 +108,16 @@ void onAckReceived(QByteArray msg, Player* player)
                 player->udpSendReliableQueue.remove(0); // The whole grouped msg was ACK'd, remove it
                 if (player->udpSendReliableQueue.size()) // If there's a next message in the queue, send it
                 {
-                    win.logMessage("UDP: Sending next message in queue");
+                    win.logMessage(QObject::tr("UDP: Sending next message in queue"));
                     qMsg = player->udpSendReliableQueue[0];
                     if (win.udpSocket->writeDatagram(qMsg,QHostAddress(player->IP),player->port) != qMsg.size())
                     {
-                        win.logMessage("UDP: Error sending last message");
-                        win.logStatusMessage("Restarting UDP server ...");
+                        win.logMessage(QObject::tr("UDP: Error sending last message"));
+                        win.logStatusMessage(QObject::tr("Restarting UDP server ..."));
                         win.udpSocket->close();
                         if (!win.udpSocket->bind(win.gamePort, QUdpSocket::ReuseAddressHint|QUdpSocket::ShareAddress))
                         {
-                            win.logStatusMessage("UDP: Unable to start server on port "+QString().setNum(win.gamePort));
+                            win.logStatusMessage(QObject::tr("UDP: Unable to start server on port %1").arg(win.gamePort));
                             win.stopServer();
                             return;
                         }

@@ -21,14 +21,14 @@ void parseMobzoneData(QByteArray data)
         {
             QStringList coords = line.mid(9).split(' ');
             if (coords.size() != 3)
-                throw QString("parseMobzoneData(): error reading startPos");
+                throw QString(QObject::tr("parseMobzoneData(): error reading startPos"));
 
             bool ok1, ok2, ok3;
             float x = coords[0].toFloat(&ok1);
             float y = coords[1].toFloat(&ok2);
             float z = coords[2].toFloat(&ok3);
             if (!ok1 || !ok2 || !ok3)
-                throw QString("parseMobzoneData(): error reading startPos");
+                throw QString(QObject::tr("parseMobzoneData(): error reading startPos"));
 
             zone->start = UVector{x,y,z};
         }
@@ -36,14 +36,14 @@ void parseMobzoneData(QByteArray data)
         {
             QStringList coords = line.mid(7).split(' ');
             if (coords.size() != 3)
-                throw QString("parseMobzoneData(): error reading endPos");
+                throw QString(QObject::tr("parseMobzoneData(): error reading endPos"));
 
             bool ok1, ok2, ok3;
             float x = coords[0].toFloat(&ok1);
             float y = coords[1].toFloat(&ok2);
             float z = coords[2].toFloat(&ok3);
             if (!ok1 || !ok2 || !ok3)
-                throw QString("parseMobzoneData(): error reading endPos");
+                throw QString(QObject::tr("parseMobzoneData(): error reading endPos"));
 
             zone->end = UVector{x,y,z};
         }
@@ -61,20 +61,20 @@ void parseMobzoneData(QByteArray data)
             {
                 QStringList keyValuePair = arg.split('=');
                 if (keyValuePair.size() != 2)
-                    throw QString("parseMobzoneData(): error reading mob key/value pair");
+                    throw QString(QObject::tr("parseMobzoneData(): error reading mob key/value pair"));
                 QString key = keyValuePair[0].trimmed();
                 QString value = keyValuePair[1].trimmed();
 
                 if (key=="type")
                     mob->setType("mobs/"+value);
                 else
-                    throw QString("parseMobzoneData(): error reading mob arg, unknown arg "+key);
+                    throw QString(QObject::tr("parseMobzoneData(): error reading mob arg, unknown arg %1").arg(key));
                 win.mobs << mob;
             }
         }
         else
         {
-            throw QString("parseMobzoneData(): error, unknown statement "+line);
+            throw QString(QObject::tr("parseMobzoneData(): error, unknown statement %1").arg(line));
         }
     }
 

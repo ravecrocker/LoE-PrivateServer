@@ -10,8 +10,9 @@ void Widget::checkPingTimeouts()
         int time = (timestampNow()-udpPlayers[i]->lastPingTime);
         if (time > pingTimeout)
         {
-            logMessage("UDP: Ping timeout ("+QString().setNum(((int)timestampNow()-udpPlayers[i]->lastPingTime))+"s) for "
-                       +QString().setNum(udpPlayers[i]->pony.netviewId)+" (player "+udpPlayers[i]->name+")");
+            logMessage(tr("UDP: Ping timeout (%1s) for %2 (player %3)")
+                       .arg((int)timestampNow()-udpPlayers[i]->lastPingTime)
+                       .arg(udpPlayers[i]->pony.netviewId).arg(udpPlayers[i]->name));
             udpPlayers[i]->connected = false;
             sendMessage(udpPlayers[i], MsgDisconnect, "You were kicked (Ping timeout)");
             Player::disconnectPlayerCleanup(udpPlayers[i]);

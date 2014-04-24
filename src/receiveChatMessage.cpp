@@ -112,7 +112,7 @@ void receiveChatMessage(QByteArray msg, Player* player)
         {
             Scene* scene = findScene(player->pony.sceneName);
             if (scene->name.isEmpty())
-                win.logMessage("UDP: Can't find the scene for chat message, aborting");
+                win.logMessage(QObject::tr("UDP: Can't find the scene for chat message, aborting"));
             else
             {
                 for (int i=0; i<scene->players.size(); i++)

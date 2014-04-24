@@ -125,7 +125,7 @@ void sendMessage(Player* player,quint8 messageType, QByteArray data)
     }
     else
     {
-        win.logStatusMessage("sendMessage : Unknown message type");
+        win.logStatusMessage(QObject::tr("sendMessage : Unknown message type"));
         return;
     }
 
@@ -143,13 +143,13 @@ void sendMessage(Player* player,quint8 messageType, QByteArray data)
 
     if (win.udpSocket->writeDatagram(msg,QHostAddress(player->IP),player->port) != msg.size())
     {
-        win.logMessage("UDP: Error sending message to "+QString().setNum(player->pony.netviewId)
-                       +" : "+win.udpSocket->errorString());
-        win.logMessage("Restarting UDP server ...");
+        win.logMessage(QObject::tr("UDP: Error sending message to %1 : %2")
+                       .arg(player->pony.netviewId).arg(win.udpSocket->errorString()));
+        win.logMessage(QObject::tr("Restarting UDP server ..."));
         win.udpSocket->close();
         if (!win.udpSocket->bind(win.gamePort, QUdpSocket::ReuseAddressHint|QUdpSocket::ShareAddress))
         {
-            win.logStatusMessage("UDP: Unable to start server on port "+QString().setNum(win.gamePort));
+            win.logStatusMessage(QObject::tr("UDP: Unable to start server on port %1").arg(win.gamePort));
             win.stopServer();
             return;
         }

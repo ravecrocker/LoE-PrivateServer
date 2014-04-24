@@ -369,7 +369,7 @@ void Widget::stopServer()
 void Widget::stopServer(bool log)
 {
     if (log)
-        logStatusMessage("Stopping all server operations");
+        logStatusMessage(tr("Stopping all server operations"));
     pingTimer->stop();
     tcpServer->close();
     for (int i=0;i<tcpClientsList.size();i++)
@@ -393,7 +393,7 @@ void Widget::stopServer(bool log)
 Widget::~Widget()
 {
     logInfos=false; // logMessage while we're trying to destroy would crash.
-    //logMessage(QString("UDP: Disconnecting all players"));
+    //logMessage(tr("UDP: Disconnecting all players"));
     for (;udpPlayers.size();)
     {
         Player* player = udpPlayers[0];
