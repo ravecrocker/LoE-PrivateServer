@@ -390,20 +390,22 @@ Assets/Scenes/Cloudsdale/Cloudsdale.unity
 
 public class PonyData : INetSerializable
 	public Color32 bodyColor;
-	public float BodySize;
-	public CutieMark[] CutieMarks;
-	public short Eye;
-	public Color32 eyeColor;
-	public Gender gender;
-	public Color32 hairColor0;
-	public Color32 hairColor1;
-	public short Hoof;
-	public Color32 hoofColor;
-	public short Mane;
-	public string name;
-	public LoE.Shared.CharacterType race = LoE.Shared.CharacterType.EarthPony;
-	public List<Stat> stats = new List<Stat>();
-	public short Tail;
+    public float BodySize;
+    public CutieMark[] CutieMarks;
+    public static readonly Bounds DefaultBounds;
+    public short Eye;
+    public Color32 eyeColor;
+    public Gender gender;
+    public Color32 hairColor0;
+    public Color32 hairColor1;
+    public short Hoof;
+    public Color32 hoofColor;
+    public float HornSize;
+    public short Mane;
+    public string name;
+    public CharacterType race;
+    public short Tail;
+
 
 public void OnSerialize(NetOutgoingMessage msg)
 {
@@ -424,6 +426,7 @@ public void OnSerialize(NetOutgoingMessage msg)
     msg.Write(this.Hoof);
     msg.Write(this.BodySize);
     msg.WriteRangedSingle(this.HornSize, 0f, 2f, 0x10);
+
 }
 	
 public void OnDeserialize(NetIncomingMessage msg)
