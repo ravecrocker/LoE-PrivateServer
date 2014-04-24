@@ -53,10 +53,10 @@ public:
     quint32 lastQuest; // Last quest script the player ran
     quint32 wornSlots; // Flag of the used item-wearing slots (See enum WearablePositions)
     Player* owner;
+    bool dead; // If true, the player is in the room, but not instantiated
     float maxHealth;
     float health;
     float defense;
-    bool dead; // If true, the player is in the room, but not instantiated
 };
 
 class Player : QObject

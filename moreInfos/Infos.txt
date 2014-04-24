@@ -2712,3 +2712,5 @@ Then divide the projection's pos along the diagonal by the total length of the d
 => We'll need to edit Assembly-CSharp again
 
 => Reminder that stat 1 is health
+
+=> TODO: Check that we don't have duplicate NPC quest ids when parsing. This isn't that expensive, and only runs at startup

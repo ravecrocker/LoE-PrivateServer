@@ -179,7 +179,7 @@ QList<Player*> Player::loadPlayers()
         newPlayer->passhash = line[1];
         players << newPlayer;
     }
-    win.logMessage(QString("Got ")+QString().setNum(players.size())+" players in database");
+    win.logMessage(tr("Got %1 players in database").arg(players.size()));
     return players;
 }
 
