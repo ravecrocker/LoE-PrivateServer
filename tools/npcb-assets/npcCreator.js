@@ -13,7 +13,7 @@ var Eye;
 var Hoof;
 var BodySize;
 var HornSize;
-var options = '<option>say</option><option>giveBits</option><option>give</option><option>goto</option><option>answer</option>';
+var options = '<option>say</option><option>giveBits</option><option>give</option><option>goto</option><option>answer</option><option>end</option>';
 
 function addDialogBox(){
 	// find the last dialog we created
