@@ -1,18 +1,3 @@
-var inputCode;
-var race;
-var gender;
-var CutieMarks;
-var hairColor0;
-var hairColor1;
-var bodyColor;
-var eyeColor;
-var hoofColor;
-var Mane;
-var Tail;
-var Eye;
-var Hoof;
-var BodySize;
-var HornSize;
 var options = '<option>say</option><option>giveBits</option><option>give</option><option>goto</option><option>answer</option><option>end</option>';
 
 function addDialogBox(){
@@ -262,66 +247,4 @@ function buildNpc(){
 	}catch(err){
 		$('#npcCode').val('Error building code:\n'+err);
 	}
-}
-
-function parsePonyData(ponyData){
-	inputCode = atob(ponyData); // Browser native - convert from base64 to ascii - not 100% cross-browser, but it is in most. If need be, look for another solution.
-	var parsedPonyData = {};
-
-	parsedPonyData.name = inputCode.substr(inputCode.length - 26);
-	inputCode = inputCode.substr(name.length);
-
-	parsedPonyData.race = readByte();
-	parsedPonyData.gender = readByte();
-	parsedPonyData.CutieMarks = [readInt32(), readInt32(), readInt32()]; // to be converted to an actual cutie mark
-	parsedPonyData.hairColor0 = {r: readByte(), g: readByte(), b: readByte(), a: 1};
-	parsedPonyData.hairColor1 = {r: readByte(), g: readByte(), b: readByte(), a: 1};
-	parsedPonyData.bodyColor = {r: readByte(), g: readByte(), b: readByte(), a: 1};
-	parsedPonyData.eyeColor = {r: readByte(), g: readByte(), b: readByte(), a: 1};
-	parsedPonyData.hoofColor = {r: readByte(), g: readByte(), b: readByte(), a: 1};
-	parsedPonyData.Mane = readInt16();
-	parsedPonyData.Tail = readInt16();
-	parsedPonyData.Eye = readInt16();
-	parsedPonyData.Hoof = readInt16();
-	parsedPonyData.BodySize = readFloat32();
-	parsedPonyData.HornSize = readFloat16(); // Custom, due to readRangedSingle, and in C# returns single, stored in a float.
-	return parsedPonyData;
-}
-
-function readByte(){
-	var toReturn = inputCode[0];
-	inputCode = inputCode.substr(1);
-	return toReturn;
-}
-
-function readInt16(){
-	var toReturn = inputCode.charCodeAt(0) | inputCode.charCodeAt(1) << 8;
-	inputCode = inputCode.substr(4);
-	return toReturn;
-}
-
-function readInt32(){
-	var toReturn = readInt16() | readInt16() << 16;
-	return toReturn;
-}
-
-function readFloat16(){
-	// We use a float32 array even though it is a float16, because float16 doen't actually exist.
-	// If this comes out incorrectly, then try multiplying the output by 2.
-	// The original code uses the "single" datatype, which is converted to a float (float32 probably).
-	// I am unsure of how the conversions actually work, but this may work fine.
-	// To multiply by 2, do "return arr[0] * 2;"
-	var arr = new Float32Array(1);
-	char = new Uint8Array(arr.buffer);
-	for (var i=0; i<2; ++i) char[i] = inputCode.charCodeAt(i);
-	inputCode = inputCode.substr(2); 
-	return arr[0];
-}
-
-function readFloat32(){
-	var arr = new Float32Array(1);
-	char = new Uint8Array(arr.buffer);
-	for (var i=0; i<4; ++i) char[i] = inputCode.charCodeAt(i);
-	inputCode = inputCode.substr(4); 
-	return arr[0];
 }
