@@ -160,7 +160,7 @@ void receiveMessage(Player* player)
             player->pony.id = win.getNewId();
             player->pony.netviewId = win.getNewNetviewId();
             win.lastIdMutex.unlock();
-            win.logMessage(QObject::tr("UDP: Set id request : %1/%2").arg(player->pony.id,player->pony.netviewId));
+            win.logMessage(QObject::tr("UDP: Set id request : %1/%2").arg(player->pony.id).arg(player->pony.netviewId));
             QByteArray id(3,0); // Set player Id request
             id[0]=4;
             id[1]=(quint8)(player->pony.id&0xFF);
