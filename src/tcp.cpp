@@ -3,7 +3,7 @@
 #include "message.h"
 #include "utils.h"
 
-#define DEBUG_LOG true
+#define DEBUG_LOG false
 
 void Widget::tcpConnectClient()
 {
