@@ -238,7 +238,7 @@ function buildNpc(){
 		appendLine('# If you get errors, make sure this quest id is unique.\nquestId ' + questId);
 		appendLine('questName ' + $('#npcName').val());
 		appendLine('questDescr ' + $('#npcName').val());
-		appendLine('\n# Dialog')
+		appendLine('\n# Actions')
 		$.each($('npcDialog'), function(){
 			if($(this).find('div').find('input').val().trim() != ''){
 				appendLine($(this).find('div').find('select').val() + ' ' + $(this).find('div').find('input').val());
