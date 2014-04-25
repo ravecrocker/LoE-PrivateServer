@@ -1,0 +1,61 @@
+<html>
+<head>
+	<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+	<script src="npcb-assets/npcCreator.js"></script>
+	<link href="npcb-assets/fonts.css" rel="stylesheet"></link>
+	<link href="npcb-assets/npcCreator.css" rel="stylesheet"></link>
+	<title>LoE NPC Builder</title>
+</head>
+<body onload="onload()">
+	<div id="npcArea">
+		<table>
+			<tr>
+				<td valign="top" width="700">
+				<h1>LoE NPC Builder</h1>
+				<small>version 0.1 by <a href="https://github.com/GeekyGamer14">GeekyGamer14</a>
+				<br/>built for tux3's <a href="https://github.com/tux3/LoE-PrivateServer/">LoE Private Server</a>
+				<br/><a href="http://iquestria.net/npcbuilder">online version</a> (probably more complete, but unstable)</small><br/>
+				NPC Name: <input type="text" id="npcName" value="Flan"></input><br/>
+				NPC Scene:
+				<select id="npcScene">
+					<option value="Appaloosa">Appaloosa</option>
+					<option value="Canterlot">Canterlot</option>
+					<option value="Cloudsdale">Cloudsdale</option>
+					<option value="Cottage">Cottage</option>
+					<option value="Everfree1">Everfree1</option>
+					<option value="Everfree3">Everfree3</option>
+					<option value="GemMines">GemMines</option>
+					<option value="minigameLoader">minigameLoader</option>
+					<option value="PM-Lvl1">PM-Lvl1</option>
+					<option value="Ponyville Library 1st floor">Ponyville Library 1st floor</option>
+					<option value="Ponyville Library 2nd floor">Ponyville Library 2nd floor</option>
+					<option value="Ponyville">Ponyville</option>
+					<option value="RaritysBoutique">RaritysBoutique</option>
+					<option value="SugarCubeCorner">SugarCubeCorner</option>
+					<option value="SweetAppleAcres">SweetAppleAcres</option>
+					<option value="Zecoras">Zecoras</option>
+				</select><br/>
+				NPC Position: <input type="text" id="posX" value="-94.2147" placeholder="X"> <input type="text" value="0.175656" id="posY" placeholder="Y"> <input type="text" id="posZ" value="6.23397" placeholder="Z"><br/>
+				NPC Rotation: <input type="text" id="rotX" value="0" placeholder="X"> <input type="text" value="3.5" id="rotY" placeholder="Y"> <input type="text" id="rotZ" value="0" placeholder="Z"> <input type="text" id="rotW" value="1" placeholder="W"><br/>
+				Pony Data: <small title="Get this by typing getPonyData in your console" style="cursor: help">?</small> <input type="text" id="npcPonyCode" value="BEZsYW4CAsYAAAAAAAAAAAAAAPTYpt2bRffp0OaRLf///wwAAAABAAAAKkF+P6Z8"></input><br/>
+				<table><tr><td valign="top"><h1>Actions <button id="addOne">+</button><button id="removeOne">-</button></h1>
+				<div id="dialogs"><npcDialog dialogId="0"><div><select><option>say</option><option>giveBits</option><option>give</option><option>goto</option><option>answer</option><option>end</option></select><input type="text" value="It really is a beautiful city." placeholder="Something to do"></input></div></npcDialog></div>end</td>
+				<!-- labels -->
+				<td style="padding-left: 50px;" valign="top"><h1>Labels <button id="addLabel">+</button><button id="removeLabel">-</button></h1><small>note: import is not supported on labels</small><br/>
+				<div id="labels"><npcLabelMaster labelId="0"><div><div><input class="labelMaster" type="text" placeholder="Label name"></input> <button onclick="addSlaveLabel('0')">+</button><button onclick="removeSlaveLabel('0')">-</button></div>
+				<npcLabelSlave masterId="0" slaveId="0"><div><i class="slaveIndicator">&nbsp;</i><select><option>say</option><option>giveBits</option><option>give</option><option>goto</option><option>answer</option><option>end</option></select> <input type="text" placeholder="Label action"></input></div></npcLabelSlave></div></npcLabelMaster></div>
+				</td></tr></table>
+				</td><td class="textRight" valign="top"><h1>NPC Code</h1>
+					<button id="codeBuilder">Build code</button><br/>
+					<textarea id="npcCode" rows="10" cols="50"></textarea><br/>
+					<a href="data:application/octet-stream;charset=utf-8," download="document of blankness becuase you forgot to build the code" id="downloadUrl">Download</a>
+					<h1>Import/Export</h1>
+					Build the code to see import/export code <button id="importButton">Import</button><br/>
+					<textarea id="importExportCode" rows="10" cols="50"></textarea><br/>
+					<a href="data:application/octet-stream;charset=utf-8,no%20dont%20open%20the%20document...%20BUILD%20THE%20CODE." download="(facepalm) build the code" id="exportUrl">Download</a>
+				</td>		
+			</tr>
+		</table>
+	</div>
+</body>
+</html>
