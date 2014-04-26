@@ -384,13 +384,12 @@ void receiveMessage(Player* player)
                         }
                     }
 
-                    // Player health test with Admin Blast so we don't accidentally enable PvP
-                    if (skillId == 20)
-                    {
-                        Player* target = Player::findPlayer(win.udpPlayers, targetNetId);
-                        if (target)
-                            target->pony.takeDamage(75);
-                    }
+                    // This enables PvP
+                    Player* target = Player::findPlayer(win.udpPlayers, targetNetId);
+                    if (target && skillId == 20)
+                        target->pony.takeDamage(75);
+                    else if (target)
+                        target->pony.takeDamage(25);
                }
             }
 
