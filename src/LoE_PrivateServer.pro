@@ -54,7 +54,8 @@ HEADERS  += widget.h \
 
 FORMS    += widget.ui
 
-TRANSLATIONS = ../translations/fr.ts
+TRANSLATIONS = ../translations/fr.ts \
+    ../translations/ru.ts
 
 # include coreservices (required for timestamps) only on mac
 macx {
