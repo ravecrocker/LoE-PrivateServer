@@ -47,7 +47,7 @@ QByteArray stringToData(QString str)
     QByteArray data(4,0);
     // Write the size in a Uint of variable lenght (8-32 bits)
     int i=0;
-    uint num1 = (uint)str.size();
+    uint num1 = (uint)str.toUtf8().size();
     while (num1 >= 0x80)
     {
         data[i] = (unsigned char)(num1 | 0x80); i++;
@@ -55,7 +55,7 @@ QByteArray stringToData(QString str)
     }
     data[i]=num1;
     data.resize(i+1);
-    data+=str;
+    data+=str.toUtf8();
     return data;
 }
 

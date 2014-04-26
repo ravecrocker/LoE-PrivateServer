@@ -31,6 +31,7 @@ object_script.LoE_PrivateServer.Debug
 object_script.LoE_PrivateServer.Release
 moc_*
 ui_widget.h
+*.autosave
 
 # My saves
 data/players/

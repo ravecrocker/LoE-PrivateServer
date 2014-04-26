@@ -61,7 +61,7 @@ QMap<uint32_t, uint32_t> parseItemsXml(QByteArray data)
             else if (slot == "Hat")   itemSlots |= (uint32_t)WearablePositions::Hat;
             else
             {
-                win.logMessage("Unknown wearable slots while parsing Items.xml");
+                win.logMessage(QObject::tr("Unknown wearable slots while parsing Items.xml"));
             }
         }
         map[id] = itemSlots;

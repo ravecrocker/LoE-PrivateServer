@@ -1,0 +1,14 @@
+# Define the zone the mobs will spawn in. 
+# A zone is a rectangle area and should correspond roughly to the real floor. 
+# Mobs can spawn and move anywhere inside a zone, regardless of walls or objects.
+# You can get the coordinates for startPos and endPos with the getPos server command.
+scene PonyVille
+startPos -204.445 -195.308 150.25
+endPos -220.672 -195.304 96.6195
+
+# Mobs
+mob type=hornet
+mob type=hornet
+mob type=hornet
+mob type=hornet
+mob type=hornet

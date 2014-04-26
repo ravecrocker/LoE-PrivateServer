@@ -1,0 +1,13 @@
+# This zone isn't perfectly following the terrain, and it's small because the terrain isn't flat
+# It would be a good idea to split it into two zones, and add some empty zones around to allow mobs to walk a little further
+# Now they'd just hit an invisible wall for seemingly no reason
+
+# Zone
+scene Everfree3
+startPos -258.855 26.1951 396.122
+endPos -242.914 24.7623 427.911
+
+# Mobs
+mob type=lantern monster
+mob type=lantern monster
+mob type=timberwolf

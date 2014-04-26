@@ -11,15 +11,15 @@ TEMPLATE = app
 
 SOURCES += main.cpp \
         widget.cpp \
-	tcp.cpp \
-	udp.cpp \
-	messages.cpp \
-	utils.cpp \
-	pingTimeout.cpp \
-	character.cpp \
-	scene.cpp \
-	dataType.cpp \
-	sync.cpp \
+    tcp.cpp \
+    udp.cpp \
+    messages.cpp \
+    utils.cpp \
+    pingTimeout.cpp \
+    character.cpp \
+    scene.cpp \
+    dataType.cpp \
+    sync.cpp \
     receiveMessage.cpp \
     sendMessage.cpp \
     serverCommands.cpp \
@@ -33,12 +33,12 @@ SOURCES += main.cpp \
     mobStats.cpp
 
 HEADERS  += widget.h \
-	character.h \
-	message.h \
-	utils.h \
-	scene.h \
-	dataType.h \
-	sync.h \
+    character.h \
+    message.h \
+    utils.h \
+    scene.h \
+    dataType.h \
+    sync.h \
     quest.h \
     serialize.h \
     items.h \
@@ -49,9 +49,12 @@ HEADERS  += widget.h \
     sceneEntity.h \
     mobsParser.h \
     mob.h \
-    mobsStats.h
+    mobsStats.h \
+    packetloss.h
 
 FORMS    += widget.ui
+
+TRANSLATIONS = ../translations/fr.ts
 
 # include coreservices (required for timestamps) only on mac
 macx {

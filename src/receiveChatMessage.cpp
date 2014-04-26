@@ -14,6 +14,29 @@ void receiveChatMessage(QByteArray msg, Player* player)
     {
         sendLoadSceneRPC(player, player->pony.sceneName);
     }
+    else if (txt == ":anhero")
+    {
+        QTimer *anheroTimer = new QTimer();
+        anheroTimer->setSingleShot(true);
+
+        QObject::connect(anheroTimer, &QTimer::timeout, [=]() {
+            sendSetStatRPC(player, 1, player->pony.health);
+            Scene* scene = findScene(player->pony.sceneName);
+            for (Player* other : scene->players)
+                sendNetviewInstantiate(&player->pony, other);
+            player->pony.dead = false;
+            delete anheroTimer;
+          } );
+        if (!player->pony.dead)
+        {
+            player->pony.dead = true;
+            sendSetStatRPC(player, 1, 0);
+            anheroTimer->start(5000);
+            Scene* scene = findScene(player->pony.sceneName);
+            for (Player* other : scene->players)
+                sendNetviewRemove(other, player->pony.netviewId, NetviewRemoveReasonKill);
+        }
+    }
     else if (txt == ":commands")
     {
         sendChatMessage(player, "<span color=\"yellow\">List of Commands:</span><br /><em>:roll</em><br /><span color=\"yellow\">Rolls a random number between 00 and 99</span><br /><em>:msg player message</em><br /><span color=\"yellow\">Sends a private message to a player</span><br /><em>:names</em><br /><span color=\"yellow\">Lists all players on the server</span><br /><em>:me action</em><br /><span color=\"yellow\">States your current action</span><br /><em>:tp location</em><br /><span color=\"yellow\">Teleports your pony to the specified region</span>", "[Server]", ChatLocal);
@@ -89,7 +112,7 @@ void receiveChatMessage(QByteArray msg, Player* player)
         {
             Scene* scene = findScene(player->pony.sceneName);
             if (scene->name.isEmpty())
-                win.logMessage("UDP: Can't find the scene for chat message, aborting");
+                win.logMessage(QObject::tr("UDP: Can't find the scene for chat message, aborting"));
             else
             {
                 for (int i=0; i<scene->players.size(); i++)

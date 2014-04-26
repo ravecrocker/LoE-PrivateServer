@@ -390,20 +390,22 @@ Assets/Scenes/Cloudsdale/Cloudsdale.unity
 
 public class PonyData : INetSerializable
 	public Color32 bodyColor;
-	public float BodySize;
-	public CutieMark[] CutieMarks;
-	public short Eye;
-	public Color32 eyeColor;
-	public Gender gender;
-	public Color32 hairColor0;
-	public Color32 hairColor1;
-	public short Hoof;
-	public Color32 hoofColor;
-	public short Mane;
-	public string name;
-	public LoE.Shared.CharacterType race = LoE.Shared.CharacterType.EarthPony;
-	public List<Stat> stats = new List<Stat>();
-	public short Tail;
+    public float BodySize;
+    public CutieMark[] CutieMarks;
+    public static readonly Bounds DefaultBounds;
+    public short Eye;
+    public Color32 eyeColor;
+    public Gender gender;
+    public Color32 hairColor0;
+    public Color32 hairColor1;
+    public short Hoof;
+    public Color32 hoofColor;
+    public float HornSize;
+    public short Mane;
+    public string name;
+    public CharacterType race;
+    public short Tail;
+
 
 public void OnSerialize(NetOutgoingMessage msg)
 {
@@ -2681,3 +2683,36 @@ Then divide the projection's pos along the diagonal by the total length of the d
 => We also don't know the base health of the monsters, so we'll have to make an educated guess.
 
 => TODO: Animations when we use a skill on a mob
+
+=> When the client loses packets, it causes a ton of bugs. We need simulated client packet loss
+==> May cause "You were kicked for lagging the server"
+==> Causes clients stuck on the loaded default screen view
+
+=> Connection received unhandled library message: ConnectResponse
+=> This cause the "reliable" handshake to not work. The client rejects our retransmissions of the SYN|ACK
+==> Google says this happens if you're sending a SYN|ACK to an IP/port that never sent a SYN
+==> So make sure we're actually sending our SYN|ACKs to the same port
+===> Fixed, that was a bug in Lidgren.
+
+=> TODO: BUG: Try to fix #47 again
+
+=> Turns out my math from above is wrong ! Should definitely sleep more, shouldn't I ?
+==> First we obviously need to use coords in the ref of the zone. Done.
+===> Then our little tricks with the start/end are apparently backfiring horribly
+===> It does follow the y of the plane, but the plane is sometimes in the wrong side. 
+===> E.g instead of having the upper on the left and down on the right, it'll be inverted
+===> So we have mobs floating in the air and other mobs stuck under the ground ...
+====> Why the fuck are we "normalizing" anyway ? We could do it only inside the randomization function for X and Z maybe
+=====> Fixed.
+
+=> The chat can get you kicked for packet dups if there's packet loss ?
+
+=> Okay if we want the death animation, we have to give a reasonCode==1 to NetworkCharacterController::Remove()
+==> Done
+
+=> Allow hueg/tiny pones with the ponycodes, and allow changing races with the ponycode
+=> We'll need to edit Assembly-CSharp again
+
+=> Reminder that stat 1 is health
+
+=> TODO: Check that we don't have duplicate NPC quest ids when parsing. This isn't that expensive, and only runs at startup

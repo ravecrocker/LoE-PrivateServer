@@ -51,7 +51,9 @@ void Widget::logMessage(QString msg)
 /// Reads the config file (server.ini) and start the server accordingly
 void Widget::startServer()
 {
-    logStatusMessage("Private server v0.5.3-alpha");
+    ui->retranslateUi(this);
+
+    logStatusMessage(tr("Private server v0.5.3-alpha2"));
 #ifdef __APPLE__
     // this fixes the directory in OSX so we can use the relative CONFIGFILEPATH and etc properly
     CFBundleRef mainBundle = CFBundleGetMainBundle();
@@ -70,7 +72,7 @@ void Widget::startServer()
     lastId=1;
 
     /// Read config
-    logStatusMessage("Reading config file ...");
+    logStatusMessage(tr("Reading config file ..."));
     QSettings config(CONFIGFILEPATH, QSettings::IniFormat);
     loginPort = config.value("loginPort", 1031).toInt();
     gamePort = config.value("gamePort", 1039).toInt();
@@ -120,7 +122,7 @@ void Widget::startServer()
             QFile file("data/vortex/"+files[i]);
             if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
             {
-                logStatusMessage("Error reading vortex DB");
+                logStatusMessage(tr("Error reading vortex DB"));
                 return;
             }
             QByteArray data = file.readAll();
@@ -138,8 +140,8 @@ void Widget::startServer()
                 QList<QByteArray> elems = lines[j].split(' ');
                 if (elems.size() < 5)
                 {
-                    logStatusMessage("Vortex DB is corrupted. Incorrect line ("
-                                    +QString().setNum(elems.size())+" elems), file " + files[i]);
+                    logStatusMessage(tr("Vortex DB is corrupted. Incorrect line (%1 elems), file %2")
+                                        .arg(elems.size()).arg(files[i]));
                     corrupted=true;
                     break;
                 }
@@ -152,7 +154,7 @@ void Widget::startServer()
                 vortex.destPos.z = elems[elems.size()-1].toFloat(&ok4);
                 if (!(ok1&&ok2&&ok3&&ok4))
                 {
-                    logStatusMessage("Vortex DB is corrupted. Conversion failed, file " + files[i]);
+                    logStatusMessage(tr("Vortex DB is corrupted. Conversion failed, file %1").arg(files[i]));
                     corrupted=true;
                     break;
                 }
@@ -171,7 +173,7 @@ void Widget::startServer()
             return;
         }
 
-        logMessage("Loaded " + QString().setNum(nVortex) + " vortexes in " + QString().setNum(scenes.size()) + " scenes");
+        logMessage(tr("Loaded %1 vortexes in %2 scenes").arg(nVortex).arg(scenes.size()));
     }
 
     /// Read/parse Items.xml
@@ -182,11 +184,11 @@ void Widget::startServer()
         {
             QByteArray data = itemsFile.readAll();
             wearablePositionsMap = parseItemsXml(data);
-            win.logMessage("Loaded "+QString().setNum(wearablePositionsMap.size())+" items");
+            win.logMessage(tr("Loaded %1 items").arg(wearablePositionsMap.size()));
         }
         else
         {
-            win.logMessage("Couln't open Items.xml");
+            win.logMessage(tr("Couln't open Items.xml"));
             stopServer();
             return;
         }
@@ -215,7 +217,7 @@ void Widget::startServer()
                     throw error;
                 }
             }
-            logMessage("Loaded "+QString().setNum(nQuests)+" quests/npcs.");
+            logMessage(tr("Loaded %1 quests/npcs").arg(nQuests));
         }
         catch (QString& e)
         {
@@ -235,7 +237,7 @@ void Widget::startServer()
                 QFile file(MOBSPATH+files[i]);
                 if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
                 {
-                    logStatusMessage("Error reading mob zones");
+                    logStatusMessage(tr("Error reading mob zones"));
                     return;
                 }
                 QByteArray data = file.readAll();
@@ -250,24 +252,24 @@ void Widget::startServer()
                     throw error;
                 }
             }
-            logMessage("Loaded "+QString().setNum(mobs.size())+" mobs in "+QString().setNum(mobzones.size())+" zones");
+            logMessage(tr("Loaded %1 mobs in %2 zones").arg(mobs.size()).arg(mobzones.size()));
         }
         catch (...) {}
     }
 
     if (enableLoginServer)
     {
-//      logStatusMessage("Loading players database ...");
+//      logStatusMessage(tr("Loading players database ..."));
         tcpPlayers = Player::loadPlayers();
     }
 
     // TCP server
     if (enableLoginServer)
     {
-        logStatusMessage("Starting TCP login server on port "+QString().setNum(loginPort)+" ...");
+        logStatusMessage(tr("Starting TCP login server on port %1...").arg(loginPort));
         if (!tcpServer->listen(QHostAddress::Any,loginPort))
         {
-            logStatusMessage("TCP: Unable to start server on port "+QString().setNum(loginPort)+": "+tcpServer->errorString());
+            logStatusMessage(tr("TCP: Unable to start server on port %1 : %2").arg(loginPort).arg(tcpServer->errorString()));
             stopServer();
             return;
         }
@@ -280,10 +282,10 @@ void Widget::startServer()
     // UDP server
     if (enableGameServer)
     {
-        logStatusMessage("Starting UDP game server on port "+QString().setNum(gamePort)+" ...");
+        logStatusMessage(tr("Starting UDP game server on port %1...").arg(gamePort));
         if (!udpSocket->bind(gamePort, QUdpSocket::ReuseAddressHint|QUdpSocket::ShareAddress))
         {
-            logStatusMessage("UDP: Unable to start server on port "+QString().setNum(gamePort));
+            logStatusMessage(tr("UDP: Unable to start server on port %1").arg(gamePort));
             stopServer();
             return;
         }
@@ -299,7 +301,7 @@ void Widget::startServer()
         sync.startSync();
 
     if (enableLoginServer || enableGameServer)
-        logStatusMessage("Server started");
+        logStatusMessage(tr("Server started"));
 
     connect(ui->sendButton, SIGNAL(clicked()), this, SLOT(sendCmdLine()));
     if (enableLoginServer)
@@ -328,7 +330,7 @@ int Widget::getNewNetviewId()
     for (int c = 0; c < udpPlayers.size(); c++) {
         usedids[udpPlayers[c]->pony.netviewId] = true;
     }
-    
+
     i = 0;
     while (usedids[i]) i++;
 
@@ -352,7 +354,7 @@ int Widget::getNewId()
     for (int c = 0; c < udpPlayers.size(); c++) {
         usedids[udpPlayers[c]->pony.id] = true;
     }
-    
+
     i = 0;
     while (usedids[i]) i++;
 
@@ -367,7 +369,7 @@ void Widget::stopServer()
 void Widget::stopServer(bool log)
 {
     if (log)
-        logStatusMessage("Stopping all server operations");
+        logStatusMessage(tr("Stopping all server operations"));
     pingTimer->stop();
     tcpServer->close();
     for (int i=0;i<tcpClientsList.size();i++)
@@ -391,7 +393,7 @@ void Widget::stopServer(bool log)
 Widget::~Widget()
 {
     logInfos=false; // logMessage while we're trying to destroy would crash.
-    //logMessage(QString("UDP: Disconnecting all players"));
+    //logMessage(tr("UDP: Disconnecting all players"));
     for (;udpPlayers.size();)
     {
         Player* player = udpPlayers[0];

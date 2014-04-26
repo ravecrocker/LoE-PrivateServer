@@ -7,6 +7,11 @@
 #include <QStringList>
 #include "dataType.h"
 
+enum NetviewRemoveReasonCodes {
+    NetviewRemoveReasonDefault = 0,
+    NetviewRemoveReasonKill = 1
+};
+
 enum MessageTypes {
     MsgUnconnected = 0,
     MsgUserUnreliable = 1,
@@ -58,6 +63,7 @@ void sendNetviewInstantiate(Player* player);
 void sendNetviewInstantiate(Player* player, Mob* mob);
 void sendNetviewInstantiate(Pony *src, Player* dst);
 void sendNetviewRemove(Player* player, quint16 netviewId);
+void sendNetviewRemove(Player* player, quint16 netviewId, quint8 reasonCode);
 void sendSetStatRPC(Player* player, quint16 netviewId, quint8 statId, float value);
 void sendSetMaxStatRPC(Player* player, quint16 netviewId, quint8 statId, float value);
 void sendSetStatRPC(Player* player, quint8 statId, float value);

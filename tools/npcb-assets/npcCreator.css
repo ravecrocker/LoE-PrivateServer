@@ -1,0 +1,60 @@
+body{
+	background-color: LightBlue;
+}
+
+input[type="text"]{
+	width: 110px;
+	-webkit-transition:width .5s, background-color .3s;
+   	-moz-transition:width .5s, background-color .3s;
+    -o-transition:width .5s, background-color .3s;
+    transition:width .5s, background-color .3s;
+    border-radius: 2px;
+    border: 1px solid gray;
+}
+
+input[type="text"]:focus{
+	width: 200px;
+}
+
+input[type="text"]:hover:not(:focus){
+	width: 120px;
+}
+
+#npcPonyCode:focus{
+	width:510px !important;
+}
+
+#posX:focus, #posY:focus, #posZ:focus, #rotX:focus, #rotY:focus, #rotZ:focus, #rotW:focus{
+	width: 100px !important;
+}
+
+#posX, #posY, #posZ, #rotX, #rotY, #rotZ, #rotW{
+	width: 50px !important;
+}
+
+#posX:hover:not(:focus), #posY:hover:not(:focus), #posZ:hover:not(:focus), #rotX:hover:not(:focus), #rotY:hover:not(:focus), #rotZ:hover:not(:focus), #rotW:hover:not(:focus){
+	width: 60px !important;
+}
+
+h1{
+	margin-bottom: 5px;
+	font-family: aktiv-grotesk-std;
+}
+
+*:not(textarea):not(h1){
+	font-family: Arial;
+}
+
+.textRight{
+	text-align: right;
+}
+
+.slaveIndicator{
+	border-left: 1px solid black;
+	border-bottom: 1px solid black;
+	padding-right: 5px;
+	position: relative;
+	bottom: 6px;
+	margin-left: 3px;
+	z-index: -1;
+}
