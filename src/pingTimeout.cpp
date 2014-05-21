@@ -17,8 +17,7 @@ void Widget::checkPingTimeouts()
             sendMessage(udpPlayers[i], MsgDisconnect, "You were kicked (Ping timeout)");
             Player::disconnectPlayerCleanup(udpPlayers[i]);
         }
-
-        // Send a ping to prevent the client timing out on us
-        sendMessage(udpPlayers[i], MsgPing);
+        else // Send a ping to prevent the client timing out on us
+            sendMessage(udpPlayers[i], MsgPing);
     }
 }
