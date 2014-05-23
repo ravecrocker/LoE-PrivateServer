@@ -386,10 +386,13 @@ void receiveMessage(Player* player)
 
                     // This enables PvP
                     Player* target = Player::findPlayer(win.udpPlayers, targetNetId);
-                    if (target && skillId == 20)
-                        target->pony.takeDamage(75);
-                    else if (target)
-                        target->pony.takeDamage(25);
+                    if (target->pony.netviewId != player->pony.netviewId)
+                    {
+                        if (target && skillId == 20)
+                            target->pony.takeDamage(75);
+                        else if (target)
+                            target->pony.takeDamage(25);
+                    }
                }
             }
 
