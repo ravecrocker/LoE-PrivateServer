@@ -63,4 +63,4 @@ macx {
     LIBS += -framework CoreServices
 }
 
-CONFIG += C++11
+CONFIG += c++11
