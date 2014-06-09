@@ -54,15 +54,15 @@
 					{
 						"Stat": "Health", /*this is required to actually do any damage. Would cause damage done to target be whatever the skill's level damage was*/
 						"Amount": 30,
-						"IsMultiplier": false,
-					},
+						"IsMultiplier": false
+					}
 				],
 				"SplashEffects": [ /*uses same objects as TargetEffects*/
 					{
 						/*anything caught in splash will have 30 damage done to it */
 						"Stat": "Health",
 						"Amount": 30, 
-						"IsMultiplier": false,
+						"IsMultiplier": false
 					}
 				]
 			}
@@ -131,14 +131,14 @@
 				"CastTime": 0.5,
 				"TargetEffects": [
 					{
-						"Stat": "Tension",
+						"Stat": "Tension"
 					},
 					{
 						"Stat": "Health",
 						"Amount": 65,
-						"IsMultiplier": false,
-					},
-				],
+						"IsMultiplier": false
+					}
+				]
 			}
 		]
 	},
@@ -251,10 +251,10 @@
 					{
 						"Stat": "Health",
 						"Amount": 10,
-						"IsMultiplier": false,
+						"IsMultiplier": false
 					},
 					{
-						"Stat": "Tension",
+						"Stat": "Tension"
 					}
 				]
 			}
@@ -286,10 +286,10 @@
 					{
 						"Stat": "Health",
 						"Amount": 23,
-						"IsMultiplier": false,
+						"IsMultiplier": false
 					},
 					{
-						"Stat": "Tension",
+						"Stat": "Tension"
 					}
 				]
 			}
@@ -320,10 +320,10 @@
 					{
 						"Stat": "Health",
 						"Amount": 52,
-						"IsMultiplier": false,
+						"IsMultiplier": false
 					},
 					{
-						"Stat": "Tension",
+						"Stat": "Tension"
 					}
 				]
 			}
@@ -355,8 +355,8 @@
 						"Targets": "Friendly",
 						"Stat": "Health",
 						"Amount": 80,
-						"IsMultiplier": false,
-					},
+						"IsMultiplier": false
+					}
 				]
 			}
 		]
@@ -419,8 +419,8 @@
 						"Stat": "Health",
 						"Amount": 25,
 						"IsMultiplier": false,
-						"IsDPS": false,
-					},
+						"IsDPS": false
+					}
 				]
 			}
 		]
@@ -450,10 +450,10 @@
 					{
 						"Stat": "Health",
 						"Amount": 95,
-						"IsMultiplier": false,
+						"IsMultiplier": false
 					},
 					{
-						"Stat": "Tension",
+						"Stat": "Tension"
 					}
 				]
 			}
@@ -487,14 +487,14 @@
 					{
 						"Stat": "Health",
 						"Amount": 7,
-						"IsMultiplier": false,
+						"IsMultiplier": false
 					},
 					{
 						"Stat": "Speed",
 						"Amount": -0.5,
 						"IsMultiplier": true,
-						"Duration": 1,
-					},
+						"Duration": 1
+					}
 				]
 			}
 		]
@@ -526,15 +526,15 @@
 						"Stat": "Health",
 						"Amount": 13,
 						"IsMultiplier": false,
-						"IsDPS": false,
+						"IsDPS": false
 					},
 					{
 						"Stat": "Health",
 						"Amount": 25,
 						"IsMultiplier": false,
 						"IsDPS": true,
-						"Duration": 5, 
-					},
+						"Duration": 5 
+					}
 				]
 			}
 		]
@@ -561,8 +561,8 @@
 					{
 						"Stat": "Health",
 						"Amount": 55,
-						"IsMultiplier": false,
-					},
+						"IsMultiplier": false
+					}
 				]
 			}
 		]
@@ -591,13 +591,13 @@
 					{
 						"Stat": "Health",
 						"Amount": 120,
-						"IsMultiplier": false,
+						"IsMultiplier": false
 					},
 					{
-						"Stat": "Tension",
+						"Stat": "Tension"
 					}
 				]
 			}
 		]
-	},
+	}
 ]
