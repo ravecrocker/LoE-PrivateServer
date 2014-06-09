@@ -53,7 +53,7 @@ void Widget::startServer()
 {
     ui->retranslateUi(this);
 
-    logStatusMessage(tr("Private server v0.5.3-alpha2"));
+    logStatusMessage(tr("Private server")+" v0.5.3-alpha2");
 #ifdef __APPLE__
     // this fixes the directory in OSX so we can use the relative CONFIGFILEPATH and etc properly
     CFBundleRef mainBundle = CFBundleGetMainBundle();
@@ -92,6 +92,7 @@ void Widget::startServer()
     remoteLoginTimeout = config.value("remoteLoginTimeout", 5000).toInt();
     useRemoteLogin = config.value("useRemoteLogin", false).toBool();
     enableGetlog = config.value("enableGetlog", true).toBool();
+    enablePVP = config.value("enablePVP", true).toBool();
 
     /// Init servers
     tcpClientsList.clear();

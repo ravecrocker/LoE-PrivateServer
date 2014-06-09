@@ -109,6 +109,10 @@ private:
     bool enableGameServer; // Starts a game server
     bool enableMultiplayer; // Sync players' positions
     bool enableGetlog; // Enable GET /log requests
+
+public:
+    // Public config
+    bool enablePVP; // Enables player versus player fights
 };
 
 // Global import from main
