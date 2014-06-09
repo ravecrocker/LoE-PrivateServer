@@ -30,7 +30,9 @@ SOURCES += main.cpp \
     receiveChatMessage.cpp \
     mobsParser.cpp \
     mob.cpp \
-    mobStats.cpp
+    mobStats.cpp \
+    skill.cpp \
+    skillparser.cpp
 
 HEADERS  += widget.h \
     character.h \
@@ -50,7 +52,9 @@ HEADERS  += widget.h \
     mobsParser.h \
     mob.h \
     mobsStats.h \
-    packetloss.h
+    packetloss.h \
+    skill.h \
+    skillparser.h
 
 FORMS    += widget.ui
 

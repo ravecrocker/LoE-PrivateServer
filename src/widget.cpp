@@ -6,6 +6,7 @@
 #include "items.h"
 #include "mobsParser.h"
 #include "mob.h"
+#include "skillparser.h"
 
 #if defined _WIN32 || defined WIN32
 #include <windows.h>
@@ -256,6 +257,26 @@ void Widget::startServer()
             logMessage(tr("Loaded %1 mobs in %2 zones").arg(mobs.size()).arg(mobzones.size()));
         }
         catch (...) {}
+    }
+
+    // Parse skills
+    if (enableGameServer)
+    {
+        try
+        {
+            SkillParser(GAMEDATAPATH+QString("Skills.json"));
+            logMessage(tr("Loaded %1 skills").arg(skills.size()));
+        }
+        catch (const QString& e)
+        {
+            logMessage(tr("Error parsing skills: ")+e);
+            win.stopServer();
+        }
+        catch (const char* e)
+        {
+            logMessage(tr("Error parsing skills: ")+e);
+            win.stopServer();
+        }
     }
 
     if (enableLoginServer)
