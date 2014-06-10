@@ -9,14 +9,14 @@ questName Spud
 questDescr Spud
 
 # Jump table
-gotoIfState 2 5 AstralCharmsCarrotExperiment
-gotoIfState 3 5 ACCE-Accepted
+gotoIfState 2 105 AstralCharmsCarrotExperiment
+gotoIfState 3 105 ACCE-Accepted
 
 # Default state
 say These'll probably be ready to go within the week.
 end
 
-# State 2 quest 5 : Astral Charm sent us talking to Spud
+# State 2 quest 105 : Astral Charm sent us talking to Spud
 label AstralCharmsCarrotExperiment
 say Hey there, $PLAYERNAME. I was just finishing up here. What can I do for ya? 
 answer ACCE-Explain1 Actually, I'm here on behalf of Astral.
@@ -34,12 +34,12 @@ answer ACCE-Accept1 As much as I wish I were kidding, somepony's health might be
 answer ACCE-Accept2 Watchu gonna do about it?
 
 label ACCE-Accept1
-setQuestState 3 5
+setQuestState 3 105
 say I sold half of them to Flan this afternoon, and I've got a buyer on the way here right now to look at the rest! You can tell your little friend that if I ever see her around here, she's gonna be studyin' samples of my soil real close-like, you hear? Now you go and talk to Flan right now at the Paso Fino, while I try and figger out a way to maintain any sort of reputation as a businessman with all'a these nosy ponies what ain't worked a day in their lives tryina' come in here and take what doesn't belong to them all day long.
 end
 
 label ACCE-Accept2
-setQuestState 3 5
+setQuestState 3 105
 say You'd better go talk to Flan. And never come back. 
 end
 
@@ -57,7 +57,7 @@ answer ACCE-Accept3 Astral was running some kind of experiment to make your carr
 answer ACCE-Explain5 No, I just think you shouldn't trust any vegetables that unusually large. Somepony probably magicked all over them or something.
 
 label ACCE-Accept3
-setQuestState 3 5
+setQuestState 3 105
 say Go to the Paso Fino Cafe in Canterlot, and tell Flan not to use the carrots I gave her. Right now. If you really want to do me a favor, take Astral with you and lock her in the freezer when nopony's looking. Maybe that'd buy me enough time to undo the damage without something else goin' wrong. Don't you come back here. 
 end
 
@@ -71,11 +71,11 @@ say Don't lie to me.
 answer ACCE-Accept4 ... Astral did it. She was just trying to help.
 
 label ACCE-Accept4
-setQuestState 3 5
+setQuestState 3 105
 say Next time, just tell me without tryin' to cover her up. I don't like having my intelligence insulted. Now, you run on down to the Paso Fino in Canterlot right now and tell Flan what ya' told me, and I'll take care of the ones I got left. But I don't ever want to see Astral step hoof on this farm again, and I intend to enforce that if necessary. While y'all are out there playing yer little games, I'm over here tryin' to make a living, and now I've got to explain to my other buyer that he's wastin' a trip down here on account o' some mad scientist hogwash that he prolly ain't even gonna believe, and there ain't a thing in the world that I can do 'bout that except keep workin' harder to make up for it, even though I'm the one who's been doin' what I'm supposed to be doin' this whole time. You'd better be movin' along. 
 end
 
-# State 3 quest 5 : We need to go talk to Flan
+# State 3 quest 105 : We need to go talk to Flan
 label ACCE-Accepted
 say Flan is at the Paso Fino Cafe in Canterlot. That's where you're goin'. 
 end
