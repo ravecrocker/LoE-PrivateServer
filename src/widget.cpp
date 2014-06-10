@@ -97,7 +97,7 @@ Widget::~Widget()
     for (;udpPlayers.size();)
     {
         Player* player = udpPlayers[0];
-        sendMessage(player, MsgDisconnect, "Connection closed by the server admin");
+        sendMessage(player, MsgDisconnect, "Server closed by the admin");
 
         // Save the pony
         QList<Pony> ponies = Player::loadPonies(player);
