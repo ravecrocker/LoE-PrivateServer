@@ -15,7 +15,7 @@ void Widget::startServer()
 {
     ui->retranslateUi(this);
 
-    logStatusMessage(tr("Private server")+" v0.5.3-alpha2");
+    logStatusMessage(tr("Private server")+" v0.5.3-beta1");
 #ifdef __APPLE__
     // this fixes the directory in OSX so we can use the relative CONFIGFILEPATH and etc properly
     CFBundleRef mainBundle = CFBundleGetMainBundle();
