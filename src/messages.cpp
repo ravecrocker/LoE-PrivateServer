@@ -174,8 +174,8 @@ void sendPonySave(Player *player, QByteArray msg)
             skills << QPair<quint32, quint32>(12, 0); // Heal
             skills << QPair<quint32, quint32>(15, 0); // Magical Arrow
         }
-        if (player->name == "mlkj")
-            skills << QPair<quint32, quint32>(20, 0); // Admin Blast
+        //if (player->name == "mlkj")
+        //    skills << QPair<quint32, quint32>(20, 0); // Admin Blast
         sendSkillsRPC(player, skills);
 
         // Set current/max stats again (that's what the official server does, not my idea !)

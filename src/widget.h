@@ -25,7 +25,9 @@
 #include "scene.h"
 #include "sync.h"
 #include "quest.h"
+#include "skill.h"
 
+#define GAMEDATAPATH "data/data/"
 #define PLAYERSPATH "data/players/"
 #define NETDATAPATH "data/netData/"
 #define MOBSPATH "data/mobZones/"
@@ -81,6 +83,7 @@ public:
     int syncInterval;
     QList<Mobzone*> mobzones;
     QList<Mob*> mobs;
+    QList<Skill> skills;
 
 private:
     Ui::Widget* ui;
@@ -109,6 +112,10 @@ private:
     bool enableGameServer; // Starts a game server
     bool enableMultiplayer; // Sync players' positions
     bool enableGetlog; // Enable GET /log requests
+
+public:
+    // Public config
+    bool enablePVP; // Enables player versus player fights
 };
 
 // Global import from main

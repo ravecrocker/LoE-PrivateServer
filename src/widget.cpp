@@ -6,6 +6,7 @@
 #include "items.h"
 #include "mobsParser.h"
 #include "mob.h"
+#include "skillparser.h"
 
 #if defined _WIN32 || defined WIN32
 #include <windows.h>
@@ -53,7 +54,7 @@ void Widget::startServer()
 {
     ui->retranslateUi(this);
 
-    logStatusMessage(tr("Private server v0.5.3-alpha2"));
+    logStatusMessage(tr("Private server")+" v0.5.3-alpha2");
 #ifdef __APPLE__
     // this fixes the directory in OSX so we can use the relative CONFIGFILEPATH and etc properly
     CFBundleRef mainBundle = CFBundleGetMainBundle();
@@ -92,6 +93,7 @@ void Widget::startServer()
     remoteLoginTimeout = config.value("remoteLoginTimeout", 5000).toInt();
     useRemoteLogin = config.value("useRemoteLogin", false).toBool();
     enableGetlog = config.value("enableGetlog", true).toBool();
+    enablePVP = config.value("enablePVP", true).toBool();
 
     /// Init servers
     tcpClientsList.clear();
@@ -255,6 +257,26 @@ void Widget::startServer()
             logMessage(tr("Loaded %1 mobs in %2 zones").arg(mobs.size()).arg(mobzones.size()));
         }
         catch (...) {}
+    }
+
+    // Parse skills
+    if (enableGameServer)
+    {
+        try
+        {
+            SkillParser(GAMEDATAPATH+QString("Skills.json"));
+            logMessage(tr("Loaded %1 skills").arg(skills.size()));
+        }
+        catch (const QString& e)
+        {
+            logMessage(tr("Error parsing skills: ")+e);
+            win.stopServer();
+        }
+        catch (const char* e)
+        {
+            logMessage(tr("Error parsing skills: ")+e);
+            win.stopServer();
+        }
     }
 
     if (enableLoginServer)
