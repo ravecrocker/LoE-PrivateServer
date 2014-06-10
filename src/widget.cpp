@@ -265,7 +265,7 @@ void Widget::startServer()
         try
         {
             SkillParser(GAMEDATAPATH+QString("Skills.json"));
-            logMessage(tr("Loaded %1 skills").arg(skills.size()));
+            logMessage(tr("Loaded %1 skills").arg(Skill::skills.size()));
         }
         catch (const QString& e)
         {

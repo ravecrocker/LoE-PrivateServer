@@ -11,11 +11,12 @@
 #include "dataType.h"
 #include "quest.h"
 #include "sceneEntity.h"
+#include "statsComponent.h"
 
 #define MAX_INVENTORY_SIZE 12
 #define MAX_WORN_ITEMS 32
 
-struct Pony : public SceneEntity
+struct Pony : public SceneEntity, public StatsComponent
 {
 public:
     enum type
@@ -29,6 +30,7 @@ public:
 
 public:
     Pony(Player* Owner);
+    virtual ~Pony()=default;
     type getType();
     void saveQuests(); ///< Saves the state of all the quests (NOT thread safe)
     void loadQuests(); ///< Loads the state of all the quests
@@ -39,9 +41,9 @@ public:
     bool hasInventoryItem(quint32 id, quint32 qty=1); ///< Whether of not there are qty of this item in inventory
     void unwearItemAt(quint8 index); ///< Unwear the item at the position index
     bool tryWearItem(quint8 invSlot); ///< Tries to wear this item. Must be in the inventory
-    void takeDamage(unsigned amount); ///< Remove health, update the client, may kill the pony
-    void kill(); ///< Kills the player. He'll respawn
-    void respawn(); ///< Respawn the player at the default spawn of his scene
+    virtual void takeDamage(unsigned amount) override; ///< Remove health, update the client, may kill the pony
+    virtual void kill() override; ///< Kills the player. He'll respawn
+    virtual void respawn() override; ///< Respawn the player at the default spawn of his scene
 
 public:
     QByteArray ponyData;
@@ -55,7 +57,6 @@ public:
     Player* owner;
     bool dead; // If true, the player is in the room, but not instantiated
     float maxHealth;
-    float health;
     float defense;
 };
 

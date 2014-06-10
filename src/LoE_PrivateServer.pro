@@ -54,7 +54,8 @@ HEADERS  += widget.h \
     mobsStats.h \
     packetloss.h \
     skill.h \
-    skillparser.h
+    skillparser.h \
+    statsComponent.h
 
 FORMS    += widget.ui
 

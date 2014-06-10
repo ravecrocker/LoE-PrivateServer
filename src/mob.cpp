@@ -108,6 +108,7 @@ void Mob::kill()
     Scene* scene = findScene(sceneName);
     for (Player* player : scene->players)
     {
+        sendSetStatRPC(player, netviewId, 1, 0);
         sendNetviewRemove(player, netviewId, NetviewRemoveReasonKill);
     }
 

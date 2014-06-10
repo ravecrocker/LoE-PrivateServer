@@ -1,5 +1,5 @@
 #include "skillparser.h"
-#include "widget.h"
+#include "skill.h"
 #include <QFile>
 #include <QJsonArray>
 #include <QJsonValue>
@@ -34,7 +34,8 @@ SkillParser::SkillParser(QString filepath)
             throw "SkillParser: Invalid format (not an object)";
 
         QJsonObject skillObject = skillValue.toObject();
-        win.skills.append(parseSkill(skillObject));
+        Skill skill = parseSkill(skillObject);
+        Skill::skills[skill.id] = skill;
     }
 }
 
@@ -88,9 +89,9 @@ Skill::SkillDamageType SkillParser::parseDamageType(QJsonArray jsonDT)
     return dt;
 }
 
-QVector<SkillUpgrade> SkillParser::parseSkillUpgrades(QJsonArray jsonUpgrades)
+QMap<unsigned,SkillUpgrade> SkillParser::parseSkillUpgrades(QJsonArray jsonUpgrades)
 {
-    QVector<SkillUpgrade> skillUpgrades;
+    QMap<unsigned,SkillUpgrade> skillUpgrades;
     for (QJsonValue jsonUpgrade : jsonUpgrades)
     {
         QJsonObject upgradeObject = jsonUpgrade.toObject();
@@ -131,7 +132,7 @@ QVector<SkillUpgrade> SkillParser::parseSkillUpgrades(QJsonArray jsonUpgrades)
             upgrade.targetEffects = parseTargetEffects(upgradeObject["TargetEffects"].toArray());
         if (upgradeObject.contains("SplashEffects"))
             upgrade.splashEffects = parseTargetEffects(upgradeObject["SplashEffects"].toArray());
-        skillUpgrades.append(upgrade);
+        skillUpgrades[upgrade.id] = upgrade;
     }
     return skillUpgrades;
 }
@@ -170,10 +171,12 @@ QVector<SkillTargetEffect> SkillParser::parseTargetEffects(QJsonArray jsonEffect
             effect.isMultiplier = effectObject["IsMultiplier"].toBool();
         if (effectObject.contains("Chance"))
             effect.chance = effectObject["Chance"].toDouble();
-        if (effectObject.contains("IsDSP"))
-            effect.isDSP = effectObject["IsDSP"].toBool();
+        if (effectObject.contains("IsDPS"))
+            effect.isDPS = effectObject["IsDPS"].toBool();
         if (effectObject.contains("SkillId"))
             effect.skillId = effectObject["SkillId"].toDouble();
+        if (effectObject.contains("Duration"))
+            effect.duration = effectObject["Duration"].toDouble();
         effects.append(effect);
     }
     return effects;

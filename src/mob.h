@@ -2,11 +2,12 @@
 #define MOB_H
 
 #include "sceneEntity.h"
+#include "statsComponent.h"
 #include <QString>
 
 class Mobzone;
 
-class Mob : public SceneEntity
+class Mob : public SceneEntity, public StatsComponent
 {
 public:
     enum MobType : unsigned
@@ -24,16 +25,15 @@ public:
 public:
     explicit Mob(Mobzone* zone);
     void setType(QString ModelName); ///< Don't change the SceneEntity model name directly
-    void kill(); ///< Kills the mob. He'll respawn
-    void respawn(); ///< Resets the mob
-    void takeDamage(unsigned amount); ///< Remove health, update the client, may kill the mob
+    virtual void kill() override; ///< Kills the mob. He'll respawn
+    virtual void respawn() override; ///< Resets the mob
+    virtual void takeDamage(unsigned amount) override; ///< Remove health, update the client, may kill the mob
 
 private:
     static UVector getRandomPos(Mobzone* zone); ///< Returns a random position in this zone
 
 public:
     MobType type;
-    float health;
 
 private:
     Mobzone* spawnZone;
