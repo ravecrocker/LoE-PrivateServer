@@ -215,7 +215,7 @@ void Widget::sendCmdLine()
     if (str.startsWith("disconnect"))
     {
         logMessage(QObject::tr("UDP: Disconnecting"));
-        sendMessage(cmdPeer,MsgDisconnect, "Connection closed by the server admin");
+        sendMessage(cmdPeer,MsgDisconnect, "You were kicked by the server admin");
         Player::disconnectPlayerCleanup(cmdPeer); // Save game and remove the player
     }
     else if (str.startsWith("load"))
