@@ -158,7 +158,7 @@
     <message>
         <location filename="../src/messages.cpp" line="93"/>
         <source>UDP: Savegame requested too soon by %1</source>
-        <translation>UDP: Слишком быстрый запрос на сохранение игры для %1</translation>
+        <translation>UDP: Преждевременный запрос на сохранение игры для %1</translation>
     </message>
     <message>
         <location filename="../src/messages.cpp" line="136"/>
@@ -298,7 +298,7 @@
     <message>
         <location filename="../src/quest.cpp" line="168"/>
         <source>Quest::doCommand called with no owner</source>
-        <translation>Quest::Команда doCommand вызвана без родителя</translation>
+        <translation>Quest::Команда doCommand вызвана без родительского объекта</translation>
     </message>
     <message>
         <location filename="../src/quest.cpp" line="182"/>
@@ -497,7 +497,7 @@
     <message>
         <location filename="../src/receiveMessage.cpp" line="65"/>
         <source>UDP: Kicking %1 : Too many packet dups</source>
-        <translation>UDP: Отключаем %1 : Слишком много дубликатов пакетов</translation>
+        <translation>UDP: Разрываем соединение с %1 : Слишком много дубликатов пакетов</translation>
     </message>
     <message>
         <location filename="../src/receiveMessage.cpp" line="91"/>
@@ -624,7 +624,7 @@
     <message>
         <location filename="../src/serverCommands.cpp" line="61"/>
         <source>UDP: setPeer takes a pony id as argument</source>
-        <translation>UDP: setPeer требует иденификатор пони в качестве параметра</translation>
+        <translation>UDP: setPeer требует идентификатор пони в качестве параметра</translation>
     </message>
     <message>
         <location filename="../src/serverCommands.cpp" line="73"/>
@@ -655,7 +655,7 @@
         <location filename="../src/serverCommands.cpp" line="157"/>
         <location filename="../src/serverCommands.cpp" line="168"/>
         <source>Error: Usage is tele ponyIdToMove destinationPonyId</source>
-        <translation>Ошибка: Корректный синтакс - tele ponyIdToMove destinationPonyId</translation>
+        <translation>Ошибка: Корректный синтаксис - tele ponyIdToMove destinationPonyId</translation>
     </message>
     <message>
         <location filename="../src/serverCommands.cpp" line="182"/>
@@ -712,12 +712,12 @@
     <message>
         <location filename="../src/skill.cpp" line="33"/>
         <source>Skill::applySkill: No skill with ID %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Навык с идентификатором %1 не обнаружен</translation>
     </message>
     <message>
         <location filename="../src/skill.cpp" line="39"/>
         <source>Skill::applySkill: Skill with ID %1 has no upgrade %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Навык с идентификатором %1 не имеет улучшения %2</translation>
     </message>
 </context>
 <context>
@@ -738,13 +738,9 @@
         <translation>Отправить</translation>
     </message>
     <message>
-        <source>Private server v0.5.3-alpha2</source>
-        <translation type="obsolete">Личный сервер [Версия 0.5.3-alpha2]</translation>
-    </message>
-    <message>
         <location filename="../src/widgetStartStopServer.cpp" line="18"/>
         <source>Private server</source>
-        <translation type="unfinished"></translation>
+        <translation>Личный сервер</translation>
     </message>
     <message>
         <location filename="../src/widgetStartStopServer.cpp" line="37"/>
@@ -784,13 +780,13 @@
     <message>
         <location filename="../src/widgetStartStopServer.cpp" line="229"/>
         <source>Loaded %1 skills</source>
-        <translation type="unfinished"></translation>
+        <translation>Загружено %1 навык(а,ов)</translation>
     </message>
     <message>
         <location filename="../src/widgetStartStopServer.cpp" line="233"/>
         <location filename="../src/widgetStartStopServer.cpp" line="238"/>
         <source>Error parsing skills: </source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка при обработке навыков:</translation>
     </message>
     <message>
         <location filename="../src/widgetStartStopServer.cpp" line="307"/>
