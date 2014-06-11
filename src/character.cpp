@@ -22,12 +22,13 @@ SceneEntity::SceneEntity()
 }
 
 Pony::Pony(Player *Owner)
-    : SceneEntity(), owner(Owner), dead{false},
-      maxHealth{100}, health{100}, defense{2.0}
+    : SceneEntity(), StatsComponent(), owner(Owner), dead{false},
+      maxHealth{100}, defense{2.0}
 {
     modelName = "PlayerBase";
     name = "";
     wornSlots = 0;
+    health = maxHealth;
 }
 
 Pony::type Pony::getType()

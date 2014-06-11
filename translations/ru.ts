@@ -1,69 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="ru_RU" sourcelanguage="ru_RU">
+<TS version="2.0" language="ru_RU" sourcelanguage="ru_RU">
 <context>
     <name>Player</name>
     <message>
-        <location filename="../src/character.cpp" line="129"/>
+        <location filename="../src/character.cpp" line="130"/>
         <source>Error saving players database</source>
         <translation>Ошибка при сохранении базы данных с игроками</translation>
     </message>
     <message>
-        <location filename="../src/character.cpp" line="151"/>
+        <location filename="../src/character.cpp" line="152"/>
         <source>Players database not found, creating it</source>
         <translation>База данных с игроками не существует, создаём новую</translation>
     </message>
     <message>
-        <location filename="../src/character.cpp" line="158"/>
-        <location filename="../src/character.cpp" line="173"/>
+        <location filename="../src/character.cpp" line="159"/>
+        <location filename="../src/character.cpp" line="174"/>
         <source>Error reading players database</source>
         <translation>Ошибка при чтении базы данных с игроками</translation>
     </message>
     <message>
-        <location filename="../src/character.cpp" line="165"/>
+        <location filename="../src/character.cpp" line="166"/>
         <source>Player database is empty. Continuing happily</source>
         <translation>База данных с игроками пуста. Улыбаемся и машем</translation>
     </message>
     <message>
-        <location filename="../src/character.cpp" line="182"/>
+        <location filename="../src/character.cpp" line="183"/>
         <source>Got %1 players in database</source>
         <translation>Количество игроков в базе данных: %1</translation>
     </message>
     <message>
-        <location filename="../src/character.cpp" line="224"/>
+        <location filename="../src/character.cpp" line="225"/>
         <source>UDP: Saving ponies for %1 (%2)</source>
         <translation>UDP: Сохраняем пони для %1 (%2)</translation>
     </message>
     <message>
-        <location filename="../src/character.cpp" line="333"/>
+        <location filename="../src/character.cpp" line="334"/>
         <source>UDP: Can&apos;t find scene for player cleanup</source>
         <translation>UDP: Невозможно найти сцену для удаления данных, оставшихся от игрока</translation>
     </message>
     <message>
-        <location filename="../src/character.cpp" line="354"/>
+        <location filename="../src/character.cpp" line="355"/>
         <source>udpResendLast failed to lock.</source>
         <translation>Не удалось выставить блокировку для udpResendLast.</translation>
     </message>
     <message>
-        <location filename="../src/character.cpp" line="361"/>
+        <location filename="../src/character.cpp" line="362"/>
         <source>udpResendLast: Empty message</source>
         <translation>udpResendLast: Пустое сообщение</translation>
     </message>
     <message>
-        <location filename="../src/character.cpp" line="389"/>
-        <location filename="../src/character.cpp" line="449"/>
+        <location filename="../src/character.cpp" line="390"/>
+        <location filename="../src/character.cpp" line="450"/>
         <source>UDP: Error sending last message</source>
         <translation>UDP: Ошибка при отправке последнего сообщения</translation>
     </message>
     <message>
-        <location filename="../src/character.cpp" line="390"/>
-        <location filename="../src/character.cpp" line="450"/>
+        <location filename="../src/character.cpp" line="391"/>
+        <location filename="../src/character.cpp" line="451"/>
         <source>Restarting UDP server ...</source>
         <translation>Перезапускаем UDP сервер ...</translation>
     </message>
     <message>
-        <location filename="../src/character.cpp" line="394"/>
-        <location filename="../src/character.cpp" line="454"/>
+        <location filename="../src/character.cpp" line="395"/>
+        <location filename="../src/character.cpp" line="455"/>
         <source>UDP: Unable to start server on port %1</source>
         <translation>UDP: Невозможно запустить сервер на порту %1</translation>
     </message>
@@ -71,67 +71,67 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/character.cpp" line="472"/>
+        <location filename="../src/character.cpp" line="473"/>
         <source>UDP: Saving quests for %1 (%2)</source>
         <translation>UDP: Сохраняем задания для %1 (%2)</translation>
     </message>
     <message>
-        <location filename="../src/character.cpp" line="482"/>
+        <location filename="../src/character.cpp" line="483"/>
         <source>Error saving quests for %1 (%2)</source>
         <translation>Ошибка при сохранении заданий для %1 (%2)</translation>
     </message>
     <message>
-        <location filename="../src/character.cpp" line="524"/>
+        <location filename="../src/character.cpp" line="525"/>
         <source>UDP: Loading quests for %1 (%2)</source>
         <translation>UDP: Загружаем задания для %1 (%2)</translation>
     </message>
     <message>
-        <location filename="../src/character.cpp" line="534"/>
+        <location filename="../src/character.cpp" line="535"/>
         <source>Error loading quests for %1 (%2)</source>
         <translation>Ошибка при загрузке заданий для %1 (%2)</translation>
     </message>
     <message>
-        <location filename="../src/character.cpp" line="576"/>
+        <location filename="../src/character.cpp" line="577"/>
         <source>UDP: Saving inventory for %1 (%2)</source>
         <translation>UDP: Сохраняем инвентарь для %1 (%2)</translation>
     </message>
     <message>
-        <location filename="../src/character.cpp" line="586"/>
+        <location filename="../src/character.cpp" line="587"/>
         <source>Error saving inventory for %1 (%2)</source>
         <translation>Ошибка при сохранении инвентаря для %1 (%2)</translation>
     </message>
     <message>
-        <location filename="../src/character.cpp" line="634"/>
+        <location filename="../src/character.cpp" line="635"/>
         <source>UDP: Loading inventory for %1 (%2)</source>
         <translation>UDP: Загружаем инвентарь для %1 (%2)</translation>
     </message>
     <message>
-        <location filename="../src/character.cpp" line="644"/>
+        <location filename="../src/character.cpp" line="645"/>
         <source>Error loading inventory for %1 (%2)</source>
         <translation>Ошибка при загрузке инвентаря для %1 (%2)</translation>
     </message>
     <message>
-        <location filename="../src/character.cpp" line="786"/>
+        <location filename="../src/character.cpp" line="787"/>
         <source>Couldn&apos;t unwear item, index %1 not found</source>
         <translation>Невозможно снять предмет, индекс %1 не существует</translation>
     </message>
     <message>
-        <location filename="../src/character.cpp" line="793"/>
+        <location filename="../src/character.cpp" line="794"/>
         <source>UDP: Can&apos;t find the scene for unwearItem RPC, aborting</source>
         <translation>UDP: Невозможно найти сцену для удалённо вызываемой процедуры unwearItem, отменяем</translation>
     </message>
     <message>
-        <location filename="../src/character.cpp" line="816"/>
+        <location filename="../src/character.cpp" line="817"/>
         <source>Can&apos;t wear item : slots occupied</source>
         <translation>Невозможно надеть предмет : все ячейки заняты</translation>
     </message>
     <message>
-        <location filename="../src/character.cpp" line="830"/>
+        <location filename="../src/character.cpp" line="831"/>
         <source>Index not found</source>
         <translation>Индекс не найден</translation>
     </message>
     <message>
-        <location filename="../src/character.cpp" line="844"/>
+        <location filename="../src/character.cpp" line="845"/>
         <source>UDP: Can&apos;t find the scene for wearItem RPC, aborting</source>
         <translation>UDP: Невозможно найти сцену для удалённо вызываемой процедуры wearItem, отменяем</translation>
     </message>
@@ -166,38 +166,38 @@
         <translation>UDP: Сохранение для %1 уже отправлено, отправляем снова</translation>
     </message>
     <message>
-        <location filename="../src/messages.cpp" line="210"/>
+        <location filename="../src/messages.cpp" line="211"/>
         <source>UDP: Error sending pony save : netviewId %1 not found</source>
         <translation>UDP: Ошибка при отправке сохранённого пони : netviewId %1 не найден</translation>
     </message>
     <message>
-        <location filename="../src/messages.cpp" line="251"/>
+        <location filename="../src/messages.cpp" line="252"/>
         <source>Instantiate at %1 %2 %3</source>
         <translation>Инициализируемся по координатам %1 %2 %3</translation>
     </message>
     <message>
-        <location filename="../src/messages.cpp" line="280"/>
+        <location filename="../src/messages.cpp" line="281"/>
         <source>UDP: Removing netview %1 to %2</source>
         <translation>UDP: Удаляем netview с %1 по %2</translation>
     </message>
     <message>
-        <location filename="../src/messages.cpp" line="290"/>
+        <location filename="../src/messages.cpp" line="291"/>
         <source>UDP: Removing netview %1 to %2, reason code %3</source>
         <translation>UDP: Удаляем netview с %1 по %2, код ошибки - %3</translation>
     </message>
     <message>
-        <location filename="../src/messages.cpp" line="490"/>
+        <location filename="../src/messages.cpp" line="491"/>
         <source>UDP: Loading scene &quot;%1&quot; on %2</source>
         <translation>UDP: Загрузка сцены &quot;%1&quot; на %2</translation>
     </message>
     <message>
-        <location filename="../src/messages.cpp" line="494"/>
+        <location filename="../src/messages.cpp" line="495"/>
         <source>UDP: Scene not in vortex DB. Aborting scene load.</source>
         <translation>UDP: Сцена не найдена в базе данных точек перехода. Отменяем загрузку сцены.</translation>
     </message>
     <message>
-        <location filename="../src/messages.cpp" line="502"/>
-        <location filename="../src/messages.cpp" line="540"/>
+        <location filename="../src/messages.cpp" line="503"/>
+        <location filename="../src/messages.cpp" line="541"/>
         <source>UDP: Can&apos;t find the scene, aborting</source>
         <translation>UDP: Невозможно найти сцену, отменяем</translation>
     </message>
@@ -490,107 +490,107 @@
         <translation>UDP: Невозможно найти сцену для сообщения в чате, отменяем</translation>
     </message>
     <message>
-        <location filename="../src/receiveMessage.cpp" line="47"/>
+        <location filename="../src/receiveMessage.cpp" line="48"/>
         <source>UDP: Processing retransmission (-%1) from %2</source>
         <translation>UDP: Провожу ретрансляцию (-%1) от %2</translation>
     </message>
     <message>
-        <location filename="../src/receiveMessage.cpp" line="64"/>
+        <location filename="../src/receiveMessage.cpp" line="65"/>
         <source>UDP: Kicking %1 : Too many packet dups</source>
         <translation>UDP: Отключаем %1 : Слишком много дубликатов пакетов</translation>
     </message>
     <message>
-        <location filename="../src/receiveMessage.cpp" line="90"/>
+        <location filename="../src/receiveMessage.cpp" line="91"/>
         <source>UDP: Unordered message (+%1) received from %2</source>
         <translation>UDP: Получено незапрашиваемое сообщение (+%1) от %2</translation>
     </message>
     <message>
-        <location filename="../src/receiveMessage.cpp" line="145"/>
+        <location filename="../src/receiveMessage.cpp" line="146"/>
         <source>UDP: Received duplicate connect ACK</source>
         <translation>UDP: Получен дубль запроса на соединение (ACK)</translation>
     </message>
     <message>
-        <location filename="../src/receiveMessage.cpp" line="148"/>
+        <location filename="../src/receiveMessage.cpp" line="149"/>
         <source>UDP: Connected to client</source>
         <translation>UDP: Подключаемся к клиенту</translation>
     </message>
     <message>
-        <location filename="../src/receiveMessage.cpp" line="163"/>
+        <location filename="../src/receiveMessage.cpp" line="164"/>
         <source>UDP: Set id request : %1/%2</source>
         <translation>UDP: Установлен идентификатор запроса : %1/%2</translation>
     </message>
     <message>
-        <location filename="../src/receiveMessage.cpp" line="182"/>
+        <location filename="../src/receiveMessage.cpp" line="183"/>
         <source>UDP: Client disconnected</source>
         <translation>UDP: Клиент отключился</translation>
     </message>
     <message>
-        <location filename="../src/receiveMessage.cpp" line="210"/>
+        <location filename="../src/receiveMessage.cpp" line="211"/>
         <source>UDP: Rejecting game start request from %1 : player already in game</source>
         <translation>UDP: Запрос на запуск игры для %1 отклонён : пользователь уже в игре</translation>
     </message>
     <message>
-        <location filename="../src/receiveMessage.cpp" line="239"/>
+        <location filename="../src/receiveMessage.cpp" line="240"/>
         <source>UDP: Received invalid id in &apos;edit ponies&apos; request. Disconnecting user.</source>
         <translation>UDP: Получен некорректный идентификатор в запросе &apos;редактора пони&apos;. Отсоединяем пользователя.</translation>
     </message>
     <message>
-        <location filename="../src/receiveMessage.cpp" line="279"/>
+        <location filename="../src/receiveMessage.cpp" line="280"/>
         <source>Can&apos;t find vortex %1 on map %2</source>
         <translation>Невозможно найти точку перехода %1 на карте %2</translation>
     </message>
     <message>
-        <location filename="../src/receiveMessage.cpp" line="286"/>
+        <location filename="../src/receiveMessage.cpp" line="287"/>
         <source>UDP: Deleting a character</source>
         <translation>UDP: Удаляем персонажа</translation>
     </message>
     <message>
-        <location filename="../src/receiveMessage.cpp" line="300"/>
+        <location filename="../src/receiveMessage.cpp" line="301"/>
         <source>UDP: Can&apos;t find the scene for animation message, aborting</source>
         <translation>UDP: Невозможно найти сцену для отправки анимации (animation), отменяем</translation>
     </message>
     <message>
-        <location filename="../src/receiveMessage.cpp" line="358"/>
+        <location filename="../src/receiveMessage.cpp" line="363"/>
         <source>UDP: Teleport target not found</source>
         <translation>UDP: Цель для перемещения не найдена</translation>
     </message>
     <message>
-        <location filename="../src/receiveMessage.cpp" line="400"/>
+        <location filename="../src/receiveMessage.cpp" line="396"/>
         <source>UDP: Can&apos;t find the scene for skill message, aborting</source>
         <translation>UDP: Невозможно найти сцену для отправки навыка (skill), отменяем</translation>
     </message>
     <message>
-        <location filename="../src/receiveMessage.cpp" line="413"/>
+        <location filename="../src/receiveMessage.cpp" line="409"/>
         <source>UDP: Can&apos;t find the scene for wear message, aborting</source>
         <translation>UDP: Невозможно найти сцену для отправки одеяния (wear), отменяем</translation>
     </message>
     <message>
-        <location filename="../src/receiveMessage.cpp" line="424"/>
+        <location filename="../src/receiveMessage.cpp" line="420"/>
         <source>Error trying to wear item</source>
         <translation>Ошибка при попытке надеть предмет</translation>
     </message>
     <message>
-        <location filename="../src/receiveMessage.cpp" line="444"/>
+        <location filename="../src/receiveMessage.cpp" line="440"/>
         <source>UDP: Can&apos;t find a shop on scene %1 for BeginShop</source>
         <translation>UDP: Невозможно найти магазин для сцены %1 в команде BeginShop</translation>
     </message>
     <message>
-        <location filename="../src/receiveMessage.cpp" line="489"/>
+        <location filename="../src/receiveMessage.cpp" line="485"/>
         <source>UDP: Can&apos;t find netviewId %1 to send worn items</source>
         <translation>UDP: Невозможно найти netviewId %1 для отправки списка надетых предметов</translation>
     </message>
     <message>
-        <location filename="../src/receiveMessage.cpp" line="500"/>
+        <location filename="../src/receiveMessage.cpp" line="496"/>
         <source>UDP: Can&apos;t find netviewId %1 to unwear item</source>
         <translation>UDP: Невозможно найти netviewId %1 чтобы снять предмет</translation>
     </message>
     <message>
-        <location filename="../src/receiveMessage.cpp" line="534"/>
+        <location filename="../src/receiveMessage.cpp" line="530"/>
         <source>UDP: Unknown message received : %1</source>
         <translation>UDP: Получено нераспознанное сообщение : %1</translation>
     </message>
     <message>
-        <location filename="../src/receiveMessage.cpp" line="548"/>
+        <location filename="../src/receiveMessage.cpp" line="544"/>
         <source>Unknown data received (UDP) (hex) : </source>
         <translation>Получены нераспознанные данные (UDP) (hex) : </translation>
     </message>
@@ -709,6 +709,16 @@
         <source>UDP: Sending setPlayerId request</source>
         <translation>UDP: Отправляю запрос setPlayerId</translation>
     </message>
+    <message>
+        <location filename="../src/skill.cpp" line="33"/>
+        <source>Skill::applySkill: No skill with ID %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/skill.cpp" line="39"/>
+        <source>Skill::applySkill: Skill with ID %1 has no upgrade %2</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Widget</name>
@@ -728,47 +738,62 @@
         <translation>Отправить</translation>
     </message>
     <message>
-        <location filename="../src/widget.cpp" line="56"/>
         <source>Private server v0.5.3-alpha2</source>
-        <translation>Личный сервер [Версия 0.5.3-alpha2]</translation>
+        <translation type="obsolete">Личный сервер [Версия 0.5.3-alpha2]</translation>
     </message>
     <message>
-        <location filename="../src/widget.cpp" line="75"/>
+        <location filename="../src/widgetStartStopServer.cpp" line="18"/>
+        <source>Private server</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/widgetStartStopServer.cpp" line="37"/>
         <source>Reading config file ...</source>
         <translation>Чтение файла конфигурации...</translation>
     </message>
     <message>
-        <location filename="../src/widget.cpp" line="125"/>
+        <location filename="../src/widgetStartStopServer.cpp" line="88"/>
         <source>Error reading vortex DB</source>
         <translation>Ошибка при чтении базы точек перехода</translation>
     </message>
     <message>
-        <location filename="../src/widget.cpp" line="143"/>
+        <location filename="../src/widgetStartStopServer.cpp" line="106"/>
         <source>Vortex DB is corrupted. Incorrect line (%1 elems), file %2</source>
         <translation>База точек перехода повреждена. Некорректная строка (%1 элементов), файл %2</translation>
     </message>
     <message>
-        <location filename="../src/widget.cpp" line="157"/>
+        <location filename="../src/widgetStartStopServer.cpp" line="120"/>
         <source>Vortex DB is corrupted. Conversion failed, file %1</source>
         <translation>База точек перехода повреждена. Ошибка преобразования, файл %1</translation>
     </message>
     <message>
-        <location filename="../src/widget.cpp" line="176"/>
+        <location filename="../src/widgetStartStopServer.cpp" line="139"/>
         <source>Loaded %1 vortexes in %2 scenes</source>
         <translation>Загружено %1 точек перехода в %2 сценах</translation>
     </message>
     <message>
-        <location filename="../src/widget.cpp" line="187"/>
+        <location filename="../src/widgetStartStopServer.cpp" line="150"/>
         <source>Loaded %1 items</source>
         <translation>Загружено %1 предметов</translation>
     </message>
     <message>
-        <location filename="../src/widget.cpp" line="191"/>
+        <location filename="../src/widgetStartStopServer.cpp" line="154"/>
         <source>Couln&apos;t open Items.xml</source>
         <translation>Невозможно открыть Items.xml</translation>
     </message>
     <message>
-        <location filename="../src/widget.cpp" line="372"/>
+        <location filename="../src/widgetStartStopServer.cpp" line="229"/>
+        <source>Loaded %1 skills</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/widgetStartStopServer.cpp" line="233"/>
+        <location filename="../src/widgetStartStopServer.cpp" line="238"/>
+        <source>Error parsing skills: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/widgetStartStopServer.cpp" line="307"/>
         <source>Stopping all server operations</source>
         <translation>Сервер прекратил работу</translation>
     </message>
@@ -779,7 +804,7 @@
     </message>
     <message>
         <location filename="../src/serverCommands.cpp" line="293"/>
-        <location filename="../src/widget.cpp" line="220"/>
+        <location filename="../src/widgetStartStopServer.cpp" line="183"/>
         <source>Loaded %1 quests/npcs</source>
         <translation>Загружено %1 заданий/неигровых персонажей</translation>
     </message>
@@ -887,37 +912,37 @@
         <translation> : ячейка </translation>
     </message>
     <message>
-        <location filename="../src/widget.cpp" line="240"/>
+        <location filename="../src/widgetStartStopServer.cpp" line="203"/>
         <source>Error reading mob zones</source>
         <translation>Ошибка при чтении зон для монстров</translation>
     </message>
     <message>
-        <location filename="../src/widget.cpp" line="255"/>
+        <location filename="../src/widgetStartStopServer.cpp" line="218"/>
         <source>Loaded %1 mobs in %2 zones</source>
         <translation>Загружено %1 монстр(а,ов) в %2 зон(е,ах)</translation>
     </message>
     <message>
-        <location filename="../src/widget.cpp" line="269"/>
+        <location filename="../src/widgetStartStopServer.cpp" line="252"/>
         <source>Starting TCP login server on port %1...</source>
         <translation>Запускаем сервер учёток и вешаем его на TCP порт %1...</translation>
     </message>
     <message>
-        <location filename="../src/widget.cpp" line="272"/>
+        <location filename="../src/widgetStartStopServer.cpp" line="255"/>
         <source>TCP: Unable to start server on port %1 : %2</source>
         <translation>TCP: Не удалось запустить сервер для порта %1 : %2</translation>
     </message>
     <message>
-        <location filename="../src/widget.cpp" line="285"/>
+        <location filename="../src/widgetStartStopServer.cpp" line="268"/>
         <source>Starting UDP game server on port %1...</source>
         <translation>Запускаем игровой сервер и вешаем его на UDP порт %1...</translation>
     </message>
     <message>
-        <location filename="../src/widget.cpp" line="288"/>
+        <location filename="../src/widgetStartStopServer.cpp" line="271"/>
         <source>UDP: Unable to start server on port %1</source>
         <translation>UDP: Не удалось запустить сервер для порта %1</translation>
     </message>
     <message>
-        <location filename="../src/widget.cpp" line="304"/>
+        <location filename="../src/widgetStartStopServer.cpp" line="287"/>
         <source>Server started</source>
         <translation>Сервер запущен</translation>
     </message>

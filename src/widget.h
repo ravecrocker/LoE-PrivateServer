@@ -25,7 +25,6 @@
 #include "scene.h"
 #include "sync.h"
 #include "quest.h"
-#include "skill.h"
 
 #define GAMEDATAPATH "data/data/"
 #define PLAYERSPATH "data/players/"
@@ -83,7 +82,6 @@ public:
     int syncInterval;
     QList<Mobzone*> mobzones;
     QList<Mob*> mobs;
-    QList<Skill> skills;
 
 private:
     Ui::Widget* ui;

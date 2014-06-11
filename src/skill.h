@@ -1,7 +1,10 @@
 #ifndef SKILL_H
 #define SKILL_H
 
+#include <QMap>
 #include <QVector>
+
+class StatsComponent;
 
 enum class SkillTargetStat
 {
@@ -28,8 +31,9 @@ public:
     float amount;
     bool isMultiplier; ///< is amount a multiplier or a set value. how to do percent based changes to attributes
     float chance; ///< [0,1], chance of the effect happenning (default:1)
-    bool isDSP; ///< Is the skill in damage per second or fixed damage
+    bool isDPS; ///< Is the skill in damage per second or fixed damage
     int skillId; ///< Id of a skill to affect. -1 means none.
+    float duration;
 };
 
 struct SkillUpgrade
@@ -89,13 +93,25 @@ public:
         Magical
     };
 
+public:
+    // Does not handle "undocumented" effects, like teleport actually teleporting
+    // If splashOnly, only the splash effects will be applied, not the target effects
+    // Only handles changes to the Health stat at the moment
+    static void applySkill(unsigned skillId, StatsComponent& target, SkillTarget targetType,
+                           unsigned upgradeId=0, bool splashOnly=false);
+
+private:
+    static void applySkillEffect(SkillTargetEffect& effect, StatsComponent& target, SkillTarget targetType);
 
 public:
     unsigned id;
     unsigned maxLevel;
     SkillRace races;
     SkillDamageType damageType;
-    QVector<SkillUpgrade> upgrades;
+    QMap<unsigned,SkillUpgrade> upgrades; // Maps upgrade ids to upgrades
+
+public:
+    static QMap<unsigned, Skill> skills; // Maps skill ids to skills
 };
 
 #endif // SKILL_H

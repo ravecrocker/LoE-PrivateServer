@@ -157,6 +157,7 @@ void sendPonySave(Player *player, QByteArray msg)
         // Send skills
         QList<QPair<quint32, quint32> > skills;
         skills << QPair<quint32, quint32>(10, 0); // Ground pound (all races)
+        //skills << QPair<quint32, quint32>(17, 0); // Fire Breath ! (dragons)
         if (player->pony.getType() == Pony::EarthPony)
         {
             skills << QPair<quint32, quint32>(5, 0); // Seismic buck

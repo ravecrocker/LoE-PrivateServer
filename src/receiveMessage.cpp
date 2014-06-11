@@ -8,6 +8,7 @@
 #include "receiveChatMessage.h"
 #include "mob.h"
 #include "packetloss.h"
+#include "skill.h"
 
 #define DEBUG_LOG false
 
@@ -318,6 +319,10 @@ void receiveMessage(Player* player)
         }
         else if ((unsigned char)msg[0]==MsgUserReliableOrdered11 && (unsigned char)msg[7]==0x3D) // Skill
         {
+#if DEBUG_LOG
+            win.logMessage("UDP: Broadcasting skill "+QString().setNum(dataToUint32(msg.mid(8))));
+#endif
+
             QByteArray reply;
             uint32_t skillId = dataToUint32(msg.mid(8));
             if (skillId == 2) // Teleport is a special case
@@ -358,45 +363,31 @@ void receiveMessage(Player* player)
                         win.logMessage(QObject::tr("UDP: Teleport target not found"));
                 }
             }
-            else
+            else // Apply skill
+            {
                 reply =  msg.mid(5, msgSize - 5);
 
-#if DEBUG_LOG
-            win.logMessage("UDP: Broadcasting skill "+QString().setNum(dataToUint32(msg.mid(8))));
-#endif
-
-            // Mob health test
-            if (skillId==5 || skillId==10 || skillId==11 || skillId==14 || skillId==15 || skillId==20)
-            {
                 if (msgSize == 18)
                 {
-                    // Targeted attack. First try to find the target in the mobs
+                    // Targeted skill. First try to find the target in the mobs
                     quint16 targetNetId = dataToUint16(msg.mid(16));
                     for (Mob* mob : win.mobs)
                     {
                         if (mob->netviewId == targetNetId)
                         {
-                            if (skillId == 20)
-                                mob->takeDamage(75);
-                            else
-                                mob->takeDamage(25);
+                            Skill::applySkill(skillId, *mob, SkillTarget::Enemy);
                             break;
                         }
                     }
 
-                    // This enables PvP
-                    if (win.enablePVP)
-                    {
-                        Player* target = Player::findPlayer(win.udpPlayers, targetNetId);
-                        if (target->pony.netviewId != player->pony.netviewId)
-                        {
-                            if (target && skillId == 20)
-                                target->pony.takeDamage(75);
-                            else if (target)
-                                target->pony.takeDamage(25);
-                        }
-                    }
-               }
+                    Player* target = Player::findPlayer(win.udpPlayers, targetNetId);
+                    if (target->pony.netviewId == player->pony.netviewId)
+                        Skill::applySkill(skillId, target->pony, SkillTarget::Self);
+                    else if (win.enablePVP) // During PVP, all friendly ponies are now ennemies !
+                        Skill::applySkill(skillId, target->pony, SkillTarget::Enemy);
+                    else
+                        Skill::applySkill(skillId, target->pony, SkillTarget::Friendly);
+                }
             }
 
             // Send to everyone

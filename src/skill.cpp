@@ -1,8 +1,14 @@
 #include "skill.h"
+#include "statsComponent.h"
+#include "widget.h"
+#include <QTimer>
+#include <QObject>
+
+QMap<unsigned, Skill> Skill::skills;
 
 SkillTargetEffect::SkillTargetEffect()
     : stat{SkillTargetStat::Health}, targets{SkillTarget::Enemy},
-    amount{0}, isMultiplier{true}, chance{1}, isDSP{false}, skillId{-1}
+      amount{0}, isMultiplier{true}, chance{1}, isDPS{false}, skillId{-1}, duration{0}
 {
 }
 
@@ -17,4 +23,60 @@ SkillUpgrade::SkillUpgrade()
 Skill::Skill()
     : id{0}, maxLevel{50}, races{SkillRace::None}, damageType{SkillDamageType::Physical}, upgrades{}
 {
+}
+
+void Skill::applySkill(unsigned skillId, StatsComponent& target, SkillTarget targetType, unsigned upgradeId, bool splashOnly)
+{
+    // Skill/upgrade resolution
+    if (!skills.contains(skillId))
+    {
+        win.logMessage(QObject::tr("Skill::applySkill: No skill with ID %1").arg(skillId));
+        return;
+    }
+    Skill& skill = skills[skillId];
+    if (!skill.upgrades.contains(upgradeId))
+    {
+        win.logMessage(QObject::tr("Skill::applySkill: Skill with ID %1 has no upgrade %2").arg(skillId).arg(upgradeId));
+        return;
+    }
+    SkillUpgrade& upgrade = skill.upgrades[upgradeId];
+
+    // Apply effects
+    for (SkillTargetEffect& effect : upgrade.splashEffects)
+        applySkillEffect(effect, target, targetType);
+    if (!splashOnly)
+        for (SkillTargetEffect& effect : upgrade.targetEffects)
+            applySkillEffect(effect, target, targetType);
+}
+
+void Skill::applySkillEffect(SkillTargetEffect& effect, StatsComponent& target, SkillTarget targetType)
+{
+    if (!((int)effect.targets & (int)targetType))
+        return;
+    if (effect.isDPS)
+    {
+        QTimer* dps = new QTimer;
+        dps->setInterval(1000);
+        dps->setSingleShot(true);
+        float *duration = new float{effect.duration};
+        QObject::connect(dps, &QTimer::timeout, [effect, dps, duration, &target](){
+            if (effect.stat == SkillTargetStat::Health)
+                target.takeDamage(effect.amount);
+
+            *duration -= 1;
+            if (*duration > 0)
+                dps->start();
+            else
+            {
+                delete dps;
+                delete duration;
+            }
+        });
+        dps->start();
+    }
+    else
+    {
+        if (effect.stat == SkillTargetStat::Health)
+            target.takeDamage(effect.amount);
+    }
 }

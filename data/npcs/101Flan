@@ -9,14 +9,14 @@ questName Flan
 questDescr Flan
 
 # Jump table
-gotoIfState 3 5 ACCE-start
-gotoIfState 4 5 ACCE-Accepted
+gotoIfState 3 105 ACCE-start
+gotoIfState 4 105 ACCE-Accepted
 
 # Default
 say It really is a beautiful city.
 end
 
-# State 3 quest 5 : Spud sent us talking to Flan
+# State 3 quest 105 : Spud sent us talking to Flan
 label ACCE-start
 say Oh, hello, $PLAYERNAME! It's just lovely out here today. How are you enjoying the city? 
 answer ACCE-01 It's beautiful.
@@ -39,12 +39,12 @@ answer ACCE-Accept1 What about you?
 answer ACCE-Accept2 Okay, Flan. Thanks for understanding.
 
 label ACCE-Accept1
-setQuestState 4 5
+setQuestState 4 105
 say Well, I've got to get rid of that batch and buy some more carrots. Preferably before any customers show up. But thanks for letting me know, anyway. 
 end
 
 label ACCE-Accept2
-setQuestState 4 5
+setQuestState 4 105
 end
 
 label ACCE-04
@@ -62,7 +62,7 @@ answer ACCE-Accept3 What about you?
 answer ACCE-Accept2 Okay, Flan. Thanks for understanding.
 
 label ACCE-Accept3
-setQuestState 4 5
+setQuestState 4 105
 say Well, I've got to get rid of that batch and buy some more carrots. Preferably before any customers show up. But thanks for letting me know, anyway. 
 end
 
@@ -96,7 +96,7 @@ answer ACCE-Accept4 Then I must warn Wanda! Don't let anypony eat those carrots!
 answer ACCE-13 Where can I find her?
 
 label ACCE-Accept4
-setQuestState 4 5
+setQuestState 4 105
 say Um, okay. Well... bye, then.
 end
 
@@ -105,7 +105,7 @@ say She's probably still over at Carousel Boutique in Ponyville. She went to tal
 answer ACCE-Accept4 Yes. Don't eat them.
 answer ACCE-Accept4 They might make you sick if you eat any. You can't sell them.
 
-# State 4 quest 5 : We need to talk to Wanda
+# State 4 quest 105 : We need to talk to Wanda
 label ACCE-Accepted
 say I really think you should hurry down to Carousel Boutique. Wanda's health could be at stake. Apparently. 
 end

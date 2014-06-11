@@ -21,6 +21,7 @@ int main(int, char**)
     a.installTranslator(&translator);
 
     win.show();
+    a.processEvents();
     win.startServer();
 
     return a.exec(); // win's dtor will quick_exit (we won't run the atexits)

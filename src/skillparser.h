@@ -16,7 +16,7 @@ private:
     Skill parseSkill(QJsonObject& skillObject);
     Skill::SkillRace parseRaces(QJsonArray jsonRaces);
     Skill::SkillDamageType parseDamageType(QJsonArray jsonDT);
-    QVector<SkillUpgrade> parseSkillUpgrades(QJsonArray jsonUpgrades);
+    QMap<unsigned,SkillUpgrade> parseSkillUpgrades(QJsonArray jsonUpgrades);
     SkillUpgrade::TargetShape parseTargetShapes(QString jsonShapes);
     QVector<SkillTargetEffect> parseTargetEffects(QJsonArray jsonEffects);
     SkillTarget parseTargets(QJsonArray jsonTargets);
