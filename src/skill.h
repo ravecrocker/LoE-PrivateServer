@@ -4,6 +4,7 @@
 #include <QMap>
 #include <QVector>
 
+class Animation;
 class StatsComponent;
 
 enum class SkillTargetStat
@@ -70,6 +71,7 @@ public:
     unsigned maxSplashCount;
     unsigned trainingPointCost;
     unsigned minimulLevel;
+    const Animation* casterAnimation;
 };
 
 struct Skill
@@ -97,7 +99,8 @@ public:
     // Does not handle "undocumented" effects, like teleport actually teleporting
     // If splashOnly, only the splash effects will be applied, not the target effects
     // Only handles changes to the Health stat at the moment
-    static void applySkill(unsigned skillId, StatsComponent& target, SkillTarget targetType,
+    // Returns false if the skill couldn't be applied, true otherwise
+    static bool applySkill(unsigned skillId, StatsComponent& target, SkillTarget targetType,
                            unsigned upgradeId=0, bool splashOnly=false);
 
 private:

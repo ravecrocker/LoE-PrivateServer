@@ -51,6 +51,7 @@ enum ChatType
 class Player;
 class Pony;
 class Mob;
+class Animation;
 void receiveMessage(Player* player);
 void sendMessage(Player* player, quint8 messageType, QByteArray data=QByteArray());
 void sendEntitiesList(Player* player);
@@ -95,5 +96,6 @@ void sendDeleteItemRPC(Player* player, uint8_t index, uint32_t qty);
 void sendBeginShop(Player* player, Pony* npcShop);
 void sendEndShop(Player* player);
 void sendAddViewAddShop(Player* player, Pony* npcShop);
+void sendAnimation(Player* player, const Animation* animation);
 
 #endif // MESSAGE_H

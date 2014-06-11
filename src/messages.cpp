@@ -4,6 +4,7 @@
 #include "serialize.h"
 #include "mob.h"
 #include "mobsStats.h"
+#include "animation.h"
 
 #define DEBUG_LOG false
 
@@ -288,8 +289,8 @@ void sendNetviewRemove(Player *player, quint16 netviewId)
 
 void sendNetviewRemove(Player* player, quint16 netviewId, quint8 reasonCode)
 {
-    win.logMessage(QObject::tr("UDP: Removing netview %1 to %2, reason code %3").arg(netviewId)
-                   .arg(player->pony.netviewId).arg(reasonCode));
+    //win.logMessage(QObject::tr("UDP: Removing netview %1 to %2, reason code %3").arg(netviewId)
+    //               .arg(player->pony.netviewId).arg(reasonCode));
 
     QByteArray data(4,2);
     data[1] = (quint8)(netviewId&0xFF);
@@ -744,4 +745,14 @@ void sendEndShop(Player* player)
     data += 0x17; // EndShop
 
     sendMessage(player, MsgUserReliableOrdered18, data);
+}
+
+void sendAnimation(Player* player, const Animation* animation)
+{
+    QByteArray data;
+    data += uint16ToData(player->pony.netviewId);
+    data += 0xCA; // Animation
+    data += uint32ToData(animation->id);
+
+    sendMessage(player, MsgUserReliableOrdered12, data);
 }

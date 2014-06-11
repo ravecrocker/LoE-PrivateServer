@@ -2718,3 +2718,10 @@ Then divide the projection's pos along the diagonal by the total length of the d
 => TODO: Check that we don't have duplicate NPC quest ids when parsing. This isn't that expensive, and only runs at startup
 
 => TODO: Split widget.cpp in itself, widgetStartServer and widgetStopServer
+
+=> Animation
+4e 
+02 00 38 00 
+12 00           NetviewId 
+ca              0xCA Animation
+00 00 00 00     AnimationId

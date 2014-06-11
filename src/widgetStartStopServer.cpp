@@ -2,6 +2,8 @@
 #include "ui_widget.h"
 #include "skillparser.h"
 #include "mobsParser.h"
+#include "animationparser.h"
+#include "animation.h"
 #include "items.h"
 
 #if defined _WIN32 || defined WIN32
@@ -218,6 +220,26 @@ void Widget::startServer()
             logMessage(tr("Loaded %1 mobs in %2 zones").arg(mobs.size()).arg(mobzones.size()));
         }
         catch (...) {}
+    }
+
+    // Parse animations
+    if (enableGameServer)
+    {
+        try
+        {
+            AnimationParser(GAMEDATAPATH+QString("Animations.json"));
+            logMessage(tr("Loaded %1 animations").arg(Animation::animations.size()));
+        }
+        catch (const QString& e)
+        {
+            logMessage(tr("Error parsing animations: ")+e);
+            win.stopServer();
+        }
+        catch (const char* e)
+        {
+            logMessage(tr("Error parsing animations: ")+e);
+            win.stopServer();
+        }
     }
 
     // Parse skills

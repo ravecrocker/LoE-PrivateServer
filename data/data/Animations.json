@@ -1,0 +1,126 @@
+[
+	{
+		"AnimId": 0, /*id of the animation. sent over network, also used in mecanim*/
+		"SId": "ground", /*id used for string lookups. must be unique*/
+		"Sticky": true
+	},
+	{
+		"AnimId": 1,
+		"SId": "air",
+		"Sticky": true
+	},
+	{
+		"AnimId": 2,
+		"SId": "stand",
+		"Sticky": false,
+		"Command": "stand"
+	},
+	{
+		"AnimId": 3,
+		"SId": "sit",
+		"Name": "Sit",
+		"Icon": "sit",
+		"Sticky": true,
+		"Command": "sit", /*only is usable via hotbar/whatever as long as it has a command. if not unique, it will be overriden*/
+		"Races": "All"
+	},
+	{
+		"AnimId": 5,
+		"SId": "facehoof",
+		"Name": "Face-hoof",
+		"Icon": "facehoof",
+		"Sticky": false,
+		"Command": "facehoof",
+		"Races": "All"
+	},
+	{
+		"AnimId": 6,
+		"SId": "excited",
+		"Name": "Excited",
+		"Icon": "smile",
+		"Sticky": false,
+		"Command": "excited",
+		"Races": "All"
+	},
+	{
+		"AnimId": 9,
+		"SId": "GroundPound",
+		"Sticky": false
+	},
+	{
+		"AnimId": 10,
+		"SId": "swim",
+		"Sticky": true
+	},
+	{
+		"AnimId": 11,
+		"SId": "dance",
+		"Name": "Dance",
+		"Icon": "trotdance",
+		"Sticky": true,
+		"Command": "dance",
+		"Races": "All"
+	},
+	{
+		"AnimId": 12,
+		"SId": "lay",
+		"Name": "Lay Down",
+		"Icon": "laydown",
+		"Sticky": true,
+		"Command": "lay",
+		"Races": "All"
+	},
+	{
+		"AnimId": 13,
+		"SId": "applause",
+		"Name": "Applause",
+		"Icon": "clomp",
+		"Sticky": true,
+		"Command": "applause",
+		"Races": "All"
+	},
+	{
+		"AnimId": 14,
+		"SId": "wave",
+		"Name": "Wave",
+		"Icon": "wave",
+		"Sticky": false,
+		"Command": "wave",
+		"Races": "All"
+	},
+	{
+		"AnimId": 20,
+		"SId": "BattleReady",
+		"Sticky": false
+	},
+	{
+		"AnimId": 21,
+		"SId": "JeeringShout",
+		"Sticky": false
+	},
+	{
+		"AnimId": 22,
+		"SId": "RoughTerrain",
+		"Sticky": false
+	},
+	{
+		"AnimId": 23,
+		"SId": "SeismicBuck",
+		"Sticky": false
+	},
+	{
+		"AnimId": 24,
+		"SId": "DualCyclone",
+		"Sticky": false
+	},
+	{
+		"AnimId": 25,
+		"SId": "RainbowFields",
+		"Sticky": false
+	},
+	{
+		"AnimId": 26,
+		"SId": "Gale",
+		"Sticky": false
+	}
+]

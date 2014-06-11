@@ -33,7 +33,9 @@ SOURCES += main.cpp \
     mobStats.cpp \
     skill.cpp \
     skillparser.cpp \
-    widgetStartStopServer.cpp
+    widgetStartStopServer.cpp \
+    animationparser.cpp \
+    animation.cpp
 
 HEADERS  += widget.h \
     character.h \
@@ -56,7 +58,9 @@ HEADERS  += widget.h \
     packetloss.h \
     skill.h \
     skillparser.h \
-    statsComponent.h
+    statsComponent.h \
+    animationparser.h \
+    animation.h
 
 FORMS    += widget.ui
 

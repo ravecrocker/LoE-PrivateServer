@@ -323,6 +323,7 @@ void receiveMessage(Player* player)
             win.logMessage("UDP: Broadcasting skill "+QString().setNum(dataToUint32(msg.mid(8))));
 #endif
 
+            bool skillOk=true;
             QByteArray reply;
             uint32_t skillId = dataToUint32(msg.mid(8));
             if (skillId == 2) // Teleport is a special case
@@ -375,18 +376,26 @@ void receiveMessage(Player* player)
                     {
                         if (mob->netviewId == targetNetId)
                         {
-                            Skill::applySkill(skillId, *mob, SkillTarget::Enemy);
+                            skillOk = Skill::applySkill(skillId, *mob, SkillTarget::Enemy);
                             break;
                         }
                     }
 
                     Player* target = Player::findPlayer(win.udpPlayers, targetNetId);
                     if (target->pony.netviewId == player->pony.netviewId)
-                        Skill::applySkill(skillId, target->pony, SkillTarget::Self);
+                        skillOk = Skill::applySkill(skillId, target->pony, SkillTarget::Self);
                     else if (win.enablePVP) // During PVP, all friendly ponies are now ennemies !
-                        Skill::applySkill(skillId, target->pony, SkillTarget::Enemy);
+                        skillOk = Skill::applySkill(skillId, target->pony, SkillTarget::Enemy);
                     else
-                        Skill::applySkill(skillId, target->pony, SkillTarget::Friendly);
+                        skillOk = Skill::applySkill(skillId, target->pony, SkillTarget::Friendly);
+                }
+
+                // Apply animation
+                if (skillOk)
+                {
+                    Skill& skill = Skill::skills[skillId];
+                    SkillUpgrade& upgrade(skill.upgrades[0]);
+                    sendAnimation(player, upgrade.casterAnimation);
                 }
             }
 
