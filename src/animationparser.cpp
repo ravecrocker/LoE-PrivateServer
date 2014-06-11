@@ -15,7 +15,7 @@ AnimationParser::AnimationParser(QString filepath)
 
     QByteArray data = file.readAll();
 
-    // Remove comments
+    // Remove C-style comments, Qt can't parse them
     while (true)
     {
         int start=data.indexOf("/*");

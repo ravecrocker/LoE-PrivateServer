@@ -1,15 +1,22 @@
 #include "widget.h"
 #include "ui_widget.h"
-#include "character.h"
+#include "player.h"
 #include "message.h"
 #include "utils.h"
 #include "mob.h"
+#include "sync.h"
+#include "quest.h"
+#include "settings.h"
+#include "udp.h"
+#include <QUdpSocket>
+
+using namespace Settings;
 
 Widget::Widget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Widget),
     cmdPeer(new Player()),
-    usedids(new bool[65536])
+    sync{new Sync()}
 {
     tcpServer = new QTcpServer(this);
     udpSocket = new QUdpSocket(this);
@@ -40,63 +47,15 @@ void Widget::logMessage(QString msg)
     ui->log->repaint();
 }
 
-int Widget::getNewNetviewId()
-{
-    int i;
-
-    for (i = 0; i < 65536; i++) {
-        usedids[i] = false;
-    }
-
-    for (int c = 0; c < npcs.size(); c++) {
-        usedids[npcs[c]->netviewId] = true;
-    }
-    for (int c = 0; c < mobs.size(); c++) {
-        usedids[mobs[c]->netviewId] = true;
-    }
-    for (int c = 0; c < udpPlayers.size(); c++) {
-        usedids[udpPlayers[c]->pony.netviewId] = true;
-    }
-
-    i = 0;
-    while (usedids[i]) i++;
-
-    return i;
-}
-
-int Widget::getNewId()
-{
-    int i;
-
-    for (i = 0; i < 65536; i++) {
-        usedids[i] = false;
-    }
-
-    for (int c = 0; c < npcs.size(); c++) {
-        usedids[npcs[c]->id] = true;
-    }
-    for (int c = 0; c < mobs.size(); c++) {
-        usedids[mobs[c]->id] = true;
-    }
-    for (int c = 0; c < udpPlayers.size(); c++) {
-        usedids[udpPlayers[c]->pony.id] = true;
-    }
-
-    i = 0;
-    while (usedids[i]) i++;
-
-    return i;
-}
-
 // Disconnect players, free the sockets, and exit quickly
 // Does NOT run the atexits
 Widget::~Widget()
 {
     logInfos=false; // logMessage while we're trying to destroy would crash.
     //logMessage(tr("UDP: Disconnecting all players"));
-    for (;udpPlayers.size();)
+    while (Player::udpPlayers.size())
     {
-        Player* player = udpPlayers[0];
+        Player* player = Player::udpPlayers[0];
         sendMessage(player, MsgDisconnect, "Server closed by the admin");
 
         // Save the pony
@@ -110,14 +69,14 @@ Widget::~Widget()
 
         // Free
         delete player;
-        udpPlayers.removeFirst();
+        Player::udpPlayers.removeFirst();
     }
 
-    for (int i=0; i<quests.size(); i++)
+    for (int i=0; i<Quest::quests.size(); i++)
     {
-        delete quests[i].commands;
-        delete quests[i].name;
-        delete quests[i].descr;
+        delete Quest::quests[i].commands;
+        delete Quest::quests[i].name;
+        delete Quest::quests[i].descr;
     }
 
     stopServer(false);
@@ -126,7 +85,6 @@ Widget::~Widget()
     delete udpSocket;
     delete pingTimer;
     delete cmdPeer;
-    delete[] usedids;
 
     delete ui;
 

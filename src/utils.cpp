@@ -7,15 +7,6 @@
 #include <sys/time.h>
 #endif
 
-void saveResourceToDataFolder(QString resRelPath)
-{
-    win.logMessage(QString("Saving ")+resRelPath);
-    QString dataPath = QDir::homePath()+"/AppData/LocalLow/LoE/Legends of Equestria/";
-    QFile::remove(dataPath+resRelPath);
-    QFile::copy(QString(":/gameFiles/")+resRelPath, dataPath+resRelPath);
-    //SetFileAttributesA(QString(dataPath+resRelPath).toStdString().c_str(),FILE_ATTRIBUTE_NORMAL);
-}
-
 QByteArray removeHTTPHeader(QByteArray data,QString header)
 {
     int i1 = data.indexOf(header);
@@ -41,42 +32,4 @@ float timestampNow()
     newtime = tp.tv_sec*1000 + tp.tv_nsec/1000/1000;
 #endif
     return (float)(((float)(newtime - win.startTimestamp))/(float)1000); // Seconds since server start (startTimestamp)
-}
-
-
-
-char convertChar (char c, bool direction = true)
-{
-    if (direction)
-    {
-        if (c >= 'a' && c <= 'z')
-        {
-            return c - 'a';
-        }
-        if (c >= 'A' && c <= 'Z')
-        {
-            return c - 'A' + '\x1a';  // \u001a
-        }
-        if (c >= '0' && c <= '9')
-        {
-            return c - '0' + '4';
-        }
-        return '>';
-    }
-    else
-    {
-        if (c >= '\0' && c <= '\x19')  // \u0019
-        {
-            return c + 'a';
-        }
-        if (c >= '\x1a' && c <= '3')  // \u001a
-        {
-            return c + 'A' - '\x1a';  // u001a
-        }
-        if (c >= '4' && c <= '=')
-        {
-            return c + '0' - '4';
-        }
-        return ' ';
-    }
 }

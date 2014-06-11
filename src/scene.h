@@ -4,7 +4,8 @@
 #include <QString>
 #include <QList>
 #include "dataType.h"
-#include "character.h"
+
+class Player;
 
 class Vortex
 {
@@ -26,6 +27,9 @@ public:
     QString name;
     QList<Vortex> vortexes;
     QList<Player*> players; // Used by the 01 sync function
+
+public:
+    static QList<Scene> scenes; // List of scenes from the vortex DB
 };
 Scene* findScene(QString sceneName);
 Vortex findVortex(QString sceneName, quint8 id);

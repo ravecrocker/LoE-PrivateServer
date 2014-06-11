@@ -5,12 +5,25 @@
 #include "animationparser.h"
 #include "animation.h"
 #include "items.h"
+#include "settings.h"
+#include "sceneEntity.h"
+#include "scene.h"
+#include "quest.h"
+#include "player.h"
+#include "mob.h"
+#include "sync.h"
+#include "udp.h"
+#include <QUdpSocket>
+#include <QSettings>
+#include <QDir>
 
 #if defined _WIN32 || defined WIN32
 #include <windows.h>
 #else
 #include <sys/time.h>
 #endif
+
+using namespace Settings;
 
 /// Reads the config file (server.ini) and start the server accordingly
 void Widget::startServer()
@@ -32,8 +45,8 @@ void Widget::startServer()
     chdir(path);
     chdir("..");
 #endif
-    lastNetviewId=0;
-    lastId=1;
+    SceneEntity::lastNetviewId=0;
+    SceneEntity::lastId=1;
 
     /// Read config
     logStatusMessage(tr("Reading config file ..."));
@@ -129,7 +142,7 @@ void Widget::startServer()
                 //               +QString().setNum(vortex.destPos.y)+" "
                 //               +QString().setNum(vortex.destPos.z));
             }
-            scenes << scene;
+            Scene::scenes << scene;
         }
 
         if (corrupted)
@@ -138,7 +151,7 @@ void Widget::startServer()
             return;
         }
 
-        logMessage(tr("Loaded %1 vortexes in %2 scenes").arg(nVortex).arg(scenes.size()));
+        logMessage(tr("Loaded %1 vortexes in %2 scenes").arg(nVortex).arg(Scene::scenes.size()));
     }
 
     /// Read/parse Items.xml
@@ -172,8 +185,8 @@ void Widget::startServer()
                 try
                 {
                     Quest quest("data/npcs/"+files[i], NULL);
-                    quests << quest;
-                    npcs << quest.npc;
+                    Quest::quests << quest;
+                    Quest::npcs << quest.npc;
                 }
                 catch (QString& error)
                 {
@@ -212,12 +225,12 @@ void Widget::startServer()
                 }
                 catch (QString& error)
                 {
-                    win.logMessage(error);
-                    win.stopServer();
+                    logMessage(error);
+                    stopServer();
                     throw error;
                 }
             }
-            logMessage(tr("Loaded %1 mobs in %2 zones").arg(mobs.size()).arg(mobzones.size()));
+            logMessage(tr("Loaded %1 mobs in %2 zones").arg(Mob::mobs.size()).arg(Mob::mobzones.size()));
         }
         catch (...) {}
     }
@@ -258,14 +271,14 @@ void Widget::startServer()
         catch (const char* e)
         {
             logMessage(tr("Error parsing skills: ")+e);
-            win.stopServer();
+            stopServer();
         }
     }
 
     if (enableLoginServer)
     {
 //      logStatusMessage(tr("Loading players database ..."));
-        tcpPlayers = Player::loadPlayers();
+        Player::tcpPlayers = Player::loadPlayers();
     }
 
     // TCP server
@@ -303,7 +316,7 @@ void Widget::startServer()
     }
 
     if (enableMultiplayer)
-        sync.startSync();
+        sync->startSync(syncInterval);
 
     if (enableLoginServer || enableGameServer)
         logStatusMessage(tr("Server started"));
@@ -313,7 +326,7 @@ void Widget::startServer()
         connect(tcpServer, SIGNAL(newConnection()), this, SLOT(tcpConnectClient()));
     if (enableGameServer)
     {
-        connect(udpSocket, SIGNAL(readyRead()),this, SLOT(udpProcessPendingDatagrams()));
+        connect(udpSocket, &QUdpSocket::readyRead, &::udpProcessPendingDatagrams);
         connect(pingTimer, SIGNAL(timeout()), this, SLOT(checkPingTimeouts()));
     }
 }
@@ -333,13 +346,13 @@ void Widget::stopServer(bool log)
         tcpClientsList[i].first->close();
     udpSocket->close();
 
-    sync.stopSync();
+    sync->stopSync();
 
     enableLoginServer = false;
     enableGameServer = false;
 
     disconnect(ui->sendButton, SIGNAL(clicked()), this, SLOT(sendCmdLine()));
-    disconnect(udpSocket, SIGNAL(readyRead()),this, SLOT(udpProcessPendingDatagrams()));
+    disconnect(udpSocket);
     disconnect(tcpServer, SIGNAL(newConnection()), this, SLOT(tcpConnectClient()));
     disconnect(pingTimer, SIGNAL(timeout()), this, SLOT(checkPingTimeouts()));
     disconnect(this);

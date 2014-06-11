@@ -16,7 +16,6 @@ SOURCES += main.cpp \
     messages.cpp \
     utils.cpp \
     pingTimeout.cpp \
-    character.cpp \
     scene.cpp \
     dataType.cpp \
     sync.cpp \
@@ -35,10 +34,14 @@ SOURCES += main.cpp \
     skillparser.cpp \
     widgetStartStopServer.cpp \
     animationparser.cpp \
-    animation.cpp
+    animation.cpp \
+    log.cpp \
+    player.cpp \
+    playerSerialization.cpp \
+    sceneEntity.cpp \
+    settings.cpp
 
 HEADERS  += widget.h \
-    character.h \
     message.h \
     utils.h \
     scene.h \
@@ -60,7 +63,11 @@ HEADERS  += widget.h \
     skillparser.h \
     statsComponent.h \
     animationparser.h \
-    animation.h
+    animation.h \
+    log.h \
+    player.h \
+    settings.h \
+    udp.h
 
 FORMS    += widget.ui
 

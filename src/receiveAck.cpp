@@ -1,7 +1,9 @@
 #include "receiveAck.h"
 #include "message.h"
-#include "character.h"
-#include "widget.h"
+#include "player.h"
+#include "log.h"
+#include "udp.h"
+#include <QUdpSocket>
 
 void onConnectAckReceived(Player* player)
 {
@@ -18,7 +20,7 @@ void onConnectAckReceived(Player* player)
             if ((quint16)(quint8)qMsg[pos] == 0x84) // Remove the msg, now that we're connected
             {
 #if DEBUG_LOG
-                win.logMessage("Removed SYN|ACK message");
+                logMessage("Removed SYN|ACK message");
 #endif
                 qMsg = qMsg.left(pos) + qMsg.mid(pos+qMsgSize);
             }
@@ -42,7 +44,7 @@ void onConnectAckReceived(Player* player)
 void onAckReceived(QByteArray msg, Player* player)
 {
 #if DEBUG_LOG
-    //win.logMessage("ACK message : "+QString(msg.toHex()));
+    //logMessage("ACK message : "+QString(msg.toHex()));
 #endif
     // Number of messages ACK'd by this message
     int nAcks = ((quint8)msg[3] + (((quint16)(quint8)msg[4])<<8)) / 24;
@@ -72,18 +74,18 @@ void onAckReceived(QByteArray msg, Player* player)
                 ackMsg+=QString(QByteArray().append(acks[i].channel).toHex())+":"+QString().setNum(acks[i].seq);
             }
             ackMsg += ")";
-            win.logMessage(ackMsg);
+            logMessage(ackMsg);
         }
 #endif
 
         if (player->udpSendReliableQueue.size() && acks.size()) // If there's nothing to check, do nothing
         {
-            //win.logMessage("receiveMessage ACK locking");
+            //logMessage("receiveMessage ACK locking");
             player->udpSendReliableMutex.lock();
             player->udpSendReliableTimer->stop();
             // Remove the ACK'd messages from the reliable send queue
             QByteArray qMsg = player->udpSendReliableQueue[0];
-            //win.logMessage("About to remove ACKs from : "+QString(qMsg.toHex()));
+            //logMessage("About to remove ACKs from : "+QString(qMsg.toHex()));
             for (int i=0; i<acks.size(); i++)
             {
                 int pos=0;
@@ -93,9 +95,9 @@ void onAckReceived(QByteArray msg, Player* player)
                     quint16 qMsgSize = (((quint16)(quint8)qMsg[pos+3])+(((quint16)(quint8)qMsg[pos+4])<<8))/8+5;
                     if ((quint16)(quint8)qMsg[pos] == acks[i].channel && seq == acks[i].seq) // Remove the msg, now that it was ACK'd
                     {
-                        //win.logMessage("Removed message : "+QString().setNum(seq)+" size is "+QString().setNum(qMsgSize));
+                        //logMessage("Removed message : "+QString().setNum(seq)+" size is "+QString().setNum(qMsgSize));
                         qMsg = qMsg.left(pos) + qMsg.mid(pos+qMsgSize);
-                        //win.logMessage("New message is "+QString(qMsg.toHex()));
+                        //logMessage("New message is "+QString(qMsg.toHex()));
                     }
                     else
                         pos += qMsgSize;
@@ -108,19 +110,12 @@ void onAckReceived(QByteArray msg, Player* player)
                 player->udpSendReliableQueue.remove(0); // The whole grouped msg was ACK'd, remove it
                 if (player->udpSendReliableQueue.size()) // If there's a next message in the queue, send it
                 {
-                    win.logMessage(QObject::tr("UDP: Sending next message in queue"));
+                    logMessage(QObject::tr("UDP: Sending next message in queue"));
                     qMsg = player->udpSendReliableQueue[0];
-                    if (win.udpSocket->writeDatagram(qMsg,QHostAddress(player->IP),player->port) != qMsg.size())
+                    if (udpSocket->writeDatagram(qMsg,QHostAddress(player->IP),player->port) != qMsg.size())
                     {
-                        win.logMessage(QObject::tr("UDP: Error sending last message"));
-                        win.logStatusMessage(QObject::tr("Restarting UDP server ..."));
-                        win.udpSocket->close();
-                        if (!win.udpSocket->bind(win.gamePort, QUdpSocket::ReuseAddressHint|QUdpSocket::ShareAddress))
-                        {
-                            win.logStatusMessage(QObject::tr("UDP: Unable to start server on port %1").arg(win.gamePort));
-                            win.stopServer();
-                            return;
-                        }
+                        logMessage(QObject::tr("UDP: Error sending last message"));
+                        restartUdpServer();
                     }
                     player->udpSendReliableTimer->start();
                     //win.logMessage("receiveMessage ACK unlocking");

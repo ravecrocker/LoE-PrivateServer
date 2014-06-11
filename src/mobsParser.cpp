@@ -69,7 +69,7 @@ void parseMobzoneData(QByteArray data)
                     mob->setType("mobs/"+value);
                 else
                     throw QString(QObject::tr("parseMobzoneData(): error reading mob arg, unknown arg %1").arg(key));
-                win.mobs << mob;
+                Mob::mobs << mob;
             }
         }
         else
@@ -78,5 +78,5 @@ void parseMobzoneData(QByteArray data)
         }
     }
 
-    win.mobzones << zone;
+    Mob::mobzones << zone;
 }

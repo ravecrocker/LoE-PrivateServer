@@ -2,7 +2,11 @@
 #include "widget.h"
 #include "message.h"
 #include "items.h"
+#include "player.h"
 #include <QFile>
+
+QList<Pony*> Quest::npcs; // List of npcs from the npcs DB
+QList<Quest> Quest::quests; // List of quests from the npcs DB
 
 Quest::Quest(QString path, Player *Owner)
 {
@@ -75,7 +79,7 @@ Quest::Quest(QString path, Player *Owner)
                     throw QString(QObject::tr("Quest::Quest: Error reading wear, quest %1").arg(path));
                 WearableItem item;
                 item.id = itemId;
-                item.index = wearablePositionsToSlot(win.wearablePositionsMap[itemId]);
+                item.index = wearablePositionsToSlot(wearablePositionsMap[itemId]);
                 npc->worn << item;
             }
         }
@@ -99,10 +103,10 @@ Quest::Quest(QString path, Player *Owner)
             {
                 id = line[1].toInt();
 
-                win.lastIdMutex.lock();
+                SceneEntity::lastIdMutex.lock();
                 npc->id = 0;
                 npc->netviewId = id;
-                win.lastIdMutex.unlock();
+                SceneEntity::lastIdMutex.unlock();
             }
             else throw QString(QObject::tr("Quest::Quest: Error reading questId, quest %1").arg(path));
         else if (line[0] == "questName")

@@ -5,11 +5,13 @@
 #include <QStringList>
 #include <cmath>
 
+QMap<uint32_t, uint32_t> wearablePositionsMap; // Maps item IDs to their wearable positions
+
 QMap<uint32_t, uint32_t> parseItemsXml(QByteArray data)
 {
     QMap<uint32_t, uint32_t> map;
 
-    while (1)
+    while (true)
     {
         int idIndex = data.indexOf("<ID>")+4;
         int slotsIndex = data.indexOf("<WearableSlots>")+15;
@@ -22,8 +24,6 @@ QMap<uint32_t, uint32_t> parseItemsXml(QByteArray data)
 
         QString idStr = data.mid(idIndex, idIndexEnd - idIndex);
         QString slotsStr = data.mid(slotsIndex, slotsIndexEnd - slotsIndex);
-
-        //win.logMessage("Found id "+idStr+", slots : "+slotsStr);
 
         bool ok;
         int id = idStr.toInt(&ok);
@@ -59,10 +59,7 @@ QMap<uint32_t, uint32_t> parseItemsXml(QByteArray data)
             else if (slot == "BackKnees")   itemSlots |= (uint32_t)WearablePositions::BackKnees;
             else if (slot == "SaddleBags")   itemSlots |= (uint32_t)WearablePositions::SaddleBags;
             else if (slot == "Hat")   itemSlots |= (uint32_t)WearablePositions::Hat;
-            else
-            {
-                win.logMessage(QObject::tr("Unknown wearable slots while parsing Items.xml"));
-            }
+            else    win.logMessage(QObject::tr("Unknown wearable slots while parsing Items.xml"));
         }
         map[id] = itemSlots;
         data = data.mid(slotsIndexEnd);
@@ -74,7 +71,6 @@ QMap<uint32_t, uint32_t> parseItemsXml(QByteArray data)
 uint8_t wearablePositionsToSlot(uint32_t positions)
 {
     // We don't have base 2 log, so we'll do it the hard way
-
     if (positions & (uint32_t)WearablePositions::Hat)              return 32;
     else if (positions & (uint32_t)WearablePositions::SaddleBags)  return 31;
     else if (positions & (uint32_t)WearablePositions::BackKnees)   return 15;
