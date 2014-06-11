@@ -38,7 +38,7 @@ void Widget::startServer()
     /// Read config
     logStatusMessage(tr("Reading config file ..."));
     QSettings config(CONFIGFILEPATH, QSettings::IniFormat);
-    loginPort = config.value("loginPort", 1031).toInt();
+    loginPort = config.value("loginPort", 1034).toInt();
     gamePort = config.value("gamePort", 1039).toInt();
     maxConnected = config.value("maxConnected",128).toInt();
     maxRegistered = config.value("maxRegistered",2048).toInt();
@@ -52,7 +52,7 @@ void Widget::startServer()
     enableMultiplayer = config.value("enableMultiplayer", true).toBool();
     syncInterval = config.value("syncInterval",DEFAULT_SYNC_INTERVAL).toInt();
     remoteLoginIP = config.value("remoteLoginIP", "127.0.0.1").toString();
-    remoteLoginPort = config.value("remoteLoginPort", 1031).toInt();
+    remoteLoginPort = config.value("remoteLoginPort", 1034).toInt();
     remoteLoginTimeout = config.value("remoteLoginTimeout", 5000).toInt();
     useRemoteLogin = config.value("useRemoteLogin", false).toBool();
     enableGetlog = config.value("enableGetlog", true).toBool();
