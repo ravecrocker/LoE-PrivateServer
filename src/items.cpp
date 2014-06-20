@@ -6,28 +6,30 @@
 #include <cmath>
 
 QMap<uint32_t, uint32_t> wearablePositionsMap; // Maps item IDs to their wearable positions
+QMap<uint32_t, uint32_t> itemsPricesMap; // Maps item IDs to their prices
 
-QMap<uint32_t, uint32_t> parseItemsXml(QByteArray data)
+void parseItemsXml(QByteArray data)
 {
-    QMap<uint32_t, uint32_t> map;
-
     while (true)
     {
         int idIndex = data.indexOf("<ID>")+4;
         int slotsIndex = data.indexOf("<WearableSlots>")+15;
-        if (idIndex == -1 || slotsIndex == -1)
+        int priceIndex = data.indexOf("<Price>")+7;
+        if (idIndex == -1 || slotsIndex == -1 || priceIndex == -1)
             break;
         int idIndexEnd = data.indexOf("</ID>", idIndex);
         int slotsIndexEnd = data.indexOf("</WearableSlots>", slotsIndex);
-        if (idIndexEnd == -1 || slotsIndexEnd == -1)
+        int priceIndexEnd = data.indexOf("</Price>", priceIndex);
+        if (idIndexEnd == -1 || slotsIndexEnd == -1 || priceIndexEnd == -1)
             break;
 
         QString idStr = data.mid(idIndex, idIndexEnd - idIndex);
         QString slotsStr = data.mid(slotsIndex, slotsIndexEnd - slotsIndex);
+        QString priceStr = data.mid(priceIndex, priceIndexEnd - priceIndex);
 
-        bool ok;
-        int id = idStr.toInt(&ok);
-        if (!ok)
+        bool ok1, ok2;
+        int id = idStr.toInt(&ok1), price = priceStr.toInt(&ok2);
+        if (!ok1 || !ok2)
             break;
 
         QStringList slotsList = slotsStr.split(' ');
@@ -61,11 +63,10 @@ QMap<uint32_t, uint32_t> parseItemsXml(QByteArray data)
             else if (slot == "Hat")   itemSlots |= (uint32_t)WearablePositions::Hat;
             else    win.logMessage(QObject::tr("Unknown wearable slots while parsing Items.xml"));
         }
-        map[id] = itemSlots;
-        data = data.mid(slotsIndexEnd);
+        wearablePositionsMap[id] = itemSlots;
+        itemsPricesMap[id] = price;
+        data = data.mid(std::max(std::max(idIndexEnd, slotsIndexEnd), priceIndexEnd));
     }
-
-    return map;
 }
 
 uint8_t wearablePositionsToSlot(uint32_t positions)
