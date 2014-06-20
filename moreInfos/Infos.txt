@@ -2636,6 +2636,7 @@ ip.proto == UDP && ip.addr == 162.243.19.87 && data.data[0:1] contains 54 && dat
 
 => TODO: BUG: We're not checking the price of the item before buying. 
 => There's no client side check, so we'll need to update the item.xml parser.
+==> Done
 
 => Okay I'm not sure what to reply to a BuyItem RPC
 => There's one at 1766 in shop pcap
@@ -2682,7 +2683,7 @@ Then divide the projection's pos along the diagonal by the total length of the d
 => We need to know all the stats and effects of a skill.
 => We also don't know the base health of the monsters, so we'll have to make an educated guess.
 
-=> TODO: Animations when we use a skill on a mob
+=> Animations when we use a skill on a mob
 
 => When the client loses packets, it causes a ton of bugs. We need simulated client packet loss
 ==> May cause "You were kicked for lagging the server"
@@ -2715,9 +2716,9 @@ Then divide the projection's pos along the diagonal by the total length of the d
 
 => Reminder that stat 1 is health
 
-=> TODO: Check that we don't have duplicate NPC quest ids when parsing. This isn't that expensive, and only runs at startup
+=> Check that we don't have duplicate NPC quest ids when parsing. This isn't that expensive, and only runs at startup
 
-=> TODO: Split widget.cpp in itself, widgetStartServer and widgetStopServer
+=> Split widget.cpp in itself, widgetStartServer and widgetStopServer
 
 => Animation
 4e 
@@ -2725,3 +2726,5 @@ Then divide the projection's pos along the diagonal by the total length of the d
 12 00           NetviewId 
 ca              0xCA Animation
 00 00 00 00     AnimationId
+
+=> TODO: Search all subdirectories for mobzones, so we can e.g. make an Everfree folder, a PonyVille folder, etc

@@ -185,6 +185,9 @@ void Widget::startServer()
                 try
                 {
                     Quest quest("data/npcs/"+files[i], NULL);
+                    for (const Quest& q : Quest::quests)
+                        if (q.id == quest.id)
+                            logMessage(tr("Error, two quests are using the same id (%1) !").arg(quest.id));
                     Quest::quests << quest;
                     Quest::npcs << quest.npc;
                 }
