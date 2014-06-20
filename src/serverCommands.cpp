@@ -160,7 +160,7 @@ void Widget::sendCmdLine()
         QStringList args = str.split(' ');
         if (args.size() != 2)
         {
-            logStatusMessage(QObject::tr("Error: Usage is tele ponyIdToMove destinationPonyId"));
+            logError(QObject::tr("Error: Usage is tele ponyIdToMove destinationPonyId"));
             return;
         }
         bool ok;
@@ -171,7 +171,7 @@ void Widget::sendCmdLine()
         Player* sourcePeer;
         if (!ok && !ok1)
         {
-            logStatusMessage(QObject::tr("Error: Usage is tele ponyIdToMove destinationPonyId"));
+            logError(QObject::tr("Error: Usage is tele ponyIdToMove destinationPonyId"));
             return;
         }
         for (int i=0; i<Player::udpPlayers.size();i++)
@@ -185,7 +185,7 @@ void Widget::sendCmdLine()
         }
         if (!ok2)
         {
-            logStatusMessage(QObject::tr("Error: Source peer does not exist!"));
+            logError(QObject::tr("Error: Source peer does not exist!"));
             return;
         }
         for (int i=0; i<Player::udpPlayers.size();i++)
@@ -200,11 +200,11 @@ void Widget::sendCmdLine()
                 return;
             }
         }
-        logMessage(QObject::tr("Error: Destination peer does not exist!"));
+        logError(QObject::tr("Error: Destination peer does not exist!"));
     }
     if (cmdPeer->IP=="")
     {
-        logMessage(QObject::tr("Select a peer first with setPeer/listPeers"));
+        logError(QObject::tr("Select a peer first with setPeer/listPeers"));
         return;
     }
     else // Refresh peer info
@@ -270,7 +270,7 @@ void Widget::sendCmdLine()
             sendMessage(cmdPeer,MsgUserReliableOrdered6,data);
         }
         else
-            logStatusMessage(tr("Error : Player ID must be a number"));
+            logError(tr("Error : Player ID must be a number"));
     }
     else if (str.startsWith("reloadNpc"))
     {
@@ -323,7 +323,7 @@ void Widget::sendCmdLine()
             sendMessage(cmdPeer,MsgUserReliableOrdered6,data);
         }
         else
-            logStatusMessage(tr("Error : Removekill needs the id of the view to remove"));
+            logError(tr("Error : Removekill needs the id of the view to remove"));
     }
     else if (str.startsWith("remove"))
     {
@@ -339,7 +339,7 @@ void Widget::sendCmdLine()
             sendMessage(cmdPeer,MsgUserReliableOrdered6,data);
         }
         else
-            logStatusMessage(tr("Error : Remove needs the id of the view to remove"));
+            logError(tr("Error : Remove needs the id of the view to remove"));
     }
     else if (str.startsWith("sendPonyData"))
     {
@@ -356,7 +356,7 @@ void Widget::sendCmdLine()
         QStringList args = str.split(' ');
         if (args.size() != 2)
         {
-            logStatusMessage(tr("Error : usage is setState StatID StatValue"));
+            logError(tr("Error : usage is setStat StatID StatValue"));
             return;
         }
         bool ok,ok2;
@@ -364,7 +364,7 @@ void Widget::sendCmdLine()
         float statValue = args[1].toFloat(&ok2);
         if (!ok || !ok2)
         {
-            logStatusMessage(tr("Error : usage is setState StatID StatValue"));
+            logError(tr("Error : usage is setStat StatID StatValue"));
             return;
         }
         sendSetStatRPC(cmdPeer, statID, statValue);
@@ -375,7 +375,7 @@ void Widget::sendCmdLine()
         QStringList args = str.split(' ');
         if (args.size() != 2)
         {
-            logStatusMessage(tr("Error : usage is setMaxStat StatID StatValue"));
+            logError(tr("Error : usage is setMaxStat StatID StatValue"));
             return;
         }
         bool ok,ok2;
@@ -383,7 +383,7 @@ void Widget::sendCmdLine()
         float statValue = args[1].toFloat(&ok2);
         if (!ok || !ok2)
         {
-            logStatusMessage(tr("Error : usage is setMaxState StatID StatValue"));
+            logError(tr("Error : usage is setMaxStat StatID StatValue"));
             return;
         }
         sendSetMaxStatRPC(cmdPeer, statID, statValue);
@@ -403,7 +403,7 @@ void Widget::sendCmdLine()
 
         if (args.size() != 3 && args.size() != 6 && args.size() != 10)
         {
-            logStatusMessage(tr("Error : Instantiate takes 0,3,6 or 10 arguments").append(str));
+            logError(tr("Error : Instantiate takes 0,3,6 or 10 arguments").append(str));
             return;
         }
         // Au as au moins les 3 premiers de toute facon
@@ -414,7 +414,7 @@ void Widget::sendCmdLine()
         ownerId = args[2].toUInt(&ok2);
         if (!ok1 || !ok2)
         {
-            logStatusMessage(tr("Error : instantiate key viewId ownerId x1 y1 z1 x2 y2 z2 w2"));
+            logError(tr("Error : instantiate key viewId ownerId x1 y1 z1 x2 y2 z2 w2"));
             return;
         }
         QByteArray params1(4,0);
@@ -434,7 +434,7 @@ void Widget::sendCmdLine()
 
             if (!ok1 || !ok2 || !ok3)
             {
-                logStatusMessage(tr("Error : instantiate key viewId ownerId x1 y1 z1 x2 y2 z2 w2"));
+                logError(tr("Error : instantiate key viewId ownerId x1 y1 z1 x2 y2 z2 w2"));
                 return;
             }
         }
@@ -452,7 +452,7 @@ void Widget::sendCmdLine()
 
             if (!ok1 || !ok2 || !ok3 || !ok4)
             {
-                logStatusMessage(tr("Error : instantiate key viewId ownerId x1 y1 z1 x2 y2 z2 w2"));
+                logError(tr("Error : instantiate key viewId ownerId x1 y1 z1 x2 y2 z2 w2"));
                 return;
             }
         }
@@ -483,7 +483,7 @@ void Widget::sendCmdLine()
         str = str.right(str.size()-13);
         QStringList args = str.split(" ", QString::SkipEmptyParts);
         if (args.size() != 2)
-            win.logMessage(tr("setDialogMsg takes two args : dialog and npc name"));
+            logError(tr("setDialogMsg takes two args : dialog and npc name"));
         else
         {
             QByteArray data(1,0);
@@ -529,7 +529,7 @@ void Widget::sendCmdLine()
     {
         for (const Quest& quest : cmdPeer->pony.quests)
         {
-            win.logMessage(tr("Quest ")+QString().setNum(quest.id)+" ("+*(quest.name)
+            logMessage(tr("Quest ")+QString().setNum(quest.id)+" ("+*(quest.name)
                            +") : "+QString().setNum(quest.state));
         }
     }
@@ -537,7 +537,7 @@ void Widget::sendCmdLine()
     {
         for (const Pony* npc : Quest::npcs)
         {
-            win.logMessage(tr("NPC ")+QString().setNum(npc->id)+"/"+QString().setNum(npc->netviewId)
+            logMessage(tr("NPC ")+QString().setNum(npc->id)+"/"+QString().setNum(npc->netviewId)
                            +" "+npc->name);
         }
     }
@@ -545,7 +545,7 @@ void Widget::sendCmdLine()
     {
         for (const Mob* mob : Mob::mobs)
         {
-            win.logMessage(tr("Mob ","As in a monster, a mob you can kill")+QString().setNum(mob->id)
+            logMessage(tr("Mob ","As in a monster, a mob you can kill")+QString().setNum(mob->id)
                            +"/"+QString().setNum(mob->netviewId)
                            +" "+mob->modelName+" at "+QString().setNum(mob->pos.x)
                            +" "+QString().setNum(mob->pos.y)

@@ -145,7 +145,7 @@ void sendMessage(Player* player,quint8 messageType, QByteArray data)
 
     if (udpSocket->writeDatagram(msg,QHostAddress(player->IP),player->port) != msg.size())
     {
-        logMessage(QObject::tr("UDP: Error sending message to %1 : %2")
+        logError(QObject::tr("UDP: Error sending message to %1 : %2")
                        .arg(player->pony.netviewId).arg(udpSocket->errorString()));
         restartUdpServer();
     }

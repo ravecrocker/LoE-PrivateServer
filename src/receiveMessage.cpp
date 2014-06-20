@@ -429,7 +429,7 @@ void receiveMessage(Player* player)
                             sendWornRPC(&player->pony, scene->players[i], player->pony.worn);
                 }
                 else
-                    logMessage(QObject::tr("Error trying to wear item"));
+                    logError(QObject::tr("Error trying to wear item"));
             }
         }
         else if ((unsigned char)msg[0]==MsgUserReliableOrdered11 && (unsigned char)msg[7]==0x16) // BeginShop request

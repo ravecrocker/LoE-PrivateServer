@@ -13,7 +13,7 @@ bool Player::savePlayers(QList<Player*>& playersData)
     QFile playersFile("data/players/players.dat");
     if (!playersFile.open(QIODevice::ReadWrite | QIODevice::Truncate))
     {
-        logStatusMessage(tr("Error saving players database"));
+        logStatusError(tr("Error saving players database"));
         return false;
     }
 
@@ -41,7 +41,7 @@ QList<Player*> Player::loadPlayers()
 
     if (!playersFile.open(QIODevice::ReadOnly))
     {
-        logStatusMessage(tr("Error reading players database"));
+        logStatusError(tr("Error reading players database"));
         return players;
     }
     QList<QByteArray> data = playersFile.readAll().split('\n');
@@ -55,7 +55,7 @@ QList<Player*> Player::loadPlayers()
         QList<QByteArray> line = data[i].split('\31');
         if (line.size()!=2)
         {
-            logStatusMessage(tr("Error reading players database"));
+            logStatusError(tr("Error reading players database"));
             return players;
         }
         Player* newPlayer = new Player;
@@ -163,7 +163,7 @@ void Pony::saveQuests()
     QFile file(QDir::currentPath()+"/data/players/"+owner->name.toLatin1()+"/quests.dat");
     if (!file.open(QIODevice::ReadWrite))
     {
-        logMessage(QObject::tr("Error saving quests for %1 (%2)").arg(netviewId).arg(owner->name));
+        logError(QObject::tr("Error saving quests for %1 (%2)").arg(netviewId).arg(owner->name));
         return;
     }
     QByteArray questData = file.readAll();
@@ -215,7 +215,7 @@ void Pony::loadQuests()
     QFile file(QDir::currentPath()+"/data/players/"+owner->name.toLatin1()+"/quests.dat");
     if (!file.open(QIODevice::ReadOnly))
     {
-        logMessage(QObject::tr("Error loading quests for %1 (%2)").arg(netviewId).arg(owner->name));
+        logError(QObject::tr("Error loading quests for %1 (%2)").arg(netviewId).arg(owner->name));
         return;
     }
     QByteArray questData = file.readAll();
@@ -267,7 +267,7 @@ void Pony::saveInventory()
     QFile file(QDir::currentPath()+"/data/players/"+owner->name.toLatin1()+"/inventory.dat");
     if (!file.open(QIODevice::ReadWrite))
     {
-        logMessage(QObject::tr("Error saving inventory for %1 (%2)").arg(netviewId).arg(owner->name));
+        logError(QObject::tr("Error saving inventory for %1 (%2)").arg(netviewId).arg(owner->name));
         return;
     }
     QByteArray invData = file.readAll();
@@ -325,7 +325,7 @@ bool Pony::loadInventory()
     QFile file(QDir::currentPath()+"/data/players/"+owner->name.toLatin1()+"/inventory.dat");
     if (!file.open(QIODevice::ReadOnly))
     {
-        logMessage(QObject::tr("Error loading inventory for %1 (%2)").arg(netviewId).arg(owner->name));
+        logError(QObject::tr("Error loading inventory for %1 (%2)").arg(netviewId).arg(owner->name));
         return false;
     }
     QByteArray invData = file.readAll();

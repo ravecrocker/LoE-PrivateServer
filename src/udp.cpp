@@ -47,7 +47,7 @@ void udpProcessPendingDatagrams()
             }
             else
             {
-                logStatusMessage(QObject::tr("Socket error : %1").arg(udpSocket->errorString()));
+                logError(QObject::tr("Socket error : %1").arg(udpSocket->errorString()));
                 return;
             }
         }

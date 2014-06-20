@@ -245,7 +245,7 @@ void Player::udpResendLast()
 
     if (udpSocket->writeDatagram(msg,QHostAddress(IP),port) != msg.size())
     {
-        logMessage(tr("UDP: Error sending last message"));
+        logError(tr("UDP: Error sending last message"));
         restartUdpServer();
     }
 
@@ -298,7 +298,7 @@ void Player::udpDelayedSend()
 
         if (udpSocket->writeDatagram(udpSendReliableGroupBuffer,QHostAddress(IP),port) != udpSendReliableGroupBuffer.size())
         {
-            logMessage(tr("UDP: Error sending last message"));
+            logError(tr("UDP: Error sending last message"));
             restartUdpServer();
         }
     }

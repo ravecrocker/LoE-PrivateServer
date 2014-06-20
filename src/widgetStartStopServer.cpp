@@ -100,7 +100,7 @@ void Widget::startServer()
             QFile file("data/vortex/"+files[i]);
             if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
             {
-                logStatusMessage(tr("Error reading vortex DB"));
+                logStatusError(tr("Error reading vortex DB"));
                 return;
             }
             QByteArray data = file.readAll();
@@ -118,7 +118,7 @@ void Widget::startServer()
                 QList<QByteArray> elems = lines[j].split(' ');
                 if (elems.size() < 5)
                 {
-                    logStatusMessage(tr("Vortex DB is corrupted. Incorrect line (%1 elems), file %2")
+                    logStatusError(tr("Vortex DB is corrupted. Incorrect line (%1 elems), file %2")
                                         .arg(elems.size()).arg(files[i]));
                     corrupted=true;
                     break;
@@ -132,7 +132,7 @@ void Widget::startServer()
                 vortex.destPos.z = elems[elems.size()-1].toFloat(&ok4);
                 if (!(ok1&&ok2&&ok3&&ok4))
                 {
-                    logStatusMessage(tr("Vortex DB is corrupted. Conversion failed, file %1").arg(files[i]));
+                    logStatusError(tr("Vortex DB is corrupted. Conversion failed, file %1").arg(files[i]));
                     corrupted=true;
                     break;
                 }
@@ -166,7 +166,7 @@ void Widget::startServer()
         }
         else
         {
-            win.logMessage(tr("Couln't open Items.xml"));
+            win.logError(tr("Couln't open Items.xml"));
             stopServer();
             return;
         }
@@ -187,13 +187,13 @@ void Widget::startServer()
                     Quest quest("data/npcs/"+files[i], NULL);
                     for (const Quest& q : Quest::quests)
                         if (q.id == quest.id)
-                            logMessage(tr("Error, two quests are using the same id (%1) !").arg(quest.id));
+                            logError(tr("Error, two quests are using the same id (%1) !").arg(quest.id));
                     Quest::quests << quest;
                     Quest::npcs << quest.npc;
                 }
                 catch (QString& error)
                 {
-                    win.logMessage(error);
+                    win.logError(error);
                     win.stopServer();
                     throw error;
                 }
@@ -218,7 +218,7 @@ void Widget::startServer()
                 QFile file(MOBSPATH+files[i]);
                 if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
                 {
-                    logStatusMessage(tr("Error reading mob zones"));
+                    logStatusError(tr("Error reading mob zones"));
                     return;
                 }
                 QByteArray data = file.readAll();
@@ -228,7 +228,7 @@ void Widget::startServer()
                 }
                 catch (QString& error)
                 {
-                    logMessage(error);
+                    logError(error);
                     stopServer();
                     throw error;
                 }
@@ -248,12 +248,12 @@ void Widget::startServer()
         }
         catch (const QString& e)
         {
-            logMessage(tr("Error parsing animations: ")+e);
+            logError(tr("Error parsing animations: ")+e);
             win.stopServer();
         }
         catch (const char* e)
         {
-            logMessage(tr("Error parsing animations: ")+e);
+            logError(tr("Error parsing animations: ")+e);
             win.stopServer();
         }
     }
@@ -268,12 +268,12 @@ void Widget::startServer()
         }
         catch (const QString& e)
         {
-            logMessage(tr("Error parsing skills: ")+e);
+            logError(tr("Error parsing skills: ")+e);
             win.stopServer();
         }
         catch (const char* e)
         {
-            logMessage(tr("Error parsing skills: ")+e);
+            logError(tr("Error parsing skills: ")+e);
             stopServer();
         }
     }
@@ -290,7 +290,7 @@ void Widget::startServer()
         logStatusMessage(tr("Starting TCP login server on port %1...").arg(loginPort));
         if (!tcpServer->listen(QHostAddress::Any,loginPort))
         {
-            logStatusMessage(tr("TCP: Unable to start server on port %1 : %2").arg(loginPort).arg(tcpServer->errorString()));
+            logStatusError(tr("TCP: Unable to start server on port %1 : %2").arg(loginPort).arg(tcpServer->errorString()));
             stopServer();
             return;
         }
@@ -306,7 +306,7 @@ void Widget::startServer()
         logStatusMessage(tr("Starting UDP game server on port %1...").arg(gamePort));
         if (!udpSocket->bind(gamePort, QUdpSocket::ReuseAddressHint|QUdpSocket::ShareAddress))
         {
-            logStatusMessage(tr("UDP: Unable to start server on port %1").arg(gamePort));
+            logStatusError(tr("UDP: Unable to start server on port %1").arg(gamePort));
             stopServer();
             return;
         }

@@ -2509,12 +2509,12 @@ But if we use the prefilled password (not remember password, just the prefilled 
 => commfunction=login&username=1&passhash=356a192b7913b04c54574d18c28d46e6395428ab&version=201401
 ==> Fixed. The passhashes being different is a bug in the game.
 
-=> TODO: Might want to use color in the log for errors and warnings. As an optional parameter to logMessage maybe.
+=> Might want to use color in the log for errors and warnings. As an optional parameter to logMessage maybe.
 
 => Teleporting with a target pony instead of destination is not implemented and destination is semi-random
 ==> Fixed.
 
-=> TODO: setPeer/listPeers should use netviewIds, not Ids
+=> setPeer/listPeers should use netviewIds, not Ids
 
 => We accept loading a scene with a case insensitive name, but later we compare with case sensitivity
 => So if a player does load RaritysBouTIQUE, he'll never sync with anyone else since we compare scene names case sensitive !
@@ -2544,7 +2544,7 @@ But if we use the prefilled password (not remember password, just the prefilled 
 
 => Okay, either comment or #ifdef out the debug log between every commit, instead of every 
 
-=> TODO: Earth Ponies have Seismic Buck and Rough Terrain, Unicorns have Rainbow Fields and Magical Arrow, and Pegasi have Dual Cyclone and Gale! All three races have Ground Pound.
+=> Earth Ponies have Seismic Buck and Rough Terrain, Unicorns have Rainbow Fields and Magical Arrow, and Pegasi have Dual Cyclone and Gale! All three races have Ground Pound.
 
 => Some mobs :
 mobs/birch dryad

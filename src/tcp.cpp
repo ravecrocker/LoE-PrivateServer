@@ -65,7 +65,7 @@ void Widget::tcpProcessPendingDatagrams()
     }
     if (recvBuffer == nullptr)
     {
-        logMessage(tr("TCP: Error fetching the socket's associated recv buffer"));
+        logError(tr("TCP: Error fetching the socket's associated recv buffer"));
         return;
     }
 
@@ -105,7 +105,7 @@ void Widget::tcpProcessPendingDatagrams()
                 int length = lengthList[0].trimmed().toInt(&isNumeric);
                 if (!isNumeric) // We've got something but it's not a number
                 {
-                    logMessage(tr("TCP: Error: Content-Length must be a (decimal) number !"));
+                    logError(tr("TCP: Error: Content-Length must be a (decimal) number !"));
                     recvBuffer->clear();
                     socket->close();
                     return;
@@ -175,7 +175,7 @@ void Widget::tcpProcessPendingDatagrams()
                         head.open(QIODevice::ReadOnly);
                         if (!head.isOpen())
                         {
-                            logMessage(tr("Can't open header : ","The header is a file")+head.errorString());
+                            logError(tr("Can't open header : ","The header is a file")+head.errorString());
                             continue;
                         }
                         QByteArray logData = ui->log->toPlainText().toLatin1();
@@ -195,19 +195,19 @@ void Widget::tcpProcessPendingDatagrams()
                     head.open(QIODevice::ReadOnly);
                     if (!head.isOpen())
                     {
-                        logMessage(tr("TCP: Can't open header : ","The header is a file")+head.errorString());
+                        logError(tr("TCP: Can't open header : ","The header is a file")+head.errorString());
                         continue;
                     }
                     res.open(QIODevice::ReadOnly);
                     if (!res.isOpen())
                     {
-                        logMessage(tr("TCP: File not found"));
+                        logError(tr("TCP: File not found"));
                         head.close();
                         QFile head404(QString(NETDATAPATH)+"/notmodified.bin");
                         head404.open(QIODevice::ReadOnly);
                         if (!head404.isOpen())
                         {
-                            logMessage(tr("TCP: Can't open 304 Not Modified header : ","The header is a file")
+                            logError(tr("TCP: Can't open 304 Not Modified header : ","The header is a file")
                                        +head404.errorString());
                             continue;
                         }
@@ -244,7 +244,7 @@ void Widget::tcpProcessData(QByteArray data, QTcpSocket* socket)
     }
     if (recvBuffer == nullptr)
     {
-        logMessage(tr("TCP: Error fetching the socket's associated recv buffer"));
+        logError(tr("TCP: Error fetching the socket's associated recv buffer"));
         return;
     }
 
@@ -255,7 +255,7 @@ void Widget::tcpProcessData(QByteArray data, QTcpSocket* socket)
     // Login request (forwarded)
     if (useRemoteLogin && recvBuffer->contains("commfunction=login&") && recvBuffer->contains("&version="))
     {
-        logMessage(tr("TCP: Remote login not implemented yet."));
+        logError(tr("TCP: Remote login not implemented yet."));
         // We need to add the client with his IP/port/passhash to tcpPlayers if he isn't already there
         Player newPlayer;
         newPlayer.IP = socket->peerAddress().toIPv4Address();
@@ -274,7 +274,7 @@ void Widget::tcpProcessData(QByteArray data, QTcpSocket* socket)
             remoteLoginSock.waitForConnected(remoteLoginTimeout);
             if (!remoteLoginSock.isOpen())
             {
-                logMessage(tr("TCP: Can't connect to remote login server : timed out"));
+                logError(tr("TCP: Can't connect to remote login server : timed out"));
                 return;
             }
         }
@@ -285,7 +285,7 @@ void Widget::tcpProcessData(QByteArray data, QTcpSocket* socket)
     }
     else if (useRemoteLogin && recvBuffer->contains("Server:")) // Login reply (forwarded)
     {
-        logMessage(tr("TCP: Remote login not implemented yet."));
+        logError(tr("TCP: Remote login not implemented yet."));
         // First we need to find a player matching the received passhash in tcpPlayers
         // Use the player's IP/port to find a matching socket in tcpClientsList
         // The login headers are all the same, so we can just use loginHeader.bin and send back data
@@ -302,7 +302,7 @@ void Widget::tcpProcessData(QByteArray data, QTcpSocket* socket)
         if (!file.open(QIODevice::ReadOnly) || !fileBadPassword.open(QIODevice::ReadOnly)
         || !fileMaxRegistration.open(QIODevice::ReadOnly) || !fileServersList.open(QIODevice::ReadOnly))
         {
-            logStatusMessage(tr("TCP: Error reading data files"));
+            logError(tr("TCP: Error reading data files"));
             stopServer();
         }
         else
@@ -327,7 +327,7 @@ void Widget::tcpProcessData(QByteArray data, QTcpSocket* socket)
                 // Check max registered number
                 if (Player::tcpPlayers.size() >= maxRegistered)
                 {
-                    logMessage(tr("TCP: Registration failed, too many players registered"));
+                    logError(tr("TCP: Registration failed, too many players registered"));
                     socket->write(fileMaxRegistration.readAll());
                     ok = false;
                 }
@@ -409,7 +409,7 @@ void Widget::tcpProcessData(QByteArray data, QTcpSocket* socket)
     else // Unknown request, erase tcp buffer
     {
         // Display data
-        logMessage(tr("TCP: Unknown request received : "));
+        logError(tr("TCP: Unknown request received : "));
         logMessage(QString(data.data()));
     }
 }

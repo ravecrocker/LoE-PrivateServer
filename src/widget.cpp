@@ -47,6 +47,34 @@ void Widget::logMessage(QString msg)
     ui->log->repaint();
 }
 
+/// Adds the error in the log, and sets it as the status message
+void Widget::logStatusError(QString msg)
+{
+    static QTextCharFormat defaultFormat, redFormat;
+    defaultFormat.setForeground(QBrush(Qt::black));
+    redFormat.setForeground(QBrush(Qt::red));
+    ui->log->setCurrentCharFormat(redFormat);
+    ui->log->appendPlainText(msg);
+    ui->status->setText(msg);
+    ui->log->repaint();
+    ui->status->repaint();
+    ui->log->setCurrentCharFormat(defaultFormat);
+}
+
+/// Adds the error to the log
+void Widget::logError(QString msg)
+{
+    if (!logInfos)
+        return;
+    static QTextCharFormat defaultFormat, redFormat;
+    defaultFormat.setForeground(QBrush(Qt::black));
+    redFormat.setForeground(QBrush(Qt::red));
+    ui->log->setCurrentCharFormat(redFormat);
+    ui->log->appendPlainText(msg);
+    ui->log->repaint();
+    ui->log->setCurrentCharFormat(defaultFormat);
+}
+
 // Disconnect players, free the sockets, and exit quickly
 // Does NOT run the atexits
 Widget::~Widget()

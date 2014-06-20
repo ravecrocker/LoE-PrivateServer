@@ -114,7 +114,7 @@ void onAckReceived(QByteArray msg, Player* player)
                     qMsg = player->udpSendReliableQueue[0];
                     if (udpSocket->writeDatagram(qMsg,QHostAddress(player->IP),player->port) != qMsg.size())
                     {
-                        logMessage(QObject::tr("UDP: Error sending last message"));
+                        logError(QObject::tr("UDP: Error sending last message"));
                         restartUdpServer();
                     }
                     player->udpSendReliableTimer->start();

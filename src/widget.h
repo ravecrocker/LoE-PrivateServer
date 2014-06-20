@@ -37,6 +37,8 @@ public:
     ~Widget();
     void logMessage(QString msg);
     void logStatusMessage(QString msg);
+    void logError(QString msg);
+    void logStatusError(QString msg);
     void startServer();
     void stopServer(); // Calls stopServer(true)
     void stopServer(bool log);

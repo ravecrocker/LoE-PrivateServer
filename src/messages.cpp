@@ -211,7 +211,7 @@ void sendPonySave(Player *player, QByteArray msg)
     }
     else
     {
-        logMessage(QObject::tr("UDP: Error sending pony save : netviewId %1 not found").arg(netviewId));
+        logError(QObject::tr("UDP: Error sending pony save : netviewId %1 not found").arg(netviewId));
     }
 }
 

@@ -13,7 +13,7 @@ Quest::Quest(QString path, Player *Owner)
     QFile file(path);
     if (!file.open(QFile::ReadOnly))
     {
-        win.logMessage(QObject::tr("Error reading quest DB"));
+        win.logError(QObject::tr("Error reading quest DB"));
         win.stopServer();
         throw std::exception();
     }
@@ -143,7 +143,7 @@ int Quest::findLabel(QString label)
 
 void Quest::logError(QString message)
 {
-    win.logMessage(QObject::tr("Error running quest script %1, eip=%2 : %3").arg(id).arg(eip).arg(message));
+    win.logError(QObject::tr("Error running quest script %1, eip=%2 : %3").arg(id).arg(eip).arg(message));
 }
 
 void Quest::setOwner(Player* Owner)
