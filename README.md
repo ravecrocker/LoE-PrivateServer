@@ -5,6 +5,13 @@ This is an open source Private Server for the game Legends of Equestria, to play
 The official release is for Windows (x86 and x64). The server should work on Linux and Mac too, but you'll need to compile it yourself.<br/>
 <h5><b><a href="https://github.com/tux3/LoE-PrivateServer/releases">Downloads</a></b></h5>
 
+<h3>How to compile</h3>
+- Download <a href="https://qt-project.org/downloads">Qt 5.2.0 or later</a>
+- Download the <a href="https://github.com/tux3/LoE-PrivateServer/archive/master.zip">latest Private Server source snapshot</a>
+- Extract zip archive with source snapshot into any desired directory
+- Open src\LoE_PrivateServer.pro in Qt
+- Press Ctrl+B (or Build button) to compile the project
+
 <h3>How to use</h3>
 Extract in the Legends of Equestria folder, start PrivateServer.exe and the game. 
 In the game pick a name/password (no need to register first)
@@ -72,7 +79,7 @@ For example if you're stuck, do setPeer with your IP and port, then do for examp
 - listWorn : Lists the items worn by the player's pony
 
 <h3>List of scenes</h3>
-To use with the command "load scene_name".
+To use with the command "load scene_name". Also available via ":tp scene_name" command in the game chat.
 
 - PonyVille
 - SugarCubeCorner
@@ -92,11 +99,12 @@ To use with the command "load scene_name".
 - minigameLoader
 - PM-Lvl1
 
-Notes:
+Notes (as of Babscon 2014 RC2):
 
-- Cottage has no textures nor visible sky box, and the warp points doing nothing
-- Tartarus is a character editor screen. Accessing it will cause game to display loading screen indefinitely
-- PM-Lvl1 is the Pony Muncher game (Pac-Man clone)
+- Appaloosa is unfinished and the most of buildings has no textures
+- Cottage has no textures nor visible sky box, and the warp points aren't working properly. Walking outside of window will cause you to fall into void
+- Tartarus was excluded from the game build. Accessing it will cause game to display loading screen indefinitely. The only way to get out is to delete your character entirely
+- PM-Lvl1 is the Pony Muncher game (Pac-Man clone) with unfinished functionality. You cannot escape it by normal means
 - If you land in the void after loading a scene, try "/stuck" in the chat (and either add an issue on GitHub or complain at mlpfightingismagic@gmail.com)
 
 <img src="https://f.cloud.github.com/assets/5155966/1389911/6503cd02-3be3-11e3-987f-98611a94a106.jpg"/>
