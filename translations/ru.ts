@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="ru_RU" sourcelanguage="ru_RU">
+<TS version="2.1" language="ru_RU" sourcelanguage="ru_RU">
 <context>
     <name>Player</name>
     <message>
@@ -54,14 +54,6 @@
         <location filename="../src/player.cpp" line="301"/>
         <source>UDP: Error sending last message</source>
         <translation>UDP: Ошибка при отправке последнего сообщения</translation>
-    </message>
-    <message>
-        <source>Restarting UDP server ...</source>
-        <translation type="obsolete">Перезапускаем UDP сервер ...</translation>
-    </message>
-    <message>
-        <source>UDP: Unable to start server on port %1</source>
-        <translation type="obsolete">UDP: Невозможно запустить сервер на порту %1</translation>
     </message>
 </context>
 <context>
@@ -175,10 +167,6 @@
         <location filename="../src/messages.cpp" line="284"/>
         <source>UDP: Removing netview %1 to %2</source>
         <translation>UDP: Удаляем netview с %1 по %2</translation>
-    </message>
-    <message>
-        <source>UDP: Removing netview %1 to %2, reason code %3</source>
-        <translation type="obsolete">UDP: Удаляем netview с %1 по %2, код ошибки - %3</translation>
     </message>
     <message>
         <location filename="../src/messages.cpp" line="494"/>
@@ -480,18 +468,18 @@
     <message>
         <location filename="../src/udp.cpp" line="50"/>
         <source>Socket error : %1</source>
-        <translation type="unfinished">Ошибка сокета : %1</translation>
+        <translation>Ошибка сокета : %1</translation>
     </message>
     <message>
         <location filename="../src/udp.cpp" line="119"/>
         <source>UDP: Sesskey rejected</source>
         <comment>The sesskey is a cryptographic hash, short for session key</comment>
-        <translation type="unfinished">UDP: Ключ для сессии отклонён</translation>
+        <translation>UDP: Ключ для сессии отклонён</translation>
     </message>
     <message>
         <location filename="../src/udp.cpp" line="136"/>
         <source>UDP: Request from unknown peer rejected : %1:%2</source>
-        <translation type="unfinished">UDP: Отклонён запрос от неизвестного узла : %1:%2</translation>
+        <translation>UDP: Отклонён запрос от неизвестного узла : %1:%2</translation>
     </message>
     <message>
         <location filename="../src/receiveChatMessage.cpp" line="121"/>
@@ -789,13 +777,13 @@
     <message>
         <location filename="../src/widgetStartStopServer.cpp" line="244"/>
         <source>Loaded %1 animations</source>
-        <translation type="unfinished"></translation>
+        <translation>Анимаций загружено: %1</translation>
     </message>
     <message>
         <location filename="../src/widgetStartStopServer.cpp" line="248"/>
         <location filename="../src/widgetStartStopServer.cpp" line="253"/>
         <source>Error parsing animations: </source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка при чтении анимаций:</translation>
     </message>
     <message>
         <location filename="../src/widgetStartStopServer.cpp" line="264"/>
@@ -1077,7 +1065,7 @@
     <message>
         <location filename="../src/tcp.cpp" line="305"/>
         <source>TCP: Error reading data files</source>
-        <translation type="unfinished"></translation>
+        <translation>TCP: Ошибка при чтении файлов с данными</translation>
     </message>
     <message>
         <location filename="../src/tcp.cpp" line="310"/>
@@ -1131,19 +1119,6 @@
         <location filename="../src/tcp.cpp" line="412"/>
         <source>TCP: Unknown request received : </source>
         <translation>TCP: Получен неизвестный запрос : </translation>
-    </message>
-    <message>
-        <source>Socket error : %1</source>
-        <translation type="obsolete">Ошибка сокета : %1</translation>
-    </message>
-    <message>
-        <source>UDP: Sesskey rejected</source>
-        <comment>The sesskey is a cryptographic hash, short for session key</comment>
-        <translation type="obsolete">UDP: Ключ для сессии отклонён</translation>
-    </message>
-    <message>
-        <source>UDP: Request from unknown peer rejected : %1:%2</source>
-        <translation type="obsolete">UDP: Отклонён запрос от неизвестного узла : %1:%2</translation>
     </message>
 </context>
 </TS>
