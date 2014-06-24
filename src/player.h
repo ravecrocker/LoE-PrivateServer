@@ -108,6 +108,10 @@ public:
     quint8 inGame; // 0:Not in game, 1:Loading, 2:Instantiated & waiting savegame, 3:In game and loaded
     quint16 nReceivedDups; // Number of duplicate packets that we didn't miss and had to discard.
     QDateTime chatRollCooldownEnd; // When the cooldown for the roll chat command ends
+
+public:
+    static QList<Player*> tcpPlayers; // Used by the TCP login server
+    static QList<Player*> udpPlayers; // Used by the UDP game server
 };
 
 #endif // CHARACTER_H

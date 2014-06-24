@@ -1,14 +1,16 @@
 #include "receiveChatMessage.h"
-#include "character.h"
+#include "player.h"
 #include "serialize.h"
 #include "message.h"
 #include "widget.h"
+#include "log.h"
+#include "scene.h"
 
 void receiveChatMessage(QByteArray msg, Player* player)
 {
     QString txt = dataToString(msg.mid(7));
     QString author = player->pony.name;
-    //win.logMessage("Chat "+author+":"+txt);
+    //logMessage("Chat "+author+":"+txt);
 
     if (txt.startsWith("/stuck") || txt.startsWith("unstuck me"))
     {
@@ -47,13 +49,15 @@ void receiveChatMessage(QByteArray msg, Player* player)
             sendChatMessage(player, ":msg<br /><span color=\"yellow\">Usage:</span><br /><em>:msg player message</em><br /><span color=\"yellow\">Player names are case-insensitive, ignore spaces and you do not need to type out their full name.</span>", author, ChatLocal);
         else
         {
-            for (int i=0; i<win.udpPlayers.size(); i++)
+            for (int i=0; i<Player::udpPlayers.size(); i++)
             {
-                if (win.udpPlayers[i]->inGame>=2 && win.udpPlayers[i]->pony.name.toLower().remove(" ").startsWith(txt.toLower().section(" ", 1, 1)))
+                if (Player::udpPlayers[i]->inGame>=2 && Player::udpPlayers[i]->pony.name.toLower().remove(" ")
+                        .startsWith(txt.toLower().section(" ", 1, 1)))
                 {
                     txt = txt.remove(0, txt.indexOf(" ", 5) + 1);
-                    sendChatMessage(win.udpPlayers[i], "<span color=\"yellow\">[PM] </span>" + txt, author, ChatLocal);
-                    sendChatMessage(player, "<span color=\"yellow\">[PM to " + win.udpPlayers[i]->pony.name + "] </span>" + txt, author, ChatLocal);
+                    sendChatMessage(Player::udpPlayers[i], "<span color=\"yellow\">[PM] </span>" + txt, author, ChatLocal);
+                    sendChatMessage(player, "<span color=\"yellow\">[PM to "
+                                    + Player::udpPlayers[i]->pony.name + "] </span>" + txt, author, ChatLocal);
                 }
             }
         }
@@ -62,9 +66,11 @@ void receiveChatMessage(QByteArray msg, Player* player)
     {
         QString namesmsg = "<span color=\"yellow\">Players currently in game:</span>";
 
-        for (int i=0; i<win.udpPlayers.size(); i++)
-            if (win.udpPlayers[i]->inGame>=2)
-                namesmsg += "<br />#b" + win.udpPlayers[i]->pony.name + "#b<br /><span color=\"yellow\"> - in " + win.udpPlayers[i]->pony.sceneName + "</span>";
+        for (int i=0; i<Player::udpPlayers.size(); i++)
+            if (Player::udpPlayers[i]->inGame>=2)
+                namesmsg += "<br />#b" + Player::udpPlayers[i]->pony.name
+                        + "#b<br /><span color=\"yellow\"> - in "
+                        + Player::udpPlayers[i]->pony.sceneName + "</span>";
 
         sendChatMessage(player, namesmsg, "[Server]", ChatLocal);
     }
@@ -74,8 +80,8 @@ void receiveChatMessage(QByteArray msg, Player* player)
         {
           QString msgtosend = ":tp<br /><span color=\"yellow\">Usage:</span><br /><em>:tp location</em><br /><span color=\"yellow\">Available locations:</span><em>";
 
-            for (int i=0; i<win.scenes.size(); i++)
-                msgtosend += "<br />" + win.scenes[i].name;
+            for (int i=0; i<Scene::scenes.size(); i++)
+                msgtosend += "<br />" + Scene::scenes[i].name;
 
             sendChatMessage(player, msgtosend + "</em>", author, ChatLocal);
         }
@@ -112,7 +118,7 @@ void receiveChatMessage(QByteArray msg, Player* player)
         {
             Scene* scene = findScene(player->pony.sceneName);
             if (scene->name.isEmpty())
-                win.logMessage(QObject::tr("UDP: Can't find the scene for chat message, aborting"));
+                logMessage(QObject::tr("UDP: Can't find the scene for chat message, aborting"));
             else
             {
                 for (int i=0; i<scene->players.size(); i++)
@@ -133,18 +139,18 @@ void receiveChatMessage(QByteArray msg, Player* player)
         }
         else // Send globally
         {
-            for (int i=0; i<win.udpPlayers.size(); i++)
+            for (int i=0; i<Player::udpPlayers.size(); i++)
             {
-                if (win.udpPlayers[i]->inGame>=2)
+                if (Player::udpPlayers[i]->inGame>=2)
                 {
                     if (rollnum > -1)
-                        sendChatMessage(win.udpPlayers[i], rollstr, "[Server]", ChatGeneral);
+                        sendChatMessage(Player::udpPlayers[i], rollstr, "[Server]", ChatGeneral);
                     else if (actmsg)
-                        sendChatMessage(win.udpPlayers[i], txt, "", ChatGeneral);
+                        sendChatMessage(Player::udpPlayers[i], txt, "", ChatGeneral);
                     else if (txt.startsWith(">"))
-                        sendChatMessage(win.udpPlayers[i], "<span color=\"green\">" + txt + "</span>", author, ChatGeneral);
+                        sendChatMessage(Player::udpPlayers[i], "<span color=\"green\">" + txt + "</span>", author, ChatGeneral);
                     else
-                        sendChatMessage(win.udpPlayers[i], txt, author, ChatGeneral);
+                        sendChatMessage(Player::udpPlayers[i], txt, author, ChatGeneral);
 
                 }
             }

@@ -3,14 +3,18 @@
 #include "widget.h"
 #include "mobsStats.h"
 #include "message.h"
+#include "scene.h"
+
+QList<Mob*> Mob::mobs;
+QList<Mobzone*> Mob::mobzones;
 
 Mob::Mob(Mobzone* zone)
 {
     spawnZone = currentZone = zone;
     sceneName = zone->sceneName;
 
-    id = win.getNewId();
-    netviewId = win.getNewNetviewId();
+    id = SceneEntity::getNewId();
+    netviewId = SceneEntity::getNewNetviewId();
 
     pos = getRandomPos(zone);
 

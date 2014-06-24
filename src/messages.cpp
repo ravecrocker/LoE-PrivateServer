@@ -1,9 +1,12 @@
 #include "message.h"
-#include "character.h"
-#include "widget.h"
+#include "player.h"
 #include "serialize.h"
 #include "mob.h"
 #include "mobsStats.h"
+#include "animation.h"
+#include "quest.h"
+#include "log.h"
+#include "scene.h"
 
 #define DEBUG_LOG false
 
@@ -28,7 +31,7 @@ void sendPonies(Player* player)
     for (int i=0;i<ponies.size();i++)
         data += ponies[i].ponyData;
 
-    win.logMessage(QObject::tr("UDP: Sending characters data to %1").arg(player->pony.netviewId));
+    logMessage(QObject::tr("UDP: Sending characters data to %1").arg(player->pony.netviewId));
     sendMessage(player, MsgUserReliableOrdered4, data);
 }
 
@@ -47,33 +50,33 @@ void sendEntitiesList(Player *player)
     else if (player->inGame > 1) // Not supposed to happen, let's do it anyway
     {
         //levelLoadMutex.unlock();
-        win.logMessage(QObject::tr("UDP: Entities list already sent to %1, resending anyway").arg(player->pony.netviewId));
+        logMessage(QObject::tr("UDP: Entities list already sent to %1, resending anyway").arg(player->pony.netviewId));
         //return;
     }
     else // Loading finished, sending entities list
-    win.logMessage(QObject::tr("UDP: Sending entities list to %1").arg(player->pony.netviewId));
+    logMessage(QObject::tr("UDP: Sending entities list to %1").arg(player->pony.netviewId));
     Scene* scene = findScene(player->pony.sceneName); // Spawn all the players on the client
     for (int i=0; i<scene->players.size(); i++)
         sendNetviewInstantiate(&scene->players[i]->pony, player);
 
     // Send npcs
-    for (int i=0; i<win.npcs.size(); i++)
-        if (win.npcs[i]->sceneName.toLower() == player->pony.sceneName.toLower())
+    for (int i=0; i<Quest::npcs.size(); i++)
+        if (Quest::npcs[i]->sceneName.toLower() == player->pony.sceneName.toLower())
         {
 #if DEBUG_LOG
-            win.logMessage("UDP: Sending NPC "+win.npcs[i]->name);
+            logMessage("UDP: Sending NPC "+Quest::npcs[i]->name);
 #endif
-            sendNetviewInstantiate(win.npcs[i], player);
+            sendNetviewInstantiate(Quest::npcs[i], player);
         }
 
     // Send mobs
-    for (int i=0; i<win.mobs.size(); i++)
-        if (win.mobs[i]->sceneName.toLower() == player->pony.sceneName.toLower())
+    for (int i=0; i<Mob::mobs.size(); i++)
+        if (Mob::mobs[i]->sceneName.toLower() == player->pony.sceneName.toLower())
         {
 #if DEBUG_LOG
-            win.logMessage("UDP: Sending mob "+win.mobs[i]->modelName);
+            logMessage("UDP: Sending mob "+Mob::mobs[i]->modelName);
 #endif
-            sendNetviewInstantiate(player, win.mobs[i]);
+            sendNetviewInstantiate(player, Mob::mobs[i]);
         }
 
     player->inGame = 2;
@@ -90,22 +93,22 @@ void sendPonySave(Player *player, QByteArray msg)
 {
     if (player->inGame < 2) // Not supposed to happen, ignoring the request
     {
-        win.logMessage(QObject::tr("UDP: Savegame requested too soon by %1").arg(player->pony.netviewId));
+        logMessage(QObject::tr("UDP: Savegame requested too soon by %1").arg(player->pony.netviewId));
         return;
     }
 
     quint16 netviewId = (quint8)msg[6] + ((quint16)(quint8)msg[7]<<8);
-    Player* refresh = Player::findPlayer(win.udpPlayers, netviewId); // Find players
+    Player* refresh = Player::findPlayer(Player::udpPlayers, netviewId); // Find players
 
     // If we find a matching NPC, send him and exits
     Pony* npc = NULL;
-    for (int i=0; i<win.npcs.size(); i++)
-        if (win.npcs[i]->netviewId == netviewId)
-            npc = win.npcs[i];
+    for (int i=0; i<Quest::npcs.size(); i++)
+        if (Quest::npcs[i]->netviewId == netviewId)
+            npc = Quest::npcs[i];
     if (npc != NULL)
     {
 #if DEBUG_LOG
-        win.logMessage("UDP: Sending ponyData and worn items for NPC "+npc->name);
+        logMessage("UDP: Sending ponyData and worn items for NPC "+npc->name);
 #endif
         sendPonyData(npc, player);
         if (npc->inv.size()) // This NPC has a shop
@@ -117,9 +120,9 @@ void sendPonySave(Player *player, QByteArray msg)
 
     // If we find a matching mob, send him and exits
     Mob* mob = nullptr;
-    for (int i=0; i<win.mobs.size(); i++)
-        if (win.mobs[i]->netviewId == netviewId)
-            mob = win.mobs[i];
+    for (int i=0; i<Mob::mobs.size(); i++)
+        if (Mob::mobs[i]->netviewId == netviewId)
+            mob = Mob::mobs[i];
     if (mob != nullptr)
     {
         //win.logMessage("UDP: mob ponyData requested");
@@ -133,13 +136,13 @@ void sendPonySave(Player *player, QByteArray msg)
     {
         if (player->inGame == 3) // Hopefully that'll fix people stuck on the default cam without creating clones
         {
-            win.logMessage(QObject::tr("UDP: Savegame already sent to %1, resending anyway")
+            logMessage(QObject::tr("UDP: Savegame already sent to %1, resending anyway")
                            .arg(player->pony.netviewId));
         }
         else
         {
 #if DEBUG_LOG
-            win.logMessage(QString("UDP: Sending pony save for/to ")+QString().setNum(netviewId));
+            logMessage(QString("UDP: Sending pony save for/to ")+QString().setNum(netviewId));
 #endif
         }
 
@@ -208,7 +211,7 @@ void sendPonySave(Player *player, QByteArray msg)
     }
     else
     {
-        win.logMessage(QObject::tr("UDP: Error sending pony save : netviewId %1 not found").arg(netviewId));
+        logError(QObject::tr("UDP: Error sending pony save : netviewId %1 not found").arg(netviewId));
     }
 }
 
@@ -249,7 +252,7 @@ void sendNetviewInstantiate(Player *player)
     data += quaternionToData(player->pony.rot);
     sendMessage(player, MsgUserReliableOrdered6, data);
 
-    win.logMessage(QObject::tr("Instantiate at %1 %2 %3").arg(player->pony.pos.x)
+    logMessage(QObject::tr("Instantiate at %1 %2 %3").arg(player->pony.pos.x)
                     .arg(player->pony.pos.y).arg(player->pony.pos.z));
 }
 
@@ -278,7 +281,7 @@ void sendNetviewInstantiate(Pony *src, Player *dst)
 
 void sendNetviewRemove(Player *player, quint16 netviewId)
 {
-    win.logMessage(QObject::tr("UDP: Removing netview %1 to %2").arg(netviewId).arg(player->pony.netviewId));
+    logMessage(QObject::tr("UDP: Removing netview %1 to %2").arg(netviewId).arg(player->pony.netviewId));
 
     QByteArray data(3,2);
     data[1] = (quint8)(netviewId&0xFF);
@@ -288,8 +291,8 @@ void sendNetviewRemove(Player *player, quint16 netviewId)
 
 void sendNetviewRemove(Player* player, quint16 netviewId, quint8 reasonCode)
 {
-    win.logMessage(QObject::tr("UDP: Removing netview %1 to %2, reason code %3").arg(netviewId)
-                   .arg(player->pony.netviewId).arg(reasonCode));
+    //win.logMessage(QObject::tr("UDP: Removing netview %1 to %2, reason code %3").arg(netviewId)
+    //               .arg(player->pony.netviewId).arg(reasonCode));
 
     QByteArray data(4,2);
     data[1] = (quint8)(netviewId&0xFF);
@@ -488,11 +491,11 @@ void sendPonyData(Pony *src, Player *dst)
 
 void sendLoadSceneRPC(Player* player, QString sceneName) // Loads a scene and send to the default spawn
 {
-    win.logMessage(QObject::tr("UDP: Loading scene \"%1\" on %2").arg(sceneName).arg(player->pony.netviewId));
+    logMessage(QObject::tr("UDP: Loading scene \"%1\" on %2").arg(sceneName).arg(player->pony.netviewId));
     Vortex vortex = findVortex(sceneName, 0);
     if (vortex.destName.isEmpty())
     {
-        win.logMessage(QObject::tr("UDP: Scene not in vortex DB. Aborting scene load."));
+        logMessage(QObject::tr("UDP: Scene not in vortex DB. Aborting scene load."));
         return;
     }
 
@@ -500,7 +503,7 @@ void sendLoadSceneRPC(Player* player, QString sceneName) // Loads a scene and se
     Scene* oldScene = findScene(player->pony.sceneName);
     if (scene->name.isEmpty() || oldScene->name.isEmpty())
     {
-        win.logMessage(QObject::tr("UDP: Can't find the scene, aborting"));
+        logMessage(QObject::tr("UDP: Can't find the scene, aborting"));
         return;
     }
 
@@ -530,7 +533,7 @@ void sendLoadSceneRPC(Player* player, QString sceneName) // Loads a scene and se
 
 void sendLoadSceneRPC(Player* player, QString sceneName, UVector pos) // Loads a scene and send to the given pos
 {
-    win.logMessage(QString(QString("UDP: Loading scene \"%1\" to %2 at %3 %4 %5")
+    logMessage(QString(QString("UDP: Loading scene \"%1\" to %2 at %3 %4 %5")
                            .arg(sceneName).arg(player->pony.netviewId)
                            .arg(pos.x).arg(pos.y).arg(pos.z)));
 
@@ -538,7 +541,7 @@ void sendLoadSceneRPC(Player* player, QString sceneName, UVector pos) // Loads a
     Scene* oldScene = findScene(player->pony.sceneName);
     if (scene->name.isEmpty() || oldScene->name.isEmpty())
     {
-        win.logMessage(QObject::tr("UDP: Can't find the scene, aborting"));
+        logMessage(QObject::tr("UDP: Can't find the scene, aborting"));
         return;
     }
 
@@ -591,7 +594,7 @@ void sendMove(Player* player, float x, float y, float z)
     data += floatToData(x);
     data += floatToData(y);
     data += floatToData(z);
-    win.logMessage(QObject::tr(("UDP: Moving character")));
+    logMessage(QObject::tr(("UDP: Moving character")));
     sendMessage(player,MsgUserReliableOrdered4, data);
 }
 
@@ -744,4 +747,14 @@ void sendEndShop(Player* player)
     data += 0x17; // EndShop
 
     sendMessage(player, MsgUserReliableOrdered18, data);
+}
+
+void sendAnimation(Player* player, const Animation* animation)
+{
+    QByteArray data;
+    data += uint16ToData(player->pony.netviewId);
+    data += 0xCA; // Animation
+    data += uint32ToData(animation->id);
+
+    sendMessage(player, MsgUserReliableOrdered12, data);
 }

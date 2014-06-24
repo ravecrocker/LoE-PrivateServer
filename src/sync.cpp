@@ -1,5 +1,5 @@
 #include "sync.h"
-#include "widget.h"
+#include "scene.h"
 #include "message.h"
 #include "utils.h"
 #include "serialize.h"
@@ -10,9 +10,9 @@ Sync::Sync(QObject *parent) : QObject(parent)
     connect(syncTimer, SIGNAL(timeout()), this, SLOT(doSync()));
 }
 
-void Sync::startSync()
+void Sync::startSync(int syncInterval)
 {
-    syncTimer->start(win.syncInterval);
+    syncTimer->start(syncInterval);
 }
 
 void Sync::stopSync()
@@ -22,16 +22,16 @@ void Sync::stopSync()
 
 void Sync::doSync()
 {
-    for (int i=0; i<win.scenes.size(); i++)
+    for (int i=0; i<Scene::scenes.size(); i++)
     {
-        if (win.scenes[i].players.size()<2)
+        if (Scene::scenes[i].players.size()<2)
             continue;
-        for (int j=0; j<win.scenes[i].players.size(); j++)
-            for (int k=0; k<win.scenes[i].players.size(); k++)
+        for (int j=0; j<Scene::scenes[i].players.size(); j++)
+            for (int k=0; k<Scene::scenes[i].players.size(); k++)
             {
                 if (j==k)
                     continue;
-                sendSyncMessage(win.scenes[i].players[j], win.scenes[i].players[k]);
+                sendSyncMessage(Scene::scenes[i].players[j], Scene::scenes[i].players[k]);
             }
     }
 }

@@ -38,6 +38,10 @@ public:
 private:
     Mobzone* spawnZone;
     Mobzone* currentZone;
+
+public:
+    static QList<Mob*> mobs;
+    static QList<Mobzone*> mobzones;
 };
 
 #endif // MOB_H

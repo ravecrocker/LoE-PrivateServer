@@ -34,6 +34,10 @@ public:
     QString* descr; // Description of the quest.
     Pony* npc; // NPC of this quest's script
     Player* owner; // Player who owns this quest save / runs the script
+
+public:
+    static QList<Pony*> npcs; // List of npcs from the npcs DB
+    static QList<Quest> quests; // List of quests from the npcs DB
 };
 
 #endif // QUEST_H

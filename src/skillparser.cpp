@@ -1,5 +1,6 @@
 #include "skillparser.h"
 #include "skill.h"
+#include "animation.h"
 #include <QFile>
 #include <QJsonArray>
 #include <QJsonValue>
@@ -132,6 +133,8 @@ QMap<unsigned,SkillUpgrade> SkillParser::parseSkillUpgrades(QJsonArray jsonUpgra
             upgrade.targetEffects = parseTargetEffects(upgradeObject["TargetEffects"].toArray());
         if (upgradeObject.contains("SplashEffects"))
             upgrade.splashEffects = parseTargetEffects(upgradeObject["SplashEffects"].toArray());
+        if (upgradeObject.contains("CasterAnimation"))
+            upgrade.casterAnimation = &Animation::animations[upgradeObject["CasterAnimation"].toString()];
         skillUpgrades[upgrade.id] = upgrade;
     }
     return skillUpgrades;

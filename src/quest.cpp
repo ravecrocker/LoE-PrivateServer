@@ -2,14 +2,18 @@
 #include "widget.h"
 #include "message.h"
 #include "items.h"
+#include "player.h"
 #include <QFile>
+
+QList<Pony*> Quest::npcs; // List of npcs from the npcs DB
+QList<Quest> Quest::quests; // List of quests from the npcs DB
 
 Quest::Quest(QString path, Player *Owner)
 {
     QFile file(path);
     if (!file.open(QFile::ReadOnly))
     {
-        win.logMessage(QObject::tr("Error reading quest DB"));
+        win.logError(QObject::tr("Error reading quest DB"));
         win.stopServer();
         throw std::exception();
     }
@@ -75,7 +79,7 @@ Quest::Quest(QString path, Player *Owner)
                     throw QString(QObject::tr("Quest::Quest: Error reading wear, quest %1").arg(path));
                 WearableItem item;
                 item.id = itemId;
-                item.index = wearablePositionsToSlot(win.wearablePositionsMap[itemId]);
+                item.index = wearablePositionsToSlot(wearablePositionsMap[itemId]);
                 npc->worn << item;
             }
         }
@@ -99,10 +103,10 @@ Quest::Quest(QString path, Player *Owner)
             {
                 id = line[1].toInt();
 
-                win.lastIdMutex.lock();
+                SceneEntity::lastIdMutex.lock();
                 npc->id = 0;
                 npc->netviewId = id;
-                win.lastIdMutex.unlock();
+                SceneEntity::lastIdMutex.unlock();
             }
             else throw QString(QObject::tr("Quest::Quest: Error reading questId, quest %1").arg(path));
         else if (line[0] == "questName")
@@ -139,7 +143,7 @@ int Quest::findLabel(QString label)
 
 void Quest::logError(QString message)
 {
-    win.logMessage(QObject::tr("Error running quest script %1, eip=%2 : %3").arg(id).arg(eip).arg(message));
+    win.logError(QObject::tr("Error running quest script %1, eip=%2 : %3").arg(id).arg(eip).arg(message));
 }
 
 void Quest::setOwner(Player* Owner)

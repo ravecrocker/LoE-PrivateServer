@@ -17,16 +17,14 @@
 
 #include <QTimer>
 #include <QObject>
-#include "character.h"
-
-#define DEFAULT_SYNC_INTERVAL 250
+#include "player.h"
 
 class Sync : public QObject
 {
     Q_OBJECT
 public:
     explicit Sync(QObject* parent = 0);
-    void startSync();
+    void startSync(int syncInterval);
     void stopSync();
     void sendSyncMessage(Player *source, Player *dest);
     static void receiveSync(Player* player, QByteArray data);
