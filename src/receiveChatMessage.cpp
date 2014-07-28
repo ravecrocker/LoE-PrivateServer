@@ -21,13 +21,20 @@ void receiveChatMessage(QByteArray msg, Player* player)
         QTimer *anheroTimer = new QTimer();
         anheroTimer->setSingleShot(true);
 
+        QString deadPlayerName = player->name;
+
         QObject::connect(anheroTimer, &QTimer::timeout, [=]() {
-            sendSetStatRPC(player, 1, player->pony.health);
-            Scene* scene = findScene(player->pony.sceneName);
-            for (Player* other : scene->players)
-                sendNetviewInstantiate(&player->pony, other);
-            player->pony.dead = false;
+            // Find player again instead of reusing pointer, in case they disconnect
+            Player* deadPlayer = Player::findPlayer(Player::udpPlayers, deadPlayerName);
+            if (deadPlayer->connected && deadPlayer->pony.dead) {
+                sendSetStatRPC(deadPlayer, 1, deadPlayer->pony.health);
+                Scene* scene = findScene(deadPlayer->pony.sceneName);
+                for (Player* other : scene->players)
+                    sendNetviewInstantiate(&deadPlayer->pony, other);
+                deadPlayer->pony.dead = false;
+            }
             delete anheroTimer;
+            // Don't delete deadPlayer here. That kills the player's session
           } );
         if (!player->pony.dead)
         {
