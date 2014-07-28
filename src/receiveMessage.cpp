@@ -23,7 +23,7 @@ void receiveMessage(Player* player)
 #if UDP_SIMULATE_PACKETLOSS
     if (qrand() % 100 <= UDP_RECV_PERCENT_DROPPED)
     {
-        //win.logMessage("UDP: Received packet dropped !");
+        //app.logMessage("UDP: Received packet dropped !");
         *(player->receivedDatas) = player->receivedDatas->mid(msgSize);
         if (player->receivedDatas->size())
             receiveMessage(player);
@@ -31,7 +31,7 @@ void receiveMessage(Player* player)
     }
     else
     {
-        //win.logMessage("UDP: Received packet got through !");
+        //app.logMessage("UDP: Received packet got through !");
     }
 #endif
 
@@ -58,9 +58,9 @@ void receiveMessage(Player* player)
             {
                 // We already processed this packet, we should discard it
 #if DEBUG_LOG
-                win.logMessage("UDP: Discarding double message (-"+QString().setNum(player->udpRecvSequenceNumbers[channel]-seq)
+                app.logMessage("UDP: Discarding double message (-"+QString().setNum(player->udpRecvSequenceNumbers[channel]-seq)
                                +") from "+QString().setNum(player->pony.netviewId));
-                win.logMessage("UDP: Message was : "+QString(player->receivedDatas->left(msgSize).toHex().data()));
+                app.logMessage("UDP: Message was : "+QString(player->receivedDatas->left(msgSize).toHex().data()));
 #endif
                 player->nReceivedDups++;
                 if (player->nReceivedDups >= 100) // Kick the player if he's infinite-looping on us
@@ -76,7 +76,7 @@ void receiveMessage(Player* player)
                 if ((unsigned char)msg[0] >= MsgUserReliableOrdered1 && (unsigned char)msg[0] <= MsgUserReliableOrdered32) // UserReliableOrdered
                 {
 #if DEBUG_LOG
-                    win.logMessage("UDP: ACKing discarded message");
+                    app.logMessage("UDP: ACKing discarded message");
 #endif
                     QByteArray data(3,0);
                     data[0] = (quint8)(msg[0]); // ack type
@@ -108,7 +108,7 @@ void receiveMessage(Player* player)
         {
             if (player->nReceivedDups > 0) // If he stopped sending dups, forgive him slowly.
                 player->nReceivedDups--;
-            //win.logMessage("UDP: Received message (="+QString().setNum(seq)
+            //app.logMessage("UDP: Received message (="+QString().setNum(seq)
             //               +") from "+QString().setNum(player->pony.netviewId));
             player->udpRecvSequenceNumbers[channel] = seq;
         }
@@ -117,7 +117,7 @@ void receiveMessage(Player* player)
     // Process the received message
     if ((unsigned char)msg[0] == MsgPing) // Ping
     {
-        //win.logMessage("UDP: Ping received from "+player->IP+":"+QString().setNum(player->port)
+        //app.logMessage("UDP: Ping received from "+player->IP+":"+QString().setNum(player->port)
         //        +" ("+QString().setNum((timestampNow() - player->lastPingTime))+"s)");
         player->lastPingNumber = (quint8)msg[5];
         player->lastPingTime = timestampNow();
@@ -126,7 +126,7 @@ void receiveMessage(Player* player)
     else if ((unsigned char)msg[0] == MsgPong) // Pong
     {
 #if DEBUG_LOG
-        //win.logMessage("UDP: Pong received");
+        //app.logMessage("UDP: Pong received");
 #endif
     }
     else if ((unsigned char)msg[0] == MsgConnect) // Connect SYN
@@ -134,7 +134,7 @@ void receiveMessage(Player* player)
         msg.resize(18); // Supprime le message LocalHail et le Timestamp
         msg = msg.right(13); // Supprime le Header
 #if DEBUG_LOG
-        win.logMessage(QString("UDP: Connecting ..."));
+        app.logMessage(QString("UDP: Connecting ..."));
 #endif
 
         for (int i=0; i<32; i++) // Reset sequence counters
@@ -189,7 +189,7 @@ void receiveMessage(Player* player)
     }
     else if ((unsigned char)msg[0] >= MsgUserReliableOrdered1 && (unsigned char)msg[0] <= MsgUserReliableOrdered32) // UserReliableOrdered
     {
-        //win.logMessage("UDP: Data received (hex) : \n"+player->receivedDatas->toHex().constData());
+        //app.logMessage("UDP: Data received (hex) : \n"+player->receivedDatas->toHex().constData());
 
         QByteArray data(3,0);
         data[0] = (quint8)msg[0]; // ack type
@@ -269,7 +269,7 @@ void receiveMessage(Player* player)
                     sendNetviewInstantiate(&player->pony, scene->players[i]);
 
             //Send the 46s init messages
-            //win.logMessage(QString("UDP: Sending the 46 init messages"));
+            //app.logMessage(QString("UDP: Sending the 46 init messages"));
             sendMessage(player,MsgUserReliableOrdered4,QByteArray::fromHex("141500000000")); // Sends a 46, init friends
             sendMessage(player,MsgUserReliableOrdered4,QByteArray::fromHex("0e00000000")); // Sends a 46, init journal
         }
@@ -297,7 +297,7 @@ void receiveMessage(Player* player)
         }
         else if ((unsigned char)msg[0]==MsgUserReliableOrdered12 && (unsigned char)msg[7]==0xCA) // Animation
         {
-            //win.logMessage("UDP: Broadcasting animation");
+            //app.logMessage("UDP: Broadcasting animation");
             // Send to everyone
             Scene* scene = findScene(player->pony.sceneName);
             if (scene->name.isEmpty())
@@ -323,7 +323,7 @@ void receiveMessage(Player* player)
         else if ((unsigned char)msg[0]==MsgUserReliableOrdered11 && (unsigned char)msg[7]==0x3D) // Skill
         {
 #if DEBUG_LOG
-            win.logMessage("UDP: Broadcasting skill "+QString().setNum(dataToUint32(msg.mid(8))));
+            app.logMessage("UDP: Broadcasting skill "+QString().setNum(dataToUint32(msg.mid(8))));
 #endif
 
             bool skillOk=true;
@@ -511,7 +511,7 @@ void receiveMessage(Player* player)
         else if ((unsigned char)msg[0]==MsgUserReliableOrdered11 && (unsigned char)msg[7]==0x31) // Run script (NPC) request
         {
             quint16 targetId = ((quint16)(quint8)msg[5]) + (((quint16)(quint8)msg[6])<<8);
-            //win.logMessage("UDP: Quest "+QString().setNum(targetId)+" requested");
+            //app.logMessage("UDP: Quest "+QString().setNum(targetId)+" requested");
             for (int i=0; i<player->pony.quests.size(); i++)
                 if (player->pony.quests[i].id == targetId)
                 {
@@ -522,7 +522,7 @@ void receiveMessage(Player* player)
         }
         else if ((unsigned char)msg[0]==MsgUserReliableOrdered4 && (unsigned char)msg[5]==0xB) // Continue dialog
         {
-            //win.logMessage("UDP: Resuming script for quest "+QString().setNum(player->pony.lastQuest));
+            //app.logMessage("UDP: Resuming script for quest "+QString().setNum(player->pony.lastQuest));
             player->pony.quests[player->pony.lastQuest].processAnswer();
         }
         else if ((unsigned char)msg[0]==MsgUserReliableOrdered4 && (unsigned char)msg[5]==0xC) // Continue dialog (with answer)
@@ -531,7 +531,7 @@ void receiveMessage(Player* player)
                             + (((quint32)(quint8)msg[7])<<8)
                             + (((quint32)(quint8)msg[8])<<16)
                             + (((quint32)(quint8)msg[9])<<24);
-            //win.logMessage("UDP: Resuming script with answer "+QString().setNum(answer)
+            //app.logMessage("UDP: Resuming script with answer "+QString().setNum(answer)
             //               +" for quest "+QString().setNum(player->pony.lastQuest));
             player->pony.quests[player->pony.lastQuest].processAnswer(answer);
         }

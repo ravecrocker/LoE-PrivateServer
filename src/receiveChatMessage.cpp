@@ -2,7 +2,7 @@
 #include "player.h"
 #include "serialize.h"
 #include "message.h"
-#include "widget.h"
+#include "app.h"
 #include "log.h"
 #include "scene.h"
 

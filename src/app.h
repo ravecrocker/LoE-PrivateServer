@@ -1,7 +1,22 @@
-#ifndef WIDGET_H
-#define WIDGET_H
+#ifndef APP_H
+#define APP_H
 
-#include <QtWidgets/QWidget>
+#ifdef USE_GUI
+    #include <QtWidgets/QApplication>
+    #include <QtWidgets/QWidget>
+    #include "ui_app.h"
+    #define QAPP_TYPE QApplication
+    #define APP_CLASS QWidget
+#else // USE_CONSOLE
+    #include <QCoreApplication>
+    #include <QSocketNotifier>
+    #include <QTextStream>
+    #define QAPP_TYPE QCoreApplication
+    #define APP_CLASS QObject
+#endif
+
+#include <QFile>
+#include <QTimer>
 #include <QTcpSocket>
 #include <QTcpServer>
 #include <QByteArray>
@@ -22,9 +37,11 @@ class Mobzone;
 class Mob;
 class Sync;
 class Player;
-namespace Ui {class Widget;}
+#ifdef USE_GUI
+namespace Ui {class App;}
+#endif
 
-class Widget : public QWidget
+class App : public APP_CLASS
 {
     Q_OBJECT
 
@@ -33,8 +50,12 @@ public slots:
     void sendCmdLine();
     void checkPingTimeouts();
 public:
-    explicit Widget(QWidget *parent = 0);
-    ~Widget();
+#ifdef USE_GUI
+    explicit App(QWidget *parent = 0);
+#else
+    explicit App();
+#endif
+    ~App();
     void logMessage(QString msg);
     void logStatusMessage(QString msg);
     void logError(QString msg);
@@ -56,7 +77,11 @@ public:
     int syncInterval;
 
 private:
-    Ui::Widget* ui;
+#ifdef USE_GUI
+    Ui::App* ui;
+#else
+    QSocketNotifier *cin_notifier;
+#endif
     QTcpServer* tcpServer;
     QList<QPair<QTcpSocket*, QByteArray*>> tcpClientsList;
     QTcpSocket remoteLoginSock; // Socket to the remote login server, if we use one
@@ -66,6 +91,11 @@ private:
     std::unique_ptr<Sync> sync;
 };
 
-extern Widget win; // Defined in main
+#ifdef USE_CONSOLE
+extern QTextStream cin;
+extern QTextStream cout;
+#endif
 
-#endif // WIDGET_H
+extern App app; // Defined in main
+
+#endif // APP_H

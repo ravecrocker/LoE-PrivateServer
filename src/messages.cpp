@@ -42,7 +42,7 @@ void sendEntitiesList(Player *player)
     {
         levelLoadMutex.unlock();
 #if DEBUG_LOG
-        win.logMessage("UDP: Sending ponies list");
+        app.logMessage("UDP: Sending ponies list");
 #endif
         sendPonies(player);
         return;
@@ -125,7 +125,7 @@ void sendPonySave(Player *player, QByteArray msg)
             mob = Mob::mobs[i];
     if (mob != nullptr)
     {
-        //win.logMessage("UDP: mob ponyData requested");
+        //app.logMessage("UDP: mob ponyData requested");
         // We should probably send the mob's stats here
         sendSetMaxStatRPC(player, mob->netviewId, 1, defaultMaxHealth[(unsigned)mob->type]);
         sendSetMaxStatRPC(player, mob->netviewId, 1, mob->health);
@@ -193,7 +193,7 @@ void sendPonySave(Player *player, QByteArray msg)
     else if (!refresh->IP.isEmpty())
     {
 #if DEBUG_LOG
-        win.logMessage(QString("UDP: Sending pony save for ")+QString().setNum(refresh->pony.netviewId)
+        app.logMessage(QString("UDP: Sending pony save for ")+QString().setNum(refresh->pony.netviewId)
                        +" to "+QString().setNum(player->pony.netviewId));
 #endif
 
@@ -238,7 +238,7 @@ void sendNetviewInstantiate(Player* player, Mob* mob)
 void sendNetviewInstantiate(Player *player)
 {
 #if DEBUG_LOG
-    win.logMessage("UDP: Send instantiate for/to "+QString().setNum(player->pony.netviewId));
+    app.logMessage("UDP: Send instantiate for/to "+QString().setNum(player->pony.netviewId));
 #endif
     QByteArray data(1,1);
     data += stringToData("PlayerBase");
@@ -259,7 +259,7 @@ void sendNetviewInstantiate(Player *player)
 void sendNetviewInstantiate(Pony *src, Player *dst)
 {
 #if DEBUG_LOG
-    win.logMessage("UDP: Send instantiate for "+QString().setNum(src->netviewId)
+    app.logMessage("UDP: Send instantiate for "+QString().setNum(src->netviewId)
                    +" to "+QString().setNum(dst->pony.netviewId));
 #endif
     QByteArray data(1,1);
@@ -274,7 +274,7 @@ void sendNetviewInstantiate(Pony *src, Player *dst)
     data += quaternionToData(src->rot);
     sendMessage(dst, MsgUserReliableOrdered6, data);
 
-   //win.logMessage(QString("Instantiate at ")+QString().setNum(rSrc.pony.pos.x)+" "
+   //app.logMessage(QString("Instantiate at ")+QString().setNum(rSrc.pony.pos.x)+" "
    //                +QString().setNum(rSrc.pony.pos.y)+" "
    //                +QString().setNum(rSrc.pony.pos.z));
 }
@@ -291,7 +291,7 @@ void sendNetviewRemove(Player *player, quint16 netviewId)
 
 void sendNetviewRemove(Player* player, quint16 netviewId, quint8 reasonCode)
 {
-    //win.logMessage(QObject::tr("UDP: Removing netview %1 to %2, reason code %3").arg(netviewId)
+    //app.logMessage(QObject::tr("UDP: Removing netview %1 to %2, reason code %3").arg(netviewId)
     //               .arg(player->pony.netviewId).arg(reasonCode));
 
     QByteArray data(4,2);
@@ -469,7 +469,7 @@ void sendSkillsRPC(Player* player, QList<QPair<quint32, quint32> > &skills)
 void sendPonyData(Player *player)
 {
     // Sends the ponyData
-    //win.logMessage(QString("UDP: Sending the ponyData for/to "+QString().setNum(player->pony.netviewId)));
+    //app.logMessage(QString("UDP: Sending the ponyData for/to "+QString().setNum(player->pony.netviewId)));
     QByteArray data(3,0xC8);
     data[0] = (quint8)(player->pony.netviewId&0xFF);
     data[1] = (quint8)((player->pony.netviewId>>8)&0xFF);
@@ -480,7 +480,7 @@ void sendPonyData(Player *player)
 void sendPonyData(Pony *src, Player *dst)
 {
     // Sends the ponyData
-    //win.logMessage(QString("UDP: Sending the ponyData for "+QString().setNum(src->pony.netviewId)
+    //app.logMessage(QString("UDP: Sending the ponyData for "+QString().setNum(src->pony.netviewId)
     //                       +" to "+QString().setNum(dst->pony.netviewId)));
     QByteArray data(3,0xC8);
     data[0] = (quint8)(src->netviewId&0xFF);
@@ -508,7 +508,7 @@ void sendLoadSceneRPC(Player* player, QString sceneName) // Loads a scene and se
     }
 
     // Update scene players
-    //win.logMessage("sendLoadSceneRPC: locking");
+    //app.logMessage("sendLoadSceneRPC: locking");
     levelLoadMutex.lock();
     player->inGame=1;
     player->pony.pos = vortex.destPos;
@@ -527,7 +527,7 @@ void sendLoadSceneRPC(Player* player, QString sceneName) // Loads a scene and se
     QByteArray data(1,5);
     data += stringToData(sceneName.toLower());
     sendMessage(player,MsgUserReliableOrdered6,data); // Sends a 48
-    //win.logMessage("sendLoadSceneRPC: unlocking");
+    //app.logMessage("sendLoadSceneRPC: unlocking");
     levelLoadMutex.unlock();
 }
 
@@ -546,7 +546,7 @@ void sendLoadSceneRPC(Player* player, QString sceneName, UVector pos) // Loads a
     }
 
     // Update scene players
-    //win.logMessage("sendLoadSceneRPC pos: locking");
+    //app.logMessage("sendLoadSceneRPC pos: locking");
     levelLoadMutex.lock();
     player->inGame=1;
     player->pony.pos = pos;
@@ -565,7 +565,7 @@ void sendLoadSceneRPC(Player* player, QString sceneName, UVector pos) // Loads a
     QByteArray data(1,5);
     data += stringToData(sceneName.toLower());
     sendMessage(player,MsgUserReliableOrdered6,data); // Sends a 48
-    //win.logMessage("sendLoadSceneRPC pos: unlocking");
+    //app.logMessage("sendLoadSceneRPC pos: unlocking");
     levelLoadMutex.unlock();
 }
 

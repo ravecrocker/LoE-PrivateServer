@@ -53,7 +53,7 @@ void Sync::sendSyncMessage(Player* source, Player* dest)
     //data += rangedSingleToData(source.pony.rot.z, ROTMIN, ROTMAX, RotRSSize);
     sendMessage(dest, MsgUserUnreliable, data);
 
-    //win.logMessage("UDP: Syncing "+QString().setNum(source->pony.netviewId)+" to "+QString().setNum(dest->pony.netviewId));
+    //app.logMessage("UDP: Syncing "+QString().setNum(source->pony.netviewId)+" to "+QString().setNum(dest->pony.netviewId));
 }
 // TODO: Test ranged singles on PonyVille with the bounds from the text assets
 // Or maybe test the command that gives the bounds to the clients
@@ -62,7 +62,7 @@ void Sync::receiveSync(Player* player, QByteArray data) // Receives the 01 updat
 {
     if (player->inGame < 2) // A sync message while loading would teleport use to a wrong position
         return;
-    //win.logMessage("Got sync from "+QString().setNum(player->pony.netviewId));
+    //app.logMessage("Got sync from "+QString().setNum(player->pony.netviewId));
 
     // 5 and 6 are id and id>>8
     player->pony.pos.x = dataToFloat(data.mid(11));

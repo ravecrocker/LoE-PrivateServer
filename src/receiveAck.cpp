@@ -118,12 +118,12 @@ void onAckReceived(QByteArray msg, Player* player)
                         restartUdpServer();
                     }
                     player->udpSendReliableTimer->start();
-                    //win.logMessage("receiveMessage ACK unlocking");
+                    //app.logMessage("receiveMessage ACK unlocking");
                     player->udpSendReliableMutex.unlock();
                 }
                 else
                 {
-                    //win.logMessage("receiveMessage ACK unlocking");
+                    //app.logMessage("receiveMessage ACK unlocking");
                     player->udpSendReliableMutex.unlock();
                 }
             }
@@ -131,7 +131,7 @@ void onAckReceived(QByteArray msg, Player* player)
             {
                 player->udpSendReliableQueue[0] = qMsg;
                 player->udpSendReliableTimer->start(); // We're still waiting for some msgs to get ACK'd
-                //win.logMessage("receiveMessage ACK unlocking");
+                //app.logMessage("receiveMessage ACK unlocking");
                 player->udpSendReliableMutex.unlock();
             }
 

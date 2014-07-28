@@ -52,11 +52,11 @@ void sendMessage(Player* player,quint8 messageType, QByteArray data)
         msg += data;
         player->udpSequenceNumbers[32]++;
 
-        //win.logMessage(QString("Sending sync data :")+msg.toHex());
+        //app.logMessage(QString("Sending sync data :")+msg.toHex());
     }
     else if (messageType >= MsgUserReliableOrdered1 && messageType <= MsgUserReliableOrdered32)
     {
-        //win.logMessage("sendMessage locking");
+        //app.logMessage("sendMessage locking");
         player->udpSendReliableMutex.lock();
         player->udpSendReliableGroupTimer->stop();
         msg.resize(5);
@@ -76,7 +76,7 @@ void sendMessage(Player* player,quint8 messageType, QByteArray data)
 
         player->udpSendReliableGroupTimer->start(); // When this timeouts, the content of the buffer will be sent reliably
 
-        //win.logMessage("sendMessage unlocking");
+        //app.logMessage("sendMessage unlocking");
         player->udpSendReliableMutex.unlock();
         return; // This isn't a normal send, but a delayed one with the timer callbacks
     }
@@ -90,7 +90,7 @@ void sendMessage(Player* player,quint8 messageType, QByteArray data)
     }
     else if (messageType == MsgConnectResponse)
     {
-        //win.logMessage("sendMessage locking");
+        //app.logMessage("sendMessage locking");
         player->udpSendReliableMutex.lock();
         player->udpSendReliableGroupTimer->stop();
         msg.resize(5);
@@ -98,7 +98,7 @@ void sendMessage(Player* player,quint8 messageType, QByteArray data)
         msg[3] = 0x88;
         msg[4] = 0x00;
 
-        //win.logMessage("UDP: Header data : "+msg.toHex());
+        //app.logMessage("UDP: Header data : "+msg.toHex());
 
         // AppId + UniqueId
         msg += data;
@@ -110,7 +110,7 @@ void sendMessage(Player* player,quint8 messageType, QByteArray data)
 
         player->udpSendReliableGroupTimer->start(); // When this timeouts, the content of the buffer will be sent reliably
 
-        //win.logMessage("sendMessage unlocking");
+        //app.logMessage("sendMessage unlocking");
         player->udpSendReliableMutex.unlock();
         return; // This isn't a normal send, but a delayed one with the timer callbacks
     }

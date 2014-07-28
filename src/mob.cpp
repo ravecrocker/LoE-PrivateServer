@@ -1,6 +1,6 @@
 #include "mob.h"
 #include "mobzone.h"
-#include "widget.h"
+#include "app.h"
 #include "mobsStats.h"
 #include "message.h"
 #include "scene.h"

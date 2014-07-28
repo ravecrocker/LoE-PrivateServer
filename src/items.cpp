@@ -1,6 +1,6 @@
 #include "items.h"
 #include "dataType.h"
-#include "widget.h"
+#include "app.h"
 #include <QString>
 #include <QStringList>
 #include <cmath>
@@ -61,7 +61,7 @@ void parseItemsXml(QByteArray data)
             else if (slot == "BackKnees")   itemSlots |= (uint32_t)WearablePositions::BackKnees;
             else if (slot == "SaddleBags")   itemSlots |= (uint32_t)WearablePositions::SaddleBags;
             else if (slot == "Hat")   itemSlots |= (uint32_t)WearablePositions::Hat;
-            else    win.logMessage(QObject::tr("Unknown wearable slots while parsing Items.xml"));
+            else    app.logMessage(QObject::tr("Unknown wearable slots while parsing Items.xml"));
         }
         wearablePositionsMap[id] = itemSlots;
         itemsPricesMap[id] = price;
