@@ -1,22 +1,22 @@
 #include "log.h"
-#include "widget.h"
+#include "app.h"
 
 void logMessage(QString msg)
 {
-    win.logMessage(msg);
+    app.logMessage(msg);
 }
 
 void logStatusMessage(QString msg)
 {
-    win.logStatusMessage(msg);
+    app.logStatusMessage(msg);
 }
 
 void logError(QString msg)
 {
-    win.logError(msg);
+    app.logError(msg);
 }
 
 void logStatusError(QString msg)
 {
-    win.logStatusError(msg);
+    app.logStatusError(msg);
 }

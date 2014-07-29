@@ -1,5 +1,4 @@
-#include "widget.h"
-#include "ui_widget.h"
+#include "app.h"
 #include "player.h"
 #include "message.h"
 #include "utils.h"
@@ -12,16 +11,24 @@
 
 using namespace Settings;
 
-Widget::Widget(QWidget *parent) :
+#ifdef USE_CONSOLE
+App::App() :
+#else
+App::App(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::Widget),
+    ui(new Ui::App),
+#endif
     cmdPeer(new Player()),
     sync{new Sync()}
 {
     tcpServer = new QTcpServer(this);
     udpSocket = new QUdpSocket(this);
     tcpReceivedDatas = new QByteArray();
+#ifdef USE_GUI
     ui->setupUi(this);
+#else
+    cin_notifier = new QSocketNotifier(fileno(stdin), QSocketNotifier::Read, this);
+#endif
 
     pingTimer = new QTimer(this);
 
@@ -30,26 +37,35 @@ Widget::Widget(QWidget *parent) :
 }
 
 /// Adds the message in the log, and sets it as the status message
-void Widget::logStatusMessage(QString msg)
+void App::logStatusMessage(QString msg)
 {
+#ifdef USE_GUI
     ui->log->appendPlainText(msg);
     ui->status->setText(msg);
     ui->log->repaint();
     ui->status->repaint();
+#else
+    cout << msg << endl;
+#endif
 }
 
 /// Adds the message to the log
-void Widget::logMessage(QString msg)
+void App::logMessage(QString msg)
 {
     if (!logInfos)
         return;
+#ifdef USE_GUI
     ui->log->appendPlainText(msg);
     ui->log->repaint();
+#else
+    cout << msg << endl;
+#endif
 }
 
 /// Adds the error in the log, and sets it as the status message
-void Widget::logStatusError(QString msg)
+void App::logStatusError(QString msg)
 {
+#ifdef USE_GUI
     static QTextCharFormat defaultFormat, redFormat;
     defaultFormat.setForeground(QBrush(Qt::black));
     redFormat.setForeground(QBrush(Qt::red));
@@ -59,13 +75,17 @@ void Widget::logStatusError(QString msg)
     ui->log->repaint();
     ui->status->repaint();
     ui->log->setCurrentCharFormat(defaultFormat);
+#else
+    cout << "ERROR: " << msg << endl;
+#endif
 }
 
 /// Adds the error to the log
-void Widget::logError(QString msg)
+void App::logError(QString msg)
 {
     if (!logInfos)
         return;
+#ifdef USE_GUI
     static QTextCharFormat defaultFormat, redFormat;
     defaultFormat.setForeground(QBrush(Qt::black));
     redFormat.setForeground(QBrush(Qt::red));
@@ -73,11 +93,14 @@ void Widget::logError(QString msg)
     ui->log->appendPlainText(msg);
     ui->log->repaint();
     ui->log->setCurrentCharFormat(defaultFormat);
+#else
+    cout << "ERROR: " << msg << endl;
+#endif
 }
 
 // Disconnect players, free the sockets, and exit quickly
 // Does NOT run the atexits
-Widget::~Widget()
+App::~App()
 {
     logInfos=false; // logMessage while we're trying to destroy would crash.
     //logMessage(tr("UDP: Disconnecting all players"));
@@ -114,7 +137,11 @@ Widget::~Widget()
     delete pingTimer;
     delete cmdPeer;
 
+#ifdef USE_GUI
     delete ui;
+#else
+    delete cin_notifier;
+#endif
 
     // We freed everything that was important, so don't waste time in atexits
 #if defined WIN32 || defined _WIN32 || defined __APPLE__

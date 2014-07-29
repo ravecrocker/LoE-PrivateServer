@@ -30,7 +30,7 @@ Makefile*
 object_script.LoE_PrivateServer.Debug
 object_script.LoE_PrivateServer.Release
 moc_*
-ui_widget.h
+ui_app.h
 *.autosave
 
 # My saves

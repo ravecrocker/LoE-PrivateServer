@@ -1,12 +1,16 @@
-#include <QtWidgets/QApplication>
 #include <QTranslator>
 #include <QDir>
-#include "widget.h"
+#include "app.h"
 
-int argc=0;
+int argc = 0;
 
-QApplication a(argc,(char**)0);
-Widget win;
+#ifdef USE_CONSOLE
+QTextStream cout(stdout);
+QTextStream cin(stdin);
+#endif
+
+QAPP_TYPE a(argc,(char**)0);
+App app;
 
 int main(int, char**)
 {
@@ -14,15 +18,19 @@ int main(int, char**)
     QCoreApplication::addLibraryPath(QCoreApplication::applicationDirPath());
     a.addLibraryPath("platforms");
 
+    // Translation
     QString locale = QLocale::system().name().section('_', 0, 0);
 
     QTranslator translator;
     translator.load("translations/"+locale);
     a.installTranslator(&translator);
 
-    win.show();
+    // Running the server
+#ifdef USE_GUI
+    app.show();
+#endif
     a.processEvents();
-    win.startServer();
+    app.startServer();
 
     return a.exec(); // win's dtor will quick_exit (we won't run the atexits)
 }

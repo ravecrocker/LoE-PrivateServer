@@ -1,5 +1,4 @@
-#include "widget.h"
-#include "ui_widget.h"
+#include "app.h"
 #include "skillparser.h"
 #include "mobsParser.h"
 #include "animationparser.h"
@@ -26,13 +25,15 @@
 using namespace Settings;
 
 /// Reads the config file (server.ini) and start the server accordingly
-void Widget::startServer()
+void App::startServer()
 {
+#ifdef USE_GUI
     ui->retranslateUi(this);
+#endif
 
     logStatusMessage(tr("Private server")+" v0.5.3-beta1");
-#ifdef __APPLE__
-    // this fixes the directory in OSX so we can use the relative CONFIGFILEPATH and etc properly
+#if defined USE_GUI && defined __APPLE__
+    // this fixes the bundle directory in OSX so we can use the relative CONFIGFILEPATH and etc properly
     CFBundleRef mainBundle = CFBundleGetMainBundle();
     CFURLRef resourcesURL = CFBundleCopyBundleURL(mainBundle);
     char path[PATH_MAX];
@@ -137,7 +138,7 @@ void Widget::startServer()
                     break;
                 }
                 scene.vortexes << vortex;
-                //win.logMessage("Add vortex "+QString().setNum(vortex.id)+" to "+vortex.destName+" "
+                //app.logMessage("Add vortex "+QString().setNum(vortex.id)+" to "+vortex.destName+" "
                 //               +QString().setNum(vortex.destPos.x)+" "
                 //               +QString().setNum(vortex.destPos.y)+" "
                 //               +QString().setNum(vortex.destPos.z));
@@ -162,11 +163,11 @@ void Widget::startServer()
         {
             QByteArray data = itemsFile.readAll();
             parseItemsXml(data);
-            win.logMessage(tr("Loaded %1 items").arg(wearablePositionsMap.size()));
+            app.logMessage(tr("Loaded %1 items").arg(wearablePositionsMap.size()));
         }
         else
         {
-            win.logError(tr("Couln't open Items.xml"));
+            app.logError(tr("Couln't open Items.xml"));
             stopServer();
             return;
         }
@@ -193,8 +194,8 @@ void Widget::startServer()
                 }
                 catch (QString& error)
                 {
-                    win.logError(error);
-                    win.stopServer();
+                    app.logError(error);
+                    app.stopServer();
                     throw error;
                 }
             }
@@ -249,12 +250,12 @@ void Widget::startServer()
         catch (const QString& e)
         {
             logError(tr("Error parsing animations: ")+e);
-            win.stopServer();
+            app.stopServer();
         }
         catch (const char* e)
         {
             logError(tr("Error parsing animations: ")+e);
-            win.stopServer();
+            app.stopServer();
         }
     }
 
@@ -269,7 +270,7 @@ void Widget::startServer()
         catch (const QString& e)
         {
             logError(tr("Error parsing skills: ")+e);
-            win.stopServer();
+            app.stopServer();
         }
         catch (const char* e)
         {
@@ -324,7 +325,11 @@ void Widget::startServer()
     if (enableLoginServer || enableGameServer)
         logStatusMessage(tr("Server started"));
 
+#ifdef USE_GUI
     connect(ui->sendButton, SIGNAL(clicked()), this, SLOT(sendCmdLine()));
+#else
+    connect(cin_notifier, SIGNAL(activated(int)), this, SLOT(sendCmdLine()));
+#endif
     if (enableLoginServer)
         connect(tcpServer, SIGNAL(newConnection()), this, SLOT(tcpConnectClient()));
     if (enableGameServer)
@@ -334,12 +339,12 @@ void Widget::startServer()
     }
 }
 
-void Widget::stopServer()
+void App::stopServer()
 {
     stopServer(true);
 }
 
-void Widget::stopServer(bool log)
+void App::stopServer(bool log)
 {
     if (log)
         logStatusMessage(tr("Stopping all server operations"));
@@ -354,7 +359,11 @@ void Widget::stopServer(bool log)
     enableLoginServer = false;
     enableGameServer = false;
 
+#ifdef USE_GUI
     disconnect(ui->sendButton, SIGNAL(clicked()), this, SLOT(sendCmdLine()));
+#else
+    disconnect(cin_notifier, SIGNAL(activated(int)), this, SLOT(sendCmdLine()));
+#endif
     disconnect(udpSocket);
     disconnect(tcpServer, SIGNAL(newConnection()), this, SLOT(tcpConnectClient()));
     disconnect(pingTimer, SIGNAL(timeout()), this, SLOT(checkPingTimeouts()));

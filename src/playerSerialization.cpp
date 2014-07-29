@@ -114,7 +114,7 @@ QList<Pony> Player::loadPonies(Player* player)
         int ponyDataSize = strlen+lensize+43;
         pony.ponyData = data.mid(i,ponyDataSize);
         pony.name = dataToString(pony.ponyData); // The name is the first elem
-        //win.logMessage("Found pony : "+pony.name);
+        //app.logMessage("Found pony : "+pony.name);
         i+=ponyDataSize;
 
         // Read pos
@@ -174,7 +174,7 @@ void Pony::saveQuests()
         // Read the name
         QString entryName = dataToString(questData.mid(i));
         int nameSize = entryName.size()+getVUint32Size(questData.mid(i));
-        //win.logMessage("saveQuests : Reading entry "+entryName);
+        //app.logMessage("saveQuests : Reading entry "+entryName);
 
         quint16 entryDataSize = 4 * dataToUint16(questData.mid(i+nameSize));
         if (entryName == this->name) // Delete the entry, we'll rewrite it at the end
@@ -228,7 +228,7 @@ void Pony::loadQuests()
         QString entryName = dataToString(questData.mid(i));
         int nameSize = entryName.size()+getVUint32Size(questData.mid(i));
         i+=nameSize;
-        //win.logMessage("loadQuests : Reading entry "+entryName);
+        //app.logMessage("loadQuests : Reading entry "+entryName);
 
         quint16 nquests = dataToUint16(questData.mid(i));
         i+=2;
@@ -278,7 +278,7 @@ void Pony::saveInventory()
         // Read the name
         QString entryName = dataToString(invData.mid(i));
         int nameSize = entryName.size()+getVUint32Size(invData.mid(i));
-        //win.logMessage("saveInventory : Reading entry "+entryName);
+        //app.logMessage("saveInventory : Reading entry "+entryName);
 
         quint8 invSize = invData[i+nameSize+4];
         quint8 wornSize = invData[i+nameSize+4+1+invSize*9]; // Serialized sizeof InventoryItem is 9
@@ -337,7 +337,7 @@ bool Pony::loadInventory()
         // Read the name
         QString entryName = dataToString(invData.mid(i));
         int nameSize = entryName.size()+getVUint32Size(invData.mid(i));
-        //win.logMessage("loadInventory : Reading entry "+entryName);
+        //app.logMessage("loadInventory : Reading entry "+entryName);
 
         quint8 invSize = invData[i+nameSize+4];
         quint8 wornSize = invData[i+nameSize+4+1+invSize*9]; // Serialized sizeof InventoryItem is 9

@@ -1,6 +1,6 @@
 #include "skill.h"
 #include "statsComponent.h"
-#include "widget.h"
+#include "app.h"
 #include "animation.h"
 #include <QTimer>
 #include <QObject>
@@ -31,13 +31,13 @@ bool Skill::applySkill(unsigned skillId, StatsComponent& target, SkillTarget tar
     // Skill/upgrade resolution
     if (!skills.contains(skillId))
     {
-        win.logMessage(QObject::tr("Skill::applySkill: No skill with ID %1").arg(skillId));
+        app.logMessage(QObject::tr("Skill::applySkill: No skill with ID %1").arg(skillId));
         return false;
     }
     Skill& skill = skills[skillId];
     if (!skill.upgrades.contains(upgradeId))
     {
-        win.logMessage(QObject::tr("Skill::applySkill: Skill with ID %1 has no upgrade %2").arg(skillId).arg(upgradeId));
+        app.logMessage(QObject::tr("Skill::applySkill: Skill with ID %1 has no upgrade %2").arg(skillId).arg(upgradeId));
         return false;
     }
     SkillUpgrade& upgrade(skill.upgrades[upgradeId]);

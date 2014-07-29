@@ -12,6 +12,15 @@ The official release is for Windows (x86 and x64). The server should work on Lin
 - Open src\LoE_PrivateServer.pro in Qt
 - Press Ctrl+B (or Build button) to compile the project
 
+<h4>How to compile a console version</h4>
+- Open src\LoE_PrivateServer.pro in Qt
+- Open <b>Projects</b> on the left sidebar
+- Under <i>Edit Build Configuration</i> click <b>Add->Clone Selected</b>
+- Name it something like <i>Console Release</i>
+- Under <i>Build Steps</i>, expand <b>qmake</b>
+- In <i>Additional Arguments</i>, paste the following: `CONFIG+=console_only`
+- Press Ctrl+B (or Build button) to compile the project
+
 <h3>How to use</h3>
 Extract in the Legends of Equestria folder, start PrivateServer.exe and the game. 
 In the game pick a name/password (no need to register first)

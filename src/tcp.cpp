@@ -1,5 +1,4 @@
-#include "widget.h"
-#include "ui_widget.h"
+#include "app.h"
 #include "message.h"
 #include "utils.h"
 #include "player.h"
@@ -10,7 +9,7 @@
 
 using namespace Settings;
 
-void Widget::tcpConnectClient()
+void App::tcpConnectClient()
 {
 #if DEBUG_LOG
     logMessage(tr("TCP: New client connected"));
@@ -23,7 +22,7 @@ void Widget::tcpConnectClient()
     connect(newClient, SIGNAL(disconnected()), this, SLOT(tcpDisconnectClient()));
 }
 
-void Widget::tcpDisconnectClient()
+void App::tcpDisconnectClient()
 {
     // Find who's disconnecting, if we can't, just give up
     QTcpSocket *socket = qobject_cast<QTcpSocket *>(sender());
@@ -47,7 +46,7 @@ void Widget::tcpDisconnectClient()
     socket->deleteLater();
 }
 
-void Widget::tcpProcessPendingDatagrams()
+void App::tcpProcessPendingDatagrams()
 {
     // Find who's sending
     QTcpSocket *socket = qobject_cast<QTcpSocket *>(sender());
@@ -178,7 +177,11 @@ void Widget::tcpProcessPendingDatagrams()
                             logError(tr("Can't open header : ","The header is a file")+head.errorString());
                             continue;
                         }
+#ifdef USE_GUI
                         QByteArray logData = ui->log->toPlainText().toLatin1();
+#else
+                        QByteArray logData = ""; //TODO: Fix this later
+#endif
                         socket->write(head.readAll());
                         socket->write(QString("Content-Length: "+QString().setNum(logData.size())+"\r\n\r\n").toLocal8Bit());
                         socket->write(logData);
@@ -231,7 +234,7 @@ void Widget::tcpProcessPendingDatagrams()
     }
 }
 
-void Widget::tcpProcessData(QByteArray data, QTcpSocket* socket)
+void App::tcpProcessData(QByteArray data, QTcpSocket* socket)
 {
     QByteArray* recvBuffer=nullptr;
     for (auto pair : tcpClientsList)

@@ -1,4 +1,4 @@
-#include "widget.h"
+#include "app.h"
 #include "utils.h"
 #include "message.h"
 #include "player.h"
@@ -6,7 +6,7 @@
 
 using namespace Settings;
 
-void Widget::checkPingTimeouts()
+void App::checkPingTimeouts()
 {
     for (int i=0;i<Player::udpPlayers.size();i++)
     {

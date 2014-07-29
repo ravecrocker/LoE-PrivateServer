@@ -1,5 +1,4 @@
-#include "widget.h"
-#include "ui_widget.h"
+#include "app.h"
 
 #if defined WIN32 || defined _WIN32
 #include <windows.h>
@@ -31,5 +30,5 @@ float timestampNow()
     clock_gettime(CLOCK_MONOTONIC, &tp);
     newtime = tp.tv_sec*1000 + tp.tv_nsec/1000/1000;
 #endif
-    return (float)(((float)(newtime - win.startTimestamp))/(float)1000); // Seconds since server start (startTimestamp)
+    return (float)(((float)(newtime - app.startTimestamp))/(float)1000); // Seconds since server start (startTimestamp)
 }

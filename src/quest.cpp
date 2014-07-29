@@ -1,5 +1,5 @@
 #include "quest.h"
-#include "widget.h"
+#include "app.h"
 #include "message.h"
 #include "items.h"
 #include "player.h"
@@ -13,8 +13,8 @@ Quest::Quest(QString path, Player *Owner)
     QFile file(path);
     if (!file.open(QFile::ReadOnly))
     {
-        win.logError(QObject::tr("Error reading quest DB"));
-        win.stopServer();
+        app.logError(QObject::tr("Error reading quest DB"));
+        app.stopServer();
         throw std::exception();
     }
 
@@ -143,7 +143,7 @@ int Quest::findLabel(QString label)
 
 void Quest::logError(QString message)
 {
-    win.logError(QObject::tr("Error running quest script %1, eip=%2 : %3").arg(id).arg(eip).arg(message));
+    app.logError(QObject::tr("Error running quest script %1, eip=%2 : %3").arg(id).arg(eip).arg(message));
 }
 
 void Quest::setOwner(Player* Owner)
@@ -169,11 +169,11 @@ bool Quest::doCommand(int commandEip)
 {
     if (!owner)
     {
-        win.logMessage(QObject::tr("Quest::doCommand called with no owner"));
+        app.logMessage(QObject::tr("Quest::doCommand called with no owner"));
         return false;
     }
 
-    //win.logMessage("Executing command "+QString().setNum(eip));
+    //app.logMessage("Executing command "+QString().setNum(eip));
 
     QStringList command = (*commands)[commandEip];
 

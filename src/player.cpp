@@ -191,7 +191,7 @@ void Player::disconnectPlayerCleanup(Player* player)
     if (scene->name.isEmpty())
         logMessage(tr("UDP: Can't find scene for player cleanup"));
 
-    //win.logMessage("playerCleanup locking");
+    //app.logMessage("playerCleanup locking");
     playerCleanupMutex.lock();
     removePlayer(scene->players, uIP, uPort);
     for (int i=0; i<scene->players.size(); i++)
@@ -201,13 +201,13 @@ void Player::disconnectPlayerCleanup(Player* player)
     player->udpSendReliableGroupTimer->stop();
     removePlayer(Player::udpPlayers, uIP, uPort);
     delete player;
-    //win.logMessage("playerCleanup unlocking");
+    //app.logMessage("playerCleanup unlocking");
     playerCleanupMutex.unlock();
 }
 
 void Player::udpResendLast()
 {
-    //win.logMessage("udpResendLast locking");
+    //app.logMessage("udpResendLast locking");
     if (!udpSendReliableMutex.tryLock())
     {
         logMessage(tr("udpResendLast failed to lock."));
@@ -219,13 +219,13 @@ void Player::udpResendLast()
     {
         logMessage(tr("udpResendLast: Empty message"));
         udpSendReliableTimer->start();
-        //win.logMessage("udpResendLast unlocking");
+        //app.logMessage("udpResendLast unlocking");
         udpSendReliableMutex.unlock();
         return;
     }
 
 #if DEBUG_LOG
-    win.logMessage("Resending message : "+QString(msg.toHex().data()));
+    app.logMessage("Resending message : "+QString(msg.toHex().data()));
 #endif
 
     // Simulate packet loss if enabled (DEBUG ONLY!)
@@ -233,14 +233,14 @@ void Player::udpResendLast()
     if (qrand() % 100 <= UDP_SEND_PERCENT_DROPPED)
     {
         if (UDP_LOG_PACKETLOSS)
-            win.logMessage("UDP: ResendLast packet dropped !");
+            app.logMessage("UDP: ResendLast packet dropped !");
         udpSendReliableTimer->start();
-        //win.logMessage("udpResendLast unlocking");
+        //app.logMessage("udpResendLast unlocking");
         udpSendReliableMutex.unlock();
         return;
     }
     else if (UDP_LOG_PACKETLOSS)
-        win.logMessage("UDP: ResendLast packet got throught");
+        app.logMessage("UDP: ResendLast packet got throught");
 #endif
 
     if (udpSocket->writeDatagram(msg,QHostAddress(IP),port) != msg.size())
@@ -251,17 +251,17 @@ void Player::udpResendLast()
 
     udpSendReliableTimer->start();
 
-    //win.logMessage("udpResendLast unlocking");
+    //app.logMessage("udpResendLast unlocking");
     udpSendReliableMutex.unlock();
 }
 
 void Player::udpDelayedSend()
 {
-    //win.logMessage("udpDelayedSend locking");
+    //app.logMessage("udpDelayedSend locking");
     if (!udpSendReliableMutex.tryLock())
     {
 #if DEBUG_LOG
-        win.logMessage("UDP: udpDelayedSend failed to lock.");
+        app.logMessage("UDP: udpDelayedSend failed to lock.");
 #endif
         if (!udpSendReliableTimer->isActive())
             udpSendReliableTimer->start();
@@ -269,7 +269,7 @@ void Player::udpDelayedSend()
     }
     //udpSendReliableMutex.lock();
 #if DEBUG_LOG
-    win.logMessage("UDP: Sending delayed grouped message : "+QString(udpSendReliableGroupBuffer.toHex()));
+    app.logMessage("UDP: Sending delayed grouped message : "+QString(udpSendReliableGroupBuffer.toHex()));
 #endif
 
     // Move the grouped message to the reliable queue
@@ -284,11 +284,11 @@ void Player::udpDelayedSend()
         if (qrand() % 100 <= UDP_SEND_PERCENT_DROPPED)
         {
             if (UDP_LOG_PACKETLOSS)
-                win.logMessage("UDP: Delayed send packet dropped !");
+                app.logMessage("UDP: Delayed send packet dropped !");
             udpSendReliableGroupBuffer.clear();
             if (!udpSendReliableTimer->isActive())
                 udpSendReliableTimer->start();
-            //win.logMessage("udpDelayedSend unlocking");
+            //app.logMessage("udpDelayedSend unlocking");
             udpSendReliableMutex.unlock();
             return;
         }
@@ -308,7 +308,7 @@ void Player::udpDelayedSend()
     if (!udpSendReliableTimer->isActive())
         udpSendReliableTimer->start();
 
-    //win.logMessage("udpDelayedSend unlocking");
+    //app.logMessage("udpDelayedSend unlocking");
     udpSendReliableMutex.unlock();
 }
 
@@ -418,7 +418,7 @@ void Pony::unwearItemAt(quint8 index)
 
 bool Pony::tryWearItem(quint8 invSlot)
 {
-    //win.logMessage("Invslot is "+QString().setNum(invSlot));
+    //app.logMessage("Invslot is "+QString().setNum(invSlot));
     uint32_t id = -1;
     uint32_t itemSlots;
     for (int i=0; i<inv.size(); i++)
@@ -452,7 +452,7 @@ bool Pony::tryWearItem(quint8 invSlot)
     WearableItem item;
     item.id = id;
     item.index = wearablePositionsToSlot(itemSlots);
-    //win.logMessage("Wearing at slot "+QString().setNum(item.index));
+    //app.logMessage("Wearing at slot "+QString().setNum(item.index));
     worn << item;
     sendWearItemRPC(owner, item);
 

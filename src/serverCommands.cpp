@@ -1,5 +1,4 @@
-#include "widget.h"
-#include "ui_widget.h"
+#include "app.h"
 #include "message.h"
 #include "utils.h"
 #include "serialize.h"
@@ -12,7 +11,7 @@
 using namespace Settings;
 
 // Processes the commands entered directly in the server, not the chat messages
-void Widget::sendCmdLine()
+void App::sendCmdLine()
 {
     if (!enableGameServer)
     {
@@ -20,11 +19,17 @@ void Widget::sendCmdLine()
         return;
     }
 
+#ifdef USE_GUI
     QString str = ui->cmdLine->text();
+#else
+    QString str = cin.readLine();
+#endif
 
     if (str == "clear")
     {
+#ifdef USE_GUI
         ui->log->clear();
+#endif
         return;
     }
     else if (str == "stop")
@@ -99,7 +104,7 @@ void Widget::sendCmdLine()
         if (str.size()<=10)
         {
             for (int i=0; i<Player::udpPlayers.size();i++)
-                win.logMessage(QString().setNum(Player::udpPlayers[i]->pony.id)
+                app.logMessage(QString().setNum(Player::udpPlayers[i]->pony.id)
                                +" ("+QString().setNum(Player::udpPlayers[i]->pony.netviewId)+")"
                                +"   "+Player::udpPlayers[i]->pony.name
                                +"   "+Player::udpPlayers[i]->IP

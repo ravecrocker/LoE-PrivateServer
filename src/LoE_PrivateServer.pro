@@ -4,13 +4,26 @@
 #
 #-------------------------------------------------
 
-QT       += core gui network widgets
+QT       += core network
+
+# build as a console application
+console_only {
+    QT       -= gui
+    CONFIG   += console
+    CONFIG   -= app_bundle
+    DEFINES  += USE_CONSOLE
+}
+# build with a gui
+else {
+    QT       += gui widgets
+    FORMS    += app.ui
+    DEFINES  += USE_GUI
+}
 
 TARGET = LoE_PrivateServer
 TEMPLATE = app
 
 SOURCES += main.cpp \
-        widget.cpp \
     tcp.cpp \
     udp.cpp \
     messages.cpp \
@@ -32,16 +45,17 @@ SOURCES += main.cpp \
     mobStats.cpp \
     skill.cpp \
     skillparser.cpp \
-    widgetStartStopServer.cpp \
     animationparser.cpp \
     animation.cpp \
     log.cpp \
     player.cpp \
     playerSerialization.cpp \
     sceneEntity.cpp \
-    settings.cpp
+    settings.cpp \
+    app.cpp \
+    appStartStopServer.cpp
 
-HEADERS  += widget.h \
+HEADERS  += \
     message.h \
     utils.h \
     scene.h \
@@ -67,9 +81,8 @@ HEADERS  += widget.h \
     log.h \
     player.h \
     settings.h \
-    udp.h
-
-FORMS    += widget.ui
+    udp.h \
+    app.h
 
 TRANSLATIONS = ../translations/fr.ts \
     ../translations/ru.ts

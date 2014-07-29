@@ -3,7 +3,7 @@
 #include "mob.h"
 #include "mobzone.h"
 #include "mobsParser.h"
-#include "widget.h"
+#include "app.h"
 
 void parseMobzoneData(QByteArray data)
 {

@@ -2,6 +2,419 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="ru_RU" sourcelanguage="ru_RU">
 <context>
+    <name>App</name>
+    <message>
+        <location filename="../src/app.ui" line="14"/>
+        <source>mlkj&apos;s Private Server</source>
+        <translation>Личный сервер от mlkj</translation>
+    </message>
+    <message>
+        <location filename="../src/app.ui" line="26"/>
+        <source>Server status</source>
+        <translation>Состояние сервера</translation>
+    </message>
+    <message>
+        <location filename="../src/app.ui" line="46"/>
+        <source>Send</source>
+        <translation>Отправить</translation>
+    </message>
+    <message>
+        <location filename="../src/appStartStopServer.cpp" line="34"/>
+        <source>Private server</source>
+        <translation>Личный сервер</translation>
+    </message>
+    <message>
+        <location filename="../src/appStartStopServer.cpp" line="53"/>
+        <source>Reading config file ...</source>
+        <translation>Чтение файла конфигурации...</translation>
+    </message>
+    <message>
+        <location filename="../src/appStartStopServer.cpp" line="104"/>
+        <source>Error reading vortex DB</source>
+        <translation>Ошибка при чтении базы точек перехода</translation>
+    </message>
+    <message>
+        <location filename="../src/appStartStopServer.cpp" line="122"/>
+        <source>Vortex DB is corrupted. Incorrect line (%1 elems), file %2</source>
+        <translation>База точек перехода повреждена. Некорректная строка (%1 элементов), файл %2</translation>
+    </message>
+    <message>
+        <location filename="../src/appStartStopServer.cpp" line="136"/>
+        <source>Vortex DB is corrupted. Conversion failed, file %1</source>
+        <translation>База точек перехода повреждена. Ошибка преобразования, файл %1</translation>
+    </message>
+    <message>
+        <location filename="../src/appStartStopServer.cpp" line="155"/>
+        <source>Loaded %1 vortexes in %2 scenes</source>
+        <translation>Загружено %1 точек перехода в %2 сценах</translation>
+    </message>
+    <message>
+        <location filename="../src/appStartStopServer.cpp" line="166"/>
+        <source>Loaded %1 items</source>
+        <translation>Загружено %1 предметов</translation>
+    </message>
+    <message>
+        <location filename="../src/appStartStopServer.cpp" line="170"/>
+        <source>Couln&apos;t open Items.xml</source>
+        <translation>Невозможно открыть Items.xml</translation>
+    </message>
+    <message>
+        <location filename="../src/appStartStopServer.cpp" line="191"/>
+        <source>Error, two quests are using the same id (%1) !</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/appStartStopServer.cpp" line="248"/>
+        <source>Loaded %1 animations</source>
+        <translation>Анимаций загружено: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/appStartStopServer.cpp" line="252"/>
+        <location filename="../src/appStartStopServer.cpp" line="257"/>
+        <source>Error parsing animations: </source>
+        <translation>Ошибка при чтении анимаций:</translation>
+    </message>
+    <message>
+        <location filename="../src/appStartStopServer.cpp" line="268"/>
+        <source>Loaded %1 skills</source>
+        <translation>Загружено %1 навык(а,ов)</translation>
+    </message>
+    <message>
+        <location filename="../src/appStartStopServer.cpp" line="272"/>
+        <location filename="../src/appStartStopServer.cpp" line="277"/>
+        <source>Error parsing skills: </source>
+        <translation>Ошибка при обработке навыков:</translation>
+    </message>
+    <message>
+        <location filename="../src/appStartStopServer.cpp" line="350"/>
+        <source>Stopping all server operations</source>
+        <translation>Сервер прекратил работу</translation>
+    </message>
+    <message>
+        <location filename="../src/serverCommands.cpp" line="278"/>
+        <source>Error : Player ID must be a number</source>
+        <translation>Ошибка : Идентификатор игрока должен быть целочисленным</translation>
+    </message>
+    <message>
+        <location filename="../src/appStartStopServer.cpp" line="202"/>
+        <location filename="../src/serverCommands.cpp" line="304"/>
+        <source>Loaded %1 quests/npcs</source>
+        <translation>Загружено %1 заданий/неигровых персонажей</translation>
+    </message>
+    <message>
+        <location filename="../src/serverCommands.cpp" line="314"/>
+        <source>NPC not found</source>
+        <translation>NPC не найден</translation>
+    </message>
+    <message>
+        <location filename="../src/serverCommands.cpp" line="324"/>
+        <source>UDP: Sending remove request with kill reason code</source>
+        <translation>UDP: Отправляем команду удаления с кодом уничтожения</translation>
+    </message>
+    <message>
+        <location filename="../src/serverCommands.cpp" line="331"/>
+        <source>Error : Removekill needs the id of the view to remove</source>
+        <translation>Ошибка : Команда removekill требует идентификатор вида для удаления</translation>
+    </message>
+    <message>
+        <location filename="../src/serverCommands.cpp" line="341"/>
+        <source>UDP: Sending remove request</source>
+        <translation>UDP: Отправляем запрос  на удаление</translation>
+    </message>
+    <message>
+        <location filename="../src/serverCommands.cpp" line="347"/>
+        <source>Error : Remove needs the id of the view to remove</source>
+        <translation>Ошибка : Команда remove требует идентификатор вида для удаления</translation>
+    </message>
+    <message>
+        <source>Error : usage is setState StatID StatValue</source>
+        <translation type="vanished">Ошибка : синтаксис: setState StatID StatValue</translation>
+    </message>
+    <message>
+        <location filename="../src/serverCommands.cpp" line="383"/>
+        <location filename="../src/serverCommands.cpp" line="391"/>
+        <source>Error : usage is setMaxStat StatID StatValue</source>
+        <translation>Ошибка : синтаксис: setMaxStat StatID StatValue</translation>
+    </message>
+    <message>
+        <source>Error : usage is setMaxState StatID StatValue</source>
+        <translation type="vanished">Ошибка : синтаксис: setMaxState StatID StatValue</translation>
+    </message>
+    <message>
+        <location filename="../src/serverCommands.cpp" line="364"/>
+        <location filename="../src/serverCommands.cpp" line="372"/>
+        <source>Error : usage is setStat StatID StatValue</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/serverCommands.cpp" line="400"/>
+        <source>UDP: Instantiating</source>
+        <translation>UDP: Инициализация</translation>
+    </message>
+    <message>
+        <location filename="../src/serverCommands.cpp" line="411"/>
+        <source>Error : Instantiate takes 0,3,6 or 10 arguments</source>
+        <translation>Ошибка : Инициализация требует 0,3,6 или 10 параметров</translation>
+    </message>
+    <message>
+        <location filename="../src/serverCommands.cpp" line="422"/>
+        <location filename="../src/serverCommands.cpp" line="442"/>
+        <location filename="../src/serverCommands.cpp" line="460"/>
+        <source>Error : instantiate key viewId ownerId x1 y1 z1 x2 y2 z2 w2</source>
+        <translation>Ошибка : инициализация ключа viewId ownerId x1 y1 z1 x2 y2 z2 w2</translation>
+    </message>
+    <message>
+        <location filename="../src/serverCommands.cpp" line="469"/>
+        <source>UDP: Instantiating %1</source>
+        <translation>UDP: Инициализация %1</translation>
+    </message>
+    <message>
+        <location filename="../src/serverCommands.cpp" line="491"/>
+        <source>setDialogMsg takes two args : dialog and npc name</source>
+        <translation>setDialogMsg требует два параметра : текст и имя NPC</translation>
+    </message>
+    <message>
+        <location filename="../src/serverCommands.cpp" line="537"/>
+        <source>Quest </source>
+        <translation>Задание </translation>
+    </message>
+    <message>
+        <location filename="../src/serverCommands.cpp" line="545"/>
+        <source>NPC </source>
+        <translation>NPC </translation>
+    </message>
+    <message>
+        <location filename="../src/serverCommands.cpp" line="553"/>
+        <source>Mob </source>
+        <comment>As in a monster, a mob you can kill</comment>
+        <translation>Монстр </translation>
+    </message>
+    <message>
+        <location filename="../src/serverCommands.cpp" line="564"/>
+        <location filename="../src/serverCommands.cpp" line="573"/>
+        <source>Item </source>
+        <comment>As in something from the inventory</comment>
+        <translation>Предмет </translation>
+    </message>
+    <message>
+        <location filename="../src/serverCommands.cpp" line="565"/>
+        <source> (pos </source>
+        <comment>Short for position</comment>
+        <translation> (коорд. </translation>
+    </message>
+    <message>
+        <location filename="../src/serverCommands.cpp" line="574"/>
+        <source> : slot </source>
+        <comment>A slot in the inventory</comment>
+        <translation> : ячейка </translation>
+    </message>
+    <message>
+        <location filename="../src/appStartStopServer.cpp" line="222"/>
+        <source>Error reading mob zones</source>
+        <translation>Ошибка при чтении зон для монстров</translation>
+    </message>
+    <message>
+        <location filename="../src/appStartStopServer.cpp" line="237"/>
+        <source>Loaded %1 mobs in %2 zones</source>
+        <translation>Загружено %1 монстр(а,ов) в %2 зон(е,ах)</translation>
+    </message>
+    <message>
+        <location filename="../src/appStartStopServer.cpp" line="291"/>
+        <source>Starting TCP login server on port %1...</source>
+        <translation>Запускаем сервер учёток и вешаем его на TCP порт %1...</translation>
+    </message>
+    <message>
+        <location filename="../src/appStartStopServer.cpp" line="294"/>
+        <source>TCP: Unable to start server on port %1 : %2</source>
+        <translation>TCP: Не удалось запустить сервер для порта %1 : %2</translation>
+    </message>
+    <message>
+        <location filename="../src/appStartStopServer.cpp" line="307"/>
+        <source>Starting UDP game server on port %1...</source>
+        <translation>Запускаем игровой сервер и вешаем его на UDP порт %1...</translation>
+    </message>
+    <message>
+        <location filename="../src/appStartStopServer.cpp" line="310"/>
+        <source>UDP: Unable to start server on port %1</source>
+        <translation>UDP: Не удалось запустить сервер для порта %1</translation>
+    </message>
+    <message>
+        <location filename="../src/appStartStopServer.cpp" line="326"/>
+        <source>Server started</source>
+        <translation>Сервер запущен</translation>
+    </message>
+    <message>
+        <location filename="../src/pingTimeout.cpp" line="17"/>
+        <source>UDP: Ping timeout (%1s) for %2 (player %3)</source>
+        <translation>UDP: Превышено время ожидания (%1с) для %2 (игрок %3)</translation>
+    </message>
+    <message>
+        <location filename="../src/tcp.cpp" line="15"/>
+        <source>TCP: New client connected</source>
+        <translation>TCP: Подключился новый клиент</translation>
+    </message>
+    <message>
+        <location filename="../src/tcp.cpp" line="32"/>
+        <source>TCP: Client disconnected</source>
+        <translation>TCP: Клиент отключился</translation>
+    </message>
+    <message>
+        <location filename="../src/tcp.cpp" line="67"/>
+        <location filename="../src/tcp.cpp" line="250"/>
+        <source>TCP: Error fetching the socket&apos;s associated recv buffer</source>
+        <translation>TCP: Ошибка при получении связанного с сокетом recv-буфера</translation>
+    </message>
+    <message>
+        <location filename="../src/tcp.cpp" line="82"/>
+        <source>TCP: Nothing to read</source>
+        <translation>TCP: Буфер пуст</translation>
+    </message>
+    <message>
+        <location filename="../src/tcp.cpp" line="90"/>
+        <source>TCP: Received non-HTTP request : </source>
+        <translation>TCP: Получен запрос, не соответствующий HTTP : </translation>
+    </message>
+    <message>
+        <location filename="../src/tcp.cpp" line="107"/>
+        <source>TCP: Error: Content-Length must be a (decimal) number !</source>
+        <translation>TCP: Ошибка: Длина содержимого должна быть (десятичным) числом !</translation>
+    </message>
+    <message>
+        <location filename="../src/tcp.cpp" line="116"/>
+        <source>TCP: Got content-length request:</source>
+        <translation>TCP: Получен запрос на длину содержимого:</translation>
+    </message>
+    <message>
+        <location filename="../src/tcp.cpp" line="153"/>
+        <source>Got non-content length request:</source>
+        <translation>Получен запрос длины, нехарактерной для содержания:</translation>
+    </message>
+    <message>
+        <location filename="../src/tcp.cpp" line="177"/>
+        <source>Can&apos;t open header : </source>
+        <comment>The header is a file</comment>
+        <translation>Невозможно открыть заголовок : </translation>
+    </message>
+    <message>
+        <location filename="../src/tcp.cpp" line="189"/>
+        <source>Sent log to %1</source>
+        <translation>Лог для %1 отправлен</translation>
+    </message>
+    <message>
+        <location filename="../src/tcp.cpp" line="195"/>
+        <source>TCP: Replying to HTTP GET %1</source>
+        <translation>TCP : Отвечаем на HTTP GET %1</translation>
+    </message>
+    <message>
+        <location filename="../src/tcp.cpp" line="201"/>
+        <source>TCP: Can&apos;t open header : </source>
+        <comment>The header is a file</comment>
+        <translation>TCP: Невозможно открыть заголовок : </translation>
+    </message>
+    <message>
+        <location filename="../src/tcp.cpp" line="207"/>
+        <source>TCP: File not found</source>
+        <translation>TCP: Файл не найден</translation>
+    </message>
+    <message>
+        <location filename="../src/tcp.cpp" line="213"/>
+        <source>TCP: Can&apos;t open 304 Not Modified header : </source>
+        <comment>The header is a file</comment>
+        <translation>TCP: Невозможно открыть заголовок для сообщения 304 Not Modified : </translation>
+    </message>
+    <message>
+        <location filename="../src/tcp.cpp" line="227"/>
+        <source>TCP: Sent %1 bytes</source>
+        <translation>TCP: Отправлено %1 байт</translation>
+    </message>
+    <message>
+        <location filename="../src/tcp.cpp" line="261"/>
+        <location filename="../src/tcp.cpp" line="291"/>
+        <source>TCP: Remote login not implemented yet.</source>
+        <translation>TCP: Вход через удалённый сервер ещё не запрограммирован.</translation>
+    </message>
+    <message>
+        <location filename="../src/tcp.cpp" line="270"/>
+        <source>IP:</source>
+        <comment>IP address</comment>
+        <translation>IP адрес:</translation>
+    </message>
+    <message>
+        <location filename="../src/tcp.cpp" line="271"/>
+        <source>, passhash:</source>
+        <comment>A cryptographic hash of a password</comment>
+        <translation>, хэш пароля:</translation>
+    </message>
+    <message>
+        <location filename="../src/tcp.cpp" line="280"/>
+        <source>TCP: Can&apos;t connect to remote login server : timed out</source>
+        <translation>TCP: Невозможно подключиться к удалённому серверу учёток : превышено время ожидания</translation>
+    </message>
+    <message>
+        <location filename="../src/tcp.cpp" line="300"/>
+        <source>TCP: Login request received :</source>
+        <translation>TCP: Получен запрос на вход :</translation>
+    </message>
+    <message>
+        <location filename="../src/tcp.cpp" line="308"/>
+        <source>TCP: Error reading data files</source>
+        <translation>TCP: Ошибка при чтении файлов с данными</translation>
+    </message>
+    <message>
+        <location filename="../src/tcp.cpp" line="313"/>
+        <source>Version : </source>
+        <comment>Version of the client software</comment>
+        <translation>Версия : </translation>
+    </message>
+    <message>
+        <location filename="../src/tcp.cpp" line="322"/>
+        <source>IP : </source>
+        <comment>An IP address</comment>
+        <translation>IP : </translation>
+    </message>
+    <message>
+        <location filename="../src/tcp.cpp" line="323"/>
+        <source>Username : </source>
+        <translation>Имя пользователя : </translation>
+    </message>
+    <message>
+        <location filename="../src/tcp.cpp" line="324"/>
+        <source>Passhash : </source>
+        <comment>A cryptographic hash of a password</comment>
+        <translation>Хэш пароля : </translation>
+    </message>
+    <message>
+        <location filename="../src/tcp.cpp" line="333"/>
+        <source>TCP: Registration failed, too many players registered</source>
+        <translation>TCP: Регистрация не удалась, достигнут предел по числу пользователей</translation>
+    </message>
+    <message>
+        <location filename="../src/tcp.cpp" line="339"/>
+        <source>TCP: Creating user %1 in database</source>
+        <translation>TCP: Создаём пользователя %1 в базе данных</translation>
+    </message>
+    <message>
+        <location filename="../src/tcp.cpp" line="355"/>
+        <source>TCP: Login failed, wrong password</source>
+        <translation>TCP: Вход не удался, некорректный пароль</translation>
+    </message>
+    <message>
+        <location filename="../src/tcp.cpp" line="400"/>
+        <source>TCP: Login successful, sending servers list</source>
+        <translation>TCP: Вход осуществлён, отправляю список серверов</translation>
+    </message>
+    <message>
+        <location filename="../src/tcp.cpp" line="409"/>
+        <source>TCP: Session closed by client</source>
+        <translation>TCP: Сессия закрыта клиентом</translation>
+    </message>
+    <message>
+        <location filename="../src/tcp.cpp" line="415"/>
+        <source>TCP: Unknown request received : </source>
+        <translation>TCP: Получен неизвестный запрос : </translation>
+    </message>
+</context>
+<context>
     <name>Player</name>
     <message>
         <location filename="../src/playerSerialization.cpp" line="16"/>
@@ -124,7 +537,7 @@
         <translation>UDP: Невозможно найти сцену для удалённо вызываемой процедуры wearItem, отменяем</translation>
     </message>
     <message>
-        <location filename="../src/items.cpp" line="62"/>
+        <location filename="../src/items.cpp" line="64"/>
         <source>Unknown wearable slots while parsing Items.xml</source>
         <translation>Найдены неизвестные ячейки для одеваемых предметов в Items.xml</translation>
     </message>
@@ -482,7 +895,7 @@
         <translation>UDP: Отклонён запрос от неизвестного узла : %1:%2</translation>
     </message>
     <message>
-        <location filename="../src/receiveChatMessage.cpp" line="121"/>
+        <location filename="../src/receiveChatMessage.cpp" line="128"/>
         <source>UDP: Can&apos;t find the scene for chat message, aborting</source>
         <translation>UDP: Невозможно найти сцену для сообщения в чате, отменяем</translation>
     </message>
@@ -602,107 +1015,107 @@
         <translation>UDP: Ошибка при отправке сообщения для %1 : %2</translation>
     </message>
     <message>
-        <location filename="../src/serverCommands.cpp" line="19"/>
+        <location filename="../src/serverCommands.cpp" line="18"/>
         <source>This is not a game server, commands are disabled</source>
         <translation>Это не игровой сервер, команды отключены</translation>
     </message>
     <message>
-        <location filename="../src/serverCommands.cpp" line="50"/>
-        <location filename="../src/serverCommands.cpp" line="75"/>
-        <location filename="../src/serverCommands.cpp" line="92"/>
+        <location filename="../src/serverCommands.cpp" line="55"/>
+        <location filename="../src/serverCommands.cpp" line="80"/>
+        <location filename="../src/serverCommands.cpp" line="97"/>
         <source>UDP: Peer set to %1</source>
         <translation>UDP: Выбранный узел - %1</translation>
     </message>
     <message>
-        <location filename="../src/serverCommands.cpp" line="61"/>
+        <location filename="../src/serverCommands.cpp" line="66"/>
         <source>UDP: setPeer takes a pony id or ip:port combination</source>
         <translation>UDP: setPeer требует идентификатор пони или пару ip адрес:порт</translation>
     </message>
     <message>
-        <location filename="../src/serverCommands.cpp" line="67"/>
+        <location filename="../src/serverCommands.cpp" line="72"/>
         <source>UDP: setPeer takes a pony id as argument</source>
         <translation>UDP: setPeer требует идентификатор пони в качестве параметра</translation>
     </message>
     <message>
-        <location filename="../src/serverCommands.cpp" line="79"/>
+        <location filename="../src/serverCommands.cpp" line="84"/>
         <source>UDP: Peer not found (id %1)</source>
         <translation>UDP: Узел не найден (id %1)</translation>
     </message>
     <message>
-        <location filename="../src/serverCommands.cpp" line="86"/>
+        <location filename="../src/serverCommands.cpp" line="91"/>
         <source>UDP: setPeer takes a port as argument</source>
         <translation>UDP: setPeer требует порт в качестве параметра</translation>
     </message>
     <message>
-        <location filename="../src/serverCommands.cpp" line="94"/>
+        <location filename="../src/serverCommands.cpp" line="99"/>
         <source>UDP: Peer not found (%1)</source>
         <translation>UDP: Узел не найден (%1)</translation>
     </message>
     <message>
-        <location filename="../src/serverCommands.cpp" line="113"/>
+        <location filename="../src/serverCommands.cpp" line="118"/>
         <source>Can&apos;t find scene</source>
         <translation>Невозможно найти сцену</translation>
     </message>
     <message>
-        <location filename="../src/serverCommands.cpp" line="137"/>
+        <location filename="../src/serverCommands.cpp" line="142"/>
         <source>UDP: Syncing manually</source>
         <translation>UDP: Синхронизируюсь вручную</translation>
     </message>
     <message>
-        <location filename="../src/serverCommands.cpp" line="163"/>
-        <location filename="../src/serverCommands.cpp" line="174"/>
+        <location filename="../src/serverCommands.cpp" line="168"/>
+        <location filename="../src/serverCommands.cpp" line="179"/>
         <source>Error: Usage is tele ponyIdToMove destinationPonyId</source>
         <translation>Ошибка: Корректный синтаксис - tele ponyIdToMove destinationPonyId</translation>
     </message>
     <message>
-        <location filename="../src/serverCommands.cpp" line="188"/>
+        <location filename="../src/serverCommands.cpp" line="193"/>
         <source>Error: Source peer does not exist!</source>
         <translation>Ошибка: Исходный узел не существует!</translation>
     </message>
     <message>
-        <location filename="../src/serverCommands.cpp" line="195"/>
+        <location filename="../src/serverCommands.cpp" line="200"/>
         <source>UDP: Teleported %1 to %2</source>
         <translation>UDP: Перемещение с %1 на %2</translation>
     </message>
     <message>
-        <location filename="../src/serverCommands.cpp" line="203"/>
+        <location filename="../src/serverCommands.cpp" line="208"/>
         <source>Error: Destination peer does not exist!</source>
         <translation>Ошибка: Означенный узел не существует!</translation>
     </message>
     <message>
-        <location filename="../src/serverCommands.cpp" line="207"/>
+        <location filename="../src/serverCommands.cpp" line="212"/>
         <source>Select a peer first with setPeer/listPeers</source>
         <translation>Сперва выберите узел с помощью команд setPeer/listPeers</translation>
     </message>
     <message>
-        <location filename="../src/serverCommands.cpp" line="215"/>
+        <location filename="../src/serverCommands.cpp" line="220"/>
         <source>UDP: Peer not found</source>
         <translation>UDP: Узел не найден</translation>
     </message>
     <message>
-        <location filename="../src/serverCommands.cpp" line="223"/>
+        <location filename="../src/serverCommands.cpp" line="228"/>
         <source>UDP: Disconnecting</source>
         <translation>UDP: Отключаемся</translation>
     </message>
     <message>
-        <location filename="../src/serverCommands.cpp" line="234"/>
+        <location filename="../src/serverCommands.cpp" line="239"/>
         <source>Pos : </source>
         <comment>Short for position</comment>
         <translation>Коорд. : </translation>
     </message>
     <message>
-        <location filename="../src/serverCommands.cpp" line="240"/>
+        <location filename="../src/serverCommands.cpp" line="245"/>
         <source>Rot : x=</source>
         <comment>Short for rotation</comment>
         <translation>Вращ. : x=</translation>
     </message>
     <message>
-        <location filename="../src/serverCommands.cpp" line="255"/>
+        <location filename="../src/serverCommands.cpp" line="260"/>
         <source>UDP: Sending Utils3 request</source>
         <translation>UDP: Отправляю запрос Utils3</translation>
     </message>
     <message>
-        <location filename="../src/serverCommands.cpp" line="267"/>
+        <location filename="../src/serverCommands.cpp" line="272"/>
         <source>UDP: Sending setPlayerId request</source>
         <translation>UDP: Отправляю запрос setPlayerId</translation>
     </message>
@@ -715,410 +1128,6 @@
         <location filename="../src/skill.cpp" line="40"/>
         <source>Skill::applySkill: Skill with ID %1 has no upgrade %2</source>
         <translation>Навык с идентификатором %1 не имеет улучшения %2</translation>
-    </message>
-</context>
-<context>
-    <name>Widget</name>
-    <message>
-        <location filename="../src/widget.ui" line="14"/>
-        <source>mlkj&apos;s Private Server</source>
-        <translation>Личный сервер от mlkj</translation>
-    </message>
-    <message>
-        <location filename="../src/widget.ui" line="26"/>
-        <source>Server status</source>
-        <translation>Состояние сервера</translation>
-    </message>
-    <message>
-        <location filename="../src/widget.ui" line="46"/>
-        <source>Send</source>
-        <translation>Отправить</translation>
-    </message>
-    <message>
-        <location filename="../src/widgetStartStopServer.cpp" line="33"/>
-        <source>Private server</source>
-        <translation>Личный сервер</translation>
-    </message>
-    <message>
-        <location filename="../src/widgetStartStopServer.cpp" line="52"/>
-        <source>Reading config file ...</source>
-        <translation>Чтение файла конфигурации...</translation>
-    </message>
-    <message>
-        <location filename="../src/widgetStartStopServer.cpp" line="103"/>
-        <source>Error reading vortex DB</source>
-        <translation>Ошибка при чтении базы точек перехода</translation>
-    </message>
-    <message>
-        <location filename="../src/widgetStartStopServer.cpp" line="121"/>
-        <source>Vortex DB is corrupted. Incorrect line (%1 elems), file %2</source>
-        <translation>База точек перехода повреждена. Некорректная строка (%1 элементов), файл %2</translation>
-    </message>
-    <message>
-        <location filename="../src/widgetStartStopServer.cpp" line="135"/>
-        <source>Vortex DB is corrupted. Conversion failed, file %1</source>
-        <translation>База точек перехода повреждена. Ошибка преобразования, файл %1</translation>
-    </message>
-    <message>
-        <location filename="../src/widgetStartStopServer.cpp" line="154"/>
-        <source>Loaded %1 vortexes in %2 scenes</source>
-        <translation>Загружено %1 точек перехода в %2 сценах</translation>
-    </message>
-    <message>
-        <location filename="../src/widgetStartStopServer.cpp" line="165"/>
-        <source>Loaded %1 items</source>
-        <translation>Загружено %1 предметов</translation>
-    </message>
-    <message>
-        <location filename="../src/widgetStartStopServer.cpp" line="169"/>
-        <source>Couln&apos;t open Items.xml</source>
-        <translation>Невозможно открыть Items.xml</translation>
-    </message>
-    <message>
-        <location filename="../src/widgetStartStopServer.cpp" line="244"/>
-        <source>Loaded %1 animations</source>
-        <translation>Анимаций загружено: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/widgetStartStopServer.cpp" line="248"/>
-        <location filename="../src/widgetStartStopServer.cpp" line="253"/>
-        <source>Error parsing animations: </source>
-        <translation>Ошибка при чтении анимаций:</translation>
-    </message>
-    <message>
-        <location filename="../src/widgetStartStopServer.cpp" line="264"/>
-        <source>Loaded %1 skills</source>
-        <translation>Загружено %1 навык(а,ов)</translation>
-    </message>
-    <message>
-        <location filename="../src/widgetStartStopServer.cpp" line="268"/>
-        <location filename="../src/widgetStartStopServer.cpp" line="273"/>
-        <source>Error parsing skills: </source>
-        <translation>Ошибка при обработке навыков:</translation>
-    </message>
-    <message>
-        <location filename="../src/widgetStartStopServer.cpp" line="342"/>
-        <source>Stopping all server operations</source>
-        <translation>Сервер прекратил работу</translation>
-    </message>
-    <message>
-        <location filename="../src/serverCommands.cpp" line="273"/>
-        <source>Error : Player ID must be a number</source>
-        <translation>Ошибка : Идентификатор игрока должен быть целочисленным</translation>
-    </message>
-    <message>
-        <location filename="../src/serverCommands.cpp" line="299"/>
-        <location filename="../src/widgetStartStopServer.cpp" line="198"/>
-        <source>Loaded %1 quests/npcs</source>
-        <translation>Загружено %1 заданий/неигровых персонажей</translation>
-    </message>
-    <message>
-        <location filename="../src/serverCommands.cpp" line="309"/>
-        <source>NPC not found</source>
-        <translation>NPC не найден</translation>
-    </message>
-    <message>
-        <location filename="../src/serverCommands.cpp" line="319"/>
-        <source>UDP: Sending remove request with kill reason code</source>
-        <translation>UDP: Отправляем команду удаления с кодом уничтожения</translation>
-    </message>
-    <message>
-        <location filename="../src/serverCommands.cpp" line="326"/>
-        <source>Error : Removekill needs the id of the view to remove</source>
-        <translation>Ошибка : Команда removekill требует идентификатор вида для удаления</translation>
-    </message>
-    <message>
-        <location filename="../src/serverCommands.cpp" line="336"/>
-        <source>UDP: Sending remove request</source>
-        <translation>UDP: Отправляем запрос  на удаление</translation>
-    </message>
-    <message>
-        <location filename="../src/serverCommands.cpp" line="342"/>
-        <source>Error : Remove needs the id of the view to remove</source>
-        <translation>Ошибка : Команда remove требует идентификатор вида для удаления</translation>
-    </message>
-    <message>
-        <location filename="../src/serverCommands.cpp" line="359"/>
-        <location filename="../src/serverCommands.cpp" line="367"/>
-        <source>Error : usage is setState StatID StatValue</source>
-        <translation>Ошибка : синтаксис: setState StatID StatValue</translation>
-    </message>
-    <message>
-        <location filename="../src/serverCommands.cpp" line="378"/>
-        <source>Error : usage is setMaxStat StatID StatValue</source>
-        <translation>Ошибка : синтаксис: setMaxStat StatID StatValue</translation>
-    </message>
-    <message>
-        <location filename="../src/serverCommands.cpp" line="386"/>
-        <source>Error : usage is setMaxState StatID StatValue</source>
-        <translation>Ошибка : синтаксис: setMaxState StatID StatValue</translation>
-    </message>
-    <message>
-        <location filename="../src/serverCommands.cpp" line="395"/>
-        <source>UDP: Instantiating</source>
-        <translation>UDP: Инициализация</translation>
-    </message>
-    <message>
-        <location filename="../src/serverCommands.cpp" line="406"/>
-        <source>Error : Instantiate takes 0,3,6 or 10 arguments</source>
-        <translation>Ошибка : Инициализация требует 0,3,6 или 10 параметров</translation>
-    </message>
-    <message>
-        <location filename="../src/serverCommands.cpp" line="417"/>
-        <location filename="../src/serverCommands.cpp" line="437"/>
-        <location filename="../src/serverCommands.cpp" line="455"/>
-        <source>Error : instantiate key viewId ownerId x1 y1 z1 x2 y2 z2 w2</source>
-        <translation>Ошибка : инициализация ключа viewId ownerId x1 y1 z1 x2 y2 z2 w2</translation>
-    </message>
-    <message>
-        <location filename="../src/serverCommands.cpp" line="464"/>
-        <source>UDP: Instantiating %1</source>
-        <translation>UDP: Инициализация %1</translation>
-    </message>
-    <message>
-        <location filename="../src/serverCommands.cpp" line="486"/>
-        <source>setDialogMsg takes two args : dialog and npc name</source>
-        <translation>setDialogMsg требует два параметра : текст и имя NPC</translation>
-    </message>
-    <message>
-        <location filename="../src/serverCommands.cpp" line="532"/>
-        <source>Quest </source>
-        <translation>Задание </translation>
-    </message>
-    <message>
-        <location filename="../src/serverCommands.cpp" line="540"/>
-        <source>NPC </source>
-        <translation>NPC </translation>
-    </message>
-    <message>
-        <location filename="../src/serverCommands.cpp" line="548"/>
-        <source>Mob </source>
-        <comment>As in a monster, a mob you can kill</comment>
-        <translation>Монстр </translation>
-    </message>
-    <message>
-        <location filename="../src/serverCommands.cpp" line="559"/>
-        <location filename="../src/serverCommands.cpp" line="568"/>
-        <source>Item </source>
-        <comment>As in something from the inventory</comment>
-        <translation>Предмет </translation>
-    </message>
-    <message>
-        <location filename="../src/serverCommands.cpp" line="560"/>
-        <source> (pos </source>
-        <comment>Short for position</comment>
-        <translation> (коорд. </translation>
-    </message>
-    <message>
-        <location filename="../src/serverCommands.cpp" line="569"/>
-        <source> : slot </source>
-        <comment>A slot in the inventory</comment>
-        <translation> : ячейка </translation>
-    </message>
-    <message>
-        <location filename="../src/widgetStartStopServer.cpp" line="218"/>
-        <source>Error reading mob zones</source>
-        <translation>Ошибка при чтении зон для монстров</translation>
-    </message>
-    <message>
-        <location filename="../src/widgetStartStopServer.cpp" line="233"/>
-        <source>Loaded %1 mobs in %2 zones</source>
-        <translation>Загружено %1 монстр(а,ов) в %2 зон(е,ах)</translation>
-    </message>
-    <message>
-        <location filename="../src/widgetStartStopServer.cpp" line="287"/>
-        <source>Starting TCP login server on port %1...</source>
-        <translation>Запускаем сервер учёток и вешаем его на TCP порт %1...</translation>
-    </message>
-    <message>
-        <location filename="../src/widgetStartStopServer.cpp" line="290"/>
-        <source>TCP: Unable to start server on port %1 : %2</source>
-        <translation>TCP: Не удалось запустить сервер для порта %1 : %2</translation>
-    </message>
-    <message>
-        <location filename="../src/widgetStartStopServer.cpp" line="303"/>
-        <source>Starting UDP game server on port %1...</source>
-        <translation>Запускаем игровой сервер и вешаем его на UDP порт %1...</translation>
-    </message>
-    <message>
-        <location filename="../src/widgetStartStopServer.cpp" line="306"/>
-        <source>UDP: Unable to start server on port %1</source>
-        <translation>UDP: Не удалось запустить сервер для порта %1</translation>
-    </message>
-    <message>
-        <location filename="../src/widgetStartStopServer.cpp" line="322"/>
-        <source>Server started</source>
-        <translation>Сервер запущен</translation>
-    </message>
-    <message>
-        <location filename="../src/pingTimeout.cpp" line="17"/>
-        <source>UDP: Ping timeout (%1s) for %2 (player %3)</source>
-        <translation>UDP: Превышено время ожидания (%1с) для %2 (игрок %3)</translation>
-    </message>
-    <message>
-        <location filename="../src/tcp.cpp" line="16"/>
-        <source>TCP: New client connected</source>
-        <translation>TCP: Подключился новый клиент</translation>
-    </message>
-    <message>
-        <location filename="../src/tcp.cpp" line="33"/>
-        <source>TCP: Client disconnected</source>
-        <translation>TCP: Клиент отключился</translation>
-    </message>
-    <message>
-        <location filename="../src/tcp.cpp" line="68"/>
-        <location filename="../src/tcp.cpp" line="247"/>
-        <source>TCP: Error fetching the socket&apos;s associated recv buffer</source>
-        <translation>TCP: Ошибка при получении связанного с сокетом recv-буфера</translation>
-    </message>
-    <message>
-        <location filename="../src/tcp.cpp" line="83"/>
-        <source>TCP: Nothing to read</source>
-        <translation>TCP: Буфер пуст</translation>
-    </message>
-    <message>
-        <location filename="../src/tcp.cpp" line="91"/>
-        <source>TCP: Received non-HTTP request : </source>
-        <translation>TCP: Получен запрос, не соответствующий HTTP : </translation>
-    </message>
-    <message>
-        <location filename="../src/tcp.cpp" line="108"/>
-        <source>TCP: Error: Content-Length must be a (decimal) number !</source>
-        <translation>TCP: Ошибка: Длина содержимого должна быть (десятичным) числом !</translation>
-    </message>
-    <message>
-        <location filename="../src/tcp.cpp" line="117"/>
-        <source>TCP: Got content-length request:</source>
-        <translation>TCP: Получен запрос на длину содержимого:</translation>
-    </message>
-    <message>
-        <location filename="../src/tcp.cpp" line="154"/>
-        <source>Got non-content length request:</source>
-        <translation>Получен запрос длины, нехарактерной для содержания:</translation>
-    </message>
-    <message>
-        <location filename="../src/tcp.cpp" line="178"/>
-        <source>Can&apos;t open header : </source>
-        <comment>The header is a file</comment>
-        <translation>Невозможно открыть заголовок : </translation>
-    </message>
-    <message>
-        <location filename="../src/tcp.cpp" line="186"/>
-        <source>Sent log to %1</source>
-        <translation>Лог для %1 отправлен</translation>
-    </message>
-    <message>
-        <location filename="../src/tcp.cpp" line="192"/>
-        <source>TCP: Replying to HTTP GET %1</source>
-        <translation>TCP : Отвечаем на HTTP GET %1</translation>
-    </message>
-    <message>
-        <location filename="../src/tcp.cpp" line="198"/>
-        <source>TCP: Can&apos;t open header : </source>
-        <comment>The header is a file</comment>
-        <translation>TCP: Невозможно открыть заголовок : </translation>
-    </message>
-    <message>
-        <location filename="../src/tcp.cpp" line="204"/>
-        <source>TCP: File not found</source>
-        <translation>TCP: Файл не найден</translation>
-    </message>
-    <message>
-        <location filename="../src/tcp.cpp" line="210"/>
-        <source>TCP: Can&apos;t open 304 Not Modified header : </source>
-        <comment>The header is a file</comment>
-        <translation>TCP: Невозможно открыть заголовок для сообщения 304 Not Modified : </translation>
-    </message>
-    <message>
-        <location filename="../src/tcp.cpp" line="224"/>
-        <source>TCP: Sent %1 bytes</source>
-        <translation>TCP: Отправлено %1 байт</translation>
-    </message>
-    <message>
-        <location filename="../src/tcp.cpp" line="258"/>
-        <location filename="../src/tcp.cpp" line="288"/>
-        <source>TCP: Remote login not implemented yet.</source>
-        <translation>TCP: Вход через удалённый сервер ещё не запрограммирован.</translation>
-    </message>
-    <message>
-        <location filename="../src/tcp.cpp" line="267"/>
-        <source>IP:</source>
-        <comment>IP address</comment>
-        <translation>IP адрес:</translation>
-    </message>
-    <message>
-        <location filename="../src/tcp.cpp" line="268"/>
-        <source>, passhash:</source>
-        <comment>A cryptographic hash of a password</comment>
-        <translation>, хэш пароля:</translation>
-    </message>
-    <message>
-        <location filename="../src/tcp.cpp" line="277"/>
-        <source>TCP: Can&apos;t connect to remote login server : timed out</source>
-        <translation>TCP: Невозможно подключиться к удалённому серверу учёток : превышено время ожидания</translation>
-    </message>
-    <message>
-        <location filename="../src/tcp.cpp" line="297"/>
-        <source>TCP: Login request received :</source>
-        <translation>TCP: Получен запрос на вход :</translation>
-    </message>
-    <message>
-        <location filename="../src/tcp.cpp" line="305"/>
-        <source>TCP: Error reading data files</source>
-        <translation>TCP: Ошибка при чтении файлов с данными</translation>
-    </message>
-    <message>
-        <location filename="../src/tcp.cpp" line="310"/>
-        <source>Version : </source>
-        <comment>Version of the client software</comment>
-        <translation>Версия : </translation>
-    </message>
-    <message>
-        <location filename="../src/tcp.cpp" line="319"/>
-        <source>IP : </source>
-        <comment>An IP address</comment>
-        <translation>IP : </translation>
-    </message>
-    <message>
-        <location filename="../src/tcp.cpp" line="320"/>
-        <source>Username : </source>
-        <translation>Имя пользователя : </translation>
-    </message>
-    <message>
-        <location filename="../src/tcp.cpp" line="321"/>
-        <source>Passhash : </source>
-        <comment>A cryptographic hash of a password</comment>
-        <translation>Хэш пароля : </translation>
-    </message>
-    <message>
-        <location filename="../src/tcp.cpp" line="330"/>
-        <source>TCP: Registration failed, too many players registered</source>
-        <translation>TCP: Регистрация не удалась, достигнут предел по числу пользователей</translation>
-    </message>
-    <message>
-        <location filename="../src/tcp.cpp" line="336"/>
-        <source>TCP: Creating user %1 in database</source>
-        <translation>TCP: Создаём пользователя %1 в базе данных</translation>
-    </message>
-    <message>
-        <location filename="../src/tcp.cpp" line="352"/>
-        <source>TCP: Login failed, wrong password</source>
-        <translation>TCP: Вход не удался, некорректный пароль</translation>
-    </message>
-    <message>
-        <location filename="../src/tcp.cpp" line="397"/>
-        <source>TCP: Login successful, sending servers list</source>
-        <translation>TCP: Вход осуществлён, отправляю список серверов</translation>
-    </message>
-    <message>
-        <location filename="../src/tcp.cpp" line="406"/>
-        <source>TCP: Session closed by client</source>
-        <translation>TCP: Сессия закрыта клиентом</translation>
-    </message>
-    <message>
-        <location filename="../src/tcp.cpp" line="412"/>
-        <source>TCP: Unknown request received : </source>
-        <translation>TCP: Получен неизвестный запрос : </translation>
     </message>
 </context>
 </TS>
