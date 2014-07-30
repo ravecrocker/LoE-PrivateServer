@@ -25,7 +25,102 @@ void App::sendCmdLine()
     QString str = cin.readLine();
 #endif
 
-    if (str == "clear")
+    if (str.startsWith("help"))
+    {
+        QString indent = "  -";
+
+        logMessage(QObject::tr("== Server Commands"));
+#ifdef USE_GUI
+        logMessage("clear");
+        logMessage(QObject::tr("%1 Clears the log screen").arg(indent));
+#endif
+        logMessage("stop");
+        logMessage(QObject::tr("%1 Stops the server and exits").arg(indent));
+        logMessage("listTcpPlayers");
+        logMessage(QObject::tr("%1 Lists players currently logged into the game server").arg(indent));
+        logMessage("listPeers [scene]");
+        logMessage(QObject::tr("%1 Lists the peers currently connected to the server").arg(indent));
+        logMessage(QObject::tr("%1 If scene name is defined, return only peers in that scene").arg(indent));
+        logMessage("setPeer <ponyid>");
+        logMessage("setPeer <ip:port>");
+        logMessage(QObject::tr("%1 Sets the 'currently selected' peer that will be used for other commands").arg(indent));
+        logMessage("listVortexes");
+        logMessage(QObject::tr("%1 List all the vortexrs currently in the game").arg(indent));
+        logMessage("sync");
+        logMessage(QObject::tr("%1 Syncs the positions of all clients now").arg(indent));
+        logMessage("tele [sourceponyid] [destponyid]");
+        logMessage(QObject::tr("%1 Move sourcepony to destpony's location").arg(indent));
+        logMessage("dbgStressLoad [scene]");
+        logMessage(QObject::tr("%1 Move all players to either given scene, or Gem Mines at once").arg(indent));
+        logMessage(QObject::tr("%1 This is a DEBUG COMMAND. Please do not use it in production").arg(indent));
+        logMessage("");
+        logMessage(QObject::tr("== Commands requiring a selected peer"));
+        logMessage("disconnect");
+        logMessage(QObject::tr("%1 Disconnects the selected player").arg(indent));
+        logMessage("load <scene>");
+        logMessage(QObject::tr("%1 Send player to the given scene").arg(indent));
+        logMessage("getPos");
+        logMessage(QObject::tr("%1 Get selected player's position").arg(indent));
+        logMessage(QObject::tr("%1 Often used with the 'move' command").arg(indent));
+        logMessage("getRot");
+        logMessage(QObject::tr("%1 Get selected player's rotation").arg(indent));
+        logMessage("move <x> <y> <z>");
+        logMessage(QObject::tr("%1 Moves the selected player to the given location").arg(indent));
+        logMessage("error <string>");
+        logMessage(QObject::tr("%1 Sends a message box to the client, with the title").arg(indent));
+        logMessage(QObject::tr("%1   'Error', and the given message").arg(indent));
+        logMessage(QObject::tr("%1 Does not disconnect the client").arg(indent));
+        logMessage("getPonyData");
+        logMessage(QObject::tr("%1 Return Base64 pony data for selected player").arg(indent));
+        logMessage("sendPonies");
+        logMessage(QObject::tr("%1 Resends ponies to the given player. Debug command").arg(indent));
+        logMessage("sendUtils3");
+        logMessage(QObject::tr("%1 Sends a UDP sendUtils3 request").arg(indent));
+        logMessage("setPlayerId <playerid>");
+        logMessage(QObject::tr("%1 Set player's playerid to the given number").arg(indent));
+        logMessage("reloadNpc <npcname>");
+        logMessage(QObject::tr("%1 Reloads the given NPC from our database").arg(indent));
+        logMessage("removekill <killcode>");
+        logMessage(QObject::tr("%1 Kills the selected player, sending the given killcode to the client").arg(indent));
+        logMessage("remove <viewid>");
+        logMessage(QObject::tr("%1 Removes the selected view id").arg(indent));
+        logMessage("sendPonyData <data>");
+        logMessage(QObject::tr("%1 Sends the selected pony data to the player").arg(indent));
+        logMessage("setStat <statid> <value>");
+        logMessage(QObject::tr("%1 Sets the selected stat to <value>").arg(indent));
+        logMessage("setMaxStat <statid> <value>");
+        logMessage(QObject::tr("%1 Sets the maximum value of the selected stat to <value>").arg(indent));
+        logMessage("instantiate");
+        logMessage(QObject::tr("%1 DEBUG: Spawns the player's body. Will clone the body").arg(indent));
+        logMessage(QObject::tr("%1   if used repeatedly. May lag").arg(indent));
+        logMessage("instantiate <key> <viewId> <ownerId>");
+        logMessage(QObject::tr("%1 Will spawn key (PlayerBase for a pony). If the Ids are already").arg(indent));
+        logMessage(QObject::tr("%1   taken, bad things will happen").arg(indent));
+        logMessage("instantiate <key> <viewId> <ownerId> <x1> <y1> <z1>");
+        logMessage(QObject::tr("%1 Same than above but spawn at the given position").arg(indent));
+        logMessage("instantiate <key> <viewId> <ownerId> <x1> <y1> <z1> <x2> <y2> <z2> <w2>");
+        logMessage(QObject::tr("%1 Same than above but spawn at the given position and rotation").arg(indent));
+        logMessage("beginDialog");
+        logMessage(QObject::tr("%1 DEBUG: Used when talking to NPCs").arg(indent));
+        logMessage("endDialog");
+        logMessage(QObject::tr("%1 DEBUG: Used when talking to NPCs").arg(indent));
+        logMessage("setDialogMsg <dialogue> <npcname>");
+        logMessage(QObject::tr("%1 DEBUG: Used when talking to NPCs").arg(indent));
+        logMessage("setDialogOptions <arguments separated by spaces>");
+        logMessage(QObject::tr("%1 DEBUG: Used when talking to NPCs").arg(indent));
+        logMessage("listQuests");
+        logMessage(QObject::tr("%1 Lists the quests currently on the server").arg(indent));
+        logMessage("listNpcs");
+        logMessage(QObject::tr("%1 Lists the NPCs currently on the server").arg(indent));
+        logMessage("listMobs");
+        logMessage(QObject::tr("%1 Lists the mobs currently on the server").arg(indent));
+        logMessage("listInventory");
+        logMessage(QObject::tr("%1 Lists the inventory of the selected player").arg(indent));
+        logMessage("listWorn");
+        logMessage(QObject::tr("%1 Lists all items the player is wearing").arg(indent));
+        return;
+    }
+    else if (str == "clear")
     {
 #ifdef USE_GUI
         ui->log->clear();
