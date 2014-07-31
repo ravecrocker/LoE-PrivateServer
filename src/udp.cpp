@@ -89,6 +89,10 @@ void udpProcessPendingDatagrams()
                     else
                         // If not add the player
                         Player::udpPlayers << newPlayer;
+#ifdef USE_GUI
+                        int connectedPlayers = Player::udpPlayers.length();
+                        app.ui->userCountLabel->setText(QString("%1 / %2").arg(connectedPlayers).arg(maxConnected));
+#endif
                 }
                 else  // IP:Port found in player list
                 {

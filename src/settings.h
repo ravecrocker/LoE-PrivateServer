@@ -13,8 +13,8 @@ extern int gamePort; // Port for the game server
 extern QString remoteLoginIP; // IP of the remote login server
 extern int remoteLoginPort; // Port of the remote login server
 extern int remoteLoginTimeout; // Time before we give up connecting to the remote login server
-extern bool useRemoteLogin; // Whever or not to use the remote login server
-extern int maxConnected; // Max numbre of players connected at the same time, can deny login
+extern bool useRemoteLogin; // Whether or not to use the remote login server
+extern int maxConnected; // Max number of players connected at the same time, can deny login
 extern int maxRegistered; // Max number of registered players in database, can deny registration
 extern int pingTimeout; // Max time between recdption of pings, can disconnect player
 extern int pingCheckInterval; // Time between ping timeout checks

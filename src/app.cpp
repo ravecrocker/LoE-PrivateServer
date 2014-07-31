@@ -150,3 +150,36 @@ App::~App()
     quick_exit(EXIT_SUCCESS);
 #endif
 }
+
+#ifdef USE_GUI
+void App::on_clearLogButton_clicked()
+{
+    ui->log->clear();
+}
+
+void App::on_copyLogButton_clicked()
+{
+    // Can't just do log->copy() because that only copies highlighted text
+    QClipboard *clipboard = QApplication::clipboard();
+    clipboard->setText(ui->log->toPlainText());
+}
+
+void App::on_saveLogButton_clicked()
+{
+    // Save server log to a file
+    QString logFilename = QFileDialog::getSaveFileName(this, tr("Save Log"), "./log.txt", tr("Log files (*.txt)"));
+    QFile logFile(logFilename);
+
+    if (logFile.open(QIODevice::WriteOnly)) {
+        QTextStream logFileStream(&logFile);
+        logFileStream << ui->log->toPlainText() << "\n";
+
+        logFile.close();
+    }
+    else
+    {
+        logMessage(tr("Failed to open log file '%1' for saving").arg(logFilename));
+        return;
+    }
+}
+#endif

@@ -5,8 +5,8 @@ int Settings::gamePort; // Port for the game server
 QString Settings::remoteLoginIP; // IP of the remote login server
 int Settings::remoteLoginPort; // Port of the remote login server
 int Settings::remoteLoginTimeout; // Time before we give up connecting to the remote login server
-bool Settings::useRemoteLogin; // Whever or not to use the remote login server
-int Settings::maxConnected; // Max numbre of players connected at the same time, can deny login
+bool Settings::useRemoteLogin; // Whether or not to use the remote login server
+int Settings::maxConnected; // Max number of players connected at the same time, can deny login
 int Settings::maxRegistered; // Max number of registered players in database, can deny registration
 int Settings::pingTimeout; // Max time between recdption of pings, can disconnect player
 int Settings::pingCheckInterval; // Time between ping timeout checks

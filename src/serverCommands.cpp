@@ -21,6 +21,8 @@ void App::sendCmdLine()
 
 #ifdef USE_GUI
     QString str = ui->cmdLine->text();
+    ui->cmdLine->clear();
+    ui->cmdLine->setFocus();
 #else
     QString str = cin.readLine();
 #endif

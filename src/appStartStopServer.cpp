@@ -72,6 +72,20 @@ void App::startServer()
     enableGetlog = config.value("enableGetlog", true).toBool();
     enablePVP = config.value("enablePVP", true).toBool();
 
+    /// GUI setup and signal/slot connecting
+#ifdef USE_GUI
+    ui->loginPort->setText(QString::number(loginPort));
+    ui->gamePort->setText(QString::number(gamePort));
+    int connectedPlayers = Player::udpPlayers.length();
+    ui->userCountLabel->setText(QString("%1 / %2").arg(connectedPlayers).arg(maxConnected));
+    ui->builddateLabel->setText(tr("Built %1").arg(__DATE__));
+
+    connect(ui->sendButton, SIGNAL(clicked()), this, SLOT(sendCmdLine()));
+    connect(ui->cmdLine, SIGNAL(returnPressed()), this, SLOT(sendCmdLine()));
+#else
+    connect(cin_notifier, SIGNAL(activated(int)), this, SLOT(sendCmdLine()));
+#endif
+
     /// Init servers
     tcpClientsList.clear();
 #if defined _WIN32 || defined WIN32
@@ -167,7 +181,7 @@ void App::startServer()
         }
         else
         {
-            app.logError(tr("Couln't open Items.xml"));
+            app.logError(tr("Couldn't open Items.xml"));
             stopServer();
             return;
         }
@@ -299,6 +313,10 @@ void App::startServer()
         // If we use a remote login server, try to open a connection preventively.
         if (useRemoteLogin)
             remoteLoginSock.connectToHost(remoteLoginIP, remoteLoginPort);
+
+#ifdef USE_GUI
+        ui->loginStatus->setText("<font color=\"#339933\">ONLINE</font>");
+#endif
     }
 
     // UDP server
@@ -311,6 +329,10 @@ void App::startServer()
             stopServer();
             return;
         }
+
+#ifdef USE_GUI
+        ui->gameStatus->setText("<font color=\"#339933\">ONLINE</font>");
+#endif
     }
 
     if (enableGameServer)
@@ -325,11 +347,6 @@ void App::startServer()
     if (enableLoginServer || enableGameServer)
         logStatusMessage(tr("Server started"));
 
-#ifdef USE_GUI
-    connect(ui->sendButton, SIGNAL(clicked()), this, SLOT(sendCmdLine()));
-#else
-    connect(cin_notifier, SIGNAL(activated(int)), this, SLOT(sendCmdLine()));
-#endif
     if (enableLoginServer)
         connect(tcpServer, SIGNAL(newConnection()), this, SLOT(tcpConnectClient()));
     if (enableGameServer)
@@ -361,6 +378,7 @@ void App::stopServer(bool log)
 
 #ifdef USE_GUI
     disconnect(ui->sendButton, SIGNAL(clicked()), this, SLOT(sendCmdLine()));
+    disconnect(ui->cmdLine, SIGNAL(returnPressed()), this, SLOT(sendCmdLine()));
 #else
     disconnect(cin_notifier, SIGNAL(activated(int)), this, SLOT(sendCmdLine()));
 #endif

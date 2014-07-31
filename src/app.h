@@ -4,6 +4,8 @@
 #ifdef USE_GUI
     #include <QtWidgets/QApplication>
     #include <QtWidgets/QWidget>
+    #include <QClipboard>
+    #include <QFileDialog>
     #include "ui_app.h"
     #define QAPP_TYPE QApplication
     #define APP_CLASS QWidget
@@ -76,10 +78,19 @@ public:
     float startTimestamp;
     int syncInterval;
 
-private:
 #ifdef USE_GUI
+private slots:
+    void on_clearLogButton_clicked();
+    void on_copyLogButton_clicked();
+    void on_saveLogButton_clicked();
+#endif
+
+#ifdef USE_GUI
+public:
     Ui::App* ui;
-#else
+#endif
+private:
+#ifdef USE_CONSOLE
     QSocketNotifier *cin_notifier;
 #endif
     QTcpServer* tcpServer;
