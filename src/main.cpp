@@ -30,7 +30,7 @@ int main(int, char**)
     app.show();
 #endif
     a.processEvents();
-    app.startServer();
+    app.startup();
 
     return a.exec(); // win's dtor will quick_exit (we won't run the atexits)
 }

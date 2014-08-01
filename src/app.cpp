@@ -130,7 +130,9 @@ App::~App()
         delete Quest::quests[i].descr;
     }
 
-    stopServer(false);
+    stopGameServer(false);
+    stopLoginServer(false);
+
     delete tcpServer;
     delete tcpReceivedDatas;
     delete udpSocket;
@@ -180,6 +182,30 @@ void App::on_saveLogButton_clicked()
     {
         logMessage(tr("Failed to open log file '%1' for saving").arg(logFilename));
         return;
+    }
+}
+
+void App::on_toggleLoginServerButton_clicked()
+{
+    if (app.loginServerUp)
+    {
+        app.stopLoginServer();
+    }
+    else
+    {
+        app.startLoginServer();
+    }
+}
+
+void App::on_toggleGameServerButton_clicked()
+{
+    if (app.gameServerUp)
+    {
+        app.stopGameServer();
+    }
+    else
+    {
+        app.startGameServer();
     }
 }
 #endif

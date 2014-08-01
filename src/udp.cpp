@@ -20,7 +20,7 @@ void restartUdpServer()
     if (!udpSocket->bind(gamePort, QUdpSocket::ReuseAddressHint|QUdpSocket::ShareAddress))
     {
         logStatusMessage(QObject::tr("UDP: Unable to start server on port %1").arg(gamePort));
-        app.stopServer();
+        app.stopGameServer();
         return;
     }
 }

@@ -14,7 +14,7 @@ Quest::Quest(QString path, Player *Owner)
     if (!file.open(QFile::ReadOnly))
     {
         app.logError(QObject::tr("Error reading quest DB"));
-        app.stopServer();
+        app.stopGameServer();
         throw std::exception();
     }
 

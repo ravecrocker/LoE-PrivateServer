@@ -169,7 +169,7 @@
           </layout>
          </item>
          <item>
-          <widget class="QTabWidget" name="tabWidget">
+          <widget class="QTabWidget" name="tabsController">
            <property name="enabled">
             <bool>true</bool>
            </property>
@@ -232,7 +232,7 @@
               <number>0</number>
              </property>
              <item>
-              <layout class="QVBoxLayout" name="verticalLayout_2" stretch="1,0">
+              <layout class="QVBoxLayout" name="logBaseFrame" stretch="1,0">
                <property name="spacing">
                 <number>5</number>
                </property>
@@ -268,7 +268,7 @@
                 </widget>
                </item>
                <item>
-                <layout class="QHBoxLayout" name="horizontalLayout">
+                <layout class="QHBoxLayout" name="logControlsFram">
                  <property name="spacing">
                   <number>5</number>
                  </property>
@@ -278,7 +278,7 @@
                     <number>5</number>
                    </property>
                    <item>
-                    <layout class="QHBoxLayout" name="horizontalLayout_2">
+                    <layout class="QHBoxLayout" name="logButtonFrame">
                      <property name="spacing">
                       <number>5</number>
                      </property>
@@ -440,7 +440,7 @@
              </item>
             </layout>
            </widget>
-           <widget class="QWidget" name="tab_2">
+           <widget class="QWidget" name="configureTab">
             <attribute name="icon">
              <iconset>
               <normalon>:/images/wrench.png</normalon>
@@ -460,6 +460,43 @@
           <number>10</number>
          </property>
          <item>
+          <spacer name="verticalSpacer_3">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Fixed</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>10</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QLabel" name="versionLabel">
+           <property name="font">
+            <font>
+             <family>Arial</family>
+             <pointsize>35</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">color: rgb(251, 251, 251);</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item>
           <spacer name="verticalSpacer_2">
            <property name="orientation">
             <enum>Qt::Vertical</enum>
@@ -470,31 +507,15 @@
            <property name="sizeHint" stdset="0">
             <size>
              <width>20</width>
-             <height>67</height>
+             <height>10</height>
             </size>
            </property>
           </spacer>
          </item>
          <item>
-          <widget class="QPushButton" name="toggleAllButton">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="text">
-            <string>Stop All</string>
-           </property>
-          </widget>
-         </item>
-         <item>
           <widget class="QPushButton" name="toggleLoginServerButton">
            <property name="enabled">
-            <bool>false</bool>
+            <bool>true</bool>
            </property>
            <property name="text">
             <string>Stop Login Server</string>
@@ -508,7 +529,7 @@
          <item>
           <widget class="QPushButton" name="toggleGameServerButton">
            <property name="enabled">
-            <bool>false</bool>
+            <bool>true</bool>
            </property>
            <property name="text">
             <string>Stop Game Server</string>
@@ -527,12 +548,12 @@
           </widget>
          </item>
          <item>
-          <layout class="QGridLayout" name="gridLayout_2">
+          <layout class="QGridLayout" name="serverStatusFrame">
            <property name="topMargin">
-            <number>10</number>
+            <number>2</number>
            </property>
            <property name="bottomMargin">
-            <number>10</number>
+            <number>4</number>
            </property>
            <property name="horizontalSpacing">
             <number>13</number>
@@ -541,7 +562,7 @@
             <number>10</number>
            </property>
            <item row="0" column="2">
-            <widget class="QLabel" name="label_2">
+            <widget class="QLabel" name="portStatusHeader">
              <property name="font">
               <font>
                <weight>75</weight>
@@ -554,7 +575,7 @@
             </widget>
            </item>
            <item row="0" column="3">
-            <widget class="QLabel" name="label_3">
+            <widget class="QLabel" name="statusStatusHeader">
              <property name="font">
               <font>
                <weight>75</weight>
@@ -570,7 +591,7 @@
             </widget>
            </item>
            <item row="0" column="1">
-            <widget class="QLabel" name="label">
+            <widget class="QLabel" name="serverStatusHeader">
              <property name="font">
               <font>
                <weight>75</weight>
@@ -583,7 +604,7 @@
             </widget>
            </item>
            <item row="1" column="1">
-            <widget class="QLabel" name="label_5">
+            <widget class="QLabel" name="loginLabel">
              <property name="text">
               <string>Login Server</string>
              </property>
@@ -605,7 +626,7 @@
             </widget>
            </item>
            <item row="2" column="1">
-            <widget class="QLabel" name="label_4">
+            <widget class="QLabel" name="gameLabel">
              <property name="text">
               <string>Game Server</string>
              </property>
@@ -675,37 +696,14 @@
           </widget>
          </item>
          <item>
-          <layout class="QGridLayout" name="gridLayout">
+          <layout class="QGridLayout" name="userStatusFrame">
            <item row="0" column="0">
-            <widget class="QLabel" name="label_7">
+            <widget class="QLabel" name="userCountDisplayLabel">
              <property name="text">
               <string>Users Online:</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0">
-            <widget class="QLabel" name="label_6">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="text">
-              <string>Average Ping:</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="QLabel" name="label_8">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="text">
-              <string>? ms</string>
              </property>
             </widget>
            </item>

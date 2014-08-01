@@ -28,6 +28,8 @@
 #include "CoreFoundation/CoreFoundation.h"
 #endif
 
+#define VERSIONSTRING "v0.5.3-beta1"
+
 #define GAMEDATAPATH "data/data/"
 #define PLAYERSPATH "data/players/"
 #define NETDATAPATH "data/netData/"
@@ -62,9 +64,23 @@ public:
     void logStatusMessage(QString msg);
     void logError(QString msg);
     void logStatusError(QString msg);
-    void startServer();
-    void stopServer(); // Calls stopServer(true)
-    void stopServer(bool log);
+
+    /// General
+    bool loginServerUp;
+    bool gameServerUp;
+
+    void startup(); // Get application up and running
+    void shutdown(); // Shuts down application
+
+    void loadConfig(); // Load config from file
+
+    /// Servers
+    void startLoginServer();
+    void stopLoginServer(); // Calls stopLoginServer(true)
+    void stopLoginServer(bool log);
+    void startGameServer();
+    void stopGameServer(); // Calls stopGameServer(true)
+    void stopGameServer(bool log);
 
     /// UDP/TCP
 public slots:
@@ -83,12 +99,15 @@ private slots:
     void on_clearLogButton_clicked();
     void on_copyLogButton_clicked();
     void on_saveLogButton_clicked();
+    void on_toggleLoginServerButton_clicked();
+    void on_toggleGameServerButton_clicked();
 #endif
 
 #ifdef USE_GUI
 public:
     Ui::App* ui;
 #endif
+
 private:
 #ifdef USE_CONSOLE
     QSocketNotifier *cin_notifier;
