@@ -91,6 +91,17 @@ void App::startup()
     {
         startGameServer();
     }
+
+#ifdef USE_CONSOLE
+    logMessage(tr(""));
+    logMessage(tr("== Basic Server Commands"));
+    logMessage(tr("> start/stop login  :  Starts or stops login server"));
+    logMessage(tr("> start/stop game   :  Starts or stops game server"));
+    logMessage(tr("> exit              :  Shutdown and exit"));
+    logMessage(tr("> help              :  View help and all commands"));
+    logMessage(tr(""));
+    logMessage(tr("To send a server command, simply type it and hit enter"));
+#endif
 }
 
 /// Shuts down the application
@@ -137,6 +148,12 @@ void App::loadConfig()
 
 void App::startLoginServer()
 {
+    if (app.loginServerUp)
+    {
+        logMessage(tr("Login server is up, shutdown login server before attempting to start"));
+        return;
+    }
+
     /// Player DB
     //logStatusMessage(tr("Loading players database ..."));
     Player::tcpPlayers = Player::loadPlayers();
@@ -146,7 +163,7 @@ void App::startLoginServer()
     if (!tcpServer->listen(QHostAddress::Any,loginPort))
     {
         logStatusError(tr("TCP: Unable to start server on port %1 : %2").arg(loginPort).arg(tcpServer->errorString()));
-        app.stopGameServer();
+        app.stopLoginServer();
         return;
     }
 
@@ -185,6 +202,12 @@ void App::stopLoginServer(bool log)
 
 void App::startGameServer()
 {
+    if (app.gameServerUp)
+    {
+        logMessage(tr("Game server is up, shutdown game server before attempting to start"));
+        return;
+    }
+
     SceneEntity::lastNetviewId=0;
     SceneEntity::lastId=1;
 

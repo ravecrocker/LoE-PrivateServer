@@ -36,8 +36,16 @@ void App::sendCmdLine()
         logMessage("clear");
         logMessage(QObject::tr("%1 Clears the log screen").arg(indent));
 #endif
-        logMessage("stop");
-        logMessage(QObject::tr("%1 Stops the server and exits").arg(indent));
+        logMessage("exit");
+        logMessage(QObject::tr("%1 Shuts down all operations and exits").arg(indent));
+        logMessage("start login");
+        logMessage("stop login");
+        logMessage(QObject::tr("%1 Starts and stops the login server").arg(indent));
+        logMessage("start game");
+        logMessage("stop game");
+        logMessage(QObject::tr("%1 Starts and stops the game server").arg(indent));
+        logMessage("status");
+        logMessage(QObject::tr("%1 Shows the status of the login and game servers").arg(indent));
         logMessage("listTcpPlayers");
         logMessage(QObject::tr("%1 Lists players currently logged into the game server").arg(indent));
         logMessage("listPeers [scene]");
@@ -129,7 +137,71 @@ void App::sendCmdLine()
 #endif
         return;
     }
-    else if (str == "stop")
+    else if (str.startsWith("start"))
+    {
+        QString target = str.right(str.length() - QString("start ").length());
+
+        if (target.startsWith("login"))
+        {
+            startLoginServer();
+        }
+        else if (target.startsWith("game"))
+        {
+            startGameServer();
+        }
+        else
+        {
+            logMessage(tr("What do you want to start?"));
+            logMessage(tr("Usage:  start login  or  start game"));
+        }
+
+        return;
+    }
+    else if (str.startsWith("stop"))
+    {
+        QString target = str.right(str.length() - QString("stop ").length());
+
+        if (target.startsWith("login"))
+        {
+            stopLoginServer();
+        }
+        else if (target.startsWith("game"))
+        {
+            stopGameServer();
+        }
+        else
+        {
+            logMessage(tr("What do you want to stop?"));
+            logMessage(tr("Usage:  stop login  or  stop game"));
+        }
+
+        return;
+    }
+    else if (str.startsWith("status"))
+    {
+        // Login server
+        if (app.loginServerUp)
+        {
+            logMessage(tr("Login Server Status: ONLINE"));
+        }
+        else
+        {
+            logMessage(tr("Login Server Status: OFFLINE"));
+        }
+
+        // Game server
+        if (app.gameServerUp)
+        {
+            logMessage(tr("Game Server Status: ONLINE"));
+        }
+        else
+        {
+            logMessage(tr("Game Server Status: OFFLINE"));
+        }
+
+        return;
+    }
+    else if (str == "exit")
     {
         delete this;
         return;
