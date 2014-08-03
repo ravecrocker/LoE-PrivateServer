@@ -208,4 +208,9 @@ void App::on_toggleGameServerButton_clicked()
         app.startGameServer();
     }
 }
+
+void App::on_exitButton_clicked()
+{
+    app.shutdown();
+}
 #endif

@@ -101,6 +101,7 @@ private slots:
     void on_saveLogButton_clicked();
     void on_toggleLoginServerButton_clicked();
     void on_toggleGameServerButton_clicked();
+    void on_exitButton_clicked();
 #endif
 
 #ifdef USE_GUI

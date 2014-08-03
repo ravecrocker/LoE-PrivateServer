@@ -107,6 +107,11 @@ void App::startup()
 /// Shuts down the application
 void App::shutdown()
 {
+    // Servers
+    app.stopLoginServer();
+    app.stopGameServer();
+
+    // Signals
 #ifdef USE_GUI
     disconnect(app.ui->sendButton, SIGNAL(clicked()), this, SLOT(sendCmdLine()));
     disconnect(app.ui->cmdLine, SIGNAL(returnPressed()), this, SLOT(sendCmdLine()));
@@ -117,6 +122,9 @@ void App::shutdown()
     disconnect(tcpServer, SIGNAL(newConnection()), this, SLOT(tcpConnectClient()));
     disconnect(pingTimer, SIGNAL(timeout()), this, SLOT(checkPingTimeouts()));
     disconnect(this);
+
+    // Shutdown
+    QAPP_TYPE::exit();
 }
 
 /// Read config and load values in
@@ -150,7 +158,7 @@ void App::startLoginServer()
 {
     if (app.loginServerUp)
     {
-        logMessage(tr("Login server is up, shutdown login server before attempting to start"));
+        logMessage(tr("Login server is already up, shutdown login server before attempting to start"));
         return;
     }
 
@@ -204,7 +212,7 @@ void App::startGameServer()
 {
     if (app.gameServerUp)
     {
-        logMessage(tr("Game server is up, shutdown game server before attempting to start"));
+        logMessage(tr("Game server is already up, shutdown game server before attempting to start"));
         return;
     }
 
