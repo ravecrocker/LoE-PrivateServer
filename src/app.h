@@ -37,6 +37,9 @@
 #define CONFIGFILEPATH "data/server.ini"
 #define SERVERSLISTFILEPATH "data/serversList.cfg"
 
+#define DEFAULTLOGINPORT 1034
+#define DEFAULTGAMEPORT 1039
+
 class Mobzone;
 class Mob;
 class Sync;
@@ -72,7 +75,11 @@ public:
     void startup(); // Get application up and running
     void shutdown(); // Shuts down application
 
+#ifdef USE_GUI
+    void loadConfigFromGui(); // Load config from gui
+#endif
     void loadConfig(); // Load config from file
+    void saveConfig(); // Save config to file
 
     /// Servers
     void startLoginServer();
@@ -95,6 +102,9 @@ public:
     int syncInterval;
 
 #ifdef USE_GUI
+public:
+    Ui::App* ui;
+
 private slots:
     void on_clearLogButton_clicked();
     void on_copyLogButton_clicked();
@@ -102,11 +112,9 @@ private slots:
     void on_toggleLoginServerButton_clicked();
     void on_toggleGameServerButton_clicked();
     void on_exitButton_clicked();
-#endif
-
-#ifdef USE_GUI
-public:
-    Ui::App* ui;
+    void on_configSaveSettings_clicked();
+    void on_loginPortConfigReset_clicked();
+    void on_gamePortConfigReset_clicked();
 #endif
 
 private:

@@ -127,14 +127,14 @@ void App::shutdown()
     QAPP_TYPE::exit();
 }
 
-/// Read config and load values in
+/// Read config file and load values in
 void App::loadConfig()
 {
-    /// Read config
     logStatusMessage(tr("Reading config file ..."));
     QSettings config(CONFIGFILEPATH, QSettings::IniFormat);
-    loginPort = config.value("loginPort", 1034).toInt();
-    gamePort = config.value("gamePort", 1039).toInt();
+
+    loginPort = config.value("loginPort", DEFAULTLOGINPORT).toInt();
+    gamePort = config.value("gamePort", DEFAULTGAMEPORT).toInt();
     maxConnected = config.value("maxConnected",128).toInt();
     maxRegistered = config.value("maxRegistered",2048).toInt();
     pingTimeout = config.value("pingTimeout", 15).toInt();
@@ -152,6 +152,77 @@ void App::loadConfig()
     useRemoteLogin = config.value("useRemoteLogin", false).toBool();
     enableGetlog = config.value("enableGetlog", true).toBool();
     enablePVP = config.value("enablePVP", true).toBool();
+
+#ifdef USE_GUI
+    app.ui->loginPortConfig->setValue(loginPort);
+    app.ui->gamePortConfig->setValue(gamePort);
+    app.ui->maxConnectedPlayersConfig->setValue(maxConnected);
+    app.ui->maxRegisteredPlayersConfig->setValue(maxRegistered);
+    app.ui->pingTimeoutConfig->setValue(pingTimeout);
+    app.ui->pingCheckConfig->setValue(pingCheckInterval);
+    app.ui->logInfosMessagesConfig->setChecked(logInfos);
+    app.ui->saltPasswordConfig->setText(saltPassword);
+    app.ui->sessKeyValidationConfig->setChecked(enableSessKeyValidation);
+    app.ui->enableLoginServerConfig->setChecked(enableLoginServer);
+    app.ui->enableGameServerConfig->setChecked(enableGameServer);
+    app.ui->multiplayerConfig->setChecked(enableMultiplayer);
+    app.ui->syncIntervalConfig->setValue(syncInterval);
+    app.ui->getlogConfig->setCheckable(enableGetlog);
+    app.ui->pvpConfig->setChecked(enablePVP);
+#endif
+}
+
+#ifdef USE_GUI
+/// Read config options from GUI and load values in
+void App::loadConfigFromGui()
+{
+    loginPort = app.ui->loginPortConfig->value();
+    gamePort = app.ui->gamePortConfig->value();
+    maxConnected = app.ui->maxConnectedPlayersConfig->value();
+    maxRegistered = app.ui->maxRegisteredPlayersConfig->value();
+    pingTimeout = app.ui->pingTimeoutConfig->value();
+    pingCheckInterval = app.ui->pingCheckConfig->value();
+    logInfos = app.ui->logInfosMessagesConfig->isChecked();
+    saltPassword = app.ui->saltPasswordConfig->text();
+    enableSessKeyValidation = app.ui->sessKeyValidationConfig->isChecked();
+    enableLoginServer = app.ui->enableLoginServerConfig->isChecked();
+    enableGameServer = app.ui->enableGameServerConfig->isChecked();
+    enableMultiplayer = app.ui->multiplayerConfig->isChecked();
+    syncInterval = app.ui->syncIntervalConfig->value();
+//    remoteLoginIP = ;
+//    remoteLoginPort = ;
+//    remoteLoginTimeout = ;
+//    useRemoteLogin = ;
+    enableGetlog = app.ui->getlogConfig->isChecked();
+    enablePVP = app.ui->pvpConfig->isChecked();
+}
+#endif
+
+/// Saves values to config file
+void App::saveConfig()
+{
+    logStatusMessage(tr("Saving config file ..."));
+    QSettings config(CONFIGFILEPATH, QSettings::IniFormat);
+
+    config.setValue("loginPort", loginPort);
+    config.setValue("gamePort", gamePort);
+    config.setValue("maxConnected", maxConnected);
+    config.setValue("maxRegistered", maxRegistered);
+    config.setValue("pingTimeout", pingTimeout);
+    config.setValue("pingCheckInterval", pingCheckInterval);
+    config.setValue("logInfos", logInfos);
+    config.setValue("saltPassword", saltPassword);
+    config.setValue("enableSessKeyValidation", enableSessKeyValidation);
+    config.setValue("enableLoginServer", enableLoginServer);
+    config.setValue("enableGameServer", enableGameServer);
+    config.setValue("enableMultiplayer", enableMultiplayer);
+    config.setValue("syncInterval", syncInterval);
+    config.setValue("remoteLoginIP", remoteLoginIP);
+    config.setValue("remoteLoginPort", remoteLoginPort);
+    config.setValue("remoteLoginTimeout", remoteLoginTimeout);
+    config.setValue("useRemoteLogin", useRemoteLogin);
+    config.setValue("enableGetlog", enableGetlog);
+    config.setValue("enablePVP", enablePVP);
 }
 
 void App::startLoginServer()

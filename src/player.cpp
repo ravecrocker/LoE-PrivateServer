@@ -12,6 +12,7 @@
 #include <QUdpSocket>
 #ifdef USE_GUI
 #include <QSettings>
+#include "settings.h"
 #endif
 
 #define DEBUG_LOG false
@@ -174,10 +175,8 @@ void Player::removePlayer(QList<Player*>& players, QString uIP, quint16 uport)
             players.removeAt(i);
     }
 #ifdef USE_GUI
-    QSettings config(CONFIGFILEPATH, QSettings::IniFormat);
-    int maxConnected = config.value("maxConnected",128).toInt();
     int connectedPlayers = Player::udpPlayers.length();
-    app.ui->userCountLabel->setText(QString("%1 / %2").arg(connectedPlayers).arg(maxConnected));
+    app.ui->userCountLabel->setText(QString("%1 / %2").arg(connectedPlayers).arg(Settings::maxConnected));
 #endif
 }
 

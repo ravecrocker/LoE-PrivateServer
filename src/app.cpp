@@ -170,6 +170,12 @@ void App::on_saveLogButton_clicked()
 {
     // Save server log to a file
     QString logFilename = QFileDialog::getSaveFileName(this, tr("Save Log"), "./log.txt", tr("Log files (*.txt)"));
+
+    // Clicked Cancel
+    if (logFilename.isEmpty()) {
+        return;
+    }
+
     QFile logFile(logFilename);
 
     if (logFile.open(QIODevice::WriteOnly)) {
@@ -212,5 +218,21 @@ void App::on_toggleGameServerButton_clicked()
 void App::on_exitButton_clicked()
 {
     app.shutdown();
+}
+
+void App::on_configSaveSettings_clicked()
+{
+    app.loadConfigFromGui();
+    app.saveConfig();
+}
+
+void App::on_loginPortConfigReset_clicked()
+{
+    app.ui->loginPortConfig->setValue(DEFAULTLOGINPORT);
+}
+
+void App::on_gamePortConfigReset_clicked()
+{
+    app.ui->gamePortConfig->setValue(DEFAULTGAMEPORT);
 }
 #endif

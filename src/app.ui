@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>813</width>
-    <height>462</height>
+    <height>589</height>
    </rect>
   </property>
   <property name="font">
@@ -25,6 +25,10 @@
 QToolButton, QTabWidget::tab {
      background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                                        stop: 0 #f6f7fa, stop: 1 #dadbde);
+}
+QToolButton:pressed {
+     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                       stop: 0 #e6e7ea, stop: 1 #cacbce);
 }
 
 QToolButton, QLineEdit, QPlainTextEdit {
@@ -73,7 +77,7 @@ QGroupBox::title {
 }
 #githubLabel a {
 	color: rgb(199, 206, 255);
-}s</string>
+}ss</string>
   </property>
   <property name="locale">
    <locale language="English" country="UnitedStates"/>
@@ -246,7 +250,7 @@ QGroupBox::title {
             <enum>QTabWidget::Rounded</enum>
            </property>
            <property name="currentIndex">
-            <number>0</number>
+            <number>1</number>
            </property>
            <property name="elideMode">
             <enum>Qt::ElideRight</enum>
@@ -608,6 +612,7 @@ QGroupBox::title {
                       <property name="font">
                        <font>
                         <family>Arial</family>
+                        <pointsize>12</pointsize>
                        </font>
                       </property>
                       <property name="text">
@@ -616,10 +621,11 @@ QGroupBox::title {
                      </widget>
                     </item>
                     <item>
-                     <widget class="QLineEdit" name="lineEdit">
+                     <widget class="QLineEdit" name="saltPasswordConfig">
                       <property name="font">
                        <font>
                         <family>Arial</family>
+                        <pointsize>12</pointsize>
                        </font>
                       </property>
                      </widget>
@@ -672,15 +678,22 @@ QGroupBox::title {
                       <property name="font">
                        <font>
                         <family>Arial</family>
+                        <pointsize>12</pointsize>
                        </font>
                       </property>
                       <property name="text">
-                       <string>Maximum Players:</string>
+                       <string>Maximum Players Connected:</string>
                       </property>
                      </widget>
                     </item>
                     <item>
-                     <widget class="QSpinBox" name="spinBox">
+                     <widget class="QSpinBox" name="maxConnectedPlayersConfig">
+                      <property name="font">
+                       <font>
+                        <family>Arial</family>
+                        <pointsize>12</pointsize>
+                       </font>
+                      </property>
                       <property name="suffix">
                        <string> players</string>
                       </property>
@@ -711,6 +724,65 @@ QGroupBox::title {
                     </property>
                    </widget>
                   </item>
+                  <item>
+                   <widget class="QCheckBox" name="logInfosMessagesConfig">
+                    <property name="font">
+                     <font>
+                      <family>Arial</family>
+                      <pointsize>12</pointsize>
+                     </font>
+                    </property>
+                    <property name="text">
+                     <string>logInfos Messages</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <spacer name="verticalSpacer_10">
+                    <property name="orientation">
+                     <enum>Qt::Vertical</enum>
+                    </property>
+                    <property name="sizeType">
+                     <enum>QSizePolicy::Fixed</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>20</width>
+                      <height>10</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                  <item>
+                   <layout class="QHBoxLayout" name="horizontalLayout_13">
+                    <item>
+                     <widget class="QCheckBox" name="enableLoginServerConfig">
+                      <property name="font">
+                       <font>
+                        <family>Arial</family>
+                        <pointsize>12</pointsize>
+                       </font>
+                      </property>
+                      <property name="text">
+                       <string>Enable Login Server</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QCheckBox" name="enableGameServerConfig">
+                      <property name="font">
+                       <font>
+                        <family>Arial</family>
+                        <pointsize>12</pointsize>
+                       </font>
+                      </property>
+                      <property name="text">
+                       <string>Enable Game Server</string>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
                  </layout>
                 </widget>
                </item>
@@ -728,6 +800,9 @@ QGroupBox::title {
                     <string>Login Server</string>
                    </property>
                    <layout class="QVBoxLayout" name="verticalLayout_7">
+                    <property name="spacing">
+                     <number>8</number>
+                    </property>
                     <item>
                      <layout class="QHBoxLayout" name="horizontalLayout_7" stretch="0,0,0">
                       <property name="spacing">
@@ -735,18 +810,30 @@ QGroupBox::title {
                       </property>
                       <item>
                        <widget class="QLabel" name="label_6">
+                        <property name="font">
+                         <font>
+                          <family>Arial</family>
+                          <pointsize>12</pointsize>
+                         </font>
+                        </property>
                         <property name="text">
                          <string>Port:</string>
                         </property>
                        </widget>
                       </item>
                       <item>
-                       <widget class="QSpinBox" name="spinBox_2">
+                       <widget class="QSpinBox" name="loginPortConfig">
                         <property name="sizePolicy">
                          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                           <horstretch>0</horstretch>
                           <verstretch>0</verstretch>
                          </sizepolicy>
+                        </property>
+                        <property name="font">
+                         <font>
+                          <family>Arial</family>
+                          <pointsize>12</pointsize>
+                         </font>
                         </property>
                         <property name="maximum">
                          <number>65535</number>
@@ -757,7 +844,7 @@ QGroupBox::title {
                        </widget>
                       </item>
                       <item>
-                       <widget class="QToolButton" name="toolButton_2">
+                       <widget class="QToolButton" name="loginPortConfigReset">
                         <property name="text">
                          <string>Reset to default</string>
                         </property>
@@ -772,18 +859,30 @@ QGroupBox::title {
                       </property>
                       <item>
                        <widget class="QLabel" name="label_8">
+                        <property name="font">
+                         <font>
+                          <family>Arial</family>
+                          <pointsize>12</pointsize>
+                         </font>
+                        </property>
                         <property name="text">
                          <string>Max Registered Players:</string>
                         </property>
                        </widget>
                       </item>
                       <item>
-                       <widget class="QSpinBox" name="spinBox_4">
+                       <widget class="QSpinBox" name="maxRegisteredPlayersConfig">
                         <property name="sizePolicy">
                          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                           <horstretch>0</horstretch>
                           <verstretch>0</verstretch>
                          </sizepolicy>
+                        </property>
+                        <property name="font">
+                         <font>
+                          <family>Arial</family>
+                          <pointsize>12</pointsize>
+                         </font>
                         </property>
                         <property name="maximum">
                          <number>99999</number>
@@ -796,7 +895,13 @@ QGroupBox::title {
                      </layout>
                     </item>
                     <item>
-                     <widget class="QCheckBox" name="checkBox_2">
+                     <widget class="QCheckBox" name="getlogConfig">
+                      <property name="font">
+                       <font>
+                        <family>Arial</family>
+                        <pointsize>12</pointsize>
+                       </font>
+                      </property>
                       <property name="text">
                        <string>Enable Getlog</string>
                       </property>
@@ -834,6 +939,9 @@ QGroupBox::title {
                     <string>Game Server</string>
                    </property>
                    <layout class="QVBoxLayout" name="verticalLayout_8">
+                    <property name="spacing">
+                     <number>8</number>
+                    </property>
                     <item>
                      <layout class="QHBoxLayout" name="horizontalLayout_8">
                       <property name="spacing">
@@ -841,18 +949,30 @@ QGroupBox::title {
                       </property>
                       <item>
                        <widget class="QLabel" name="label_7">
+                        <property name="font">
+                         <font>
+                          <family>Arial</family>
+                          <pointsize>12</pointsize>
+                         </font>
+                        </property>
                         <property name="text">
                          <string>Port:</string>
                         </property>
                        </widget>
                       </item>
                       <item>
-                       <widget class="QSpinBox" name="spinBox_3">
+                       <widget class="QSpinBox" name="gamePortConfig">
                         <property name="sizePolicy">
                          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                           <horstretch>0</horstretch>
                           <verstretch>0</verstretch>
                          </sizepolicy>
+                        </property>
+                        <property name="font">
+                         <font>
+                          <family>Arial</family>
+                          <pointsize>12</pointsize>
+                         </font>
                         </property>
                         <property name="maximum">
                          <number>65535</number>
@@ -863,7 +983,7 @@ QGroupBox::title {
                        </widget>
                       </item>
                       <item>
-                       <widget class="QToolButton" name="toolButton_3">
+                       <widget class="QToolButton" name="gamePortConfigReset">
                         <property name="text">
                          <string>Reset to default</string>
                         </property>
@@ -872,7 +992,26 @@ QGroupBox::title {
                      </layout>
                     </item>
                     <item>
-                     <widget class="QCheckBox" name="checkBox">
+                     <widget class="QCheckBox" name="multiplayerConfig">
+                      <property name="font">
+                       <font>
+                        <family>Arial</family>
+                        <pointsize>12</pointsize>
+                       </font>
+                      </property>
+                      <property name="text">
+                       <string>Enable Multiplayer</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QCheckBox" name="pvpConfig">
+                      <property name="font">
+                       <font>
+                        <family>Arial</family>
+                        <pointsize>12</pointsize>
+                       </font>
+                      </property>
                       <property name="text">
                        <string>Enable PvP Gameplay</string>
                       </property>
@@ -880,20 +1019,35 @@ QGroupBox::title {
                     </item>
                     <item>
                      <layout class="QHBoxLayout" name="horizontalLayout_10">
+                      <property name="spacing">
+                       <number>5</number>
+                      </property>
                       <item>
                        <widget class="QLabel" name="label_9">
+                        <property name="font">
+                         <font>
+                          <family>Arial</family>
+                          <pointsize>12</pointsize>
+                         </font>
+                        </property>
                         <property name="text">
-                         <string>Player sync interval:</string>
+                         <string>Player Sync interval:</string>
                         </property>
                        </widget>
                       </item>
                       <item>
-                       <widget class="QSpinBox" name="spinBox_5">
+                       <widget class="QSpinBox" name="syncIntervalConfig">
                         <property name="sizePolicy">
                          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                           <horstretch>0</horstretch>
                           <verstretch>0</verstretch>
                          </sizepolicy>
+                        </property>
+                        <property name="font">
+                         <font>
+                          <family>Arial</family>
+                          <pointsize>12</pointsize>
+                         </font>
                         </property>
                         <property name="suffix">
                          <string>ms</string>
@@ -910,20 +1064,35 @@ QGroupBox::title {
                     </item>
                     <item>
                      <layout class="QHBoxLayout" name="horizontalLayout_11">
+                      <property name="spacing">
+                       <number>5</number>
+                      </property>
                       <item>
                        <widget class="QLabel" name="label_10">
+                        <property name="font">
+                         <font>
+                          <family>Arial</family>
+                          <pointsize>12</pointsize>
+                         </font>
+                        </property>
                         <property name="text">
                          <string>Ping Timeout:</string>
                         </property>
                        </widget>
                       </item>
                       <item>
-                       <widget class="QSpinBox" name="spinBox_6">
+                       <widget class="QSpinBox" name="pingTimeoutConfig">
                         <property name="sizePolicy">
                          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                           <horstretch>0</horstretch>
                           <verstretch>0</verstretch>
                          </sizepolicy>
+                        </property>
+                        <property name="font">
+                         <font>
+                          <family>Arial</family>
+                          <pointsize>12</pointsize>
+                         </font>
                         </property>
                         <property name="suffix">
                          <string>ms</string>
@@ -937,6 +1106,55 @@ QGroupBox::title {
                        </widget>
                       </item>
                      </layout>
+                    </item>
+                    <item>
+                     <layout class="QHBoxLayout" name="horizontalLayout_12" stretch="0,1">
+                      <property name="spacing">
+                       <number>5</number>
+                      </property>
+                      <item>
+                       <widget class="QLabel" name="label_11">
+                        <property name="font">
+                         <font>
+                          <family>Arial</family>
+                          <pointsize>12</pointsize>
+                         </font>
+                        </property>
+                        <property name="text">
+                         <string>Ping Check interval:</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QSpinBox" name="pingCheckConfig">
+                        <property name="font">
+                         <font>
+                          <family>Arial</family>
+                          <pointsize>12</pointsize>
+                         </font>
+                        </property>
+                        <property name="suffix">
+                         <string>ms</string>
+                        </property>
+                        <property name="maximum">
+                         <number>999999</number>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </item>
+                    <item>
+                     <widget class="QCheckBox" name="sessKeyValidationConfig">
+                      <property name="font">
+                       <font>
+                        <family>Arial</family>
+                        <pointsize>12</pointsize>
+                       </font>
+                      </property>
+                      <property name="text">
+                       <string>Enable Session Key Validation</string>
+                      </property>
+                     </widget>
                     </item>
                     <item>
                      <spacer name="verticalSpacer_9">
@@ -958,6 +1176,9 @@ QGroupBox::title {
                </item>
                <item>
                 <layout class="QHBoxLayout" name="horizontalLayout_5">
+                 <property name="spacing">
+                  <number>10</number>
+                 </property>
                  <item>
                   <spacer name="horizontalSpacer_7">
                    <property name="orientation">
@@ -972,7 +1193,7 @@ QGroupBox::title {
                   </spacer>
                  </item>
                  <item>
-                  <widget class="QToolButton" name="toolButton">
+                  <widget class="QToolButton" name="configSaveSettings">
                    <property name="font">
                     <font>
                      <family>Arial</family>
