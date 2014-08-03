@@ -40,6 +40,15 @@ int main(int, char**)
             "border: 1px solid rgb(75, 78, 143);" +
             "border-top: 1px solid rgb(80, 87, 168);" +
             "border-bottom: 1px solid rgb(69, 74, 112); }");
+
+        // OSX Menubar
+        // This is required so we don't crash when we quit
+        QMenuBar *menuBar = new QMenuBar(0);
+        QMenu *menu = menuBar->addMenu(a.tr("&File"));
+
+        QAction *quitAction = menu->addAction(a.tr("&Quit"));
+        quitAction->setStatusTip(a.tr("Shutdown private server and quit"));
+        a.connect(quitAction, SIGNAL(triggered()), &app, SLOT(shutdown()));
     #endif
 
     app.show();

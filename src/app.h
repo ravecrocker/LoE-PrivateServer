@@ -6,6 +6,7 @@
     #include <QtWidgets/QWidget>
     #include <QClipboard>
     #include <QFileDialog>
+    #include <QMenuBar>
     #include "ui_app.h"
     #define QAPP_TYPE QApplication
     #define APP_CLASS QWidget
@@ -71,6 +72,7 @@ public:
     bool gameServerUp;
 
     void startup(); // Get application up and running
+public slots:
     void shutdown(); // Shuts down application
 
 #ifdef USE_GUI
