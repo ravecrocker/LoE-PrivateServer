@@ -37,9 +37,6 @@
 #define CONFIGFILEPATH "data/server.ini"
 #define SERVERSLISTFILEPATH "data/serversList.cfg"
 
-#define DEFAULTLOGINPORT 1034
-#define DEFAULTGAMEPORT 1039
-
 class Mobzone;
 class Mob;
 class Sync;
@@ -78,6 +75,7 @@ public:
 
 #ifdef USE_GUI
     void loadConfigFromGui(); // Load config from gui
+    void resetGuiConfigToDefault(); // Reset gui config to defaults
 #endif
     void loadConfig(); // Load config from file
     void saveConfig(); // Save config to file
@@ -114,6 +112,8 @@ private slots:
     void on_toggleGameServerButton_clicked();
     void on_exitButton_clicked();
     void on_configSaveSettings_clicked();
+    void on_configReloadSettings_clicked();
+    void on_configResetSettings_clicked();
     void on_loginPortConfigReset_clicked();
     void on_gamePortConfigReset_clicked();
 #endif

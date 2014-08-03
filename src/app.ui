@@ -40,10 +40,10 @@ QToolButton, QLineEdit, QPlainTextEdit {
 }
 
 #App {
-	background: qlineargradient(spread:pad, x1:0.123, y1:0, x2:0.325, y2:1, stop:0 rgba(112, 182, 247, 255), stop:1 rgba(86, 76, 202, 255));
+	background: rgb(129, 149, 255);
 }
 QTabWidget::pane {
-	background: qlineargradient(spread:pad, x1:0.123153, y1:0, x2:0.413793, y2:1, stop:0 rgba(18, 28, 77, 138), stop:1 rgba(42, 9, 88, 146));
+	background: rgba(18, 28, 77, 138);
 	border: 1px solid rgba(20, 20, 30, 128);
 	margin-top: -10px;
 	border-radius: 7px;
@@ -579,7 +579,7 @@ QGroupBox::title {
                 <number>5</number>
                </property>
                <item>
-                <widget class="QGroupBox" name="groupBox">
+                <widget class="QGroupBox" name="generalConfigFrame">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
                    <horstretch>0</horstretch>
@@ -603,12 +603,12 @@ QGroupBox::title {
                    <number>9</number>
                   </property>
                   <item>
-                   <layout class="QHBoxLayout" name="horizontalLayout_4">
+                   <layout class="QHBoxLayout" name="saltPasswordFrame">
                     <property name="spacing">
                      <number>5</number>
                     </property>
                     <item>
-                     <widget class="QLabel" name="label_2">
+                     <widget class="QLabel" name="saltPasswordLabel">
                       <property name="font">
                        <font>
                         <family>Arial</family>
@@ -633,7 +633,7 @@ QGroupBox::title {
                    </layout>
                   </item>
                   <item>
-                   <widget class="QLabel" name="label_3">
+                   <widget class="QLabel" name="saltPasswordNote">
                     <property name="font">
                      <font>
                       <family>Arial</family>
@@ -666,9 +666,9 @@ QGroupBox::title {
                    </spacer>
                   </item>
                   <item>
-                   <layout class="QHBoxLayout" name="horizontalLayout_6">
+                   <layout class="QHBoxLayout" name="maxConnectedPlayersFrame">
                     <item>
-                     <widget class="QLabel" name="label_4">
+                     <widget class="QLabel" name="maxConnectedPlayersLabel">
                       <property name="sizePolicy">
                        <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
                         <horstretch>0</horstretch>
@@ -708,7 +708,7 @@ QGroupBox::title {
                    </layout>
                   </item>
                   <item>
-                   <widget class="QLabel" name="label_5">
+                   <widget class="QLabel" name="maxConnectedPlayersNote">
                     <property name="font">
                      <font>
                       <family>Arial</family>
@@ -754,7 +754,7 @@ QGroupBox::title {
                    </spacer>
                   </item>
                   <item>
-                   <layout class="QHBoxLayout" name="horizontalLayout_13">
+                   <layout class="QHBoxLayout" name="enableServersFrame">
                     <item>
                      <widget class="QCheckBox" name="enableLoginServerConfig">
                       <property name="font">
@@ -789,7 +789,7 @@ QGroupBox::title {
                <item>
                 <layout class="QHBoxLayout" name="horizontalLayout_3">
                  <item>
-                  <widget class="QGroupBox" name="groupBox_2">
+                  <widget class="QGroupBox" name="loginConfigFrame">
                    <property name="font">
                     <font>
                      <family>Arial</family>
@@ -804,12 +804,12 @@ QGroupBox::title {
                      <number>8</number>
                     </property>
                     <item>
-                     <layout class="QHBoxLayout" name="horizontalLayout_7" stretch="0,0,0">
+                     <layout class="QHBoxLayout" name="loginPortFrame" stretch="0,0,0">
                       <property name="spacing">
                        <number>5</number>
                       </property>
                       <item>
-                       <widget class="QLabel" name="label_6">
+                       <widget class="QLabel" name="loginPortLabel">
                         <property name="font">
                          <font>
                           <family>Arial</family>
@@ -853,12 +853,12 @@ QGroupBox::title {
                      </layout>
                     </item>
                     <item>
-                     <layout class="QHBoxLayout" name="horizontalLayout_9" stretch="0,1">
+                     <layout class="QHBoxLayout" name="maxRegisteredPlayersFrame" stretch="0,1">
                       <property name="spacing">
                        <number>5</number>
                       </property>
                       <item>
-                       <widget class="QLabel" name="label_8">
+                       <widget class="QLabel" name="maxRegisteredPlayersLabel">
                         <property name="font">
                          <font>
                           <family>Arial</family>
@@ -924,7 +924,7 @@ QGroupBox::title {
                   </widget>
                  </item>
                  <item>
-                  <widget class="QGroupBox" name="groupBox_3">
+                  <widget class="QGroupBox" name="gameConfigFrame">
                    <property name="font">
                     <font>
                      <family>Arial</family>
@@ -943,12 +943,12 @@ QGroupBox::title {
                      <number>8</number>
                     </property>
                     <item>
-                     <layout class="QHBoxLayout" name="horizontalLayout_8">
+                     <layout class="QHBoxLayout" name="gamePortFrame">
                       <property name="spacing">
                        <number>5</number>
                       </property>
                       <item>
-                       <widget class="QLabel" name="label_7">
+                       <widget class="QLabel" name="gamePortLabel">
                         <property name="font">
                          <font>
                           <family>Arial</family>
@@ -1018,12 +1018,12 @@ QGroupBox::title {
                      </widget>
                     </item>
                     <item>
-                     <layout class="QHBoxLayout" name="horizontalLayout_10">
+                     <layout class="QHBoxLayout" name="syncIntervalFrame">
                       <property name="spacing">
                        <number>5</number>
                       </property>
                       <item>
-                       <widget class="QLabel" name="label_9">
+                       <widget class="QLabel" name="syncIntervalLabel">
                         <property name="font">
                          <font>
                           <family>Arial</family>
@@ -1063,12 +1063,12 @@ QGroupBox::title {
                      </layout>
                     </item>
                     <item>
-                     <layout class="QHBoxLayout" name="horizontalLayout_11">
+                     <layout class="QHBoxLayout" name="pingTimeoutFrame">
                       <property name="spacing">
                        <number>5</number>
                       </property>
                       <item>
-                       <widget class="QLabel" name="label_10">
+                       <widget class="QLabel" name="pingTimeoutLabel">
                         <property name="font">
                          <font>
                           <family>Arial</family>
@@ -1095,7 +1095,7 @@ QGroupBox::title {
                          </font>
                         </property>
                         <property name="suffix">
-                         <string>ms</string>
+                         <string>s</string>
                         </property>
                         <property name="maximum">
                          <number>999999</number>
@@ -1108,12 +1108,12 @@ QGroupBox::title {
                      </layout>
                     </item>
                     <item>
-                     <layout class="QHBoxLayout" name="horizontalLayout_12" stretch="0,1">
+                     <layout class="QHBoxLayout" name="pingCheckFrame" stretch="0,1">
                       <property name="spacing">
                        <number>5</number>
                       </property>
                       <item>
-                       <widget class="QLabel" name="label_11">
+                       <widget class="QLabel" name="pingCheckLabel">
                         <property name="font">
                          <font>
                           <family>Arial</family>
@@ -1175,7 +1175,7 @@ QGroupBox::title {
                 </layout>
                </item>
                <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_5">
+                <layout class="QHBoxLayout" name="configFunctionsFrame">
                  <property name="spacing">
                   <number>10</number>
                  </property>
@@ -1191,6 +1191,32 @@ QGroupBox::title {
                     </size>
                    </property>
                   </spacer>
+                 </item>
+                 <item>
+                  <widget class="QToolButton" name="configResetSettings">
+                   <property name="font">
+                    <font>
+                     <family>Arial</family>
+                     <pointsize>13</pointsize>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string>Reset to Defaults</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QToolButton" name="configReloadSettings">
+                   <property name="font">
+                    <font>
+                     <family>Arial</family>
+                     <pointsize>13</pointsize>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string>Reload Settings</string>
+                   </property>
+                  </widget>
                  </item>
                  <item>
                   <widget class="QToolButton" name="configSaveSettings">

@@ -226,13 +226,23 @@ void App::on_configSaveSettings_clicked()
     app.saveConfig();
 }
 
+void App::on_configReloadSettings_clicked()
+{
+    app.loadConfig();
+}
+
+void App::on_configResetSettings_clicked()
+{
+    app.resetGuiConfigToDefault();
+}
+
 void App::on_loginPortConfigReset_clicked()
 {
-    app.ui->loginPortConfig->setValue(DEFAULTLOGINPORT);
+    app.ui->loginPortConfig->setValue(DEFAULT_LOGIN_PORT);
 }
 
 void App::on_gamePortConfigReset_clicked()
 {
-    app.ui->gamePortConfig->setValue(DEFAULTGAMEPORT);
+    app.ui->gamePortConfig->setValue(DEFAULT_GAME_PORT);
 }
 #endif
