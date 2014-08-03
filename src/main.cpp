@@ -30,11 +30,16 @@ int main(int, char**)
     // Hacky OSX Stylesheet Fixing
     #ifdef __APPLE__
     app.ui->BaseAppFrame->setStyleSheet(app.ui->BaseAppFrame->styleSheet() +
-        "QToolButton { background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1," +
-            "stop: 0 #f6f7fa, stop: 1 #dadbde); padding: 2px 3px; border-radius: 4px;" +
-            "border: 1px solid rgba(20, 20, 30, 110); }" +
-        "QToolButton:pressed { background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1," +
-            "stop: 0 #e6e7ea, stop: 1 #cacbce); }");
+        "QToolButton { background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1," +
+            "stop:0 rgba(255, 255, 255, 255), stop:0.450 rgba(243, 243, 243, 255)," +
+            "stop:0.550 rgba(236, 236, 236, 255), stop:1 rgba(242, 242, 242, 255));" +
+            "padding: 2px 3px; border-radius: 4px; border: 1px solid #9a9a9a; }" +
+        "QToolButton:pressed { background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1," +
+            "stop:0 rgb(188, 215, 237), stop:0.450 rgb(107, 164, 228)," +
+            "stop:0.550 rgb(69, 148, 227), stop:1 rgb(167, 212, 237));" +
+            "border: 1px solid rgb(75, 78, 143);" +
+            "border-top: 1px solid rgb(80, 87, 168);" +
+            "border-bottom: 1px solid rgb(69, 74, 112); }");
     #endif
 
     app.show();
