@@ -27,6 +27,16 @@ int main(int, char**)
 
     // Running the server
 #ifdef USE_GUI
+    // Hacky OSX Stylesheet Fixing
+    #ifdef __APPLE__
+    app.ui->BaseAppFrame->setStyleSheet(app.ui->BaseAppFrame->styleSheet() +
+        "QToolButton { background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1," +
+            "stop: 0 #f6f7fa, stop: 1 #dadbde); padding: 2px 3px; border-radius: 4px;" +
+            "border: 1px solid rgba(20, 20, 30, 110); }" +
+        "QToolButton:pressed { background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1," +
+            "stop: 0 #e6e7ea, stop: 1 #cacbce); }");
+    #endif
+
     app.show();
 #endif
     a.processEvents();

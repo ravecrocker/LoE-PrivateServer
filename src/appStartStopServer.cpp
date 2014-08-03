@@ -215,7 +215,6 @@ void App::resetGuiConfigToDefault()
 /// Saves values to config file
 void App::saveConfig()
 {
-    logStatusMessage(tr("Saving config file ..."));
     QSettings config(CONFIGFILEPATH, QSettings::IniFormat);
 
     config.setValue("loginPort", loginPort);
@@ -237,6 +236,8 @@ void App::saveConfig()
     config.setValue("useRemoteLogin", useRemoteLogin);
     config.setValue("enableGetlog", enableGetlog);
     config.setValue("enablePVP", enablePVP);
+
+    logStatusMessage(tr("Saved config file ..."));
 }
 
 void App::startLoginServer()
