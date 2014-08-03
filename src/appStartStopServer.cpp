@@ -92,16 +92,9 @@ void App::startup()
         startGameServer();
     }
 
-#ifdef USE_CONSOLE
-    logMessage(tr(""));
-    logMessage(tr("== Basic Server Commands"));
-    logMessage(tr("> start/stop login  :  Starts or stops login server"));
-    logMessage(tr("> start/stop game   :  Starts or stops game server"));
-    logMessage(tr("> exit              :  Shutdown and exit"));
-    logMessage(tr("> help              :  View help and all commands"));
-    logMessage(tr(""));
-    logMessage(tr("To send a server command, simply type it and hit enter"));
-#endif
+    /// Example Stuff
+    logMessage("");
+    app.printBasicHelp();
 }
 
 /// Shuts down the application

@@ -1076,7 +1076,7 @@ QGroupBox::title {
                          </font>
                         </property>
                         <property name="text">
-                         <string>Ping Timeout:</string>
+                         <string>Player Ping Timeout:</string>
                         </property>
                        </widget>
                       </item>

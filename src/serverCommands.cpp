@@ -10,6 +10,19 @@
 
 using namespace Settings;
 
+// Prints a very basic help message
+void App::printBasicHelp()
+{
+    logMessage(tr("== Basic Server Commands"));
+    logMessage(tr("> start/stop login  :  Starts or stops login server"));
+    logMessage(tr("> start/stop game   :  Starts or stops game server"));
+    logMessage(tr("> status            :  Views login and game server status"));
+    logMessage(tr("> exit              :  Shutdown and exit"));
+    logMessage(tr("> help              :  View help and all commands"));
+    logMessage("");
+    logMessage(tr("To send a server command, simply type it and hit enter"));
+}
+
 // Processes the commands entered directly in the server, not the chat messages
 void App::sendCmdLine()
 {
@@ -128,6 +141,8 @@ void App::sendCmdLine()
         logMessage(QObject::tr("%1 Lists the inventory of the selected player").arg(indent));
         logMessage("listWorn");
         logMessage(QObject::tr("%1 Lists all items the player is wearing").arg(indent));
+        logMessage("");
+        app.printBasicHelp();
         return;
     }
     else if (str == "clear")
@@ -193,6 +208,8 @@ void App::sendCmdLine()
         if (app.gameServerUp)
         {
             logMessage(tr("Game Server Status: ONLINE"));
+            int connectedPlayers = Player::udpPlayers.length();
+            logMessage(tr("  %1 / %2 Players Connected").arg(connectedPlayers).arg(maxConnected));
         }
         else
         {

@@ -54,6 +54,7 @@ class App : public APP_CLASS
 
     /// Main functions
 public slots:
+    void printBasicHelp();
     void sendCmdLine();
     void checkPingTimeouts();
 public:
