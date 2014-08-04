@@ -30,5 +30,5 @@ float timestampNow()
     clock_gettime(CLOCK_MONOTONIC, &tp);
     newtime = tp.tv_sec*1000 + tp.tv_nsec/1000/1000;
 #endif
-    return (float)(((float)(newtime - app.startTimestamp))/(float)1000); // Seconds since server start (startTimestamp)
+    return (float)(((float)(newtime - app.startTimestamp))/(float)1000); // Seconds since application start (startTimestamp)
 }

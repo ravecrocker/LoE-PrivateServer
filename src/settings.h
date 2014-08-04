@@ -3,7 +3,28 @@
 
 #include <QString>
 
-#define DEFAULT_SYNC_INTERVAL 250
+// Default settings
+#define DEFAULT_MAX_CONNECTED 256
+#define DEFAULT_LOG_INFOSMESSAGES true
+#define DEFAULT_SALT_PASSWORD "Change Me"
+
+#define DEFAULT_ENABLE_LOGIN_SERVER true
+#define DEFAULT_LOGIN_PORT 1034
+#define DEFAULT_MAX_REGISTERED 4096
+#define DEFAULT_USE_REMOTE_LOGIN false
+#define DEFAULT_REMOTE_LOGIN_IP "127.0.0.1"
+#define DEFAULT_REMOTE_LOGIN_PORT 1034
+#define DEFAULT_REMOTE_LOGIN_TIMEOUT 5000
+#define DEFAULT_ENABLE_GETLOG true
+#define DEFAULT_SESSKEY_VALIDATION true
+
+#define DEFAULT_ENABLE_GAME_SERVER true
+#define DEFAULT_GAME_PORT 1039
+#define DEFAULT_ENABLE_MULTIPLAYER true
+#define DEFAULT_SYNC_INTERVAL 200
+#define DEFAULT_PING_TIMEOUT 25
+#define DEFAULT_PING_CHECK 3000
+#define DEFAULT_ENABLE_PVP false
 
 namespace Settings
 {
@@ -13,8 +34,8 @@ extern int gamePort; // Port for the game server
 extern QString remoteLoginIP; // IP of the remote login server
 extern int remoteLoginPort; // Port of the remote login server
 extern int remoteLoginTimeout; // Time before we give up connecting to the remote login server
-extern bool useRemoteLogin; // Whever or not to use the remote login server
-extern int maxConnected; // Max numbre of players connected at the same time, can deny login
+extern bool useRemoteLogin; // Whether or not to use the remote login server
+extern int maxConnected; // Max number of players connected at the same time, can deny login
 extern int maxRegistered; // Max number of registered players in database, can deny registration
 extern int pingTimeout; // Max time between recdption of pings, can disconnect player
 extern int pingCheckInterval; // Time between ping timeout checks

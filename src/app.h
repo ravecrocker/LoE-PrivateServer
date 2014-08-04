@@ -4,6 +4,9 @@
 #ifdef USE_GUI
     #include <QtWidgets/QApplication>
     #include <QtWidgets/QWidget>
+    #include <QClipboard>
+    #include <QFileDialog>
+    #include <QMenuBar>
     #include "ui_app.h"
     #define QAPP_TYPE QApplication
     #define APP_CLASS QWidget
@@ -26,6 +29,8 @@
 #include "CoreFoundation/CoreFoundation.h"
 #endif
 
+#define VERSIONSTRING "v0.5.3-beta1"
+
 #define GAMEDATAPATH "data/data/"
 #define PLAYERSPATH "data/players/"
 #define NETDATAPATH "data/netData/"
@@ -47,6 +52,7 @@ class App : public APP_CLASS
 
     /// Main functions
 public slots:
+    void printBasicHelp();
     void sendCmdLine();
     void checkPingTimeouts();
 public:
@@ -60,9 +66,29 @@ public:
     void logStatusMessage(QString msg);
     void logError(QString msg);
     void logStatusError(QString msg);
-    void startServer();
-    void stopServer(); // Calls stopServer(true)
-    void stopServer(bool log);
+
+    /// General
+    bool loginServerUp;
+    bool gameServerUp;
+
+    void startup(); // Get application up and running
+public slots:
+    void shutdown(); // Shuts down application
+
+#ifdef USE_GUI
+    void loadConfigFromGui(); // Load config from gui
+    void resetGuiConfigToDefault(); // Reset gui config to defaults
+#endif
+    void loadConfig(); // Load config from file
+    void saveConfig(); // Save config to file
+
+    /// Servers
+    void startLoginServer();
+    void stopLoginServer(); // Calls stopLoginServer(true)
+    void stopLoginServer(bool log);
+    void startGameServer();
+    void stopGameServer(); // Calls stopGameServer(true)
+    void stopGameServer(bool log);
 
     /// UDP/TCP
 public slots:
@@ -76,10 +102,26 @@ public:
     float startTimestamp;
     int syncInterval;
 
-private:
 #ifdef USE_GUI
+public:
     Ui::App* ui;
-#else
+
+private slots:
+    void on_clearLogButton_clicked();
+    void on_copyLogButton_clicked();
+    void on_saveLogButton_clicked();
+    void on_toggleLoginServerButton_clicked();
+    void on_toggleGameServerButton_clicked();
+    void on_exitButton_clicked();
+    void on_configSaveSettings_clicked();
+    void on_configReloadSettings_clicked();
+    void on_configResetSettings_clicked();
+    void on_loginPortConfigReset_clicked();
+    void on_gamePortConfigReset_clicked();
+#endif
+
+private:
+#ifdef USE_CONSOLE
     QSocketNotifier *cin_notifier;
 #endif
     QTcpServer* tcpServer;

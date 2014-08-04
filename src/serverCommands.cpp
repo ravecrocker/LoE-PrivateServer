@@ -10,6 +10,19 @@
 
 using namespace Settings;
 
+// Prints a very basic help message
+void App::printBasicHelp()
+{
+    logMessage(tr("== Basic Server Commands"));
+    logMessage(tr("> start/stop login  :  Starts or stops login server"));
+    logMessage(tr("> start/stop game   :  Starts or stops game server"));
+    logMessage(tr("> status            :  Views login and game server status"));
+    logMessage(tr("> exit              :  Shutdown and exit"));
+    logMessage(tr("> help              :  View help and all commands"));
+    logMessage("");
+    logMessage(tr("To send a server command, simply type it and hit enter"));
+}
+
 // Processes the commands entered directly in the server, not the chat messages
 void App::sendCmdLine()
 {
@@ -21,6 +34,8 @@ void App::sendCmdLine()
 
 #ifdef USE_GUI
     QString str = ui->cmdLine->text();
+    ui->cmdLine->clear();
+    ui->cmdLine->setFocus();
 #else
     QString str = cin.readLine();
 #endif
@@ -34,8 +49,16 @@ void App::sendCmdLine()
         logMessage("clear");
         logMessage(QObject::tr("%1 Clears the log screen").arg(indent));
 #endif
-        logMessage("stop");
-        logMessage(QObject::tr("%1 Stops the server and exits").arg(indent));
+        logMessage("exit");
+        logMessage(QObject::tr("%1 Shuts down all operations and exits").arg(indent));
+        logMessage("start login");
+        logMessage("stop login");
+        logMessage(QObject::tr("%1 Starts and stops the login server").arg(indent));
+        logMessage("start game");
+        logMessage("stop game");
+        logMessage(QObject::tr("%1 Starts and stops the game server").arg(indent));
+        logMessage("status");
+        logMessage(QObject::tr("%1 Shows the status of the login and game servers").arg(indent));
         logMessage("listTcpPlayers");
         logMessage(QObject::tr("%1 Lists players currently logged into the game server").arg(indent));
         logMessage("listPeers [scene]");
@@ -118,6 +141,8 @@ void App::sendCmdLine()
         logMessage(QObject::tr("%1 Lists the inventory of the selected player").arg(indent));
         logMessage("listWorn");
         logMessage(QObject::tr("%1 Lists all items the player is wearing").arg(indent));
+        logMessage("");
+        app.printBasicHelp();
         return;
     }
     else if (str == "clear")
@@ -127,7 +152,73 @@ void App::sendCmdLine()
 #endif
         return;
     }
-    else if (str == "stop")
+    else if (str.startsWith("start"))
+    {
+        QString target = str.right(str.length() - QString("start ").length());
+
+        if (target.startsWith("login"))
+        {
+            startLoginServer();
+        }
+        else if (target.startsWith("game"))
+        {
+            startGameServer();
+        }
+        else
+        {
+            logMessage(tr("What do you want to start?"));
+            logMessage(tr("Usage:  start login  or  start game"));
+        }
+
+        return;
+    }
+    else if (str.startsWith("stop"))
+    {
+        QString target = str.right(str.length() - QString("stop ").length());
+
+        if (target.startsWith("login"))
+        {
+            stopLoginServer();
+        }
+        else if (target.startsWith("game"))
+        {
+            stopGameServer();
+        }
+        else
+        {
+            logMessage(tr("What do you want to stop?"));
+            logMessage(tr("Usage:  stop login  or  stop game"));
+        }
+
+        return;
+    }
+    else if (str.startsWith("status"))
+    {
+        // Login server
+        if (app.loginServerUp)
+        {
+            logMessage(tr("Login Server Status: ONLINE"));
+        }
+        else
+        {
+            logMessage(tr("Login Server Status: OFFLINE"));
+        }
+
+        // Game server
+        if (app.gameServerUp)
+        {
+            logMessage(tr("Game Server Status: ONLINE"));
+            int connectedPlayers = Player::udpPlayers.length();
+            logMessage(tr("  %1 / %2 Players Connected").arg(connectedPlayers).arg(maxConnected));
+        }
+        else
+        {
+            logMessage(tr("Game Server Status: OFFLINE"));
+        }
+
+        return;
+    }
+    else if (str == "exit")
     {
         delete this;
         return;

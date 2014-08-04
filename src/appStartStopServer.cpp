@@ -24,14 +24,18 @@
 
 using namespace Settings;
 
-/// Reads the config file (server.ini) and start the server accordingly
-void App::startServer()
+/// Starts up the application
+void App::startup()
 {
 #ifdef USE_GUI
     ui->retranslateUi(this);
 #endif
 
-    logStatusMessage(tr("Private server")+" v0.5.3-beta1");
+    logStatusMessage(tr("Private server")+" "+VERSIONSTRING);
+
+    app.loginServerUp = false;
+    app.gameServerUp = false;
+
 #if defined USE_GUI && defined __APPLE__
     // this fixes the bundle directory in OSX so we can use the relative CONFIGFILEPATH and etc properly
     CFBundleRef mainBundle = CFBundleGetMainBundle();
@@ -46,34 +50,25 @@ void App::startServer()
     chdir(path);
     chdir("..");
 #endif
-    SceneEntity::lastNetviewId=0;
-    SceneEntity::lastId=1;
 
-    /// Read config
-    logStatusMessage(tr("Reading config file ..."));
-    QSettings config(CONFIGFILEPATH, QSettings::IniFormat);
-    loginPort = config.value("loginPort", 1034).toInt();
-    gamePort = config.value("gamePort", 1039).toInt();
-    maxConnected = config.value("maxConnected",128).toInt();
-    maxRegistered = config.value("maxRegistered",2048).toInt();
-    pingTimeout = config.value("pingTimeout", 15).toInt();
-    pingCheckInterval = config.value("pingCheckInterval", 5000).toInt();
-    logInfos = config.value("logInfosMessages", true).toBool();
-    saltPassword = config.value("saltPassword", "Change Me").toString();
-    enableSessKeyValidation = config.value("enableSessKeyValidation", true).toBool();
-    enableLoginServer = config.value("enableLoginServer", true).toBool();
-    enableGameServer = config.value("enableGameServer", true).toBool();
-    enableMultiplayer = config.value("enableMultiplayer", true).toBool();
-    syncInterval = config.value("syncInterval",DEFAULT_SYNC_INTERVAL).toInt();
-    remoteLoginIP = config.value("remoteLoginIP", "127.0.0.1").toString();
-    remoteLoginPort = config.value("remoteLoginPort", 1034).toInt();
-    remoteLoginTimeout = config.value("remoteLoginTimeout", 5000).toInt();
-    useRemoteLogin = config.value("useRemoteLogin", false).toBool();
-    enableGetlog = config.value("enableGetlog", true).toBool();
-    enablePVP = config.value("enablePVP", true).toBool();
+    loadConfig();
 
-    /// Init servers
-    tcpClientsList.clear();
+    /// GUI setup and signal/slot connecting
+#ifdef USE_GUI
+    app.ui->loginPort->setText(QString::number(loginPort));
+    app.ui->gamePort->setText(QString::number(gamePort));
+    int connectedPlayers = Player::udpPlayers.length();
+    app.ui->userCountLabel->setText(QString("%1 / %2").arg(connectedPlayers).arg(maxConnected));
+    app.ui->builddateLabel->setText(tr("Built %1").arg(__DATE__));
+    app.ui->versionLabel->setText(VERSIONSTRING);
+
+    connect(app.ui->sendButton, SIGNAL(clicked()), this, SLOT(sendCmdLine()));
+    connect(app.ui->cmdLine, SIGNAL(returnPressed()), this, SLOT(sendCmdLine()));
+#else
+    connect(cin_notifier, SIGNAL(activated(int)), this, SLOT(sendCmdLine()));
+#endif
+
+    /// Timestamps
 #if defined _WIN32 || defined WIN32
     startTimestamp = GetTickCount();
 #elif __APPLE__
@@ -86,281 +81,33 @@ void App::startServer()
     startTimestamp = tp.tv_sec*1000 + tp.tv_nsec/1000/1000;
 #endif
 
-    /// Read vortex DB
-    if (enableGameServer)
-    {
-        bool corrupted=false;
-        QDir vortexDir("data/vortex/");
-        QStringList files = vortexDir.entryList(QDir::Files);
-        int nVortex=0;
-        for (int i=0; i<files.size(); i++) // For each vortex file
-        {
-            // Each file is a scene
-            Scene scene(files[i].split('.')[0]);
-
-            QFile file("data/vortex/"+files[i]);
-            if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
-            {
-                logStatusError(tr("Error reading vortex DB"));
-                return;
-            }
-            QByteArray data = file.readAll();
-            data.replace('\r', "");
-            QList<QByteArray> lines = data.split('\n');
-
-            // Each line is a vortex
-            for (int j=0; j<lines.size(); j++)
-            {
-                if (lines[j].size() == 0) // Skip empty lines
-                    continue;
-                nVortex++;
-                Vortex vortex;
-                bool ok1, ok2, ok3, ok4;
-                QList<QByteArray> elems = lines[j].split(' ');
-                if (elems.size() < 5)
-                {
-                    logStatusError(tr("Vortex DB is corrupted. Incorrect line (%1 elems), file %2")
-                                        .arg(elems.size()).arg(files[i]));
-                    corrupted=true;
-                    break;
-                }
-                vortex.id = elems[0].toInt(&ok1, 16);
-                vortex.destName = elems[1];
-                for (int j=2; j<elems.size() - 3;j++) // Concatenate the string between id and poss
-                    vortex.destName += " "+elems[j];
-                vortex.destPos.x = elems[elems.size()-3].toFloat(&ok2);
-                vortex.destPos.y = elems[elems.size()-2].toFloat(&ok3);
-                vortex.destPos.z = elems[elems.size()-1].toFloat(&ok4);
-                if (!(ok1&&ok2&&ok3&&ok4))
-                {
-                    logStatusError(tr("Vortex DB is corrupted. Conversion failed, file %1").arg(files[i]));
-                    corrupted=true;
-                    break;
-                }
-                scene.vortexes << vortex;
-                //app.logMessage("Add vortex "+QString().setNum(vortex.id)+" to "+vortex.destName+" "
-                //               +QString().setNum(vortex.destPos.x)+" "
-                //               +QString().setNum(vortex.destPos.y)+" "
-                //               +QString().setNum(vortex.destPos.z));
-            }
-            Scene::scenes << scene;
-        }
-
-        if (corrupted)
-        {
-            stopServer();
-            return;
-        }
-
-        logMessage(tr("Loaded %1 vortexes in %2 scenes").arg(nVortex).arg(Scene::scenes.size()));
-    }
-
-    /// Read/parse Items.xml
-    if (enableGameServer)
-    {
-        QFile itemsFile("data/data/Items.xml");
-        if (itemsFile.open(QIODevice::ReadOnly))
-        {
-            QByteArray data = itemsFile.readAll();
-            parseItemsXml(data);
-            app.logMessage(tr("Loaded %1 items").arg(wearablePositionsMap.size()));
-        }
-        else
-        {
-            app.logError(tr("Couln't open Items.xml"));
-            stopServer();
-            return;
-        }
-    }
-
-    /// Read NPC/Quests DB
-    if (enableGameServer)
-    {
-        try
-        {
-            unsigned nQuests = 0;
-            QDir npcsDir("data/npcs/");
-            QStringList files = npcsDir.entryList(QDir::Files);
-            for (int i=0; i<files.size(); i++, nQuests++) // For each vortex file
-            {
-                try
-                {
-                    Quest quest("data/npcs/"+files[i], NULL);
-                    for (const Quest& q : Quest::quests)
-                        if (q.id == quest.id)
-                            logError(tr("Error, two quests are using the same id (%1) !").arg(quest.id));
-                    Quest::quests << quest;
-                    Quest::npcs << quest.npc;
-                }
-                catch (QString& error)
-                {
-                    app.logError(error);
-                    app.stopServer();
-                    throw error;
-                }
-            }
-            logMessage(tr("Loaded %1 quests/npcs").arg(nQuests));
-        }
-        catch (QString& e)
-        {
-            enableGameServer = false;
-        }
-    }
-
-    /// Read/parse mob zones
-    if (enableGameServer)
-    {
-        try
-        {
-            QDir mobsDir(MOBSPATH);
-            QStringList files = mobsDir.entryList(QDir::Files);
-            for (int i=0; i<files.size(); i++) // For each mobzone file
-            {
-                QFile file(MOBSPATH+files[i]);
-                if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
-                {
-                    logStatusError(tr("Error reading mob zones"));
-                    return;
-                }
-                QByteArray data = file.readAll();
-                file.close();
-                try {
-                    parseMobzoneData(data); // Will fill our Mobzone and Mobs list
-                }
-                catch (QString& error)
-                {
-                    logError(error);
-                    stopServer();
-                    throw error;
-                }
-            }
-            logMessage(tr("Loaded %1 mobs in %2 zones").arg(Mob::mobs.size()).arg(Mob::mobzones.size()));
-        }
-        catch (...) {}
-    }
-
-    // Parse animations
-    if (enableGameServer)
-    {
-        try
-        {
-            AnimationParser(GAMEDATAPATH+QString("Animations.json"));
-            logMessage(tr("Loaded %1 animations").arg(Animation::animations.size()));
-        }
-        catch (const QString& e)
-        {
-            logError(tr("Error parsing animations: ")+e);
-            app.stopServer();
-        }
-        catch (const char* e)
-        {
-            logError(tr("Error parsing animations: ")+e);
-            app.stopServer();
-        }
-    }
-
-    // Parse skills
-    if (enableGameServer)
-    {
-        try
-        {
-            SkillParser(GAMEDATAPATH+QString("Skills.json"));
-            logMessage(tr("Loaded %1 skills").arg(Skill::skills.size()));
-        }
-        catch (const QString& e)
-        {
-            logError(tr("Error parsing skills: ")+e);
-            app.stopServer();
-        }
-        catch (const char* e)
-        {
-            logError(tr("Error parsing skills: ")+e);
-            stopServer();
-        }
-    }
-
+    /// Starting servers, depends on above
     if (enableLoginServer)
     {
-//      logStatusMessage(tr("Loading players database ..."));
-        Player::tcpPlayers = Player::loadPlayers();
-    }
-
-    // TCP server
-    if (enableLoginServer)
-    {
-        logStatusMessage(tr("Starting TCP login server on port %1...").arg(loginPort));
-        if (!tcpServer->listen(QHostAddress::Any,loginPort))
-        {
-            logStatusError(tr("TCP: Unable to start server on port %1 : %2").arg(loginPort).arg(tcpServer->errorString()));
-            stopServer();
-            return;
-        }
-
-        // If we use a remote login server, try to open a connection preventively.
-        if (useRemoteLogin)
-            remoteLoginSock.connectToHost(remoteLoginIP, remoteLoginPort);
-    }
-
-    // UDP server
-    if (enableGameServer)
-    {
-        logStatusMessage(tr("Starting UDP game server on port %1...").arg(gamePort));
-        if (!udpSocket->bind(gamePort, QUdpSocket::ReuseAddressHint|QUdpSocket::ShareAddress))
-        {
-            logStatusError(tr("UDP: Unable to start server on port %1").arg(gamePort));
-            stopServer();
-            return;
-        }
+        startLoginServer();
     }
 
     if (enableGameServer)
     {
-        // Start ping timeout timer
-        pingTimer->start(pingCheckInterval);
+        startGameServer();
     }
 
-    if (enableMultiplayer)
-        sync->startSync(syncInterval);
-
-    if (enableLoginServer || enableGameServer)
-        logStatusMessage(tr("Server started"));
-
-#ifdef USE_GUI
-    connect(ui->sendButton, SIGNAL(clicked()), this, SLOT(sendCmdLine()));
-#else
-    connect(cin_notifier, SIGNAL(activated(int)), this, SLOT(sendCmdLine()));
-#endif
-    if (enableLoginServer)
-        connect(tcpServer, SIGNAL(newConnection()), this, SLOT(tcpConnectClient()));
-    if (enableGameServer)
-    {
-        connect(udpSocket, &QUdpSocket::readyRead, &::udpProcessPendingDatagrams);
-        connect(pingTimer, SIGNAL(timeout()), this, SLOT(checkPingTimeouts()));
-    }
+    /// Example Stuff
+    logMessage("");
+    app.printBasicHelp();
 }
 
-void App::stopServer()
+/// Shuts down the application
+void App::shutdown()
 {
-    stopServer(true);
-}
+    // Servers
+    app.stopLoginServer();
+    app.stopGameServer();
 
-void App::stopServer(bool log)
-{
-    if (log)
-        logStatusMessage(tr("Stopping all server operations"));
-    pingTimer->stop();
-    tcpServer->close();
-    for (int i=0;i<tcpClientsList.size();i++)
-        tcpClientsList[i].first->close();
-    udpSocket->close();
-
-    sync->stopSync();
-
-    enableLoginServer = false;
-    enableGameServer = false;
-
+    // Signals
 #ifdef USE_GUI
-    disconnect(ui->sendButton, SIGNAL(clicked()), this, SLOT(sendCmdLine()));
+    disconnect(app.ui->sendButton, SIGNAL(clicked()), this, SLOT(sendCmdLine()));
+    disconnect(app.ui->cmdLine, SIGNAL(returnPressed()), this, SLOT(sendCmdLine()));
 #else
     disconnect(cin_notifier, SIGNAL(activated(int)), this, SLOT(sendCmdLine()));
 #endif
@@ -368,4 +115,432 @@ void App::stopServer(bool log)
     disconnect(tcpServer, SIGNAL(newConnection()), this, SLOT(tcpConnectClient()));
     disconnect(pingTimer, SIGNAL(timeout()), this, SLOT(checkPingTimeouts()));
     disconnect(this);
+
+    // Shutdown
+    QAPP_TYPE::exit();
+}
+
+/// Read config file and load values in
+void App::loadConfig()
+{
+    logStatusMessage(tr("Reading config file ..."));
+    QSettings config(CONFIGFILEPATH, QSettings::IniFormat);
+
+    loginPort = config.value("loginPort", DEFAULT_LOGIN_PORT).toInt();
+    gamePort = config.value("gamePort", DEFAULT_GAME_PORT).toInt();
+    maxConnected = config.value("maxConnected", DEFAULT_MAX_CONNECTED).toInt();
+    maxRegistered = config.value("maxRegistered", DEFAULT_MAX_REGISTERED).toInt();
+    pingTimeout = config.value("pingTimeout", DEFAULT_PING_TIMEOUT).toInt();
+    pingCheckInterval = config.value("pingCheckInterval", DEFAULT_PING_CHECK).toInt();
+    logInfos = config.value("logInfosMessages", DEFAULT_LOG_INFOSMESSAGES).toBool();
+    saltPassword = config.value("saltPassword", DEFAULT_SALT_PASSWORD).toString();
+    enableSessKeyValidation = config.value("enableSessKeyValidation", DEFAULT_SESSKEY_VALIDATION).toBool();
+    enableLoginServer = config.value("enableLoginServer", DEFAULT_ENABLE_LOGIN_SERVER).toBool();
+    enableGameServer = config.value("enableGameServer", DEFAULT_ENABLE_GAME_SERVER).toBool();
+    enableMultiplayer = config.value("enableMultiplayer", DEFAULT_ENABLE_MULTIPLAYER).toBool();
+    syncInterval = config.value("syncInterval", DEFAULT_SYNC_INTERVAL).toInt();
+    remoteLoginIP = config.value("remoteLoginIP", DEFAULT_REMOTE_LOGIN_IP).toString();
+    remoteLoginPort = config.value("remoteLoginPort", DEFAULT_REMOTE_LOGIN_PORT).toInt();
+    remoteLoginTimeout = config.value("remoteLoginTimeout", DEFAULT_REMOTE_LOGIN_TIMEOUT).toInt();
+    useRemoteLogin = config.value("useRemoteLogin", DEFAULT_USE_REMOTE_LOGIN).toBool();
+    enableGetlog = config.value("enableGetlog", DEFAULT_ENABLE_GETLOG).toBool();
+    enablePVP = config.value("enablePVP", DEFAULT_ENABLE_PVP).toBool();
+
+#ifdef USE_GUI
+    app.ui->loginPortConfig->setValue(loginPort);
+    app.ui->gamePortConfig->setValue(gamePort);
+    app.ui->maxConnectedPlayersConfig->setValue(maxConnected);
+    app.ui->maxRegisteredPlayersConfig->setValue(maxRegistered);
+    app.ui->pingTimeoutConfig->setValue(pingTimeout);
+    app.ui->pingCheckConfig->setValue(pingCheckInterval);
+    app.ui->logInfosMessagesConfig->setChecked(logInfos);
+    app.ui->saltPasswordConfig->setText(saltPassword);
+    app.ui->sessKeyValidationConfig->setChecked(enableSessKeyValidation);
+    app.ui->enableLoginServerConfig->setChecked(enableLoginServer);
+    app.ui->enableGameServerConfig->setChecked(enableGameServer);
+    app.ui->multiplayerConfig->setChecked(enableMultiplayer);
+    app.ui->syncIntervalConfig->setValue(syncInterval);
+    app.ui->getlogConfig->setCheckable(enableGetlog);
+    app.ui->pvpConfig->setChecked(enablePVP);
+#endif
+}
+
+#ifdef USE_GUI
+/// Read config options from GUI and load values in
+void App::loadConfigFromGui()
+{
+    loginPort = app.ui->loginPortConfig->value();
+    gamePort = app.ui->gamePortConfig->value();
+    maxConnected = app.ui->maxConnectedPlayersConfig->value();
+    maxRegistered = app.ui->maxRegisteredPlayersConfig->value();
+    pingTimeout = app.ui->pingTimeoutConfig->value();
+    pingCheckInterval = app.ui->pingCheckConfig->value();
+    logInfos = app.ui->logInfosMessagesConfig->isChecked();
+    saltPassword = app.ui->saltPasswordConfig->text();
+    enableSessKeyValidation = app.ui->sessKeyValidationConfig->isChecked();
+    enableLoginServer = app.ui->enableLoginServerConfig->isChecked();
+    enableGameServer = app.ui->enableGameServerConfig->isChecked();
+    enableMultiplayer = app.ui->multiplayerConfig->isChecked();
+    syncInterval = app.ui->syncIntervalConfig->value();
+//    remoteLoginIP = ;
+//    remoteLoginPort = ;
+//    remoteLoginTimeout = ;
+//    useRemoteLogin = ;
+    enableGetlog = app.ui->getlogConfig->isChecked();
+    enablePVP = app.ui->pvpConfig->isChecked();
+}
+
+/// Reset GUI config options to defaults
+void App::resetGuiConfigToDefault()
+{
+    app.ui->loginPortConfig->setValue(DEFAULT_LOGIN_PORT);
+    app.ui->gamePortConfig->setValue(DEFAULT_GAME_PORT);
+    app.ui->maxConnectedPlayersConfig->setValue(DEFAULT_MAX_CONNECTED);
+    app.ui->maxRegisteredPlayersConfig->setValue(DEFAULT_MAX_REGISTERED);
+    app.ui->pingTimeoutConfig->setValue(DEFAULT_PING_TIMEOUT);
+    app.ui->pingCheckConfig->setValue(DEFAULT_PING_CHECK);
+    app.ui->logInfosMessagesConfig->setChecked(DEFAULT_LOG_INFOSMESSAGES);
+    app.ui->saltPasswordConfig->setText(DEFAULT_SALT_PASSWORD);
+    app.ui->sessKeyValidationConfig->setChecked(DEFAULT_SESSKEY_VALIDATION);
+    app.ui->enableLoginServerConfig->setChecked(DEFAULT_ENABLE_LOGIN_SERVER);
+    app.ui->enableGameServerConfig->setChecked(DEFAULT_ENABLE_GAME_SERVER);
+    app.ui->multiplayerConfig->setChecked(DEFAULT_ENABLE_MULTIPLAYER);
+    app.ui->syncIntervalConfig->setValue(DEFAULT_SYNC_INTERVAL);
+    app.ui->getlogConfig->setCheckable(DEFAULT_ENABLE_GETLOG);
+    app.ui->pvpConfig->setChecked(DEFAULT_ENABLE_PVP);
+}
+
+#endif
+
+/// Saves values to config file
+void App::saveConfig()
+{
+    QSettings config(CONFIGFILEPATH, QSettings::IniFormat);
+
+    config.setValue("loginPort", loginPort);
+    config.setValue("gamePort", gamePort);
+    config.setValue("maxConnected", maxConnected);
+    config.setValue("maxRegistered", maxRegistered);
+    config.setValue("pingTimeout", pingTimeout);
+    config.setValue("pingCheckInterval", pingCheckInterval);
+    config.setValue("logInfos", logInfos);
+    config.setValue("saltPassword", saltPassword);
+    config.setValue("enableSessKeyValidation", enableSessKeyValidation);
+    config.setValue("enableLoginServer", enableLoginServer);
+    config.setValue("enableGameServer", enableGameServer);
+    config.setValue("enableMultiplayer", enableMultiplayer);
+    config.setValue("syncInterval", syncInterval);
+    config.setValue("remoteLoginIP", remoteLoginIP);
+    config.setValue("remoteLoginPort", remoteLoginPort);
+    config.setValue("remoteLoginTimeout", remoteLoginTimeout);
+    config.setValue("useRemoteLogin", useRemoteLogin);
+    config.setValue("enableGetlog", enableGetlog);
+    config.setValue("enablePVP", enablePVP);
+
+    logStatusMessage(tr("Saved config file ..."));
+}
+
+void App::startLoginServer()
+{
+    if (app.loginServerUp)
+    {
+        logMessage(tr("Login server is already up, shutdown login server before attempting to start"));
+        return;
+    }
+
+    /// Player DB
+    //logStatusMessage(tr("Loading players database ..."));
+    Player::tcpPlayers = Player::loadPlayers();
+
+    /// TCP Server
+    logStatusMessage(tr("Starting TCP login server on port %1...").arg(loginPort));
+    if (!tcpServer->listen(QHostAddress::Any,loginPort))
+    {
+        logStatusError(tr("TCP: Unable to start server on port %1 : %2").arg(loginPort).arg(tcpServer->errorString()));
+        app.stopLoginServer();
+        return;
+    }
+
+    // If we use a remote login server, try to open a connection preventively.
+    if (useRemoteLogin)
+        remoteLoginSock.connectToHost(remoteLoginIP, remoteLoginPort);
+
+    connect(tcpServer, SIGNAL(newConnection()), this, SLOT(tcpConnectClient()));
+
+    app.loginServerUp = true;
+#ifdef USE_GUI
+    app.ui->loginStatus->setText("<font color=\"#339933\">ONLINE</font>");
+    app.ui->toggleLoginServerButton->setText(tr("Stop Login Server"));
+#endif
+}
+
+void App::stopLoginServer()
+{
+    stopLoginServer(true);
+}
+
+void App::stopLoginServer(bool log)
+{
+    if (log)
+        logStatusMessage(tr("Stopping Login Server"));
+
+    app.loginServerUp = false;
+
+    tcpServer->close();
+
+#ifdef USE_GUI
+    app.ui->loginStatus->setText("<font color=\"#993333\">OFFLINE</font>");
+    app.ui->toggleLoginServerButton->setText(tr("Start Login Server"));
+#endif
+}
+
+void App::startGameServer()
+{
+    if (app.gameServerUp)
+    {
+        logMessage(tr("Game server is already up, shutdown game server before attempting to start"));
+        return;
+    }
+
+    SceneEntity::lastNetviewId=0;
+    SceneEntity::lastId=1;
+
+    /// Init
+    tcpClientsList.clear();
+
+    /// Read vortex DB
+    bool corrupted=false;
+    QDir vortexDir("data/vortex/");
+    QStringList files = vortexDir.entryList(QDir::Files);
+    int nVortex=0;
+    for (int i=0; i<files.size(); i++) // For each vortex file
+    {
+        // Each file is a scene
+        Scene scene(files[i].split('.')[0]);
+
+        QFile file("data/vortex/"+files[i]);
+        if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+        {
+            logStatusError(tr("Error reading vortex DB"));
+            return;
+        }
+        QByteArray data = file.readAll();
+        data.replace('\r', "");
+        QList<QByteArray> lines = data.split('\n');
+
+        // Each line is a vortex
+        for (int j=0; j<lines.size(); j++)
+        {
+            if (lines[j].size() == 0) // Skip empty lines
+                continue;
+            nVortex++;
+            Vortex vortex;
+            bool ok1, ok2, ok3, ok4;
+            QList<QByteArray> elems = lines[j].split(' ');
+            if (elems.size() < 5)
+            {
+                logStatusError(tr("Vortex DB is corrupted. Incorrect line (%1 elems), file %2")
+                                    .arg(elems.size()).arg(files[i]));
+                corrupted=true;
+                break;
+            }
+            vortex.id = elems[0].toInt(&ok1, 16);
+            vortex.destName = elems[1];
+            for (int j=2; j<elems.size() - 3;j++) // Concatenate the string between id and poss
+                vortex.destName += " "+elems[j];
+            vortex.destPos.x = elems[elems.size()-3].toFloat(&ok2);
+            vortex.destPos.y = elems[elems.size()-2].toFloat(&ok3);
+            vortex.destPos.z = elems[elems.size()-1].toFloat(&ok4);
+            if (!(ok1&&ok2&&ok3&&ok4))
+            {
+                logStatusError(tr("Vortex DB is corrupted. Conversion failed, file %1").arg(files[i]));
+                corrupted=true;
+                break;
+            }
+            scene.vortexes << vortex;
+            //app.logMessage("Add vortex "+QString().setNum(vortex.id)+" to "+vortex.destName+" "
+            //               +QString().setNum(vortex.destPos.x)+" "
+            //               +QString().setNum(vortex.destPos.y)+" "
+            //               +QString().setNum(vortex.destPos.z));
+        }
+        Scene::scenes << scene;
+    }
+
+    if (corrupted)
+    {
+        app.stopGameServer();
+        return;
+    }
+
+    logMessage(tr("Loaded %1 vortexes in %2 scenes").arg(nVortex).arg(Scene::scenes.size()));
+
+    /// Read/parse Items.xml
+    QFile itemsFile("data/data/Items.xml");
+    if (itemsFile.open(QIODevice::ReadOnly))
+    {
+        QByteArray data = itemsFile.readAll();
+        parseItemsXml(data);
+        app.logMessage(tr("Loaded %1 items").arg(wearablePositionsMap.size()));
+    }
+    else
+    {
+        app.logError(tr("Couldn't open Items.xml"));
+        app.stopGameServer();
+        return;
+    }
+
+    /// Read NPC/Quests DB
+    try
+    {
+        unsigned nQuests = 0;
+        QDir npcsDir("data/npcs/");
+        QStringList files = npcsDir.entryList(QDir::Files);
+        for (int i=0; i<files.size(); i++, nQuests++) // For each vortex file
+        {
+            try
+            {
+                Quest quest("data/npcs/"+files[i], NULL);
+                for (const Quest& q : Quest::quests)
+                    if (q.id == quest.id)
+                        logError(tr("Error, two quests are using the same id (%1) !").arg(quest.id));
+                Quest::quests << quest;
+                Quest::npcs << quest.npc;
+            }
+            catch (QString& error)
+            {
+                app.logError(error);
+                app.stopGameServer();
+                throw error;
+            }
+        }
+        logMessage(tr("Loaded %1 quests/npcs").arg(nQuests));
+    }
+    catch (QString& e)
+    {
+        logMessage(tr("Error loading NPCs/Quests"));
+        return;
+    }
+
+    /// Read/parse mob zones
+    try
+    {
+        QDir mobsDir(MOBSPATH);
+        QStringList files = mobsDir.entryList(QDir::Files);
+        for (int i=0; i<files.size(); i++) // For each mobzone file
+        {
+            QFile file(MOBSPATH+files[i]);
+            if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+            {
+                logStatusError(tr("Error reading mob zones"));
+                return;
+            }
+            QByteArray data = file.readAll();
+            file.close();
+            try {
+                parseMobzoneData(data); // Will fill our Mobzone and Mobs list
+            }
+            catch (QString& error)
+            {
+                logError(error);
+                stopGameServer();
+                throw error;
+            }
+        }
+        logMessage(tr("Loaded %1 mobs in %2 zones").arg(Mob::mobs.size()).arg(Mob::mobzones.size()));
+    }
+    catch (...)
+    {
+        logMessage(tr("Error loading mob zones"));
+        return;
+    }
+
+    // Parse animations
+    try
+    {
+        AnimationParser(GAMEDATAPATH+QString("Animations.json"));
+        logMessage(tr("Loaded %1 animations").arg(Animation::animations.size()));
+    }
+    catch (const QString& e)
+    {
+        logError(tr("Error parsing animations: ")+e);
+        app.stopGameServer();
+    }
+    catch (const char* e)
+    {
+        logError(tr("Error parsing animations: ")+e);
+        app.stopGameServer();
+    }
+
+    // Parse skills
+    try
+    {
+        SkillParser(GAMEDATAPATH+QString("Skills.json"));
+        logMessage(tr("Loaded %1 skills").arg(Skill::skills.size()));
+    }
+    catch (const QString& e)
+    {
+        logError(tr("Error parsing skills: ")+e);
+        app.stopGameServer();
+    }
+    catch (const char* e)
+    {
+        logError(tr("Error parsing skills: ")+e);
+        app.stopGameServer();
+    }
+
+    // UDP server
+    logStatusMessage(tr("Starting UDP game server on port %1...").arg(gamePort));
+    if (!udpSocket->bind(gamePort, QUdpSocket::ReuseAddressHint|QUdpSocket::ShareAddress))
+    {
+        logStatusError(tr("UDP: Unable to start server on port %1").arg(gamePort));
+        app.stopGameServer();
+        return;
+    }
+
+    // Start ping timeout timer
+    pingTimer->start(pingCheckInterval);
+
+    if (enableMultiplayer)
+        sync->startSync(syncInterval);
+
+    // Signals
+    connect(udpSocket, &QUdpSocket::readyRead, &::udpProcessPendingDatagrams);
+    connect(pingTimer, SIGNAL(timeout()), this, SLOT(checkPingTimeouts()));
+
+    app.gameServerUp = true;
+
+#ifdef USE_GUI
+    app.ui->toggleGameServerButton->setText(tr("Stop Game Server"));
+    app.ui->gameStatus->setText("<font color=\"#339933\">ONLINE</font>");
+#endif
+}
+
+void App::stopGameServer()
+{
+    stopGameServer(true);
+}
+
+void App::stopGameServer(bool log)
+{
+    if (log)
+        logStatusMessage(tr("Stopping Game Server"));
+
+    pingTimer->stop();
+
+    for (int i=0;i<tcpClientsList.size();i++)
+        tcpClientsList[i].first->close();
+
+    udpSocket->close();
+
+    sync->stopSync();
+
+    Quest::quests.clear();
+    Quest::npcs.clear();
+
+    app.gameServerUp = false;
+
+#ifdef USE_GUI
+    app.ui->toggleGameServerButton->setText(tr("Start Game Server"));
+    app.ui->gameStatus->setText("<font color=\"#993333\">OFFLINE</font>");
+#endif
 }

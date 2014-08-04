@@ -306,7 +306,7 @@ void App::tcpProcessData(QByteArray data, QTcpSocket* socket)
         || !fileMaxRegistration.open(QIODevice::ReadOnly) || !fileServersList.open(QIODevice::ReadOnly))
         {
             logError(tr("TCP: Error reading data files"));
-            stopServer();
+            app.stopGameServer();
         }
         else
         {

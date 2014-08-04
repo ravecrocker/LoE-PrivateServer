@@ -9,14 +9,16 @@ QT       += core network
 # build as a console application
 console_only {
     QT       -= gui
-    CONFIG   += console
     CONFIG   -= app_bundle
+    CONFIG   += console
     DEFINES  += USE_CONSOLE
 }
 # build with a gui
 else {
     QT       += gui widgets
     FORMS    += app.ui
+    RESOURCES += app.qrc
+    QTPLUGIN += qpng
     DEFINES  += USE_GUI
 }
 
