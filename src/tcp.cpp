@@ -206,6 +206,8 @@ void App::tcpProcessPendingDatagrams()
                     {
                         logError(tr("TCP: File not found"));
                         head.close();
+                        // If we 404, we send a 304 Not Modified, and the client will use it's local version
+                        // The game clients chokes if we send anything but a 200 or 304 back
                         QFile head404(QString(NETDATAPATH)+"/notmodified.bin");
                         head404.open(QIODevice::ReadOnly);
                         if (!head404.isOpen())
@@ -369,7 +371,7 @@ void App::tcpProcessData(QByteArray data, QTcpSocket* socket)
             {
                 // HTTP reply template
                 static const QByteArray data1 = QByteArray::fromHex("0D0A61757468726573706F6E73653A0A747275650A");
-                static const QByteArray data2 = QByteArray::fromHex("0A310A");
+                static const QByteArray data2 = QByteArray::fromHex("0A310A310A");
                 static const QByteArray data3 = QByteArray::fromHex("0D0A300D0A0D0A");
 
                 QByteArray customData = file.readAll();
