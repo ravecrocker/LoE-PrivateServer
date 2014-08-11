@@ -111,7 +111,7 @@ QList<Pony> Player::loadPonies(Player* player)
             } while ((num3 & 0x80) != 0);
             strlen = (uint) num;
         }
-        int ponyDataSize = strlen+lensize+43;
+        int ponyDataSize = strlen+lensize+PONYDATA_SIZE;
         pony.ponyData = data.mid(i,ponyDataSize);
         pony.name = dataToString(pony.ponyData); // The name is the first elem
         //app.logMessage("Found pony : "+pony.name);
