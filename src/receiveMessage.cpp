@@ -225,11 +225,15 @@ void receiveMessage(Player* player)
         {
             QList<Pony> ponies = Player::loadPonies(player);
             QByteArray ponyData = msg.right(msg.size()-10);
-            logMessage(QString("Pony data size : %1").arg(ponyData.size()));
             Pony pony{player};
 
-            /// TODO: Reject ponies with invalid names, such as multiple spaces
-            /// It can bug everything
+            // Fix invalid names
+            QString ponyName = dataToString(ponyData);
+            if (ponyName.count(' ') > 1)
+            {
+                QStringList words = ponyName.split(' ');
+                ponyName = words[0] + ' ' + words[1];
+            }
 
             if ((unsigned char)msg[6]==0xff && (unsigned char)msg[7]==0xff && (unsigned char)msg[8]==0xff && (unsigned char)msg[9]==0xff)
             {
