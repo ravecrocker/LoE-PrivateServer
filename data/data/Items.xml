@@ -1,30 +1,28 @@
-<?xml version="1.0" encoding="utf-16"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <ArrayOfItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Item>
     <ID>0</ID>
     <Icon>1</Icon>
     <Description>A fresh green apple. It is a bit sour, but maybe you're into that.</Description>
     <Name>Green Apple</Name>
-    <ResourcePath />
+    <ResourcePath/>
     <Stackable>true</Stackable>
     <MaxStackSize>10</MaxStackSize>
     <Price>3</Price>
     <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>1</ID>
     <Icon>2</Icon>
     <Description>A red apple fresh from the farm.</Description>
     <Name>Red apple</Name>
-    <ResourcePath />
+    <ResourcePath/>
     <Stackable>true</Stackable>
     <MaxStackSize>10</MaxStackSize>
     <Price>3</Price>
     <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>2</ID>
@@ -37,7 +35,6 @@
     <Price>3</Price>
     <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>3</ID>
@@ -50,7 +47,6 @@
     <Price>5</Price>
     <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>4</ID>
@@ -63,7 +59,6 @@
     <Price>5</Price>
     <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>5</ID>
@@ -76,7 +71,6 @@
     <Price>5</Price>
     <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>6</ID>
@@ -89,7 +83,6 @@
     <Price>5</Price>
     <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>7</ID>
@@ -102,7 +95,6 @@
     <Price>5</Price>
     <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>8</ID>
@@ -115,7 +107,6 @@
     <Price>0</Price>
     <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>9</ID>
@@ -128,7 +119,6 @@
     <Price>25</Price>
     <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>10</ID>
@@ -141,7 +131,6 @@
     <Price>35</Price>
     <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>11</ID>
@@ -154,7 +143,6 @@
     <Price>30</Price>
     <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>12</ID>
@@ -167,7 +155,6 @@
     <Price>23</Price>
     <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>13</ID>
@@ -180,7 +167,6 @@
     <Price>40</Price>
     <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>14</ID>
@@ -193,7 +179,6 @@
     <Price>0</Price>
     <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>16</ID>
@@ -206,7 +191,6 @@
     <Price>8</Price>
     <Salable>true</Salable>
     <WearableSlots>Hat</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>17</ID>
@@ -219,7 +203,6 @@
     <Price>6</Price>
     <Salable>true</Salable>
     <WearableSlots>Mask</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>18</ID>
@@ -232,7 +215,6 @@
     <Price>6</Price>
     <Salable>true</Salable>
     <WearableSlots>Mask</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>19</ID>
@@ -245,7 +227,6 @@
     <Price>6</Price>
     <Salable>true</Salable>
     <WearableSlots>Hat</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>20</ID>
@@ -258,7 +239,6 @@
     <Price>6</Price>
     <Salable>true</Salable>
     <WearableSlots>SaddleBags</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>21</ID>
@@ -271,7 +251,6 @@
     <Price>6</Price>
     <Salable>true</Salable>
     <WearableSlots>Shirt</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>22</ID>
@@ -284,7 +263,6 @@
     <Price>6</Price>
     <Salable>true</Salable>
     <WearableSlots>FrontShoes BackShoes</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>23</ID>
@@ -297,7 +275,6 @@
     <Price>20</Price>
     <Salable>true</Salable>
     <WearableSlots>FrontShoes</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>24</ID>
@@ -310,7 +287,6 @@
     <Price>7</Price>
     <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>25</ID>
@@ -323,11 +299,10 @@
     <Price>8</Price>
     <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>26</ID>
-    <Icon>0</Icon>
+    <Icon>73</Icon>
     <Description>A juicy strawberry filled with strawberry juice.</Description>
     <Name>Strawberry </Name>
     <ResourcePath>Undefined</ResourcePath>
@@ -336,11 +311,10 @@
     <Price>5</Price>
     <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>27</ID>
-    <Icon>0</Icon>
+    <Icon>74</Icon>
     <Description>An exqusite example of a strawberry dessert!</Description>
     <Name>Strawberry Torte</Name>
     <ResourcePath>Undefined</ResourcePath>
@@ -349,7 +323,6 @@
     <Price>8</Price>
     <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>28</ID>
@@ -360,9 +333,8 @@
     <Stackable>true</Stackable>
     <MaxStackSize>10</MaxStackSize>
     <Price>10</Price>
-    <Salable>true</Salable>
+    <Salable>false</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>29</ID>
@@ -373,9 +345,8 @@
     <Stackable>true</Stackable>
     <MaxStackSize>10</MaxStackSize>
     <Price>4</Price>
-    <Salable>true</Salable>
+    <Salable>false</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>30</ID>
@@ -386,13 +357,12 @@
     <Stackable>true</Stackable>
     <MaxStackSize>10</MaxStackSize>
     <Price>10</Price>
-    <Salable>true</Salable>
+    <Salable>false</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>31</ID>
-    <Icon>0</Icon>
+    <Icon>76</Icon>
     <Description>A cap that shows you are an assitant nurse. (Although it is best to stay out of medical matters until you've had the proper training.)</Description>
     <Name>Assistant Nurse Cap</Name>
     <ResourcePath>Undefined</ResourcePath>
@@ -401,7 +371,6 @@
     <Price>5</Price>
     <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>32</ID>
@@ -414,11 +383,10 @@
     <Price>8</Price>
     <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>33</ID>
-    <Icon>0</Icon>
+    <Icon>71</Icon>
     <Description>Nothing is getting through that. But just to be safe, don't try it.</Description>
     <Name>Hard Hat </Name>
     <ResourcePath>Hats/firepony</ResourcePath>
@@ -427,11 +395,10 @@
     <Price>7</Price>
     <Salable>true</Salable>
     <WearableSlots>Hat</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>34</ID>
-    <Icon>0</Icon>
+    <Icon>77</Icon>
     <Description>A potion that restores your health.</Description>
     <Name>Health Potion</Name>
     <ResourcePath>Undefined</ResourcePath>
@@ -440,11 +407,10 @@
     <Price>5</Price>
     <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>35</ID>
-    <Icon>0</Icon>
+    <Icon>78</Icon>
     <Description>A wooden spoon, perfect for mixing things!</Description>
     <Name>Mixing Spoon</Name>
     <ResourcePath>Undefined</ResourcePath>
@@ -453,7 +419,6 @@
     <Price>2</Price>
     <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>36</ID>
@@ -466,11 +431,10 @@
     <Price>3</Price>
     <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>37</ID>
-    <Icon>0</Icon>
+    <Icon>69</Icon>
     <Description>A water container. It also can make a cool helmet. But it's better as a water container. </Description>
     <Name>Water Bucket</Name>
     <ResourcePath>Undefined</ResourcePath>
@@ -479,11 +443,10 @@
     <Price>5</Price>
     <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>38</ID>
-    <Icon>0</Icon>
+    <Icon>70</Icon>
     <Description>A water container. It also can make a cool helmet. But it's better as a water container. This one has water in it! </Description>
     <Name>Water Bucket (Full)</Name>
     <ResourcePath>Undefined</ResourcePath>
@@ -492,7 +455,6 @@
     <Price>6</Price>
     <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>39</ID>
@@ -505,7 +467,6 @@
     <Price>6</Price>
     <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>40</ID>
@@ -518,11 +479,10 @@
     <Price>15</Price>
     <Salable>true</Salable>
     <WearableSlots>Hat</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>41</ID>
-    <Icon>0</Icon>
+    <Icon>75</Icon>
     <Description>An egg, freshly laid and collected this morning. Don't put too many of these in one saddlebag.</Description>
     <Name>Egg</Name>
     <ResourcePath>Undefined</ResourcePath>
@@ -531,20 +491,18 @@
     <Price>2</Price>
     <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>42</ID>
-    <Icon>19</Icon>
+    <Icon>72</Icon>
     <Description>The book Skyhammer gave me to return to Final Ink at the Canterlot Library. </Description>
     <Name>Skyhammer's Book </Name>
     <ResourcePath>Undefined</ResourcePath>
     <Stackable>true</Stackable>
     <MaxStackSize>5</MaxStackSize>
     <Price>0</Price>
-    <Salable>true</Salable>
+    <Salable>false</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>43</ID>
@@ -557,7 +515,6 @@
     <Price>6</Price>
     <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>44</ID>
@@ -570,7 +527,6 @@
     <Price>6</Price>
     <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>45</ID>
@@ -583,7 +539,6 @@
     <Price>6</Price>
     <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>46</ID>
@@ -596,7 +551,6 @@
     <Price>6</Price>
     <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>47</ID>
@@ -609,7 +563,6 @@
     <Price>6</Price>
     <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>48</ID>
@@ -622,7 +575,6 @@
     <Price>6</Price>
     <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>49</ID>
@@ -635,7 +587,6 @@
     <Price>6</Price>
     <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>50</ID>
@@ -648,7 +599,6 @@
     <Price>0</Price>
     <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>51</ID>
@@ -661,7 +611,6 @@
     <Price>2</Price>
     <Salable>true</Salable>
     <WearableSlots>Hat</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>52</ID>
@@ -672,9 +621,8 @@
     <Stackable>false</Stackable>
     <MaxStackSize>1</MaxStackSize>
     <Price>0</Price>
-    <Salable>true</Salable>
+    <Salable>false</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>53</ID>
@@ -685,9 +633,8 @@
     <Stackable>false</Stackable>
     <MaxStackSize>1</MaxStackSize>
     <Price>0</Price>
-    <Salable>true</Salable>
+    <Salable>false</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>54</ID>
@@ -700,7 +647,6 @@
     <Price>300</Price>
     <Salable>true</Salable>
     <WearableSlots>BackShoes</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>55</ID>
@@ -713,7 +659,6 @@
     <Price>450</Price>
     <Salable>true</Salable>
     <WearableSlots>Mask</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>56</ID>
@@ -726,7 +671,6 @@
     <Price>400</Price>
     <Salable>true</Salable>
     <WearableSlots>Shirt</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>57</ID>
@@ -739,7 +683,6 @@
     <Price>300</Price>
     <Salable>true</Salable>
     <WearableSlots>FrontShoes</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>58</ID>
@@ -752,7 +695,6 @@
     <Price>6</Price>
     <Salable>true</Salable>
     <WearableSlots>Mask</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>59</ID>
@@ -765,7 +707,6 @@
     <Price>6</Price>
     <Salable>true</Salable>
     <WearableSlots>SaddleBags</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>60</ID>
@@ -778,7 +719,6 @@
     <Price>6</Price>
     <Salable>true</Salable>
     <WearableSlots>SaddleBags</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>61</ID>
@@ -791,7 +731,6 @@
     <Price>5</Price>
     <Salable>true</Salable>
     <WearableSlots>SaddleBags</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>62</ID>
@@ -804,7 +743,6 @@
     <Price>10</Price>
     <Salable>true</Salable>
     <WearableSlots>Hat</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>63</ID>
@@ -817,7 +755,6 @@
     <Price>5</Price>
     <Salable>true</Salable>
     <WearableSlots>FrontShoes</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>64</ID>
@@ -830,7 +767,6 @@
     <Price>0</Price>
     <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>65</ID>
@@ -843,7 +779,6 @@
     <Price>666</Price>
     <Salable>true</Salable>
     <WearableSlots>FrontShoes BackShoes Shirt</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>66</ID>
@@ -856,7 +791,6 @@
     <Price>600</Price>
     <Salable>true</Salable>
     <WearableSlots>Hat</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>67</ID>
@@ -869,7 +803,6 @@
     <Price>325</Price>
     <Salable>true</Salable>
     <WearableSlots>SaddleBags</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>68</ID>
@@ -882,7 +815,6 @@
     <Price>5</Price>
     <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>69</ID>
@@ -895,7 +827,6 @@
     <Price>3</Price>
     <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>70</ID>
@@ -908,7 +839,6 @@
     <Price>5</Price>
     <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>71</ID>
@@ -921,7 +851,6 @@
     <Price>7</Price>
     <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>72</ID>
@@ -934,7 +863,6 @@
     <Price>4</Price>
     <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>73</ID>
@@ -946,21 +874,19 @@
     <MaxStackSize>10</MaxStackSize>
     <Price>15</Price>
     <Salable>true</Salable>
-    <WearableSlots>Tail Pants FrontSocks BackSocks Saddle Necklace Mouth Eyes Ears FrontKnees BackKnees FrontShoes BackShoes Shirt Mask SaddleBags Hat</WearableSlots>
-    <ItemUse />
+    <WearableSlots>Hat</WearableSlots>
   </Item>
   <Item>
     <ID>74</ID>
     <Icon>0</Icon>
     <Description>A pretty heavy package..</Description>
     <Name>Big Package</Name>
-    <ResourcePath />
+    <ResourcePath/>
     <Stackable>false</Stackable>
     <MaxStackSize>1</MaxStackSize>
     <Price>0</Price>
     <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>75</ID>
@@ -973,33 +899,30 @@
     <Price>0</Price>
     <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>76</ID>
-    <Icon>31</Icon>
+    <Icon>72</Icon>
     <Description>Cirrus's personal diary. Maybe just a peek?</Description>
     <Name>Cirrus's Diary</Name>
     <ResourcePath>Undefined</ResourcePath>
     <Stackable>false</Stackable>
     <MaxStackSize>10</MaxStackSize>
     <Price>0</Price>
-    <Salable>true</Salable>
+    <Salable>false</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>77</ID>
     <Icon>48</Icon>
-    <Description>A book written by Scribble</Description>
+    <Description>A book written by Scribble. Not yet published.</Description>
     <Name>Scribble's Novel</Name>
     <ResourcePath>Undefined</ResourcePath>
     <Stackable>false</Stackable>
     <MaxStackSize>10</MaxStackSize>
     <Price>0</Price>
-    <Salable>true</Salable>
+    <Salable>false</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>78</ID>
@@ -1012,7 +935,6 @@
     <Price>800</Price>
     <Salable>true</Salable>
     <WearableSlots>Necklace</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
     <ID>79</ID>
@@ -1025,19 +947,35 @@
     <Price>0</Price>
     <Salable>true</Salable>
     <WearableSlots>None</WearableSlots>
-    <ItemUse />
   </Item>
   <Item>
-    <ID>80</ID>
-    <Icon>68</Icon>
-    <Description>Snazzy jazzy beats!</Description>
-    <Name>Headphones</Name>
-    <ResourcePath>Hats/Headphones</ResourcePath>
-    <Stackable>true</Stackable>
+    <ID>81</ID>
+    <Icon>75</Icon>
+    <Description>If rabbits don't lay eggs, then explain to me why they would need to hide them. You can't.</Description>
+    <Name>Rabbit Egg</Name>
+    <ResourcePath>Undefined</ResourcePath>
+    <Stackable>false</Stackable>
     <MaxStackSize>10</MaxStackSize>
-    <Price>800</Price>
-    <Salable>true</Salable>
-    <WearableSlots>Necklace</WearableSlots>
-    <ItemUse />
+    <Price>900</Price>
+    <Salable>false</Salable>
+    <WearableSlots>None</WearableSlots>
+    <ItemUse xsi:type="PetEgg">
+      <PetPrefab>Pets/Bunny</PetPrefab>
+    </ItemUse>
+  </Item>
+  <Item>
+    <ID>82</ID>
+    <Icon>75</Icon>
+    <Description>This is a dog egg that exists for long and boring reasons involving magic and elemets. If you're that interested, check your local library. The fine people there might have an answer.</Description>
+    <Name>Dog Egg</Name>
+    <ResourcePath>Undefined</ResourcePath>
+    <Stackable>false</Stackable>
+    <MaxStackSize>10</MaxStackSize>
+    <Price>900</Price>
+    <Salable>false</Salable>
+    <WearableSlots>None</WearableSlots>
+    <ItemUse xsi:type="PetEgg">
+      <PetPrefab>Pets/Dog</PetPrefab>
+    </ItemUse>
   </Item>
 </ArrayOfItem>
