@@ -240,7 +240,12 @@ void receiveMessage(Player* player)
                 // Create the new pony for this player
                 pony.ponyData = ponyData;
                 pony.name = dataToString(ponyData);
-                pony.sceneName = "ponyville";
+                if (pony.getType() == Pony::Unicorn)
+                    pony.sceneName = "canterlot";
+                else if (pony.getType() == Pony::Pegasus)
+                    pony.sceneName = "cloudsdale";
+                else
+                    pony.sceneName = "ponyville";
                 pony.pos = findVortex(pony.sceneName, 0).destPos;
                 ponies += pony;
             }
