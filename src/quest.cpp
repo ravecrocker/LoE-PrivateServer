@@ -3,6 +3,7 @@
 #include "message.h"
 #include "items.h"
 #include "player.h"
+#include "serialize.h"
 #include <QFile>
 
 QList<Pony*> Quest::npcs; // List of npcs from the npcs DB
@@ -46,9 +47,35 @@ Quest::Quest(QString path, Player *Owner)
                 npc->sceneName = lines[i].mid(line[0].size()+1).toLower();
             else throw QString(QObject::tr("Quest::Quest: Error reading scene, quest %1").arg(path));
         else if (line[0] == "ponyData")
+        {
             if (line.size()==2)
-                npc->ponyData = QByteArray::fromBase64(line[1].toLatin1());
+            {
+                QByteArray ponyData = QByteArray::fromBase64(line[1].toLatin1());
+                // Read the ponyData
+                unsigned strlen;
+                unsigned lensize=0;
+                {
+                    unsigned char num3; int num=0, num2=0;
+                    do {
+                        num3 = ponyData[lensize]; lensize++;
+                        num |= (num3 & 0x7f) << num2;
+                        num2 += 7;
+                    } while ((num3 & 0x80) != 0);
+                    strlen = (uint) num;
+                }
+                int nameSize = strlen + lensize;
+                int ponyDataSize = ponyData.size() - nameSize;
+                if (ponyDataSize == 43)
+                {
+                    app.logMessage(QString("Quest::Quest: PonyData of quest %1 is in old format, converting")
+                                   .arg(path));
+                    ponyData += uint32ToData(0); // Member ID
+                    ponyData.insert(nameSize+17+3,ponyData.mid(nameSize+17,3)); // Hair color 2 (copy of color 1)
+                }
+                npc->ponyData = ponyData;
+            }
             else throw QString(QObject::tr("Quest::Quest: Error reading ponyData, quest %1").arg(path));
+        }
         else if (line[0] == "pos")
             if (line.size()==4)
             {
