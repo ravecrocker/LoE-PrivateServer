@@ -446,6 +446,40 @@ public void OnDeserialize(NetIncomingMessage msg)
     this.BodySize = msg.ReadFloat();
     this.HornSize = msg.ReadRangedSingle(0f, 2f, 0x10);
 }
+
+
+###################### NEW VERSION
+DIFF : hairColor2 (3B), characterId(4B)
+
+public void OnDeserialize(NetIncomingMessage msg)
+{
+    this.name = msg.ReadString();
+    this.race = (CharacterType) msg.ReadByte();
+    this.gender = (Gender) msg.ReadByte();
+    this.CutieMarks = new int[] { msg.ReadInt32(), msg.ReadInt32(), msg.ReadInt32() }.Select<int, CutieMark>(delegate (int id) {
+        CutieMark mark;
+        if (StaticData.CutieMarks.TryGetValue(id, out mark))
+        {
+            return mark;
+        }
+        return StaticData.CutieMarks[0];
+    }).ToArray<CutieMark>();
+    this.hairColor0 = new Color32(msg.ReadByte(), msg.ReadByte(), msg.ReadByte(), 1);
+    this.hairColor1 = new Color32(msg.ReadByte(), msg.ReadByte(), msg.ReadByte(), 1);
+    this.hairColor2 = new Color32(msg.ReadByte(), msg.ReadByte(), msg.ReadByte(), 1);
+    this.bodyColor = new Color32(msg.ReadByte(), msg.ReadByte(), msg.ReadByte(), 1);
+    this.eyeColor = new Color32(msg.ReadByte(), msg.ReadByte(), msg.ReadByte(), 1);
+    this.hoofColor = new Color32(msg.ReadByte(), msg.ReadByte(), msg.ReadByte(), 1);
+    this.Mane = msg.ReadInt16();
+    this.Tail = msg.ReadInt16();
+    this.Eye = msg.ReadInt16();
+    this.Hoof = msg.ReadInt16();
+    this.BodySize = msg.ReadFloat();
+    this.HornSize = msg.ReadRangedSingle(0f, 2f, 0x10);
+    this.characterID = msg.ReadInt32();
+}
+
+#####################
  
 PonyData data = data2;
 INetSerializable[] args = new INetSerializable[] { new IntSerializer(this.selectedNetCharacter), data };
@@ -2728,3 +2762,7 @@ ca              0xCA Animation
 00 00 00 00     AnimationId
 
 => TODO: Search all subdirectories for mobzones, so we can e.g. make an Everfree folder, a PonyVille folder, etc
+
+=> TODO: Convert all the NPCs to the new PonyData format
+=> And in the meantime write a converter from old to new PonyData
+=> Just copy hair color 1 for hair color 2 and set the client member ID to 0 
