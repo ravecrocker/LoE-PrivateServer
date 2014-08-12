@@ -444,14 +444,10 @@ void sendSetBitsRPC(Player* player)
 
 void sendSkillsRPC(Player* player, QList<QPair<quint32, quint32> > &skills)
 {
-    QByteArray data(8, 0xC3);
+    QByteArray data(4, 0xC3);
     data[0] = (quint8)(player->pony.netviewId&0xFF);
     data[1] = (quint8)((player->pony.netviewId>>8)&0xFF);
     data[3] = 0x00; // Use dictionnary flag
-    data[4] = (quint8)(skills.size()&0xFF);
-    data[5] = (quint8)((skills.size()>>8)&0xFF);
-    data[6] = (quint8)((skills.size()>>16)&0xFF);
-    data[7] = (quint8)((skills.size()>>24)&0xFF);
     for (int i=0;i<skills.size();i++)
     {
         data += (quint8)(skills[i].first&0xFF);
